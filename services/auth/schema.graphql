@@ -1,0 +1,135 @@
+# Authentication Service GraphQL Schema
+
+# User type
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  profilePictureUrl: String
+  role: UserRole!
+  tier: SubscriptionTier!
+  cognitoId: String!
+  emailVerified: Boolean!
+  lastLoginAt: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+# User role enum
+enum UserRole {
+  USER
+  ADMIN
+}
+
+# Subscription tier enum
+enum SubscriptionTier {
+  FREE
+  LIGHT
+  STANDARD
+  PREMIUM
+}
+
+# Authentication response
+type AuthResponse {
+  user: User!
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Int!
+}
+
+# Token response
+type TokenResponse {
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Int!
+}
+
+# Register input
+input RegisterInput {
+  email: String!
+  password: String!
+  displayName: String!
+}
+
+# Login input
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+# Social login input
+input LoginWithSocialInput {
+  provider: SocialProvider!
+  accessToken: String!
+}
+
+# Social provider enum
+enum SocialProvider {
+  GOOGLE
+  FACEBOOK
+}
+
+# Request password reset input
+input RequestPasswordResetInput {
+  email: String!
+}
+
+# Confirm password reset input
+input ConfirmPasswordResetInput {
+  email: String!
+  code: String!
+  newPassword: String!
+}
+
+# Refresh token input
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+# Update profile input
+input UpdateProfileInput {
+  displayName: String
+  avatarUrl: String
+}
+
+# Verify email input
+input VerifyEmailInput {
+  email: String!
+  code: String!
+}
+
+# Queries
+type Query {
+  # Get currently authenticated user
+  getCurrentUser: User!
+
+  # Verify email with code
+  verifyEmail(input: VerifyEmailInput!): User!
+}
+
+# Mutations
+type Mutation {
+  # Register new user
+  register(input: RegisterInput!): AuthResponse!
+
+  # Login with social provider
+  loginWithSocial(input: LoginWithSocialInput!): AuthResponse!
+
+  # Login with email and password
+  login(input: LoginInput!): AuthResponse!
+
+  # Logout (global sign out)
+  logout: Boolean!
+
+  # Request password reset
+  requestPasswordReset(input: RequestPasswordResetInput!): Boolean!
+
+  # Confirm password reset
+  confirmPasswordReset(input: ConfirmPasswordResetInput!): Boolean!
+
+  # Refresh access token
+  refreshToken(input: RefreshTokenInput!): TokenResponse!
+
+  # Update user profile
+  updateProfile(input: UpdateProfileInput!): User!
+}

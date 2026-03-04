@@ -1,0 +1,43 @@
+{
+  "name": "memory-game-infrastructure",
+  "version": "1.0.0",
+  "description": "AWS CDK infrastructure for Memory Game application",
+  "bin": {
+    "infrastructure": "bin/memory-game.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "deploy:dev": "./scripts/deploy.sh dev",
+    "deploy:staging": "./scripts/deploy.sh staging",
+    "deploy:prod": "./scripts/deploy.sh prod",
+    "destroy:dev": "cdk destroy --all --context environment=dev",
+    "destroy:staging": "cdk destroy --all --context environment=staging",
+    "destroy:prod": "cdk destroy --all --context environment=prod",
+    "bootstrap": "cdk bootstrap",
+    "build:lambdas": "./scripts/build-lambdas.sh",
+    "diff": "cdk diff",
+    "diff:dev": "cdk diff --context environment=dev",
+    "diff:staging": "cdk diff --context environment=staging",
+    "diff:prod": "cdk diff --context environment=prod"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "aws-cdk": "^2.1108.0",
+    "esbuild": "^0.27.3",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.100.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+  }
+}

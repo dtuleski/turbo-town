@@ -1,0 +1,197 @@
+# Game Service GraphQL Schema
+
+# Mutations
+
+"""
+Start a new game
+"""
+type Mutation {
+  startGame(input: StartGameInput!): StartGameResponse!
+  completeGame(input: CompleteGameInput!): CompleteGameResponse!
+}
+
+# Queries
+
+"""
+Get game by ID
+"""
+type Query {
+  getGame(gameId: ID!): Game!
+  getGameHistory(input: GameHistoryInput!): GameHistoryResponse!
+  getUserStatistics: GameStatistics!
+  canStartGame: CanStartGameResponse!
+}
+
+# Input Types
+
+input StartGameInput {
+  themeId: ID!
+  difficulty: Int! # 1-5
+}
+
+input CompleteGameInput {
+  gameId: ID!
+  completionTime: Int! # seconds
+  attempts: Int!
+}
+
+input GameHistoryInput {
+  page: Int # default: 1
+  pageSize: Int # default: 20, max: 100
+  sortBy: SortBy # default: date
+  sortOrder: SortOrder # default: desc
+  themeId: ID # filter by theme
+  difficulty: Int # filter by difficulty (1-5)
+  startDate: String # ISO 8601
+  endDate: String # ISO 8601
+}
+
+enum SortBy {
+  date
+  score
+  time
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+# Response Types
+
+type StartGameResponse {
+  id: ID!
+  userId: ID!
+  themeId: ID!
+  difficulty: Int!
+  status: GameStatus!
+  startedAt: String! # ISO 8601
+  canPlay: Boolean!
+  rateLimit: RateLimitInfo!
+}
+
+type CompleteGameResponse {
+  id: ID!
+  status: GameStatus!
+  completedAt: String! # ISO 8601
+  completionTime: Int! # seconds
+  attempts: Int!
+  score: Int!
+  achievements: [Achievement!]!
+}
+
+type GameHistoryResponse {
+  games: [GameHistoryItem!]!
+  pagination: PaginationInfo!
+}
+
+type CanStartGameResponse {
+  canPlay: Boolean!
+  rateLimit: RateLimitInfo!
+  message: String
+}
+
+# Domain Types
+
+type Game {
+  id: ID!
+  userId: ID!
+  themeId: ID!
+  theme: Theme
+  difficulty: Int!
+  status: GameStatus!
+  startedAt: String! # ISO 8601
+  completedAt: String # ISO 8601
+  completionTime: Int # seconds
+  attempts: Int
+  score: Int
+  createdAt: String! # ISO 8601
+  updatedAt: String! # ISO 8601
+}
+
+type GameHistoryItem {
+  id: ID!
+  themeId: ID!
+  themeName: String!
+  difficulty: Int!
+  completedAt: String! # ISO 8601
+  completionTime: Int! # seconds
+  attempts: Int!
+  score: Int!
+}
+
+type GameStatistics {
+  totalGames: Int!
+  totalCompletedGames: Int!
+  averageScore: Float!
+  bestScore: Int!
+  averageCompletionTime: Float! # seconds
+  fastestCompletionTime: Int! # seconds
+  totalAttempts: Int!
+  averageAttempts: Float!
+  favoriteTheme: FavoriteTheme
+  favoriteDifficulty: Int!
+  currentStreak: Int! # consecutive days
+  longestStreak: Int! # best streak
+}
+
+type FavoriteTheme {
+  id: ID!
+  name: String!
+}
+
+type Achievement {
+  type: AchievementType!
+  unlocked: Boolean!
+  progress: Int!
+  completedAt: String # ISO 8601
+}
+
+type RateLimitInfo {
+  tier: SubscriptionTier!
+  limit: Int!
+  used: Int!
+  remaining: Int!
+  resetAt: String! # ISO 8601
+}
+
+type PaginationInfo {
+  total: Int!
+  page: Int!
+  pageSize: Int!
+  hasMore: Boolean!
+}
+
+type Theme {
+  id: ID!
+  name: String!
+  category: String!
+  pairs: Int!
+}
+
+# Enums
+
+enum GameStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+enum AchievementType {
+  FIRST_WIN
+  GAMES_10
+  GAMES_50
+  GAMES_100
+  SPEED_DEMON
+  PERFECT_GAME
+  DIFFICULTY_MASTER
+  THEME_EXPLORER
+  STREAK_7
+}
+
+enum SubscriptionTier {
+  FREE
+  LIGHT
+  STANDARD
+  PREMIUM
+}
