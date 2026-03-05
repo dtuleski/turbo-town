@@ -21,6 +21,7 @@ export const GAME_THEMES = [
   { id: 'VEHICLES', name: 'Vehicles', emoji: '🚗' },
   { id: 'SPACE', name: 'Space', emoji: '🚀' },
   { id: 'OCEAN', name: 'Ocean', emoji: '🐠' },
+  { id: 'FORMULA1', name: 'Formula 1', emoji: '🏎️' },
 ] as const
 
 export const DIFFICULTY_LEVELS = [

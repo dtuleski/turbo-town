@@ -7,6 +7,7 @@ const THEME_VALUES: Record<GameTheme, string[]> = {
   VEHICLES: ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐'],
   SPACE: ['🚀', '🛸', '🌎', '🌙', '⭐', '☄️', '🪐', '🌟', '✨', '🌠'],
   OCEAN: ['🐠', '🐟', '🐡', '🦈', '🐙', '🦑', '🦀', '🦞', '🐚', '🐬'],
+  FORMULA1: ['🔴 Ferrari', '🟢 Aston Martin', '🔵 Williams', '⚫ Mercedes', '🟠 McLaren', '🟡 RB', '⚪ Haas', '🟤 Kick Sauber', '🟣 Alpine', '🔷 Red Bull'],
 }
 
 // Number of pairs for each difficulty

@@ -40,7 +40,7 @@ const Card = ({ card, onClick }: CardProps) => {
 
         {/* Card Front */}
         <div
-          className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-lg ${
+          className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-lg p-2 ${
             card.isMatched
               ? 'bg-gradient-to-br from-status-success to-primary-green'
               : 'bg-white'
@@ -51,7 +51,7 @@ const Card = ({ card, onClick }: CardProps) => {
           }}
         >
           <motion.div
-            className="text-5xl md:text-6xl"
+            className={`${card.value.length > 3 ? 'text-sm md:text-base font-semibold text-center' : 'text-5xl md:text-6xl'}`}
             animate={card.isMatched ? { scale: [1, 1.2, 1] } : {}}
             transition={{ duration: 0.5 }}
           >
