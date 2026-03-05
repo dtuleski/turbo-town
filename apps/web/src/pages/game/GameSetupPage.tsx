@@ -20,7 +20,7 @@ const GameSetupPage = () => {
 
       <div className="card mb-8">
         <h2 className="text-2xl font-bold mb-4">Choose Your Theme</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {GAME_THEMES.map(t => (
             <button
               key={t.id}
