@@ -7,8 +7,29 @@ const THEME_VALUES: Record<GameTheme, string[]> = {
   VEHICLES: ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐'],
   SPACE: ['🚀', '🛸', '🌎', '🌙', '⭐', '☄️', '🪐', '🌟', '✨', '🌠'],
   OCEAN: ['🐠', '🐟', '🐡', '🦈', '🐙', '🦑', '🦀', '🦞', '🐚', '🐬'],
-  FORMULA1: ['🔴 Ferrari', '🟢 Aston Martin', '🔵 Williams', '⚫ Mercedes', '🟠 McLaren', '🟡 RB', '⚪ Haas', '🟤 Kick Sauber', '🟣 Alpine', '🔷 Red Bull'],
+  FORMULA1: [], // Special handling - see F1_DRIVER_PAIRS
 }
+
+// F1 Driver pairs - each array contains two drivers from the same team
+const F1_DRIVER_PAIRS: string[][] = [
+  ['🔴 Leclerc', '🔴 Hamilton'],           // Ferrari
+  ['⚫ Russell', '⚫ Antonelli'],           // Mercedes
+  ['🟠 Norris', '🟠 Piastri'],             // McLaren
+  ['🔷 Verstappen', '🔷 Lawson'],          // Red Bull
+  ['🟢 Alonso', '🟢 Stroll'],              // Aston Martin
+  ['🟡 Tsunoda', '🟡 Hadjar'],             // RB
+  ['🔵 Albon', '🔵 Sainz'],                // Williams
+  ['⚪ Ocon', '⚪ Bearman'],                // Haas
+  ['🟤 Bortoleto', '🟤 Hulkenberg'],       // Kick Sauber
+  ['🟣 Gasly', '🟣 Doohan'],               // Alpine
+]
+
+// Map to track which drivers are teammates (for matching logic)
+const F1_TEAMMATE_MAP: Record<string, string> = {}
+F1_DRIVER_PAIRS.forEach(([driver1, driver2]) => {
+  F1_TEAMMATE_MAP[driver1] = driver2
+  F1_TEAMMATE_MAP[driver2] = driver1
+})
 
 // Number of pairs for each difficulty
 const DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
@@ -19,6 +40,33 @@ const DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
 
 export const generateCards = (theme: GameTheme, difficulty: DifficultyLevel): Card[] => {
   const numPairs = DIFFICULTY_PAIRS[difficulty]
+  
+  // Special handling for Formula 1 theme
+  if (theme === 'FORMULA1') {
+    const selectedTeams = F1_DRIVER_PAIRS.slice(0, numPairs)
+    const cards: Card[] = []
+    
+    selectedTeams.forEach(([driver1, driver2], index) => {
+      cards.push(
+        {
+          id: `${index}-driver1`,
+          value: driver1,
+          isFlipped: false,
+          isMatched: false,
+        },
+        {
+          id: `${index}-driver2`,
+          value: driver2,
+          isFlipped: false,
+          isMatched: false,
+        }
+      )
+    })
+    
+    return shuffleArray(cards)
+  }
+  
+  // Standard handling for other themes
   const values = THEME_VALUES[theme].slice(0, numPairs)
 
   // Create pairs
@@ -73,7 +121,19 @@ export const calculateScore = (
 }
 
 export const checkMatch = (card1: Card, card2: Card): boolean => {
-  return card1.value === card2.value && card1.id !== card2.id
+  // Don't match the same card
+  if (card1.id === card2.id) return false
+  
+  // Check if this is F1 theme (driver names start with emoji)
+  const isF1 = F1_TEAMMATE_MAP[card1.value] !== undefined
+  
+  if (isF1) {
+    // For F1, check if the two drivers are teammates
+    return F1_TEAMMATE_MAP[card1.value] === card2.value
+  }
+  
+  // For other themes, check if values are identical
+  return card1.value === card2.value
 }
 
 export const isGameComplete = (cards: Card[]): boolean => {
