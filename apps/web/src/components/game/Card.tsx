@@ -13,6 +13,9 @@ const Card = ({ card, onClick }: CardProps) => {
     }
   }
 
+  // Check if this is an F1 driver card (starts with emoji)
+  const isF1Driver = card.value.match(/^[🔴🟢🔵⚫🟠🟡⚪🟤🟣🔷]/)
+
   return (
     <motion.div
       className="relative aspect-square cursor-pointer"
@@ -40,7 +43,7 @@ const Card = ({ card, onClick }: CardProps) => {
 
         {/* Card Front */}
         <div
-          className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-lg p-2 ${
+          className={`absolute inset-0 rounded-xl flex flex-col items-center justify-center shadow-lg p-2 ${
             card.isMatched
               ? 'bg-gradient-to-br from-status-success to-primary-green'
               : 'bg-white'
@@ -57,6 +60,16 @@ const Card = ({ card, onClick }: CardProps) => {
           >
             {card.value}
           </motion.div>
+          {card.isMatched && isF1Driver && (
+            <motion.div
+              className="text-xs font-bold text-white mt-1 bg-black bg-opacity-30 px-2 py-0.5 rounded"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Teammates!
+            </motion.div>
+          )}
         </div>
       </motion.div>
     </motion.div>
