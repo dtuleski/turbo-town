@@ -177,9 +177,9 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
           const isMatch = checkMatch(firstCard, card)
 
           if (isMatch) {
-            // Match found!
+            // Match found! Mark both cards as matched by ID
             const matchedCards = newCards.map(c =>
-              c.value === card.value ? { ...c, isMatched: true } : c
+              c.id === firstCard.id || c.id === card.id ? { ...c, isMatched: true } : c
             )
 
             setGameState(prev => {
