@@ -36,14 +36,20 @@ F1_DRIVER_PAIRS.forEach(([driver1, driver2]) => {
 const DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
   EASY: 6,
   MEDIUM: 8,
+  HARD: 10,  // Standard themes have 10 values max
+}
+
+// F1-specific difficulty (11 teams)
+const F1_DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
+  EASY: 6,
+  MEDIUM: 8,
   HARD: 11,  // All 11 F1 teams for 2025 season
 }
 
 export const generateCards = (theme: GameTheme, difficulty: DifficultyLevel): Card[] => {
-  const numPairs = DIFFICULTY_PAIRS[difficulty]
-  
   // Special handling for Formula 1 theme
   if (theme === 'FORMULA1') {
+    const numPairs = F1_DIFFICULTY_PAIRS[difficulty]
     const selectedTeams = F1_DRIVER_PAIRS.slice(0, numPairs)
     const cards: Card[] = []
     
@@ -68,7 +74,8 @@ export const generateCards = (theme: GameTheme, difficulty: DifficultyLevel): Ca
   }
   
   // Standard handling for other themes
-  const values = THEME_VALUES[theme].slice(0, numPairs)
+  const numPairs = DIFFICULTY_PAIRS[difficulty]
+  const values = THEME_VALUES[theme]?.slice(0, numPairs) || []
 
   // Create pairs
   const cards: Card[] = []

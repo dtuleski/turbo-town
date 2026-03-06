@@ -27,7 +27,7 @@ export const GAME_THEMES = [
 export const DIFFICULTY_LEVELS = [
   { id: 'EASY', name: 'Easy', pairs: 6, description: '6 pairs - Perfect for beginners' },
   { id: 'MEDIUM', name: 'Medium', pairs: 8, description: '8 pairs - A good challenge' },
-  { id: 'HARD', name: 'Hard', pairs: 11, description: '11 pairs - For memory masters' },
+  { id: 'HARD', name: 'Hard', pairs: 10, description: '10 pairs - For memory masters' },
 ] as const
 
 export const STORAGE_KEYS = {
