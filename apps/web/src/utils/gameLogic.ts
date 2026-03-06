@@ -10,18 +10,19 @@ const THEME_VALUES: Record<GameTheme, string[]> = {
   FORMULA1: [], // Special handling - see F1_DRIVER_PAIRS
 }
 
-// F1 Driver pairs - each array contains two drivers from the same team
+// F1 Driver pairs - each array contains two drivers from the same team (2025 season)
 const F1_DRIVER_PAIRS: string[][] = [
   ['🔴 Leclerc', '🔴 Hamilton'],           // Ferrari
   ['⚫ Russell', '⚫ Antonelli'],           // Mercedes
   ['🟠 Norris', '🟠 Piastri'],             // McLaren
-  ['🔷 Verstappen', '🔷 Lawson'],          // Red Bull
+  ['🔷 Verstappen', '🔷 Hadjar'],          // Red Bull Racing
   ['🟢 Alonso', '🟢 Stroll'],              // Aston Martin
-  ['🟡 Tsunoda', '🟡 Hadjar'],             // RB
-  ['🔵 Albon', '🔵 Sainz'],                // Williams
-  ['⚪ Ocon', '⚪ Bearman'],                // Haas
-  ['🟤 Bortoleto', '🟤 Hulkenberg'],       // Kick Sauber
-  ['🟣 Gasly', '🟣 Doohan'],               // Alpine
+  ['🟡 Lawson', '🟡 Lindblad'],            // Racing Bulls
+  ['🔵 Sainz', '🔵 Albon'],                // Williams
+  ['⚪ Bearman', '⚪ Ocon'],                // Haas
+  ['🟤 Bortoleto', '🟤 Hulkenberg'],       // Audi
+  ['🟣 Gasly', '🟣 Colapinto'],            // Alpine
+  ['🩵 Perez', '🩵 Bottas'],               // Cadillac
 ]
 
 // Map to track which drivers are teammates (for matching logic)
@@ -35,7 +36,7 @@ F1_DRIVER_PAIRS.forEach(([driver1, driver2]) => {
 const DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
   EASY: 6,
   MEDIUM: 8,
-  HARD: 10,
+  HARD: 11,  // All 11 F1 teams for 2025 season
 }
 
 export const generateCards = (theme: GameTheme, difficulty: DifficultyLevel): Card[] => {
