@@ -17,6 +17,14 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+.stripe.env
+
+# Backup files
+backups/
+
+# Deployment scripts with secrets
+setup-stripe-products*.sh
+update-lambda-stripe-env.sh
 
 # Logs
 npm-debug.log*
