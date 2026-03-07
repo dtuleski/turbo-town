@@ -28,7 +28,7 @@ const LoginPage = () => {
       setIsLoading(true)
       setError('')
       await login(data)
-      navigate(ROUTES.GAME_SETUP)
+      navigate(ROUTES.HUB)
     } catch (err) {
       setError('Invalid email or password')
     } finally {

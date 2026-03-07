@@ -32,7 +32,7 @@ const RegisterPage = () => {
       setError('')
       setEmail(data.email)
       await registerUser(data)
-      navigate(ROUTES.GAME_SETUP)
+      navigate(ROUTES.HUB)
     } catch (err: any) {
       if (err.message === 'CONFIRM_EMAIL_REQUIRED') {
         setNeedsConfirmation(true)
