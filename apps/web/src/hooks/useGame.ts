@@ -100,7 +100,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
       // Check if it's a rate limit error
       if (error?.message?.includes('Rate limit') || error?.graphQLErrors?.[0]?.extensions?.code === 'RATE_LIMIT_EXCEEDED') {
         // Redirect to rate limit page
-        window.location.href = '/rate-limit'
+        window.location.href = '/rate-limit?rateLimited=true'
         return
       }
       // Log more details

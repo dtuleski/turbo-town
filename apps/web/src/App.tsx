@@ -48,6 +48,7 @@ function App() {
           <Route path={ROUTES.MATH_SETUP} element={<MathSetupPage />} />
           <Route path={ROUTES.MATH_GAME} element={<MathGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
+          <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
           <Route path={ROUTES.STATISTICS} element={<StatisticsPage />} />
           <Route path={ROUTES.HISTORY} element={<HistoryPage />} />

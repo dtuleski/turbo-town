@@ -27,6 +27,9 @@ const Header = () => {
             <Link to={ROUTES.ACHIEVEMENTS} className="text-text-primary hover:text-primary-blue">
               Achievements
             </Link>
+            <Link to={ROUTES.SUBSCRIPTION} className="text-text-primary hover:text-primary-blue">
+              💎 Change Plan
+            </Link>
           </nav>
 
           <div className="flex items-center gap-4">

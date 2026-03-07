@@ -12,6 +12,7 @@ export const ROUTES = {
   MATH_SETUP: '/math/setup',
   MATH_GAME: '/math/game',
   RATE_LIMIT: '/rate-limit',
+  SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',
   STATISTICS: '/dashboard/statistics',
   HISTORY: '/dashboard/history',

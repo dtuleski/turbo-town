@@ -1,8 +1,12 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
 
 export default function RateLimitPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  
+  // Check if user came from rate limit error or just browsing plans
+  const isRateLimited = location.state?.rateLimited === true
 
   const plans = [
     {
@@ -11,7 +15,7 @@ export default function RateLimitPage() {
       period: 'forever',
       plays: '3 plays/day',
       features: ['Access to all games', 'Basic statistics', 'Single device'],
-      current: true,
+      current: false, // Will be determined dynamically in real implementation
     },
     {
       name: 'Basic',
@@ -42,13 +46,27 @@ export default function RateLimitPage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">⏰</div>
-          <h1 className="text-5xl font-black text-white mb-4 drop-shadow-lg">
-            Daily Limit Reached!
-          </h1>
-          <p className="text-2xl text-white font-bold drop-shadow">
-            You've used all your free plays for today. Upgrade to keep playing!
-          </p>
+          {isRateLimited ? (
+            <>
+              <div className="text-6xl mb-4">⏰</div>
+              <h1 className="text-5xl font-black text-white mb-4 drop-shadow-lg">
+                Daily Limit Reached!
+              </h1>
+              <p className="text-2xl text-white font-bold drop-shadow">
+                You've used all your free plays for today. Upgrade to keep playing!
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="text-6xl mb-4">💎</div>
+              <h1 className="text-5xl font-black text-white mb-4 drop-shadow-lg">
+                Choose Your Plan
+              </h1>
+              <p className="text-2xl text-white font-bold drop-shadow">
+                Upgrade to unlock more plays and premium features!
+              </p>
+            </>
+          )}
         </div>
 
         {/* Pricing Cards */}
