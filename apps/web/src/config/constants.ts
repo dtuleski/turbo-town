@@ -9,6 +9,8 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   GAME: '/game',
   GAME_SETUP: '/game/setup',
+  MATH_SETUP: '/math/setup',
+  MATH_GAME: '/math/game',
   DASHBOARD: '/dashboard',
   STATISTICS: '/dashboard/statistics',
   HISTORY: '/dashboard/history',

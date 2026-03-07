@@ -14,6 +14,8 @@ import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import GameHubPage from './pages/hub/GameHubPage'
 import GameSetupPage from './pages/game/GameSetupPage'
 import GamePage from './pages/game/GamePage'
+import MathSetupPage from './pages/math/MathSetupPage'
+import MathGamePage from './pages/math/MathGamePage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import StatisticsPage from './pages/dashboard/StatisticsPage'
 import HistoryPage from './pages/dashboard/HistoryPage'
@@ -42,6 +44,8 @@ function App() {
           <Route path={ROUTES.HUB} element={<GameHubPage />} />
           <Route path={ROUTES.GAME_SETUP} element={<GameSetupPage />} />
           <Route path={ROUTES.GAME} element={<GamePage />} />
+          <Route path={ROUTES.MATH_SETUP} element={<MathSetupPage />} />
+          <Route path={ROUTES.MATH_GAME} element={<MathGamePage />} />
           <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
           <Route path={ROUTES.STATISTICS} element={<StatisticsPage />} />
           <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
