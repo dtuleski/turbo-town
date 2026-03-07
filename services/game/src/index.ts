@@ -32,8 +32,12 @@ export async function handler(
       hasVariables: !!variables,
     });
 
-    // Extract user ID from JWT token (set by API Gateway authorizer)
+    // Extract user ID and username from JWT token (set by API Gateway authorizer)
     const userId = event.requestContext.authorizer?.jwt?.claims?.sub;
+    const username = event.requestContext.authorizer?.jwt?.claims?.preferred_username || 
+                     event.requestContext.authorizer?.jwt?.claims?.['cognito:username'];
+    const email = event.requestContext.authorizer?.jwt?.claims?.email;
+    
     if (!userId) {
       throw new Error('Unauthorized: Missing user ID');
     }
@@ -44,6 +48,8 @@ export async function handler(
       variables,
       operationName,
       userId,
+      username,
+      email,
     });
 
     logger.info('GraphQL request completed', {

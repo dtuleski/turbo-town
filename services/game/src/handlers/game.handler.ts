@@ -66,22 +66,23 @@ export class GameHandler {
    * Handle GraphQL request
    */
   async handleRequest(context: GraphQLContext): Promise<GraphQLResponse> {
-    const { query, variables, operationName, userId } = context;
+    const { query, variables, operationName, userId, username, email } = context;
 
     try {
       // Parse operation name from query if not provided
       const operation = operationName || this.extractOperationName(query);
 
-      logger.debug('Handling GraphQL operation', { operation, userId });
+      logger.debug('Handling GraphQL operation', { operation, userId, username });
 
       // Route to appropriate resolver
-      const data = await this.routeOperation(operation, variables, userId);
+      const data = await this.routeOperation(operation, variables, userId, username, email);
 
       return { data };
     } catch (error) {
       logger.error('GraphQL operation failed', error as Error, {
         operationName,
         userId,
+        username,
       });
 
       const sanitized = sanitizeError(error as Error);
@@ -105,7 +106,9 @@ export class GameHandler {
   private async routeOperation(
     operation: string,
     variables: Record<string, any> = {},
-    userId: string
+    userId: string,
+    username?: string,
+    email?: string
   ): Promise<any> {
     // Normalize operation name to lowercase for case-insensitive matching
     const normalizedOp = operation.charAt(0).toLowerCase() + operation.slice(1);
@@ -136,10 +139,10 @@ export class GameHandler {
 
       // Admin queries
       case 'getAdminAnalytics':
-        return this.getAdminAnalytics(userId);
+        return this.getAdminAnalytics(userId, username, email);
 
       case 'listAllUsers':
-        return this.listAllUsers(userId, variables.input);
+        return this.listAllUsers(userId, username, email, variables.input);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -296,10 +299,13 @@ export class GameHandler {
   /**
    * Query: getAdminAnalytics (Admin only)
    */
-  private async getAdminAnalytics(userId: string): Promise<any> {
-    // TODO: Add admin role check
-    // For now, only allow specific admin user
-    if (userId !== 'dtuleski') {
+  private async getAdminAnalytics(userId: string, username?: string, email?: string): Promise<any> {
+    // Check if user is admin by username or email
+    const isAdmin = username === 'dtuleski' || 
+                    email === 'diego.tuleski@gmail.com' || 
+                    email === 'diegotuleski@gmail.com';
+    
+    if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
     }
 
@@ -313,10 +319,13 @@ export class GameHandler {
   /**
    * Query: listAllUsers (Admin only)
    */
-  private async listAllUsers(userId: string, input: any): Promise<any> {
-    // TODO: Add admin role check
-    // For now, only allow specific admin user
-    if (userId !== 'dtuleski') {
+  private async listAllUsers(userId: string, username?: string, email?: string, input: any): Promise<any> {
+    // Check if user is admin by username or email
+    const isAdmin = username === 'dtuleski' || 
+                    email === 'diego.tuleski@gmail.com' || 
+                    email === 'diegotuleski@gmail.com';
+    
+    if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
     }
 
@@ -331,7 +340,18 @@ export class GameHandler {
    * Extract operation name from GraphQL query
    */
   private extractOperationName(query: string): string {
-    const match = query.match(/(?:mutation|query)\s+(\w+)/);
-    return match ? match[1] : 'unknown';
+    // Try to match named operation: query OperationName { ... }
+    const namedMatch = query.match(/(?:mutation|query)\s+(\w+)/);
+    if (namedMatch) {
+      return namedMatch[1];
+    }
+
+    // Try to match unnamed operation and extract first field: query { fieldName ... }
+    const unnamedMatch = query.match(/(?:mutation|query)\s*\{\s*(\w+)/);
+    if (unnamedMatch) {
+      return unnamedMatch[1];
+    }
+
+    return 'unknown';
   }
 }

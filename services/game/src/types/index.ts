@@ -170,6 +170,8 @@ export interface GraphQLContext {
   variables?: Record<string, any>;
   operationName?: string;
   userId: string;
+  username?: string;
+  email?: string;
 }
 
 /**
