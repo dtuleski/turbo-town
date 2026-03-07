@@ -37,23 +37,44 @@ export class GameCatalogRepository {
   }
 
   async getAllGames(): Promise<GameCatalogItem[]> {
-    const command = new QueryCommand({
+    // Query for ACTIVE games
+    const activeCommand = new QueryCommand({
       TableName: TABLE_NAME,
       IndexName: 'StatusIndex',
-      KeyConditionExpression: '#status IN (:active, :comingSoon)',
+      KeyConditionExpression: '#status = :active',
       ExpressionAttributeNames: {
         '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':active': 'ACTIVE',
+      },
+    });
+
+    // Query for COMING_SOON games
+    const comingSoonCommand = new QueryCommand({
+      TableName: TABLE_NAME,
+      IndexName: 'StatusIndex',
+      KeyConditionExpression: '#status = :comingSoon',
+      ExpressionAttributeNames: {
+        '#status': 'status',
+      },
+      ExpressionAttributeValues: {
         ':comingSoon': 'COMING_SOON',
       },
     });
 
-    const result = await docClient.send(command);
-    const items = (result.Items || []) as GameCatalogItem[];
+    // Execute both queries
+    const [activeResult, comingSoonResult] = await Promise.all([
+      docClient.send(activeCommand),
+      docClient.send(comingSoonCommand),
+    ]);
+
+    // Combine and sort results
+    const items = [
+      ...(activeResult.Items || []),
+      ...(comingSoonResult.Items || []),
+    ] as GameCatalogItem[];
     
-    // Sort by displayOrder
     return items.sort((a, b) => a.displayOrder - b.displayOrder);
   }
 }
