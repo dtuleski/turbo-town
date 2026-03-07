@@ -2,10 +2,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { ROUTES, APP_NAME } from '@/config/constants'
 import Button from '../common/Button'
+import { useState } from 'react'
 
 const Header = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -20,6 +22,7 @@ const Header = () => {
             {APP_NAME} 🎮
           </Link>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link to={ROUTES.DASHBOARD} className="text-text-primary hover:text-primary-blue">
               Dashboard
@@ -35,16 +38,76 @@ const Header = () => {
           <div className="flex items-center gap-4">
             {user && (
               <>
-                <Link to={ROUTES.PROFILE} className="text-text-primary hover:text-primary-blue">
+                <Link to={ROUTES.PROFILE} className="text-text-primary hover:text-primary-blue hidden md:block">
                   {user.username}
                 </Link>
-                <Button variant="secondary" size="sm" onClick={handleLogout}>
+                <Button variant="secondary" size="sm" onClick={handleLogout} className="hidden md:block">
                   Logout
                 </Button>
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden text-text-primary hover:text-primary-blue"
+                  aria-label="Toggle menu"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {mobileMenuOpen ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    )}
+                  </svg>
+                </button>
               </>
             )}
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && user && (
+          <div className="md:hidden py-4 border-t border-gray-200">
+            <nav className="flex flex-col gap-4">
+              <Link 
+                to={ROUTES.DASHBOARD} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to={ROUTES.ACHIEVEMENTS} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Achievements
+              </Link>
+              <Link 
+                to={ROUTES.SUBSCRIPTION} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                💎 Change Plan
+              </Link>
+              <Link 
+                to={ROUTES.PROFILE} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {user.username}
+              </Link>
+              <Button 
+                variant="secondary" 
+                size="sm" 
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  handleLogout()
+                }}
+              >
+                Logout
+              </Button>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   )
