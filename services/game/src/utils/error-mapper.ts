@@ -83,8 +83,8 @@ export function sanitizeError(error: Error): Error {
  * Create user-friendly error messages
  */
 export const ErrorMessages = {
-  RATE_LIMIT_EXCEEDED: (resetAt: Date): string =>
-    `Rate limit exceeded. You can play again at ${resetAt.toISOString()}`,
+  RATE_LIMIT_EXCEEDED: (resetAt: Date | string): string =>
+    `Rate limit exceeded. You can play again at ${resetAt instanceof Date ? resetAt.toISOString() : resetAt}`,
 
   INVALID_COMPLETION_TIME: (minTime: number, providedTime: number): string =>
     `Invalid completion time. Minimum time is ${minTime} seconds, but ${providedTime} seconds was provided`,
