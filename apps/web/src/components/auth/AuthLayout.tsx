@@ -14,8 +14,9 @@ const AuthLayout = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-blue to-primary-purple p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">{APP_NAME} 🎮</h1>
-          <p className="text-white/80">Train your memory, have fun!</p>
+          <h1 className="text-5xl font-black text-white mb-3">{APP_NAME} 🎮</h1>
+          <p className="text-xl text-white font-semibold mb-2">Educational Games for Kids</p>
+          <p className="text-white/90">Fun learning adventures that keep young minds engaged and growing!</p>
         </div>
         
         <div className="bg-white rounded-2xl shadow-xl p-8">

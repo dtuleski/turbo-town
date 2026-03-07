@@ -1,4 +1,4 @@
-export const APP_NAME = 'Memory Game'
+export const APP_NAME = 'DashDen'
 
 export const ROUTES = {
   HOME: '/',

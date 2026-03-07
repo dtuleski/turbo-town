@@ -67,10 +67,13 @@ export default function GameHubPage() {
         {/* Welcome Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
-            🎮 Game Hub
+            🎮 DashDen Game Hub
           </h1>
-          <p className="text-2xl text-white font-bold drop-shadow">
+          <p className="text-2xl text-white font-bold drop-shadow mb-2">
             Hi {user?.username || 'Player'}! Pick a game to play!
+          </p>
+          <p className="text-lg text-white/90 drop-shadow">
+            Educational games that make learning fun
           </p>
         </div>
 
