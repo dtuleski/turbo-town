@@ -61,9 +61,14 @@ export default function MathGamePage() {
         setTimeRemaining(config.timeLimit)
         setCurrentQuestion(generateQuestion(config.operations, difficulty))
         setGameStatus('playing')
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to start game:', error)
-        navigate(ROUTES.HUB)
+        // Check if it's a rate limit error
+        if (error?.message?.includes('Rate limit') || error?.graphQLErrors?.[0]?.extensions?.code === 'RATE_LIMIT_EXCEEDED') {
+          navigate(ROUTES.RATE_LIMIT)
+        } else {
+          navigate(ROUTES.HUB)
+        }
       }
     }
     initGame()

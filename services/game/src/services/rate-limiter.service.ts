@@ -63,11 +63,11 @@ export class RateLimiterService {
       case SubscriptionTier.Free:
         return 3;
       case SubscriptionTier.Light:
-        return 10;
+        return 20; // Basic plan: $1.99/month
       case SubscriptionTier.Standard:
-        return 30;
+        return 999999; // Premium plan: $9.99/month (unlimited)
       case SubscriptionTier.Premium:
-        return 100;
+        return 999999; // Premium plan: $9.99/month (unlimited)
       default:
         return 3;
     }
