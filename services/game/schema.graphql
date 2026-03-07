@@ -21,6 +21,10 @@ type Query {
   getUserStatistics: GameStatistics!
   canStartGame: CanStartGameResponse!
   listAvailableGames: [GameCatalogItem!]!
+  
+  # Admin queries
+  getAdminAnalytics: AdminAnalytics!
+  listAllUsers(input: ListUsersInput): UserListResponse!
 }
 
 # Input Types
@@ -213,4 +217,85 @@ enum SubscriptionTier {
   LIGHT
   STANDARD
   PREMIUM
+}
+
+# Admin Types
+
+input ListUsersInput {
+  page: Int # default: 1
+  pageSize: Int # default: 50, max: 100
+  tier: SubscriptionTier # filter by tier
+  sortBy: UserSortBy # default: createdAt
+  sortOrder: SortOrder # default: desc
+}
+
+enum UserSortBy {
+  createdAt
+  gamesPlayed
+  lastActive
+}
+
+type UserListResponse {
+  users: [AdminUserInfo!]!
+  pagination: PaginationInfo!
+}
+
+type AdminUserInfo {
+  userId: ID!
+  email: String!
+  username: String!
+  tier: SubscriptionTier!
+  gamesPlayed: Int!
+  lastActive: String # ISO 8601
+  createdAt: String! # ISO 8601
+  todayPlays: Int!
+  rateLimit: RateLimitInfo!
+}
+
+type AdminAnalytics {
+  overview: AnalyticsOverview!
+  usersByTier: [TierStats!]!
+  recentActivity: RecentActivity!
+  topUsers: [TopUser!]!
+}
+
+type AnalyticsOverview {
+  totalUsers: Int!
+  dau: Int! # Daily Active Users
+  mau: Int! # Monthly Active Users (estimated)
+  totalGamesPlayed: Int!
+  totalGamesToday: Int!
+  totalGamesThisWeek: Int!
+  totalGamesThisMonth: Int!
+  avgGamesPerUser: Float!
+  conversionRate: Float! # % of free users who upgraded
+}
+
+type TierStats {
+  tier: SubscriptionTier!
+  count: Int!
+  percentage: Float!
+  avgGamesPerUser: Float!
+  totalRevenue: Float! # Monthly revenue for this tier
+}
+
+type RecentActivity {
+  last24Hours: ActivityPeriod!
+  last7Days: ActivityPeriod!
+  last30Days: ActivityPeriod!
+}
+
+type ActivityPeriod {
+  uniqueUsers: Int!
+  totalGames: Int!
+  avgGamesPerUser: Float!
+}
+
+type TopUser {
+  userId: ID!
+  username: String!
+  email: String!
+  tier: SubscriptionTier!
+  gamesPlayed: Int!
+  lastActive: String!
 }

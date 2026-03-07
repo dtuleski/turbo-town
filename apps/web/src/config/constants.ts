@@ -18,6 +18,7 @@ export const ROUTES = {
   HISTORY: '/dashboard/history',
   ACHIEVEMENTS: '/dashboard/achievements',
   PROFILE: '/profile',
+  ADMIN: '/admin',
 } as const
 
 export const GAME_THEMES = [

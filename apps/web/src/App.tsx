@@ -17,6 +17,7 @@ import GamePage from './pages/game/GamePage'
 import MathSetupPage from './pages/math/MathSetupPage'
 import MathGamePage from './pages/math/MathGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
+import AdminDashboard from './pages/admin/AdminDashboard'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import StatisticsPage from './pages/dashboard/StatisticsPage'
 import HistoryPage from './pages/dashboard/HistoryPage'
@@ -54,6 +55,7 @@ function App() {
           <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
           <Route path={ROUTES.ACHIEVEMENTS} element={<AchievementsPage />} />
           <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+          <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
         </Route>
 
         {/* 404 */}

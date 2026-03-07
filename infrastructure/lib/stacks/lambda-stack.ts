@@ -130,6 +130,7 @@ export class LambdaStack extends cdk.Stack {
         ACHIEVEMENTS_TABLE_NAME: props.achievementsTable.tableName,
         THEMES_TABLE_NAME: props.themesTable.tableName,
         SUBSCRIPTIONS_TABLE_NAME: props.subscriptionsTable.tableName,
+        COGNITO_USER_POOL_ID: props.userPool.userPoolId,
         EVENT_BUS_NAME: props.eventBus.eventBusName,
         LOG_LEVEL: props.environment === 'prod' ? 'INFO' : 'DEBUG',
       },
@@ -186,6 +187,17 @@ export class LambdaStack extends cdk.Stack {
         effect: iam.Effect.ALLOW,
         actions: ['cloudwatch:PutMetricData'],
         resources: ['*'],
+      })
+    );
+
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          'cognito-idp:ListUsers',
+          'cognito-idp:AdminGetUser',
+        ],
+        resources: [props.userPool.userPoolArn],
       })
     );
 

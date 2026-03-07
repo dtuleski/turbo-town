@@ -5,6 +5,7 @@ import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
 import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
+import { AdminService } from '../services/admin.service';
 import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { AchievementTrackerService } from '../services/achievement-tracker.service';
@@ -25,6 +26,7 @@ import { GraphQLContext, GraphQLResponse } from '../types';
 
 export class GameHandler {
   private gameService: GameService;
+  private adminService: AdminService;
   private gameCatalogRepository: GameCatalogRepository;
 
   constructor() {
@@ -55,6 +57,9 @@ export class GameHandler {
       achievementTracker,
       eventPublisher
     );
+
+    // Initialize admin service
+    this.adminService = new AdminService();
   }
 
   /**
@@ -128,6 +133,13 @@ export class GameHandler {
 
       case 'listAvailableGames':
         return this.listAvailableGames();
+
+      // Admin queries
+      case 'getAdminAnalytics':
+        return this.getAdminAnalytics(userId);
+
+      case 'listAllUsers':
+        return this.listAllUsers(userId, variables.input);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -278,6 +290,40 @@ export class GameHandler {
 
     return {
       listAvailableGames: games,
+    };
+  }
+
+  /**
+   * Query: getAdminAnalytics (Admin only)
+   */
+  private async getAdminAnalytics(userId: string): Promise<any> {
+    // TODO: Add admin role check
+    // For now, only allow specific admin user
+    if (userId !== 'dtuleski') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const analytics = await this.adminService.getAdminAnalytics();
+
+    return {
+      getAdminAnalytics: analytics,
+    };
+  }
+
+  /**
+   * Query: listAllUsers (Admin only)
+   */
+  private async listAllUsers(userId: string, input: any): Promise<any> {
+    // TODO: Add admin role check
+    // For now, only allow specific admin user
+    if (userId !== 'dtuleski') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const result = await this.adminService.listAllUsers(input);
+
+    return {
+      listAllUsers: result,
     };
   }
 
