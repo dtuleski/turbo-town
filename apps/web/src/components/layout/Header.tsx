@@ -21,9 +21,6 @@ const Header = () => {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link to={ROUTES.GAME_SETUP} className="text-text-primary hover:text-primary-blue">
-              Play
-            </Link>
             <Link to={ROUTES.DASHBOARD} className="text-text-primary hover:text-primary-blue">
               Dashboard
             </Link>
