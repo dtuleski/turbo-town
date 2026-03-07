@@ -63,6 +63,7 @@ const lambdaStack = new LambdaStack(app, `MemoryGame-Lambda-${environment}`, {
   environment,
   usersTable: databaseStack.usersTable,
   gamesTable: databaseStack.gamesTable,
+  gameCatalogTable: databaseStack.gameCatalogTable,
   leaderboardsTable: databaseStack.leaderboardsTable,
   subscriptionsTable: databaseStack.subscriptionsTable,
   themesTable: databaseStack.themesTable,

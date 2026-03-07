@@ -3,6 +3,7 @@ import { RateLimitRepository } from '../repositories/rate-limit.repository';
 import { AchievementRepository } from '../repositories/achievement.repository';
 import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
+import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
 import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
@@ -24,6 +25,7 @@ import { GraphQLContext, GraphQLResponse } from '../types';
 
 export class GameHandler {
   private gameService: GameService;
+  private gameCatalogRepository: GameCatalogRepository;
 
   constructor() {
     // Initialize repositories
@@ -32,6 +34,7 @@ export class GameHandler {
     const achievementRepository = new AchievementRepository();
     const themeRepository = new ThemeRepository();
     const subscriptionRepository = new SubscriptionRepository();
+    this.gameCatalogRepository = new GameCatalogRepository();
 
     // Initialize services
     const scoreCalculator = new ScoreCalculatorService();
@@ -122,6 +125,9 @@ export class GameHandler {
 
       case 'canStartGame':
         return this.canStartGame(userId);
+
+      case 'listAvailableGames':
+        return this.listAvailableGames();
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -261,6 +267,17 @@ export class GameHandler {
         },
         message: result.message,
       },
+    };
+  }
+
+  /**
+   * Query: listAvailableGames
+   */
+  private async listAvailableGames(): Promise<any> {
+    const games = await this.gameCatalogRepository.getAllGames();
+
+    return {
+      listAvailableGames: games,
     };
   }
 

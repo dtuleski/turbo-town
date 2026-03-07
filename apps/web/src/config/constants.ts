@@ -2,6 +2,7 @@ export const APP_NAME = 'Memory Game'
 
 export const ROUTES = {
   HOME: '/',
+  HUB: '/hub',
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',

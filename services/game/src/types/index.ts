@@ -77,7 +77,7 @@ export interface GameRepository {
   update(gameId: string, updates: Partial<Game>): Promise<Game>;
   queryByUser(userId: string, options: QueryOptions): Promise<Game[]>;
   queryByStatus(status: GameStatus, options: QueryOptions): Promise<Game[]>;
-  delete(gameId: string): Promise<void>;
+  delete(gameId: string, userId: string): Promise<void>;
 }
 
 export interface RateLimitRepository {

@@ -11,6 +11,7 @@ import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
+import GameHubPage from './pages/hub/GameHubPage'
 import GameSetupPage from './pages/game/GameSetupPage'
 import GamePage from './pages/game/GamePage'
 import DashboardPage from './pages/dashboard/DashboardPage'
@@ -37,7 +38,8 @@ function App() {
 
         {/* Protected routes with app layout */}
         <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-          <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.GAME_SETUP} replace />} />
+          <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.HUB} replace />} />
+          <Route path={ROUTES.HUB} element={<GameHubPage />} />
           <Route path={ROUTES.GAME_SETUP} element={<GameSetupPage />} />
           <Route path={ROUTES.GAME} element={<GamePage />} />
           <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />

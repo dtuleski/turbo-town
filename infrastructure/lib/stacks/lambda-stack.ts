@@ -14,6 +14,7 @@ export interface LambdaStackProps extends cdk.StackProps {
   // Database tables
   usersTable: dynamodb.Table;
   gamesTable: dynamodb.Table;
+  gameCatalogTable: dynamodb.Table;
   leaderboardsTable: dynamodb.Table;
   subscriptionsTable: dynamodb.Table;
   themesTable: dynamodb.Table;
@@ -124,6 +125,7 @@ export class LambdaStack extends cdk.Stack {
       environment: {
         NODE_ENV: props.environment,
         GAMES_TABLE_NAME: props.gamesTable.tableName,
+        GAME_CATALOG_TABLE_NAME: props.gameCatalogTable.tableName,
         RATE_LIMITS_TABLE_NAME: props.rateLimitsTable.tableName,
         ACHIEVEMENTS_TABLE_NAME: props.achievementsTable.tableName,
         THEMES_TABLE_NAME: props.themesTable.tableName,
@@ -159,6 +161,8 @@ export class LambdaStack extends cdk.Stack {
         resources: [
           props.gamesTable.tableArn,
           `${props.gamesTable.tableArn}/index/*`,
+          props.gameCatalogTable.tableArn,
+          `${props.gameCatalogTable.tableArn}/index/*`,
           props.rateLimitsTable.tableArn,
           props.achievementsTable.tableArn,
           props.themesTable.tableArn,

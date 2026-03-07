@@ -10,6 +10,7 @@ export interface DatabaseStackProps extends cdk.StackProps {
 export class DatabaseStack extends cdk.Stack {
   public readonly usersTable: dynamodb.Table;
   public readonly gamesTable: dynamodb.Table;
+  public readonly gameCatalogTable: dynamodb.Table;
   public readonly leaderboardsTable: dynamodb.Table;
   public readonly subscriptionsTable: dynamodb.Table;
   public readonly themesTable: dynamodb.Table;
@@ -63,6 +64,22 @@ export class DatabaseStack extends cdk.Stack {
       indexName: 'StatusIndex',
       partitionKey: { name: 'status', type: dynamodb.AttributeType.STRING },
       sortKey: { name: 'startedAt', type: dynamodb.AttributeType.STRING },
+    });
+
+    // Game Catalog Table (available games in the hub)
+    this.gameCatalogTable = new dynamodb.Table(this, 'GameCatalogTable', {
+      tableName: `memory-game-catalog-${environment}`,
+      partitionKey: { name: 'gameId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    this.gameCatalogTable.addGlobalSecondaryIndex({
+      indexName: 'StatusIndex',
+      partitionKey: { name: 'status', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'displayOrder', type: dynamodb.AttributeType.NUMBER },
     });
 
     // Leaderboards Table

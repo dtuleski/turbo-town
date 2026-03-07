@@ -20,6 +20,7 @@ type Query {
   getGameHistory(input: GameHistoryInput!): GameHistoryResponse!
   getUserStatistics: GameStatistics!
   canStartGame: CanStartGameResponse!
+  listAvailableGames: [GameCatalogItem!]!
 }
 
 # Input Types
@@ -169,7 +170,25 @@ type Theme {
   pairs: Int!
 }
 
+type GameCatalogItem {
+  gameId: ID!
+  title: String!
+  description: String!
+  icon: String!
+  route: String!
+  status: CatalogStatus!
+  displayOrder: Int!
+  ageRange: String!
+  category: String!
+}
+
 # Enums
+
+enum CatalogStatus {
+  ACTIVE
+  COMING_SOON
+  MAINTENANCE
+}
 
 enum GameStatus {
   IN_PROGRESS

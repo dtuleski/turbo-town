@@ -37,22 +37,33 @@ export class RateLimitRepository implements IRateLimitRepository {
    * Create or update rate limit
    */
   async upsert(rateLimit: RateLimit): Promise<RateLimit> {
-    const now = new Date().toISOString();
-    const item = {
-      ...rateLimit,
+    const now = new Date();
+    const nowISO = now.toISOString();
+    const dbItem = {
+      userId: rateLimit.userId,
+      tier: rateLimit.tier,
+      count: rateLimit.count,
       resetAt: rateLimit.resetAt instanceof Date ? rateLimit.resetAt.toISOString() : rateLimit.resetAt,
-      updatedAt: now,
+      updatedAt: nowISO,
+      expiresAt: Math.floor((rateLimit.resetAt instanceof Date ? rateLimit.resetAt : new Date(rateLimit.resetAt)).getTime() / 1000),
     };
 
     try {
       await docClient.send(
         new PutCommand({
           TableName: TABLE_NAME,
-          Item: item,
+          Item: dbItem,
         })
       );
 
-      return item as RateLimit;
+      return {
+        userId: rateLimit.userId,
+        tier: rateLimit.tier,
+        count: rateLimit.count,
+        resetAt: rateLimit.resetAt instanceof Date ? rateLimit.resetAt : new Date(rateLimit.resetAt),
+        expiresAt: Math.floor((rateLimit.resetAt instanceof Date ? rateLimit.resetAt : new Date(rateLimit.resetAt)).getTime() / 1000),
+        updatedAt: now,
+      };
     } catch (error) {
       throw mapDynamoDBError(error as Error);
     }

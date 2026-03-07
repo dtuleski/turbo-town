@@ -23,31 +23,49 @@ export class GameRepository implements IGameRepository {
    * Create a new game
    */
   async create(game: Omit<Game, 'id' | 'createdAt' | 'updatedAt'>): Promise<Game> {
-    const now = new Date().toISOString();
+    const now = new Date();
+    const nowISO = now.toISOString();
     const gameId = uuidv4();
-    const newGame: Game = {
-      ...game,
-      id: gameId,
+    
+    // Store as ISO strings in DynamoDB
+    const dbItem = {
+      userId: game.userId,
+      gameId: gameId,
+      themeId: game.themeId,
+      difficulty: game.difficulty,
+      status: game.status,
       startedAt: game.startedAt instanceof Date ? game.startedAt.toISOString() : game.startedAt,
-      createdAt: now as any,
-      updatedAt: now as any,
-    };
-
-    // DynamoDB item with correct key names
-    const item = {
-      ...newGame,
-      gameId: gameId, // Add gameId for composite key
+      completedAt: game.completedAt instanceof Date ? game.completedAt.toISOString() : game.completedAt,
+      completionTime: game.completionTime,
+      attempts: game.attempts,
+      score: game.score,
+      createdAt: nowISO,
+      updatedAt: nowISO,
     };
 
     try {
       await docClient.send(
         new PutCommand({
           TableName: TABLE_NAME,
-          Item: item,
+          Item: dbItem,
         })
       );
 
-      return newGame;
+      // Return as Game with Date objects
+      return {
+        id: gameId,
+        userId: game.userId,
+        themeId: game.themeId,
+        difficulty: game.difficulty,
+        status: game.status,
+        startedAt: game.startedAt instanceof Date ? game.startedAt : new Date(game.startedAt),
+        completedAt: game.completedAt ? (game.completedAt instanceof Date ? game.completedAt : new Date(game.completedAt)) : undefined,
+        completionTime: game.completionTime,
+        attempts: game.attempts,
+        score: game.score,
+        createdAt: now,
+        updatedAt: now,
+      };
     } catch (error) {
       throw mapDynamoDBError(error as Error);
     }

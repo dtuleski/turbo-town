@@ -167,3 +167,39 @@ export const canStartGame = async () => {
   })
   return data.canStartGame
 }
+
+const LIST_AVAILABLE_GAMES = gql`
+  query ListAvailableGames {
+    listAvailableGames {
+      gameId
+      title
+      description
+      icon
+      route
+      status
+      displayOrder
+      ageRange
+      category
+    }
+  }
+`
+
+export interface GameCatalogItem {
+  gameId: string
+  title: string
+  description: string
+  icon: string
+  route: string
+  status: 'ACTIVE' | 'COMING_SOON' | 'MAINTENANCE'
+  displayOrder: number
+  ageRange: string
+  category: string
+}
+
+export const listAvailableGames = async (): Promise<GameCatalogItem[]> => {
+  const { data } = await gameClient.query({
+    query: LIST_AVAILABLE_GAMES,
+    fetchPolicy: 'network-only',
+  })
+  return data.listAvailableGames
+}

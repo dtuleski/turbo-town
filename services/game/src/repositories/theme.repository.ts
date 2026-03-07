@@ -59,7 +59,7 @@ export class ThemeRepository implements IThemeRepository {
       throw new NotFoundError(ErrorMessages.THEME_NOT_FOUND);
     }
 
-    if (theme.status !== 'PUBLISHED') {
+    if (!theme.isPublished) {
       throw new NotFoundError(ErrorMessages.THEME_NOT_PUBLISHED);
     }
 
