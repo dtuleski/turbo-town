@@ -16,6 +16,8 @@ import GameSetupPage from './pages/game/GameSetupPage'
 import GamePage from './pages/game/GamePage'
 import MathSetupPage from './pages/math/MathSetupPage'
 import MathGamePage from './pages/math/MathGamePage'
+import WordPuzzleSetupPage from './pages/word-puzzle/WordPuzzleSetupPage'
+import WordPuzzleGamePage from './pages/word-puzzle/WordPuzzleGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import DashboardPage from './pages/dashboard/DashboardPage'
@@ -48,6 +50,8 @@ function App() {
           <Route path={ROUTES.GAME} element={<GamePage />} />
           <Route path={ROUTES.MATH_SETUP} element={<MathSetupPage />} />
           <Route path={ROUTES.MATH_GAME} element={<MathGamePage />} />
+          <Route path={ROUTES.WORD_PUZZLE_SETUP} element={<WordPuzzleSetupPage />} />
+          <Route path={ROUTES.WORD_PUZZLE_GAME} element={<WordPuzzleGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />

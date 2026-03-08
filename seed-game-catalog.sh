@@ -44,23 +44,23 @@ aws dynamodb put-item \
 
 echo "✅ Math Challenge added to catalog"
 
-# Coming Soon - Word Puzzle (example)
+# Word Puzzle
 aws dynamodb put-item \
   --table-name "$TABLE_NAME" \
   --region "$REGION" \
   --item '{
     "gameId": {"S": "word-puzzle"},
     "title": {"S": "Word Puzzle"},
-    "description": {"S": "Find hidden words! Coming soon."},
+    "description": {"S": "Find hidden words in the grid! Test your vocabulary."},
     "icon": {"S": "📝"},
-    "route": {"S": "/games/words"},
-    "status": {"S": "COMING_SOON"},
+    "route": {"S": "/word-puzzle/setup"},
+    "status": {"S": "ACTIVE"},
     "displayOrder": {"N": "3"},
-    "ageRange": {"S": "5+"},
+    "ageRange": {"S": "7+"},
     "category": {"S": "Words"}
   }'
 
-echo "✅ Word Puzzle added to catalog (coming soon)"
+echo "✅ Word Puzzle added to catalog"
 
 echo ""
 echo "🎉 Game catalog seeded successfully!"
