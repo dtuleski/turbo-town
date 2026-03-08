@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
 import { generateQuestion, checkAnswer, type MathQuestion } from '@/utils/mathUtils'
@@ -32,6 +32,7 @@ export default function MathGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const difficulty = searchParams.get('difficulty') as keyof typeof DIFFICULTY_CONFIG
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [gameId, setGameId] = useState<string>('')
   const [currentQuestion, setCurrentQuestion] = useState<MathQuestion | null>(null)
@@ -47,6 +48,13 @@ export default function MathGamePage() {
   })
 
   const config = DIFFICULTY_CONFIG[difficulty] || DIFFICULTY_CONFIG.easy
+
+  // Auto-focus input when new question appears
+  useEffect(() => {
+    if (gameStatus === 'playing' && !feedback.show && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [currentQuestion, feedback.show, gameStatus])
 
   // Initialize game
   useEffect(() => {
@@ -238,13 +246,13 @@ export default function MathGamePage() {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <input
+                  ref={inputRef}
                   type="number"
                   step="any"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   placeholder="Your answer..."
                   className="w-full px-6 py-4 text-3xl text-center border-4 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none"
-                  autoFocus
                   disabled={feedback.show}
                 />
 
