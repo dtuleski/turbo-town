@@ -21,7 +21,9 @@ export default function RateLimitPage() {
         ? 'price_1T8TJYD1222JoXRH79EkciO2'  // $1.99
         : 'price_1T8TK0D1222JoXRHR0kLMCl5'  // $5.99
 
-      const { data } = await createCheckout({
+      console.log('Starting checkout:', { tier, priceId })
+
+      const { data, errors } = await createCheckout({
         variables: { 
           input: { 
             tier,
@@ -30,13 +32,28 @@ export default function RateLimitPage() {
         }
       })
 
+      console.log('Checkout response:', { data, errors })
+
+      if (errors) {
+        console.error('GraphQL errors:', errors)
+        alert(`Checkout error: ${errors[0]?.message || 'Unknown error'}`)
+        setLoading(null)
+        return
+      }
+
       if (data?.createCheckoutSession?.url) {
+        console.log('Redirecting to:', data.createCheckoutSession.url)
         // Redirect to Stripe checkout
         window.location.href = data.createCheckoutSession.url
+      } else {
+        console.error('No checkout URL in response:', data)
+        alert('Failed to get checkout URL. Please try again.')
+        setLoading(null)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Checkout error:', error)
-      alert('Failed to start checkout. Please try again.')
+      const errorMessage = error?.message || error?.graphQLErrors?.[0]?.message || 'Unknown error'
+      alert(`Failed to start checkout: ${errorMessage}`)
       setLoading(null)
     }
   }
