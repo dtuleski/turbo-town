@@ -1,12 +1,45 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useMutation } from '@apollo/client'
+import { CREATE_CHECKOUT_SESSION } from '@/api/stripe'
 import { ROUTES } from '@/config/constants'
+import { useState } from 'react'
 
 export default function RateLimitPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [loading, setLoading] = useState<string | null>(null)
+  
+  const [createCheckout] = useMutation(CREATE_CHECKOUT_SESSION)
   
   // Check if user came from rate limit error or just browsing plans
   const isRateLimited = location.state?.rateLimited === true
+
+  const handleSubscribe = async (tier: 'BASIC' | 'PREMIUM') => {
+    setLoading(tier)
+    try {
+      const priceId = tier === 'BASIC' 
+        ? 'price_1T8TJYD1222JoXRH79EkciO2'  // $1.99
+        : 'price_1T8TK0D1222JoXRHR0kLMCl5'  // $5.99
+
+      const { data } = await createCheckout({
+        variables: { 
+          input: { 
+            tier,
+            priceId 
+          } 
+        }
+      })
+
+      if (data?.createCheckoutSession?.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.createCheckoutSession.url
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      alert('Failed to start checkout. Please try again.')
+      setLoading(null)
+    }
+  }
 
   const plans = [
     {
@@ -24,10 +57,11 @@ export default function RateLimitPage() {
       plays: '20 plays/day',
       features: ['Access to all games', 'Detailed statistics', 'Up to 3 devices', 'Priority support'],
       popular: true,
+      tier: 'BASIC' as const,
     },
     {
       name: 'Premium',
-      price: '$9.99',
+      price: '$5.99',
       period: 'per month',
       plays: 'Unlimited plays',
       features: [
@@ -38,6 +72,7 @@ export default function RateLimitPage() {
         'Early access to new games',
         'Ad-free experience',
       ],
+      tier: 'PREMIUM' as const,
     },
   ]
 
@@ -113,14 +148,13 @@ export default function RateLimitPage() {
                 ))}
               </ul>
 
-              {!plan.current && (
+              {!plan.current && plan.tier && (
                 <button
-                  onClick={() => {
-                    // TODO: Implement Stripe checkout
-                    alert(`Stripe integration coming soon! Plan: ${plan.name}`)
-                  }}
+                  onClick={() => handleSubscribe(plan.tier!)}
+                  disabled={loading === plan.tier}
                   className={`
                     w-full py-4 rounded-2xl font-bold text-lg transition-all
+                    ${loading === plan.tier ? 'opacity-50 cursor-wait' : ''}
                     ${
                       plan.popular
                         ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600'
@@ -128,7 +162,16 @@ export default function RateLimitPage() {
                     }
                   `}
                 >
-                  Upgrade to {plan.name}
+                  {loading === plan.tier ? 'Loading...' : `Upgrade to ${plan.name}`}
+                </button>
+              )}
+
+              {!plan.current && !plan.tier && (
+                <button
+                  disabled
+                  className="w-full py-4 rounded-2xl font-bold text-lg bg-gray-200 text-gray-500 cursor-not-allowed"
+                >
+                  Free Plan
                 </button>
               )}
 
