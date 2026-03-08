@@ -131,9 +131,13 @@ export interface Theme {
 export interface Subscription {
   userId: string;
   tier: SubscriptionTier;
-  status: 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
+  status: 'ACTIVE' | 'CANCELLED' | 'EXPIRED' | 'INACTIVE';
   startDate: Date;
   endDate?: Date;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  currentPeriodStart?: Date;
+  currentPeriodEnd?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

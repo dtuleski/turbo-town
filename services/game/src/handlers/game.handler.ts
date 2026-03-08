@@ -6,6 +6,7 @@ import { SubscriptionRepository } from '../repositories/subscription.repository'
 import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
 import { AdminService } from '../services/admin.service';
+import { StripeService } from '../services/stripe.service';
 import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { AchievementTrackerService } from '../services/achievement-tracker.service';
@@ -27,7 +28,9 @@ import { GraphQLContext, GraphQLResponse } from '../types';
 export class GameHandler {
   private gameService: GameService;
   private adminService: AdminService;
+  private stripeService: StripeService;
   private gameCatalogRepository: GameCatalogRepository;
+  private subscriptionRepository: SubscriptionRepository;
 
   constructor() {
     // Initialize repositories
@@ -35,7 +38,7 @@ export class GameHandler {
     const rateLimitRepository = new RateLimitRepository();
     const achievementRepository = new AchievementRepository();
     const themeRepository = new ThemeRepository();
-    const subscriptionRepository = new SubscriptionRepository();
+    this.subscriptionRepository = new SubscriptionRepository();
     this.gameCatalogRepository = new GameCatalogRepository();
 
     // Initialize services
@@ -51,7 +54,7 @@ export class GameHandler {
     this.gameService = new GameService(
       gameRepository,
       themeRepository,
-      subscriptionRepository,
+      this.subscriptionRepository,
       scoreCalculator,
       rateLimiter,
       achievementTracker,
@@ -60,6 +63,9 @@ export class GameHandler {
 
     // Initialize admin service
     this.adminService = new AdminService();
+    
+    // Initialize Stripe service
+    this.stripeService = new StripeService();
   }
 
   /**
@@ -143,6 +149,13 @@ export class GameHandler {
 
       case 'listAllUsers':
         return this.listAllUsers(userId, username, email, variables.input);
+
+      // Stripe mutations
+      case 'createCheckoutSession':
+        return this.createCheckoutSession(userId, username, email, variables.input);
+
+      case 'createPortalSession':
+        return this.createPortalSession(userId);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -333,6 +346,64 @@ export class GameHandler {
 
     return {
       listAllUsers: result,
+    };
+  }
+
+  /**
+   * Mutation: createCheckoutSession (Stripe)
+   */
+  private async createCheckoutSession(
+    userId: string,
+    username?: string,
+    email?: string,
+    input?: any
+  ): Promise<any> {
+    if (!email) {
+      throw new Error('Email required for checkout');
+    }
+
+    if (!input?.priceId || !input?.tier) {
+      throw new Error('priceId and tier are required');
+    }
+
+    logger.info('Creating checkout session', { userId, tier: input.tier });
+
+    const result = await this.stripeService.createCheckoutSession({
+      userId,
+      email,
+      priceId: input.priceId,
+      tier: input.tier,
+    });
+
+    return {
+      createCheckoutSession: {
+        sessionId: result.sessionId,
+        url: result.url,
+      },
+    };
+  }
+
+  /**
+   * Mutation: createPortalSession (Stripe)
+   */
+  private async createPortalSession(userId: string): Promise<any> {
+    logger.info('Creating portal session', { userId });
+
+    // Get customer ID from subscription
+    const subscription = await this.subscriptionRepository.getByUserId(userId);
+
+    if (!subscription?.stripeCustomerId) {
+      throw new Error('No active subscription found. Please subscribe first.');
+    }
+
+    const result = await this.stripeService.createPortalSession({
+      customerId: subscription.stripeCustomerId,
+    });
+
+    return {
+      createPortalSession: {
+        url: result.url,
+      },
     };
   }
 

@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { SubscriptionTier } from '@memory-game/shared';
 import { Subscription, SubscriptionRepository as ISubscriptionRepository } from '../types';
 import { mapDynamoDBError } from '../utils/error-mapper';
@@ -45,5 +45,52 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     }
 
     return subscription.tier;
+  }
+
+  /**
+   * Update subscription (for Stripe integration)
+   */
+  async updateSubscription(data: {
+    userId: string;
+    tier?: SubscriptionTier | 'BASIC' | 'STANDARD';
+    status?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED' | 'EXPIRED';
+    stripeCustomerId?: string;
+    stripeSubscriptionId?: string;
+    currentPeriodStart?: Date;
+    currentPeriodEnd?: Date;
+  }): Promise<void> {
+    try {
+      const now = new Date();
+      
+      // Get existing subscription
+      const existing = await this.getByUserId(data.userId);
+      
+      // Map tier names
+      let tier = data.tier;
+      if (tier === 'BASIC') tier = SubscriptionTier.Basic;
+      if (tier === 'STANDARD') tier = SubscriptionTier.Premium;
+      
+      const subscription: Subscription = {
+        userId: data.userId,
+        tier: tier || existing?.tier || SubscriptionTier.Free,
+        status: data.status || existing?.status || 'ACTIVE',
+        stripeCustomerId: data.stripeCustomerId || existing?.stripeCustomerId,
+        stripeSubscriptionId: data.stripeSubscriptionId || existing?.stripeSubscriptionId,
+        currentPeriodStart: data.currentPeriodStart || existing?.currentPeriodStart,
+        currentPeriodEnd: data.currentPeriodEnd || existing?.currentPeriodEnd,
+        startDate: existing?.startDate || now,
+        createdAt: existing?.createdAt || now,
+        updatedAt: now,
+      };
+
+      await docClient.send(
+        new PutCommand({
+          TableName: TABLE_NAME,
+          Item: subscription,
+        })
+      );
+    } catch (error) {
+      throw mapDynamoDBError(error as Error);
+    }
   }
 }
