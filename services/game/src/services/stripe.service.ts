@@ -10,7 +10,7 @@ export interface CreateCheckoutSessionInput {
   userId: string;
   email: string;
   priceId: string;
-  tier: 'BASIC' | 'STANDARD';
+  tier: 'BASIC' | 'PREMIUM';
 }
 
 export interface CreatePortalSessionInput {
@@ -133,7 +133,7 @@ export class StripeService {
    */
   private async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
     const userId = session.metadata?.userId || session.client_reference_id;
-    const tier = session.metadata?.tier as 'BASIC' | 'STANDARD';
+    const tier = session.metadata?.tier as 'BASIC' | 'PREMIUM';
 
     if (!userId || !tier) {
       logger.error('Missing userId or tier in checkout session', { sessionId: session.id });

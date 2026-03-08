@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_CHECKOUT_SESSION } from '@/api/stripe'
+import { gameClient } from '@/api/client'
 import { ROUTES } from '@/config/constants'
 import { useState } from 'react'
 
@@ -9,7 +10,7 @@ export default function RateLimitPage() {
   const location = useLocation()
   const [loading, setLoading] = useState<string | null>(null)
   
-  const [createCheckout] = useMutation(CREATE_CHECKOUT_SESSION)
+  const [createCheckout] = useMutation(CREATE_CHECKOUT_SESSION, { client: gameClient })
   
   // Check if user came from rate limit error or just browsing plans
   const isRateLimited = location.state?.rateLimited === true
