@@ -33,7 +33,7 @@ export default function WordPuzzleGamePage() {
   const difficulty = (searchParams.get('difficulty') || 'easy') as keyof typeof DIFFICULTY_CONFIG
 
   const [gameId, setGameId] = useState<string>('')
-  const [puzzle, setPuzzle] = useState(generateWordPuzzle(difficulty))
+  const [puzzle] = useState(generateWordPuzzle(difficulty))
   const [selectedCells, setSelectedCells] = useState<Cell[]>([])
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set())
   const [isSelecting, setIsSelecting] = useState(false)
@@ -170,7 +170,7 @@ export default function WordPuzzleGamePage() {
     return selectedCells.some(cell => cell.row === row && cell.col === col)
   }
 
-  const isCellInFoundWord = (row: number, col: number) => {
+  const isCellInFoundWord = (_row: number, _col: number) => {
     // This is a simplified check - in a real implementation,
     // you'd track the exact positions of found words
     return false
