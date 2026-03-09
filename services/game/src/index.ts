@@ -3,6 +3,24 @@ import { GameHandler } from './handlers/game.handler';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://dashden.app',
+  'https://www.dashden.app', 
+  'https://dev.dashden.app',
+  'https://turbo-town.com', // Keep for transition period
+  'https://www.turbo-town.com',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
+
+// Helper function to get allowed origin
+function getAllowedOrigin(origin?: string): string {
+  if (!origin) return allowedOrigins[0];
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+}
+
 // Initialize handler (singleton pattern for Lambda container reuse)
 const gameHandler = new GameHandler();
 
@@ -61,8 +79,10 @@ export async function handler(
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers.origin),
         'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
       },
       body: JSON.stringify(result),
     };
@@ -77,8 +97,10 @@ export async function handler(
       statusCode: error instanceof Error && error.message.includes('Unauthorized') ? 401 : 500,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers.origin),
         'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
       },
       body: JSON.stringify({
         errors: [

@@ -51,6 +51,11 @@ export const devConfig: EnvironmentConfig = {
   },
   logRetentionDays: 7,
   alarmEmailRecipients: ['dev-team@example.com'],
+  customDomain: {
+    webApp: 'dev.dashden.app',
+    assets: 'assets-dev.dashden.app',
+    certificateArn: '', // Will be populated when SSL certificate is created
+  },
   enableXRayTracing: false,
   enableDetailedMetrics: false,
 };
@@ -91,6 +96,11 @@ export const prodConfig: EnvironmentConfig = {
   },
   logRetentionDays: 30,
   alarmEmailRecipients: ['ops-team@example.com', 'alerts@example.com'],
+  customDomain: {
+    webApp: 'dashden.app',
+    assets: 'assets.dashden.app',
+    certificateArn: '', // Will be populated when SSL certificate is created
+  },
   enableXRayTracing: true,
   enableDetailedMetrics: true,
 };
