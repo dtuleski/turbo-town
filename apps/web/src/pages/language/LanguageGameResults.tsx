@@ -1,16 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-interface GameResults {
-  score: number;
-  correctAnswers: number;
-  totalQuestions: number;
-  accuracy: number;
-  timeSpent: number;
-  xpGained: number;
-  achievements: string[];
-}
 
 const LANGUAGE_INFO = {
   'en': { name: 'English', flag: '🇺🇸' },
@@ -202,7 +192,7 @@ export default function LanguageGameResults() {
             </h2>
             
             <div className="space-y-4">
-              {gameState.answers.map((answer, index) => (
+              {gameState.answers.map((answer: any, index: number) => (
                 <div key={answer.wordId} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <span className={`text-2xl ${answer.isCorrect ? '✅' : '❌'}`}></span>

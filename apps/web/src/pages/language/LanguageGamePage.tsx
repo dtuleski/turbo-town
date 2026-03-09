@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getLanguageWords, saveLanguageGameResult, LanguageWord } from '../../api/language';
+import { getLanguageWords, saveLanguageGameResult } from '../../api/language';
 
 interface Word {
   id: string;
@@ -43,7 +43,6 @@ export default function LanguageGamePage() {
   });
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
   useEffect(() => {
@@ -79,7 +78,6 @@ export default function LanguageGamePage() {
     
     setSelectedImage(imageUrl);
     const correct = imageUrl === currentWord.correctImageUrl;
-    setIsCorrect(correct);
     setShowFeedback(true);
 
     const timeSpent = Date.now() - questionStartTime;

@@ -1,4 +1,5 @@
-import { graphqlRequest } from './client';
+import { gameClient } from './client';
+import { gql } from '@apollo/client';
 
 export interface LanguageWord {
   id: string;
@@ -30,6 +31,49 @@ export interface LanguageGameResult {
   xpGained: number;
 }
 
+// GraphQL Queries and Mutations
+const GET_LANGUAGE_WORDS = gql`
+  query GetLanguageWords($languageCode: String!, $category: String!, $difficulty: String!, $count: Int!) {
+    getLanguageWords(languageCode: $languageCode, category: $category, difficulty: $difficulty, count: $count) {
+      id
+      word
+      pronunciation
+      correctImageUrl
+      distractorImages
+      category
+    }
+  }
+`;
+
+const SAVE_LANGUAGE_GAME_RESULT = gql`
+  mutation SaveLanguageGameResult($input: LanguageGameResultInput!) {
+    saveLanguageGameResult(input: $input) {
+      gameId
+      languageCode
+      score
+      correctAnswers
+      totalQuestions
+      difficulty
+      category
+      timeSpent
+      xpGained
+    }
+  }
+`;
+
+const GET_USER_LANGUAGE_PROGRESS = gql`
+  query GetUserLanguageProgress {
+    getUserLanguageProgress {
+      languageCode
+      xp
+      level
+      wordsLearned
+      accuracy
+      lastPlayed
+    }
+  }
+`;
+
 // Get words for a specific language, category, and difficulty
 export async function getLanguageWords(
   languageCode: string,
@@ -37,69 +81,35 @@ export async function getLanguageWords(
   difficulty: string,
   count: number
 ): Promise<LanguageWord[]> {
-  const query = `
-    query GetLanguageWords($languageCode: String!, $category: String!, $difficulty: String!, $count: Int!) {
-      getLanguageWords(languageCode: $languageCode, category: $category, difficulty: $difficulty, count: $count) {
-        id
-        word
-        pronunciation
-        correctImageUrl
-        distractorImages
-        category
-      }
-    }
-  `;
-
-  const variables = { languageCode, category, difficulty, count };
-  const response = await graphqlRequest(query, variables);
-  return response.getLanguageWords;
+  const { data } = await gameClient.query({
+    query: GET_LANGUAGE_WORDS,
+    variables: { languageCode, category, difficulty, count },
+    fetchPolicy: 'network-only',
+  });
+  return data.getLanguageWords;
 }
 
 // Save language game result
 export async function saveLanguageGameResult(gameResult: Omit<LanguageGameResult, 'gameId'>): Promise<LanguageGameResult> {
-  const mutation = `
-    mutation SaveLanguageGameResult($input: LanguageGameResultInput!) {
-      saveLanguageGameResult(input: $input) {
-        gameId
-        languageCode
-        score
-        correctAnswers
-        totalQuestions
-        difficulty
-        category
-        timeSpent
-        xpGained
-      }
-    }
-  `;
-
-  const variables = { input: gameResult };
-  const response = await graphqlRequest(mutation, variables);
-  return response.saveLanguageGameResult;
+  const { data } = await gameClient.mutate({
+    mutation: SAVE_LANGUAGE_GAME_RESULT,
+    variables: { input: gameResult },
+  });
+  return data.saveLanguageGameResult;
 }
 
 // Get user's language learning progress
 export async function getUserLanguageProgress(): Promise<LanguageProgress[]> {
-  const query = `
-    query GetUserLanguageProgress {
-      getUserLanguageProgress {
-        languageCode
-        xp
-        level
-        wordsLearned
-        accuracy
-        lastPlayed
-      }
-    }
-  `;
-
-  const response = await graphqlRequest(query);
-  return response.getUserLanguageProgress;
+  const { data } = await gameClient.query({
+    query: GET_USER_LANGUAGE_PROGRESS,
+    fetchPolicy: 'network-only',
+  });
+  return data.getUserLanguageProgress;
 }
 
 // Get user's progress for a specific language
 export async function getLanguageProgressByCode(languageCode: string): Promise<LanguageProgress | null> {
-  const query = `
+  const GET_LANGUAGE_PROGRESS_BY_CODE = gql`
     query GetLanguageProgressByCode($languageCode: String!) {
       getLanguageProgressByCode(languageCode: $languageCode) {
         languageCode
@@ -112,9 +122,12 @@ export async function getLanguageProgressByCode(languageCode: string): Promise<L
     }
   `;
 
-  const variables = { languageCode };
-  const response = await graphqlRequest(query, variables);
-  return response.getLanguageProgressByCode;
+  const { data } = await gameClient.query({
+    query: GET_LANGUAGE_PROGRESS_BY_CODE,
+    variables: { languageCode },
+    fetchPolicy: 'network-only',
+  });
+  return data.getLanguageProgressByCode;
 }
 
 // Get user's country from IP (for language restrictions)
