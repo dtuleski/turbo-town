@@ -8,6 +8,13 @@ Start a new game
 type Mutation {
   startGame(input: StartGameInput!): StartGameResponse!
   completeGame(input: CompleteGameInput!): CompleteGameResponse!
+  
+  # Language learning mutations
+  saveLanguageGameResult(input: LanguageGameResultInput!): LanguageGameResult!
+  
+  # Subscription mutations
+  createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession!
+  createPortalSession: PortalSession!
 }
 
 # Queries
@@ -22,9 +29,17 @@ type Query {
   canStartGame: CanStartGameResponse!
   listAvailableGames: [GameCatalogItem!]!
   
+  # Language learning queries
+  getLanguageWords(languageCode: String!, category: String!, difficulty: String!, count: Int!): [LanguageWord!]!
+  getUserLanguageProgress: [LanguageProgress!]!
+  getLanguageProgressByCode(languageCode: String!): LanguageProgress
+  
   # Admin queries
   getAdminAnalytics: AdminAnalytics!
   listAllUsers(input: ListUsersInput): UserListResponse!
+  
+  # Subscription queries
+  getSubscription: SubscriptionInfo!
 }
 
 # Input Types
@@ -298,4 +313,71 @@ type TopUser {
   tier: SubscriptionTier!
   gamesPlayed: Int!
   lastActive: String!
+}
+
+
+# Subscription Types
+
+type SubscriptionInfo {
+  userId: ID!
+  tier: String!
+  status: String!
+  stripeCustomerId: String
+  currentPeriodEnd: String
+}
+
+type CheckoutSession {
+  sessionId: ID!
+  url: String!
+}
+
+type PortalSession {
+  url: String!
+}
+
+input CreateCheckoutSessionInput {
+  tier: String! # BASIC or STANDARD
+}
+
+# Language Learning Types
+
+type LanguageWord {
+  id: ID!
+  word: String!
+  pronunciation: String!
+  correctImageUrl: String!
+  distractorImages: [String!]!
+  category: String!
+}
+
+type LanguageGameResult {
+  gameId: ID!
+  languageCode: String!
+  score: Int!
+  correctAnswers: Int!
+  totalQuestions: Int!
+  difficulty: String!
+  category: String!
+  timeSpent: Int!
+  xpGained: Int!
+}
+
+type LanguageProgress {
+  languageCode: String!
+  xp: Int!
+  level: Int!
+  wordsLearned: Int!
+  accuracy: Float!
+  lastPlayed: String!
+}
+
+input LanguageGameResultInput {
+  languageCode: String!
+  score: Int!
+  correctAnswers: Int!
+  totalQuestions: Int!
+  difficulty: String!
+  category: String!
+  timeSpent: Int!
+  xpGained: Int!
 }

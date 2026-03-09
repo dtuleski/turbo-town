@@ -7,6 +7,7 @@ import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
 import { AdminService } from '../services/admin.service';
 import { StripeService } from '../services/stripe.service';
+import { LanguageHandler } from './language.handler';
 import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { AchievementTrackerService } from '../services/achievement-tracker.service';
@@ -29,6 +30,7 @@ export class GameHandler {
   private gameService: GameService;
   private adminService: AdminService;
   private stripeService: StripeService;
+  private languageHandler: LanguageHandler;
   private gameCatalogRepository: GameCatalogRepository;
   private subscriptionRepository: SubscriptionRepository;
 
@@ -66,6 +68,9 @@ export class GameHandler {
     
     // Initialize Stripe service
     this.stripeService = new StripeService();
+    
+    // Initialize language handler
+    this.languageHandler = new LanguageHandler();
   }
 
   /**
@@ -156,6 +161,28 @@ export class GameHandler {
 
       case 'createPortalSession':
         return this.createPortalSession(userId);
+
+      // Language learning queries and mutations
+      case 'getLanguageWords':
+        return this.languageHandler.getLanguageWords({}, {
+          languageCode: variables.languageCode,
+          category: variables.category,
+          difficulty: variables.difficulty,
+          count: variables.count
+        }, { userId });
+
+      case 'saveLanguageGameResult':
+        return this.languageHandler.saveLanguageGameResult({}, {
+          input: variables.input
+        }, { userId, username: username || '' });
+
+      case 'getUserLanguageProgress':
+        return this.languageHandler.getUserLanguageProgress({}, {}, { userId });
+
+      case 'getLanguageProgressByCode':
+        return this.languageHandler.getLanguageProgressByCode({}, {
+          languageCode: variables.languageCode
+        }, { userId });
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -332,7 +359,7 @@ export class GameHandler {
   /**
    * Query: listAllUsers (Admin only)
    */
-  private async listAllUsers(userId: string, username?: string, email?: string, input: any): Promise<any> {
+  private async listAllUsers(userId: string, username?: string, email?: string, input?: any): Promise<any> {
     // Check if user is admin by username or email
     const isAdmin = username === 'dtuleski' || 
                     email === 'diego.tuleski@gmail.com' || 

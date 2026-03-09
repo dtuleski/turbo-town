@@ -62,6 +62,24 @@ aws dynamodb put-item \
 
 echo "✅ Word Puzzle added to catalog"
 
+# Language Learning
+aws dynamodb put-item \
+  --table-name "$TABLE_NAME" \
+  --region "$REGION" \
+  --item '{
+    "gameId": {"S": "language-learning"},
+    "title": {"S": "Language Learning"},
+    "description": {"S": "Learn new languages with fun vocabulary games!"},
+    "icon": {"S": "🌍"},
+    "route": {"S": "/language"},
+    "status": {"S": "ACTIVE"},
+    "displayOrder": {"N": "4"},
+    "ageRange": {"S": "8+"},
+    "category": {"S": "Language"}
+  }'
+
+echo "✅ Language Learning added to catalog"
+
 echo ""
 echo "🎉 Game catalog seeded successfully!"
 echo ""

@@ -18,6 +18,10 @@ import MathSetupPage from './pages/math/MathSetupPage'
 import MathGamePage from './pages/math/MathGamePage'
 import WordPuzzleSetupPage from './pages/word-puzzle/WordPuzzleSetupPage'
 import WordPuzzleGamePage from './pages/word-puzzle/WordPuzzleGamePage'
+import LanguageSelectionPage from './pages/language/LanguageSelectionPage'
+import LanguageGameSetup from './pages/language/LanguageGameSetup'
+import LanguageGamePage from './pages/language/LanguageGamePage'
+import LanguageGameResults from './pages/language/LanguageGameResults'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import DashboardPage from './pages/dashboard/DashboardPage'
@@ -52,6 +56,10 @@ function App() {
           <Route path={ROUTES.MATH_GAME} element={<MathGamePage />} />
           <Route path={ROUTES.WORD_PUZZLE_SETUP} element={<WordPuzzleSetupPage />} />
           <Route path={ROUTES.WORD_PUZZLE_GAME} element={<WordPuzzleGamePage />} />
+          <Route path={ROUTES.LANGUAGE} element={<LanguageSelectionPage />} />
+          <Route path="/language/setup/:languageCode" element={<LanguageGameSetup />} />
+          <Route path="/language/game/:languageCode" element={<LanguageGamePage />} />
+          <Route path="/language/results/:languageCode" element={<LanguageGameResults />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
