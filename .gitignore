@@ -63,3 +63,5 @@ services/*/dist/
 # Build artifacts
 apps/*/dist/
 infrastructure/cdk.out/
+.vercel
+.env*.local
