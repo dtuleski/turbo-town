@@ -1,0 +1,29 @@
+"use strict";
+/**
+ * Application-wide constants
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.APP_CONSTANTS = void 0;
+exports.APP_CONSTANTS = {
+    // Timeouts
+    SESSION_TIMEOUT_MINUTES: 30,
+    TOKEN_EXPIRY_HOURS: 24,
+    REFRESH_TOKEN_EXPIRY_DAYS: 30,
+    // Limits
+    MAX_PROFILE_PICTURE_SIZE_MB: 5,
+    MAX_THEME_IMAGE_SIZE_MB: 2,
+    MAX_LEADERBOARD_ENTRIES: 100,
+    MAX_GAME_HISTORY_ENTRIES: 1000,
+    // Pagination
+    DEFAULT_PAGE_SIZE: 20,
+    MAX_PAGE_SIZE: 100,
+    // Game
+    CARD_FLIP_ANIMATION_MS: 300,
+    MISMATCH_DISPLAY_MS: 1000,
+    // Rate Limiting
+    API_RATE_LIMIT_PER_SECOND: 100,
+    // Retry
+    MAX_RETRY_ATTEMPTS: 3,
+    RETRY_DELAY_MS: 1000,
+};
+//# sourceMappingURL=app.constants.js.map

@@ -1,4 +1,3 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { StripeService } from './services/stripe.service';
 import { logger } from './utils/logger';
 
@@ -6,7 +5,7 @@ import { logger } from './utils/logger';
  * Lambda handler for Stripe webhooks
  * Processes subscription lifecycle events
  */
-export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+export async function handler(event: any): Promise<any> {
   try {
     logger.info('Stripe webhook received', {
       headers: event.headers,
@@ -16,7 +15,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const signature = event.headers['Stripe-Signature'] || event.headers['stripe-signature'];
 
     if (!signature) {
-      logger.error('Missing Stripe signature');
+      logger.error('Missing Stripe signature', new Error('Missing Stripe signature'));
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Missing Stripe signature' }),

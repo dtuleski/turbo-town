@@ -80,7 +80,7 @@ aws cognito-idp describe-user-pool --user-pool-id us-east-1_jPkMWmBup
 # Update the app client with the new URL
 aws cognito-idp update-user-pool-client \
   --user-pool-id us-east-1_jPkMWmBup \
-  --client-id 282nlnkslo1ttfsg1qfj5r2a54 \
+  --client-id XXXXXXXXXXXXXXXXXXXXXXX \
   --callback-urls "http://localhost:3000,https://YOUR-AMPLIFY-URL" \
   --logout-urls "http://localhost:3000,https://YOUR-AMPLIFY-URL" \
   --allowed-o-auth-flows "code" \

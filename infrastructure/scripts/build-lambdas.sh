@@ -39,7 +39,7 @@ build_service() {
   echo "  Installing production dependencies..."
   cp package.json dist/
   cd dist
-  npm ci --production
+  npm install --production
   cd ..
   
   echo -e "${GREEN}✓ ${service_name} built successfully${NC}"

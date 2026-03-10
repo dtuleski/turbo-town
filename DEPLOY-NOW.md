@@ -38,7 +38,7 @@ Once you have your Amplify URL, run this command (replace YOUR-AMPLIFY-URL):
 ```bash
 aws cognito-idp update-user-pool-client \
   --user-pool-id us-east-1_jPkMWmBup \
-  --client-id 282nlnkslo1ttfsg1qfj5r2a54 \
+  --client-id XXXXXXXXXXXXXXXXXXXXXXX \
   --callback-urls "http://localhost:3000,https://YOUR-AMPLIFY-URL" \
   --logout-urls "http://localhost:3000,https://YOUR-AMPLIFY-URL" \
   --allowed-o-auth-flows "code" \
@@ -50,7 +50,7 @@ Example:
 ```bash
 aws cognito-idp update-user-pool-client \
   --user-pool-id us-east-1_jPkMWmBup \
-  --client-id 282nlnkslo1ttfsg1qfj5r2a54 \
+  --client-id XXXXXXXXXXXXXXXXXXXXXXX \
   --callback-urls "http://localhost:3000,https://main.d1234abcd.amplifyapp.com" \
   --logout-urls "http://localhost:3000,https://main.d1234abcd.amplifyapp.com" \
   --allowed-o-auth-flows "code" \
@@ -89,7 +89,7 @@ Your memory game will easily stay within the free tier!
 ## 🎮 Your Deployed App
 
 - Frontend: (Your Amplify URL)
-- Backend API: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com
+- Backend API: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com
 - Authentication: AWS Cognito (us-east-1_jPkMWmBup)
 - Database: DynamoDB (8 tables)
 

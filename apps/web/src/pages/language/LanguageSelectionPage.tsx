@@ -67,6 +67,12 @@ export default function LanguageSelectionPage() {
     try {
       const progressData = await getUserLanguageProgress();
       
+      // Ensure progressData is an array
+      if (!progressData || !Array.isArray(progressData)) {
+        console.warn('No progress data received or invalid format');
+        return;
+      }
+      
       // Create a map for quick lookup
       const progressMap = progressData.reduce((acc, progress) => {
         acc[progress.languageCode] = progress;

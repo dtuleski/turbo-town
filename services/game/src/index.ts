@@ -1,4 +1,3 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import { GameHandler } from './handlers/game.handler';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
@@ -28,10 +27,7 @@ const gameHandler = new GameHandler();
  * Lambda handler for Game Service GraphQL API
  * Handles game lifecycle, rate limiting, achievements, and statistics
  */
-export async function handler(
-  event: APIGatewayProxyEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> {
+export async function handler(event: any, context: any): Promise<any> {
   // Set correlation ID for request tracing
   const correlationId = event.requestContext.requestId;
   logger.setContext({ correlationId, functionName: context.functionName });
@@ -79,7 +75,7 @@ export async function handler(
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers.origin),
+        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers?.origin),
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
@@ -97,7 +93,7 @@ export async function handler(
       statusCode: error instanceof Error && error.message.includes('Unauthorized') ? 401 : 500,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers.origin),
+        'Access-Control-Allow-Origin': getAllowedOrigin(event.headers?.origin),
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',

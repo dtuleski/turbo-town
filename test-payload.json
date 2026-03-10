@@ -1,1 +1,0 @@
-{"query":"query ListAvailableGames { listAvailableGames { gameId title description icon route status displayOrder ageRange category } }","operationName":"ListAvailableGames"}

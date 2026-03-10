@@ -48,10 +48,10 @@ Look at the bottom-right corner of the page. You should see:
 
 ```json
 {
-  "apiUrl": "https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql",
+  "apiUrl": "https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql",
   "cognito": {
     "userPoolId": "us-east-1_jPkMWmBup",
-    "userPoolClientId": "282nlnkslo1ttfsg1qfj5r2a54",
+    "userPoolClientId": "XXXXXXXXXXXXXXXXXXXXXXX",
     "region": "us-east-1"
   },
   "isDevelopment": true
@@ -88,7 +88,7 @@ If you see empty values, the `.env.local` file isn't being loaded.
 Open browser DevTools (F12) and check:
 
 1. **Network Tab**: Look for GraphQL requests to your API Gateway
-   - Should see requests to `https://ooihrv63q8.execute-api.us-east-1.amazonaws.com`
+   - Should see requests to `https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com`
    - Check request headers - should include `Authorization: Bearer <token>`
 
 2. **Console Tab**: Should see authentication logs
@@ -181,12 +181,12 @@ Once you've verified everything works, remove the debug component:
 ## API Endpoints
 
 Your backend is deployed at:
-- **Auth Service**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql
-- **Game Service**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql
+- **Auth Service**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql
+- **Game Service**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql
 
 ## AWS Resources
 
 - **Cognito User Pool**: us-east-1_jPkMWmBup
-- **Cognito Client**: 282nlnkslo1ttfsg1qfj5r2a54
+- **Cognito Client**: XXXXXXXXXXXXXXXXXXXXXXX
 - **Region**: us-east-1
 - **Account**: 848403890404

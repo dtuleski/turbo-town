@@ -43,7 +43,7 @@ Let's temporarily use mock data to see if the frontend loads:
 
 2. Edit `apps/web/.env.local` and comment out the API URL:
    ```
-   # VITE_API_URL=https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql
+   # VITE_API_URL=https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql
    ```
 
 3. Restart: `npm run dev`
@@ -113,7 +113,7 @@ If you want to see the app working right now with mock data:
    # Keep Cognito config
    VITE_COGNITO_REGION=us-east-1
    VITE_COGNITO_USER_POOL_ID=us-east-1_jPkMWmBup
-   VITE_COGNITO_CLIENT_ID=282nlnkslo1ttfsg1qfj5r2a54
+   VITE_COGNITO_CLIENT_ID=XXXXXXXXXXXXXXXXXXXXXXX
    ```
 
 2. Restart dev server

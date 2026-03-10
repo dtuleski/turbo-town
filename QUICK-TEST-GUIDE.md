@@ -25,10 +25,10 @@ You should see a black debug panel showing:
 
 ```json
 {
-  "apiUrl": "https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql",
+  "apiUrl": "https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql",
   "cognito": {
     "userPoolId": "us-east-1_jPkMWmBup",
-    "userPoolClientId": "282nlnkslo1ttfsg1qfj5r2a54",
+    "userPoolClientId": "XXXXXXXXXXXXXXXXXXXXXXX",
     "region": "us-east-1"
   }
 }
@@ -79,7 +79,7 @@ Open DevTools (F12) → Network tab:
 1. Filter by "graphql"
 2. Play a game
 3. **Expected**: See requests to:
-   - `https://ooihrv63q8.execute-api.us-east-1.amazonaws.com`
+   - `https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com`
 4. Click on a request → Headers tab
 5. **Expected**: See `Authorization: Bearer eyJ...` (JWT token)
 

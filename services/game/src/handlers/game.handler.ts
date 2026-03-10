@@ -8,6 +8,7 @@ import { GameService } from '../services/game.service';
 import { AdminService } from '../services/admin.service';
 import { StripeService } from '../services/stripe.service';
 import { LanguageHandler } from './language.handler';
+import { LanguageRepository } from '../repositories/language.repository';
 import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { AchievementTrackerService } from '../services/achievement-tracker.service';
@@ -31,6 +32,7 @@ export class GameHandler {
   private adminService: AdminService;
   private stripeService: StripeService;
   private languageHandler: LanguageHandler;
+  private languageRepository: LanguageRepository;
   private gameCatalogRepository: GameCatalogRepository;
   private subscriptionRepository: SubscriptionRepository;
 
@@ -71,6 +73,9 @@ export class GameHandler {
     
     // Initialize language handler
     this.languageHandler = new LanguageHandler();
+    
+    // Initialize language repository for admin functions
+    this.languageRepository = new LanguageRepository();
   }
 
   /**
@@ -82,13 +87,30 @@ export class GameHandler {
     try {
       // Parse operation name from query if not provided
       const operation = operationName || this.extractOperationName(query);
+      
+      // Normalize operation name to match GraphQL schema field names (camelCase)
+      const normalizedOp = operation.charAt(0).toLowerCase() + operation.slice(1);
 
-      logger.debug('Handling GraphQL operation', { operation, userId, username });
+      logger.debug('Handling GraphQL operation', { operation, normalizedOp, userId, username });
 
       // Route to appropriate resolver
-      const data = await this.routeOperation(operation, variables, userId, username, email);
+      const result = await this.routeOperation(operation, variables, userId, username, email);
 
-      return { data };
+      // Ensure proper GraphQL response format using normalized operation name
+      const response = {
+        data: {
+          [normalizedOp]: result
+        }
+      };
+
+      logger.debug('GraphQL response prepared', { 
+        operation: normalizedOp, 
+        hasResult: !!result,
+        resultType: Array.isArray(result) ? 'array' : typeof result,
+        resultLength: Array.isArray(result) ? result.length : undefined
+      });
+
+      return response;
     } catch (error) {
       logger.error('GraphQL operation failed', error as Error, {
         operationName,
@@ -183,6 +205,16 @@ export class GameHandler {
         return this.languageHandler.getLanguageProgressByCode({}, {
           languageCode: variables.languageCode
         }, { userId });
+
+      // Admin - Language Data Management
+      case 'getAllLanguageWords':
+        return this.getAllLanguageWords(userId, username, email);
+
+      case 'getLanguageWordById':
+        return this.getLanguageWordById(userId, variables.wordId, username, email);
+
+      case 'updateLanguageWord':
+        return this.updateLanguageWord(userId, variables.input, username, email);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -330,10 +362,7 @@ export class GameHandler {
    */
   private async listAvailableGames(): Promise<any> {
     const games = await this.gameCatalogRepository.getAllGames();
-
-    return {
-      listAvailableGames: games,
-    };
+    return games;
   }
 
   /**
@@ -432,6 +461,66 @@ export class GameHandler {
         url: result.url,
       },
     };
+  }
+
+  /**
+   * Query: getAllLanguageWords (Admin only)
+   */
+  private async getAllLanguageWords(userId: string, username?: string, email?: string): Promise<any> {
+    // Check if user is admin
+    const isAdmin = username === 'dtuleski' || 
+                    email === 'diego.tuleski@gmail.com' || 
+                    email === 'diegotuleski@gmail.com';
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const words = await this.languageRepository.getAllLanguageWords();
+    return words;
+  }
+
+  /**
+   * Query: getLanguageWordById (Admin only)
+   */
+  private async getLanguageWordById(userId: string, wordId: string, username?: string, email?: string): Promise<any> {
+    // Check if user is admin
+    const isAdmin = username === 'dtuleski' || 
+                    email === 'diego.tuleski@gmail.com' || 
+                    email === 'diegotuleski@gmail.com';
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const word = await this.languageRepository.getLanguageWordById(wordId);
+    if (!word) {
+      throw new Error(`Language word not found: ${wordId}`);
+    }
+    
+    return word;
+  }
+
+  /**
+   * Mutation: updateLanguageWord (Admin only)
+   */
+  private async updateLanguageWord(userId: string, input: any, username?: string, email?: string): Promise<any> {
+    // Check if user is admin
+    const isAdmin = username === 'dtuleski' || 
+                    email === 'diego.tuleski@gmail.com' || 
+                    email === 'diegotuleski@gmail.com';
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const updatedWord = await this.languageRepository.updateLanguageWord(input.wordId, {
+      imageUrl: input.imageUrl,
+      distractorImages: input.distractorImages,
+      translations: input.translations
+    });
+    
+    return updatedWord;
   }
 
   /**

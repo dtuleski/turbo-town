@@ -131,6 +131,12 @@ const AdminDashboard = () => {
             >
               👥 Users ({analytics.overview.totalUsers})
             </button>
+            <button
+              onClick={() => window.location.href = '/admin/language-maintenance'}
+              className="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm"
+            >
+              🌐 Language Data
+            </button>
           </nav>
         </div>
 

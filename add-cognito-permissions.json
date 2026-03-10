@@ -1,0 +1,13 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:ListUsers",
+        "cognito-idp:AdminGetUser"
+      ],
+      "Resource": "arn:aws:cognito-idp:us-east-1:848403890404:userpool/us-east-1_jPkMWmBup"
+    }
+  ]
+}

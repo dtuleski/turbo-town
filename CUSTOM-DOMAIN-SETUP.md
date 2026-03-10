@@ -59,7 +59,7 @@ Once your domain is active, update the callback URLs:
 # Update Cognito
 aws cognito-idp update-user-pool-client \
   --user-pool-id us-east-1_jPkMWmBup \
-  --client-id 282nlnkslo1ttfsg1qfj5r2a54 \
+  --client-id XXXXXXXXXXXXXXXXXXXXXXX \
   --callback-urls "http://localhost:3000" "https://turbo-town.com" "https://www.turbo-town.com" \
   --logout-urls "http://localhost:3000" "https://turbo-town.com" "https://www.turbo-town.com" \
   --allowed-o-auth-flows "code" \

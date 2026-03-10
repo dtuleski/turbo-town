@@ -26,13 +26,13 @@ Your Memory Game application is now fully deployed to AWS and ready to use!
 ## Your Deployed Endpoints
 
 ### API Gateway
-- **Base URL**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com
-- **Auth Endpoint**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql
-- **Game Endpoint**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql
+- **Base URL**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com
+- **Auth Endpoint**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql
+- **Game Endpoint**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql
 
 ### Cognito
 - **User Pool ID**: us-east-1_jPkMWmBup
-- **Client ID**: 282nlnkslo1ttfsg1qfj5r2a54
+- **Client ID**: XXXXXXXXXXXXXXXXXXXXXXX
 - **Domain**: memory-game-dev
 - **Region**: us-east-1
 
@@ -128,7 +128,7 @@ Open http://localhost:3001 in your browser.
 
 ### Cognito
 - User Pool: `us-east-1_jPkMWmBup`
-- App Client: `282nlnkslo1ttfsg1qfj5r2a54`
+- App Client: `XXXXXXXXXXXXXXXXXXXXXXX`
 
 ### EventBridge
 - Event Bus: `MemoryGame-dev`
@@ -177,12 +177,12 @@ aws cognito-idp admin-get-user \
 ### Check API Gateway
 ```bash
 # Test auth endpoint
-curl -X POST https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql \
+curl -X POST https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql \
   -H "Content-Type: application/json" \
   -d '{"query":"{ __typename }"}'
 
 # Test game endpoint
-curl -X POST https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql \
+curl -X POST https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql \
   -H "Content-Type: application/json" \
   -d '{"query":"{ __typename }"}'
 ```

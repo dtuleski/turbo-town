@@ -53,6 +53,25 @@ export interface AdminAnalytics {
   }>;
 }
 
+export interface LanguageWordAdmin {
+  wordId: string;
+  category: string;
+  difficulty: string;
+  languageCode: string;
+  imageUrl: string;
+  distractorImages: string[];
+  translations: {
+    en?: { word: string; pronunciation: string };
+    es?: { word: string; pronunciation: string };
+    fr?: { word: string; pronunciation: string };
+    de?: { word: string; pronunciation: string };
+    it?: { word: string; pronunciation: string };
+    pt?: { word: string; pronunciation: string };
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 const GET_ADMIN_ANALYTICS = gql`
   query GetAdminAnalytics {
     getAdminAnalytics {
@@ -133,6 +152,88 @@ const LIST_ALL_USERS = gql`
   }
 `;
 
+const GET_ALL_LANGUAGE_WORDS = gql`
+  query GetAllLanguageWords {
+    getAllLanguageWords {
+      wordId
+      category
+      difficulty
+      languageCode
+      imageUrl
+      distractorImages
+      translations {
+        en {
+          word
+          pronunciation
+        }
+        es {
+          word
+          pronunciation
+        }
+        fr {
+          word
+          pronunciation
+        }
+        de {
+          word
+          pronunciation
+        }
+        it {
+          word
+          pronunciation
+        }
+        pt {
+          word
+          pronunciation
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const UPDATE_LANGUAGE_WORD = gql`
+  mutation UpdateLanguageWord($input: UpdateLanguageWordInput!) {
+    updateLanguageWord(input: $input) {
+      wordId
+      category
+      difficulty
+      languageCode
+      imageUrl
+      distractorImages
+      translations {
+        en {
+          word
+          pronunciation
+        }
+        es {
+          word
+          pronunciation
+        }
+        fr {
+          word
+          pronunciation
+        }
+        de {
+          word
+          pronunciation
+        }
+        it {
+          word
+          pronunciation
+        }
+        pt {
+          word
+          pronunciation
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 export const getAdminAnalytics = async (): Promise<AdminAnalytics> => {
   const { data } = await gameClient.query({
     query: GET_ADMIN_ANALYTICS,
@@ -164,4 +265,34 @@ export const listAllUsers = async (input?: {
   });
 
   return data.listAllUsers;
+};
+
+export const getAllLanguageWords = async (): Promise<LanguageWordAdmin[]> => {
+  const { data } = await gameClient.query({
+    query: GET_ALL_LANGUAGE_WORDS,
+    fetchPolicy: 'network-only',
+  });
+
+  return data.getAllLanguageWords;
+};
+
+export const updateLanguageWord = async (input: {
+  wordId: string;
+  imageUrl?: string;
+  distractorImages?: string[];
+  translations?: {
+    en?: { word: string; pronunciation: string };
+    es?: { word: string; pronunciation: string };
+    fr?: { word: string; pronunciation: string };
+    de?: { word: string; pronunciation: string };
+    it?: { word: string; pronunciation: string };
+    pt?: { word: string; pronunciation: string };
+  };
+}): Promise<LanguageWordAdmin> => {
+  const { data } = await gameClient.mutate({
+    mutation: UPDATE_LANGUAGE_WORD,
+    variables: { input },
+  });
+
+  return data.updateLanguageWord;
 };

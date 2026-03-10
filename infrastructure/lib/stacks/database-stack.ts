@@ -17,6 +17,9 @@ export class DatabaseStack extends cdk.Stack {
   public readonly achievementsTable: dynamodb.Table;
   public readonly rateLimitsTable: dynamodb.Table;
   public readonly userSettingsTable: dynamodb.Table;
+  public readonly languageWordsTable: dynamodb.Table;
+  public readonly languageProgressTable: dynamodb.Table;
+  public readonly languageResultsTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -179,6 +182,56 @@ export class DatabaseStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
+    // Language Words Table
+    this.languageWordsTable = new dynamodb.Table(this, 'LanguageWordsTable', {
+      tableName: `memory-game-language-words-${environment}`,
+      partitionKey: { name: 'wordId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    this.languageWordsTable.addGlobalSecondaryIndex({
+      indexName: 'CategoryIndex',
+      partitionKey: { name: 'category', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'difficulty', type: dynamodb.AttributeType.STRING },
+    });
+
+    this.languageWordsTable.addGlobalSecondaryIndex({
+      indexName: 'LanguageIndex',
+      partitionKey: { name: 'languageCode', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'category', type: dynamodb.AttributeType.STRING },
+    });
+
+    // Language Progress Table
+    this.languageProgressTable = new dynamodb.Table(this, 'LanguageProgressTable', {
+      tableName: `memory-game-language-progress-${environment}`,
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'languageCode', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    // Language Game Results Table
+    this.languageResultsTable = new dynamodb.Table(this, 'LanguageResultsTable', {
+      tableName: `memory-game-language-results-${environment}`,
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'gameId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    this.languageResultsTable.addGlobalSecondaryIndex({
+      indexName: 'LanguageIndex',
+      partitionKey: { name: 'languageCode', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'completedAt', type: dynamodb.AttributeType.STRING },
+    });
+
     // Outputs
     new cdk.CfnOutput(this, 'UsersTableName', {
       value: this.usersTable.tableName,
@@ -188,6 +241,21 @@ export class DatabaseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'GamesTableName', {
       value: this.gamesTable.tableName,
       exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-GamesTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'LanguageWordsTableName', {
+      value: this.languageWordsTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-LanguageWordsTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'LanguageProgressTableName', {
+      value: this.languageProgressTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-LanguageProgressTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'LanguageResultsTableName', {
+      value: this.languageResultsTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-LanguageResultsTableName`,
     });
   }
 }

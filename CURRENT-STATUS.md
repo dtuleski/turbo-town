@@ -172,7 +172,7 @@ SubscriptionsTableName: memory-game-subscriptions-dev
 ### Cognito Stack
 ```
 UserPoolId: us-east-1_jPkMWmBup
-UserPoolClientId: 282nlnkslo1ttfsg1qfj5r2a54
+UserPoolClientId: XXXXXXXXXXXXXXXXXXXXXXX
 UserPoolDomain: memory-game-dev
 UserPoolArn: arn:aws:cognito-idp:us-east-1:848403890404:userpool/us-east-1_jPkMWmBup
 ```

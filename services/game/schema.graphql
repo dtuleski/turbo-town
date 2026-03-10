@@ -12,6 +12,9 @@ type Mutation {
   # Language learning mutations
   saveLanguageGameResult(input: LanguageGameResultInput!): LanguageGameResult!
   
+  # Admin - Language Data Management
+  updateLanguageWord(input: UpdateLanguageWordInput!): LanguageWordAdmin!
+  
   # Subscription mutations
   createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession!
   createPortalSession: PortalSession!
@@ -37,6 +40,10 @@ type Query {
   # Admin queries
   getAdminAnalytics: AdminAnalytics!
   listAllUsers(input: ListUsersInput): UserListResponse!
+  
+  # Admin - Language Data Management
+  getAllLanguageWords: [LanguageWordAdmin!]!
+  getLanguageWordById(wordId: ID!): LanguageWordAdmin
   
   # Subscription queries
   getSubscription: SubscriptionInfo!
@@ -380,4 +387,53 @@ input LanguageGameResultInput {
   category: String!
   timeSpent: Int!
   xpGained: Int!
+}
+
+# Admin Language Data Management Types
+
+type LanguageWordAdmin {
+  wordId: ID!
+  category: String!
+  difficulty: String!
+  languageCode: String!
+  imageUrl: String!
+  distractorImages: [String!]!
+  translations: LanguageTranslations!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type LanguageTranslations {
+  en: LanguageTranslation
+  es: LanguageTranslation
+  fr: LanguageTranslation
+  de: LanguageTranslation
+  it: LanguageTranslation
+  pt: LanguageTranslation
+}
+
+type LanguageTranslation {
+  word: String!
+  pronunciation: String!
+}
+
+input UpdateLanguageWordInput {
+  wordId: ID!
+  imageUrl: String
+  distractorImages: [String!]
+  translations: UpdateLanguageTranslationsInput
+}
+
+input UpdateLanguageTranslationsInput {
+  en: UpdateLanguageTranslationInput
+  es: UpdateLanguageTranslationInput
+  fr: UpdateLanguageTranslationInput
+  de: UpdateLanguageTranslationInput
+  it: UpdateLanguageTranslationInput
+  pt: UpdateLanguageTranslationInput
+}
+
+input UpdateLanguageTranslationInput {
+  word: String!
+  pronunciation: String!
 }

@@ -21,6 +21,9 @@ export interface LambdaStackProps extends cdk.StackProps {
   achievementsTable: dynamodb.Table;
   rateLimitsTable: dynamodb.Table;
   userSettingsTable: dynamodb.Table;
+  languageWordsTable: dynamodb.Table;
+  languageProgressTable: dynamodb.Table;
+  languageResultsTable: dynamodb.Table;
   // Cognito
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
@@ -60,10 +63,12 @@ export class LambdaStack extends cdk.Stack {
       bundling: {
         minify: props.environment === 'prod',
         sourceMap: true,
-        // Only exclude AWS SDK - bundle everything else including @memory-game/shared
+        // Bundle everything including @memory-game/shared - don't exclude it
         externalModules: ['@aws-sdk/*'],
         forceDockerBundling: false,
         format: nodejs.OutputFormat.CJS, // Force CommonJS output
+        // Ensure the shared package is properly resolved
+        tsconfig: path.join(__dirname, '../../../services/auth/tsconfig.json'),
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
@@ -130,6 +135,9 @@ export class LambdaStack extends cdk.Stack {
         ACHIEVEMENTS_TABLE_NAME: props.achievementsTable.tableName,
         THEMES_TABLE_NAME: props.themesTable.tableName,
         SUBSCRIPTIONS_TABLE_NAME: props.subscriptionsTable.tableName,
+        LANGUAGE_WORDS_TABLE_NAME: props.languageWordsTable.tableName,
+        LANGUAGE_PROGRESS_TABLE_NAME: props.languageProgressTable.tableName,
+        LANGUAGE_RESULTS_TABLE_NAME: props.languageResultsTable.tableName,
         COGNITO_USER_POOL_ID: props.userPool.userPoolId,
         EVENT_BUS_NAME: props.eventBus.eventBusName,
         LOG_LEVEL: props.environment === 'prod' ? 'INFO' : 'DEBUG',
@@ -137,10 +145,12 @@ export class LambdaStack extends cdk.Stack {
       bundling: {
         minify: props.environment === 'prod',
         sourceMap: true,
-        // Only exclude AWS SDK - bundle everything else including @memory-game/shared
+        // Bundle everything including @memory-game/shared - don't exclude it
         externalModules: ['@aws-sdk/*'],
         forceDockerBundling: false,
         format: nodejs.OutputFormat.CJS, // Force CommonJS output
+        // Ensure the shared package is properly resolved
+        tsconfig: path.join(__dirname, '../../../services/game/tsconfig.json'),
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
@@ -170,6 +180,11 @@ export class LambdaStack extends cdk.Stack {
           `${props.themesTable.tableArn}/index/*`,
           props.subscriptionsTable.tableArn,
           `${props.subscriptionsTable.tableArn}/index/*`,
+          props.languageWordsTable.tableArn,
+          `${props.languageWordsTable.tableArn}/index/*`,
+          props.languageProgressTable.tableArn,
+          props.languageResultsTable.tableArn,
+          `${props.languageResultsTable.tableArn}/index/*`,
         ],
       })
     );

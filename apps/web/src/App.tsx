@@ -24,6 +24,7 @@ import LanguageGamePage from './pages/language/LanguageGamePage'
 import LanguageGameResults from './pages/language/LanguageGameResults'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import LanguageMaintenancePage from './pages/admin/LanguageMaintenancePage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import StatisticsPage from './pages/dashboard/StatisticsPage'
 import HistoryPage from './pages/dashboard/HistoryPage'
@@ -68,6 +69,7 @@ function App() {
           <Route path={ROUTES.ACHIEVEMENTS} element={<AchievementsPage />} />
           <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
           <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
+          <Route path="/admin/language-maintenance" element={<LanguageMaintenancePage />} />
         </Route>
 
         {/* 404 */}

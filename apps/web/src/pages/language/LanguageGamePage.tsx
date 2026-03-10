@@ -62,6 +62,14 @@ export default function LanguageGamePage() {
         settings.wordCount
       );
       
+      // Ensure words is an array and has content
+      if (!words || !Array.isArray(words) || words.length === 0) {
+        console.error('No words available for this language/category combination');
+        alert('Sorry, no vocabulary is available for this language and category combination. Please try a different category.');
+        navigate('/language');
+        return;
+      }
+      
       setWords(words);
       setQuestionStartTime(Date.now());
     } catch (error) {
@@ -74,7 +82,7 @@ export default function LanguageGamePage() {
   const progress = words.length > 0 ? ((gameState.currentWordIndex + 1) / words.length) * 100 : 0;
 
   const handleImageSelect = (imageUrl: string) => {
-    if (showFeedback) return;
+    if (showFeedback || !currentWord) return;
     
     setSelectedImage(imageUrl);
     const correct = imageUrl === currentWord.correctImageUrl;
@@ -243,9 +251,23 @@ export default function LanguageGamePage() {
                     `}
                     onClick={() => handleImageSelect(imageUrl)}
                   >
-                    <div className="aspect-square bg-gray-100 flex items-center justify-center">
-                      {/* Placeholder for actual images */}
-                      <div className="text-6xl">
+                    <div className="aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={imageUrl}
+                        alt={`Option ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // Fallback to emoji if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'block';
+                        }}
+                      />
+                      <div 
+                        className="text-6xl hidden"
+                        style={{ display: 'none' }}
+                      >
                         {imageUrl.includes('dog') ? '🐕' :
                          imageUrl.includes('cat') ? '🐱' :
                          imageUrl.includes('rabbit') ? '🐰' :

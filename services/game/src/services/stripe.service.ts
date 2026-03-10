@@ -1,16 +1,17 @@
 import Stripe from 'stripe';
 import { logger } from '../utils/logger';
+import { SubscriptionTier } from '@memory-game/shared';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2022-11-15',
 });
 
 export interface CreateCheckoutSessionInput {
   userId: string;
   email: string;
   priceId: string;
-  tier: 'BASIC' | 'PREMIUM';
+  tier: 'LIGHT' | 'PREMIUM';
 }
 
 export interface CreatePortalSessionInput {
@@ -133,19 +134,22 @@ export class StripeService {
    */
   private async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
     const userId = session.metadata?.userId || session.client_reference_id;
-    const tier = session.metadata?.tier as 'BASIC' | 'PREMIUM';
+    const tier = session.metadata?.tier as 'LIGHT' | 'PREMIUM';
 
     if (!userId || !tier) {
-      logger.error('Missing userId or tier in checkout session', { sessionId: session.id });
+      logger.error('Missing userId or tier in checkout session', new Error('Missing userId or tier'), { sessionId: session.id });
       return;
     }
 
     logger.info('Checkout completed', { userId, tier, customerId: session.customer });
 
+    // Map tier to SubscriptionTier enum
+    const subscriptionTier = tier === 'LIGHT' ? SubscriptionTier.Light : SubscriptionTier.Premium;
+
     // Update subscription in DynamoDB
     await this.subscriptionRepo.updateSubscription({
       userId,
-      tier,
+      tier: subscriptionTier,
       stripeCustomerId: session.customer as string,
       stripeSubscriptionId: session.subscription as string,
       status: 'ACTIVE',
@@ -161,7 +165,7 @@ export class StripeService {
     const userId = subscription.metadata?.userId;
 
     if (!userId) {
-      logger.error('Missing userId in subscription metadata', { subscriptionId: subscription.id });
+      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
       return;
     }
 
@@ -175,7 +179,7 @@ export class StripeService {
     const userId = subscription.metadata?.userId;
 
     if (!userId) {
-      logger.error('Missing userId in subscription metadata', { subscriptionId: subscription.id });
+      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
       return;
     }
 
@@ -199,7 +203,7 @@ export class StripeService {
     const userId = subscription.metadata?.userId;
 
     if (!userId) {
-      logger.error('Missing userId in subscription metadata', { subscriptionId: subscription.id });
+      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
       return;
     }
 
@@ -208,7 +212,7 @@ export class StripeService {
     // Downgrade to FREE tier
     await this.subscriptionRepo.updateSubscription({
       userId,
-      tier: 'FREE',
+      tier: SubscriptionTier.Free,
       status: 'INACTIVE',
       stripeSubscriptionId: subscription.id,
     });

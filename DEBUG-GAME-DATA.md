@@ -68,7 +68,7 @@ cat apps/web/.env.local
 
 Should have:
 ```
-VITE_GAME_ENDPOINT=https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql
+VITE_GAME_ENDPOINT=https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql
 ```
 
 **C. Redeploy game service if needed**:
@@ -230,7 +230,7 @@ Run this in browser console to test API directly:
 
 ```javascript
 // Test game API
-fetch('https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql', {
+fetch('https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

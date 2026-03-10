@@ -1,46 +1,31 @@
 #!/bin/bash
 
-# Frontend Deployment Script for AWS Amplify
+# Manual Frontend Deployment Script
+# Use this if Amplify auto-deploy isn't working
 
-set -e
-
-echo "🚀 Deploying Memory Game Frontend to AWS Amplify"
-echo ""
-
-# Check if Amplify CLI is installed
-if ! command -v amplify &> /dev/null; then
-    echo "❌ Amplify CLI not found. Installing..."
-    npm install -g @aws-amplify/cli
-fi
-
-# Navigate to frontend directory
-cd apps/web
+echo "🚀 Deploying frontend to Amplify..."
 
 # Build the frontend
 echo "📦 Building frontend..."
+cd apps/web
 npm run build
 
-# Check if Amplify is initialized
-if [ ! -d "amplify" ]; then
-    echo ""
-    echo "⚠️  Amplify not initialized yet."
-    echo "Please run the following commands manually:"
-    echo ""
-    echo "  cd apps/web"
-    echo "  amplify init"
-    echo "  amplify add hosting"
-    echo "  amplify publish"
-    echo ""
-    exit 1
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed!"
+  exit 1
 fi
 
-# Publish to Amplify
-echo "🌐 Publishing to Amplify..."
-amplify publish --yes
-
+echo "✅ Build complete!"
 echo ""
-echo "✅ Deployment complete!"
+echo "📤 To deploy to Amplify, you have two options:"
 echo ""
-echo "Your app is now live and accessible from any device!"
-echo "Check the Amplify Console for your public URL:"
-echo "https://console.aws.amazon.com/amplify/"
+echo "Option 1: Use Amplify Console (Recommended)"
+echo "  1. Go to: https://console.aws.amazon.com/amplify/"
+echo "  2. Find your app"
+echo "  3. Click 'Run build' or connect to GitHub for auto-deploy"
+echo ""
+echo "Option 2: Manual Upload"
+echo "  1. Zip the dist folder: cd dist && zip -r ../deploy.zip ."
+echo "  2. Upload via Amplify Console"
+echo ""
+echo "Build output is in: apps/web/dist/"

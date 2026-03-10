@@ -59,7 +59,9 @@ export class ThemeRepository implements IThemeRepository {
       throw new NotFoundError(ErrorMessages.THEME_NOT_FOUND);
     }
 
-    if (!theme.isPublished) {
+    // Check if theme is published (database uses status field, not isPublished)
+    const isPublished = (theme as any).status === 'PUBLISHED' || theme.isPublished;
+    if (!isPublished) {
       throw new NotFoundError(ErrorMessages.THEME_NOT_PUBLISHED);
     }
 

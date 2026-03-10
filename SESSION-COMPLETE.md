@@ -89,7 +89,7 @@ npm install @stripe/stripe-js
 ### Step 3: Add Environment Variable
 Add to `apps/web/.env`:
 ```
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51T8TGYD1222JoXRHKmKlQEhkChs5s4TSFJRXkfu9LQBHaMk5CM5v6Q1eY4Tn3mwQwPXfQF1viWkQkkT6bEI3aajC001ZHKBRxZ
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_XXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 ### Step 4: Add Checkout Button

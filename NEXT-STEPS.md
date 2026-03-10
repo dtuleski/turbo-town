@@ -11,7 +11,7 @@ All AWS infrastructure is live and ready:
 - ✅ **8 DynamoDB Tables** created
 - ✅ **Cognito User Pool** configured
   - User Pool ID: `us-east-1_jPkMWmBup`
-  - Client ID: `282nlnkslo1ttfsg1qfj5r2a54`
+  - Client ID: `XXXXXXXXXXXXXXXXXXXXXXX`
   - Domain: `memory-game-dev`
 - ✅ **EventBridge Event Bus** deployed
 - ✅ **Frontend environment** configured (`apps/web/.env.local`)

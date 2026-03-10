@@ -32,15 +32,27 @@ export interface LanguageProgress {
   lastPlayed: string;
 }
 
+export interface LanguageWordAdmin {
+  wordId: string;
+  category: string;
+  difficulty: string;
+  languageCode: string;
+  imageUrl: string;
+  distractorImages: string[];
+  translations: Record<string, { word: string; pronunciation: string }>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export class LanguageRepository {
   private readonly wordsTableName: string;
   private readonly progressTableName: string;
   private readonly resultsTableName: string;
 
   constructor() {
-    this.wordsTableName = process.env.LANGUAGE_WORDS_TABLE_NAME || 'language-words-dev';
-    this.progressTableName = process.env.LANGUAGE_PROGRESS_TABLE_NAME || 'language-progress-dev';
-    this.resultsTableName = process.env.LANGUAGE_RESULTS_TABLE_NAME || 'language-results-dev';
+    this.wordsTableName = process.env.LANGUAGE_WORDS_TABLE_NAME || 'memory-game-language-words-dev';
+    this.progressTableName = process.env.LANGUAGE_PROGRESS_TABLE_NAME || 'memory-game-language-progress-dev';
+    this.resultsTableName = process.env.LANGUAGE_RESULTS_TABLE_NAME || 'memory-game-language-results-dev';
   }
 
   /**
@@ -53,6 +65,14 @@ export class LanguageRepository {
     count: number
   ): Promise<LanguageWord[]> {
     try {
+      logger.info('Querying words from DynamoDB', {
+        languageCode,
+        category,
+        difficulty,
+        count,
+        tableName: this.wordsTableName
+      });
+
       const command = new ScanCommand({
         TableName: this.wordsTableName,
         FilterExpression: '#category = :category AND #difficulty = :difficulty AND #languageCode = :languageCode',
@@ -64,7 +84,7 @@ export class LanguageRepository {
         ExpressionAttributeValues: {
           ':category': category,
           ':difficulty': difficulty,
-          ':languageCode': languageCode
+          ':languageCode': 'multi' // Look for multi-language entries
         },
         Limit: count * 2 // Get more than needed to allow for shuffling
       });
@@ -72,19 +92,83 @@ export class LanguageRepository {
       const result = await docClient.send(command);
       const words = (result.Items || []) as any[];
 
+      logger.info('DynamoDB scan result', {
+        itemCount: words.length,
+        scannedCount: result.ScannedCount,
+        count: result.Count
+      });
+
+      if (words.length > 0) {
+        logger.info('Sample item structure', {
+          sampleItem: {
+            wordId: words[0].wordId,
+            category: words[0].category,
+            difficulty: words[0].difficulty,
+            languageCode: words[0].languageCode,
+            hasTranslations: !!words[0].translations,
+            translationKeys: words[0].translations ? Object.keys(words[0].translations) : [],
+            hasRequestedLanguage: words[0].translations && words[0].translations[languageCode]
+          }
+        });
+      }
+
       // Transform DynamoDB items to LanguageWord format
-      const transformedWords: LanguageWord[] = words.map(item => ({
-        id: item.wordId,
-        word: item.translations[languageCode]?.word || item.word,
-        pronunciation: item.translations[languageCode]?.pronunciation || '',
-        correctImageUrl: item.imageUrl,
-        distractorImages: item.distractorImages || [],
-        category: item.category
-      }));
+      const transformedWords: LanguageWord[] = words
+        .filter(item => {
+          const hasTranslations = item.translations && item.translations[languageCode];
+          logger.info('Filtering item', {
+            wordId: item.wordId,
+            hasTranslations: !!hasTranslations,
+            languageCode,
+            availableLanguages: item.translations ? Object.keys(item.translations) : [],
+            translationsStructure: item.translations
+          });
+          return hasTranslations;
+        })
+        .map(item => {
+          const translation = item.translations[languageCode];
+          const transformed = {
+            id: item.wordId,
+            word: translation?.word || item.word || 'Unknown',
+            pronunciation: translation?.pronunciation || '',
+            correctImageUrl: item.imageUrl,
+            distractorImages: item.distractorImages || [],
+            category: item.category
+          };
+          
+          logger.info('Transformed word', {
+            original: {
+              wordId: item.wordId,
+              translationWord: translation?.word,
+              imageUrl: item.imageUrl,
+              fullTranslation: translation
+            },
+            transformed: {
+              id: transformed.id,
+              word: transformed.word,
+              correctImageUrl: transformed.correctImageUrl
+            }
+          });
+          
+          return transformed;
+        });
+
+      logger.info('Transformation complete', {
+        originalCount: words.length,
+        transformedCount: transformedWords.length,
+        requestedCount: count
+      });
 
       // Shuffle and return requested count
       const shuffled = transformedWords.sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, count);
+      const finalResult = shuffled.slice(0, count);
+      
+      logger.info('Final result', {
+        finalCount: finalResult.length,
+        words: finalResult.map(w => ({ id: w.id, word: w.word }))
+      });
+
+      return finalResult;
     } catch (error) {
       logger.error('Failed to get words by category', error as Error, {
         languageCode,
@@ -227,6 +311,145 @@ export class LanguageRepository {
   }
 
   /**
+   * Get all language words for admin management
+   */
+  async getAllLanguageWords(): Promise<LanguageWordAdmin[]> {
+    try {
+      logger.info('Getting all language words for admin');
+
+      const command = new ScanCommand({
+        TableName: this.wordsTableName
+      });
+
+      const result = await docClient.send(command);
+      const items = result.Items || [];
+
+      return items.map((item: any) => ({
+        wordId: item.wordId,
+        category: item.category,
+        difficulty: item.difficulty,
+        languageCode: item.languageCode,
+        imageUrl: item.imageUrl,
+        distractorImages: item.distractorImages || [],
+        translations: item.translations || {},
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString()
+      }));
+    } catch (error) {
+      logger.error('Failed to get all language words', error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get a specific language word by ID for admin management
+   */
+  async getLanguageWordById(wordId: string): Promise<LanguageWordAdmin | null> {
+    try {
+      logger.info('Getting language word by ID', { wordId });
+
+      const command = new GetCommand({
+        TableName: this.wordsTableName,
+        Key: { wordId }
+      });
+
+      const result = await docClient.send(command);
+      
+      if (!result.Item) {
+        return null;
+      }
+
+      const item = result.Item;
+      return {
+        wordId: item.wordId,
+        category: item.category,
+        difficulty: item.difficulty,
+        languageCode: item.languageCode,
+        imageUrl: item.imageUrl,
+        distractorImages: item.distractorImages || [],
+        translations: item.translations || {},
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString()
+      };
+    } catch (error) {
+      logger.error('Failed to get language word by ID', error as Error, { wordId });
+      throw error;
+    }
+  }
+
+  /**
+   * Update a language word (admin only)
+   */
+  async updateLanguageWord(
+    wordId: string,
+    updates: {
+      imageUrl?: string;
+      distractorImages?: string[];
+      translations?: Record<string, { word: string; pronunciation: string }>;
+    }
+  ): Promise<LanguageWordAdmin> {
+    try {
+      logger.info('Updating language word', { wordId, updates });
+
+      // First get the current item
+      const current = await this.getLanguageWordById(wordId);
+      if (!current) {
+        throw new Error(`Language word not found: ${wordId}`);
+      }
+
+      // Build update expression
+      const updateExpressions: string[] = [];
+      const expressionAttributeValues: Record<string, any> = {};
+      const expressionAttributeNames: Record<string, string> = {};
+
+      if (updates.imageUrl !== undefined) {
+        updateExpressions.push('#imageUrl = :imageUrl');
+        expressionAttributeNames['#imageUrl'] = 'imageUrl';
+        expressionAttributeValues[':imageUrl'] = updates.imageUrl;
+      }
+
+      if (updates.distractorImages !== undefined) {
+        updateExpressions.push('#distractorImages = :distractorImages');
+        expressionAttributeNames['#distractorImages'] = 'distractorImages';
+        expressionAttributeValues[':distractorImages'] = updates.distractorImages;
+      }
+
+      if (updates.translations !== undefined) {
+        updateExpressions.push('#translations = :translations');
+        expressionAttributeNames['#translations'] = 'translations';
+        expressionAttributeValues[':translations'] = updates.translations;
+      }
+
+      // Always update the updatedAt timestamp
+      updateExpressions.push('#updatedAt = :updatedAt');
+      expressionAttributeNames['#updatedAt'] = 'updatedAt';
+      expressionAttributeValues[':updatedAt'] = new Date().toISOString();
+
+      const command = new PutCommand({
+        TableName: this.wordsTableName,
+        Item: {
+          ...current,
+          ...updates,
+          updatedAt: new Date().toISOString()
+        }
+      });
+
+      await docClient.send(command);
+
+      // Return the updated item
+      const updated = await this.getLanguageWordById(wordId);
+      if (!updated) {
+        throw new Error('Failed to retrieve updated language word');
+      }
+
+      return updated;
+    } catch (error) {
+      logger.error('Failed to update language word', error as Error, { wordId });
+      throw error;
+    }
+  }
+
+  /**
    * Fallback words when database is not available
    */
   private getFallbackWords(languageCode: string, category: string, count: number): LanguageWord[] {
@@ -237,10 +460,10 @@ export class LanguageRepository {
             id: 'es_animal_dog',
             word: 'perro',
             pronunciation: '/ˈpe.ro/',
-            correctImageUrl: 'https://via.placeholder.com/300x300/4F46E5/FFFFFF?text=🐕',
+            correctImageUrl: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&h=300&fit=crop&crop=face',
             distractorImages: [
-              'https://via.placeholder.com/300x300/EF4444/FFFFFF?text=🐱',
-              'https://via.placeholder.com/300x300/10B981/FFFFFF?text=🐰'
+              'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&h=300&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=300&h=300&fit=crop&crop=face'
             ],
             category: 'animals'
           },
@@ -248,10 +471,10 @@ export class LanguageRepository {
             id: 'es_animal_cat',
             word: 'gato',
             pronunciation: '/ˈɡa.to/',
-            correctImageUrl: 'https://via.placeholder.com/300x300/EF4444/FFFFFF?text=🐱',
+            correctImageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&h=300&fit=crop&crop=face',
             distractorImages: [
-              'https://via.placeholder.com/300x300/4F46E5/FFFFFF?text=🐕',
-              'https://via.placeholder.com/300x300/F59E0B/FFFFFF?text=🐦'
+              'https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&h=300&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1444212477490-ca407925329e?w=300&h=300&fit=crop&crop=face'
             ],
             category: 'animals'
           },
@@ -259,10 +482,10 @@ export class LanguageRepository {
             id: 'es_animal_bird',
             word: 'pájaro',
             pronunciation: '/ˈpa.xa.ro/',
-            correctImageUrl: 'https://via.placeholder.com/300x300/F59E0B/FFFFFF?text=🐦',
+            correctImageUrl: 'https://images.unsplash.com/photo-1444212477490-ca407925329e?w=300&h=300&fit=crop&crop=face',
             distractorImages: [
-              'https://via.placeholder.com/300x300/4F46E5/FFFFFF?text=🐕',
-              'https://via.placeholder.com/300x300/EF4444/FFFFFF?text=🐱'
+              'https://images.unsplash.com/photo-1552053831-71594a27632d?w=300&h=300&fit=crop&crop=face',
+              'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&h=300&fit=crop&crop=face'
             ],
             category: 'animals'
           }
@@ -272,10 +495,10 @@ export class LanguageRepository {
             id: 'es_food_apple',
             word: 'manzana',
             pronunciation: '/man.ˈsa.na/',
-            correctImageUrl: 'https://via.placeholder.com/300x300/EF4444/FFFFFF?text=🍎',
+            correctImageUrl: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop&crop=center',
             distractorImages: [
-              'https://via.placeholder.com/300x300/F59E0B/FFFFFF?text=🍌',
-              'https://via.placeholder.com/300x300/8B5CF6/FFFFFF?text=🍇'
+              'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=300&fit=crop&crop=center',
+              'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop&crop=center'
             ],
             category: 'food'
           }

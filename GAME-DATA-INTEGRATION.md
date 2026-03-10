@@ -58,8 +58,8 @@ Updated `apps/web/src/pages/dashboard/DashboardPage.tsx`:
 
 The frontend now connects to both services:
 
-- **Auth Service**: `https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/auth/graphql`
-- **Game Service**: `https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql`
+- **Auth Service**: `https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/auth/graphql`
+- **Game Service**: `https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql`
 
 ## Test the Integration
 
@@ -151,7 +151,7 @@ npx cdk deploy MemoryGameLambdaStack-dev
 **Solution**:
 Check `.env.local`:
 ```bash
-VITE_GAME_ENDPOINT=https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql
+VITE_GAME_ENDPOINT=https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com/game/graphql
 ```
 
 ## Files Modified

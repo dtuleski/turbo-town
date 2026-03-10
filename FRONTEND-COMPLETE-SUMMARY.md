@@ -61,7 +61,7 @@ After deployment, test:
 ## Current Configuration
 
 - **Frontend**: AWS Amplify (https://dev.d34tkjkm4o0zpa.amplifyapp.com)
-- **Backend API**: https://ooihrv63q8.execute-api.us-east-1.amazonaws.com
+- **Backend API**: https://XXXXXXXXXX.execute-api.us-east-1.amazonaws.com
 - **Authentication**: AWS Cognito (us-east-1_jPkMWmBup)
 - **Database**: DynamoDB (8 tables)
 - **CORS**: Configured for Amplify domain ✅

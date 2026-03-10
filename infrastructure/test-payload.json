@@ -1,0 +1,9 @@
+{
+  "httpMethod": "POST",
+  "path": "/graphql",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer test"
+  },
+  "body": "{\"query\":\"query { getLanguageWords(languageCode: \\\"es\\\", category: \\\"animals\\\", difficulty: \\\"beginner\\\", count: 3) { id word pronunciation correctImageUrl distractorImages category } }\"}"
+}

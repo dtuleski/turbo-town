@@ -52,7 +52,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
    */
   async updateSubscription(data: {
     userId: string;
-    tier?: SubscriptionTier | 'BASIC' | 'STANDARD';
+    tier?: SubscriptionTier;
     status?: 'ACTIVE' | 'INACTIVE' | 'CANCELLED' | 'EXPIRED';
     stripeCustomerId?: string;
     stripeSubscriptionId?: string;
@@ -65,14 +65,9 @@ export class SubscriptionRepository implements ISubscriptionRepository {
       // Get existing subscription
       const existing = await this.getByUserId(data.userId);
       
-      // Map tier names
-      let tier = data.tier;
-      if (tier === 'BASIC') tier = SubscriptionTier.Basic;
-      if (tier === 'STANDARD') tier = SubscriptionTier.Premium;
-      
       const subscription: Subscription = {
         userId: data.userId,
-        tier: tier || existing?.tier || SubscriptionTier.Free,
+        tier: data.tier || existing?.tier || SubscriptionTier.Free,
         status: data.status || existing?.status || 'ACTIVE',
         stripeCustomerId: data.stripeCustomerId || existing?.stripeCustomerId,
         stripeSubscriptionId: data.stripeSubscriptionId || existing?.stripeSubscriptionId,
