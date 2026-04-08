@@ -48,9 +48,14 @@ export async function handler(event: any, context: any): Promise<any> {
 
     // Extract user ID and username from JWT token (set by API Gateway authorizer)
     const userId = event.requestContext.authorizer?.jwt?.claims?.sub;
-    const username = event.requestContext.authorizer?.jwt?.claims?.preferred_username || 
-                     event.requestContext.authorizer?.jwt?.claims?.['cognito:username'];
-    const email = event.requestContext.authorizer?.jwt?.claims?.email;
+    const claims = event.requestContext.authorizer?.jwt?.claims || {};
+    const username = claims.preferred_username || 
+                     claims.nickname ||
+                     claims.name ||
+                     claims.given_name ||
+                     (claims.email ? claims.email.split('@')[0] : null) ||
+                     claims['cognito:username'];
+    const email = claims.email;
     
     if (!userId) {
       throw new Error('Unauthorized: Missing user ID');

@@ -27,6 +27,9 @@ const Header = () => {
             <Link to={ROUTES.DASHBOARD} className="text-text-primary hover:text-primary-blue">
               Dashboard
             </Link>
+            <Link to={ROUTES.LEADERBOARD} className="text-text-primary hover:text-primary-blue">
+              🏆 Leaderboard
+            </Link>
             <Link to={ROUTES.ACHIEVEMENTS} className="text-text-primary hover:text-primary-blue">
               Achievements
             </Link>
@@ -38,12 +41,26 @@ const Header = () => {
           <div className="flex items-center gap-4">
             {user && (
               <>
-                <Link to={ROUTES.PROFILE} className="text-text-primary hover:text-primary-blue hidden md:block">
-                  {user.username}
-                </Link>
-                <Button variant="secondary" size="sm" onClick={handleLogout} className="hidden md:block">
-                  Logout
-                </Button>
+                {/* Desktop: Username and Logout side by side */}
+                <div className="hidden lg:flex items-center gap-4">
+                  <Link to={ROUTES.PROFILE} className="text-text-primary hover:text-primary-blue">
+                    {user.username}
+                  </Link>
+                  <Button variant="secondary" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </div>
+                
+                {/* Tablet (iPad): Username below Logout button */}
+                <div className="hidden md:flex lg:hidden flex-col items-end gap-1">
+                  <Button variant="secondary" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                  <Link to={ROUTES.PROFILE} className="text-sm text-text-primary hover:text-primary-blue">
+                    {user.username}
+                  </Link>
+                </div>
+                
                 {/* Mobile Menu Button */}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -73,6 +90,13 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Dashboard
+              </Link>
+              <Link 
+                to={ROUTES.LEADERBOARD} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                🏆 Leaderboard
               </Link>
               <Link 
                 to={ROUTES.ACHIEVEMENTS} 

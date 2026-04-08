@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getAllLanguageWords, updateLanguageWord, LanguageWordAdmin } from '@/api/admin';
+import { getAllLanguageWords, updateLanguageWord, createLanguageWord, deleteLanguageWord, LanguageWordAdmin } from '@/api/admin';
 import Button from '@/components/common/Button';
+import { useNavigate } from 'react-router-dom';
+import { useAdminGuard } from '@/hooks/useAdminGuard';
 
 const LanguageMaintenancePage = () => {
+  const navigate = useNavigate();
+  const isAdmin = useAdminGuard();
   const [words, setWords] = useState<LanguageWordAdmin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -11,10 +15,16 @@ const LanguageMaintenancePage = () => {
   const [filterCategory, setFilterCategory] = useState<string>('');
   const [filterLanguage, setFilterLanguage] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [jsonInput, setJsonInput] = useState<string>('');
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const [showImport, setShowImport] = useState(false);
 
   useEffect(() => {
-    loadWords();
-  }, []);
+    if (isAdmin === true) {
+      loadWords();
+    }
+  }, [isAdmin]);
 
   const loadWords = async () => {
     try {
@@ -59,6 +69,69 @@ const LanguageMaintenancePage = () => {
 
   const handleCancelEdit = () => {
     setEditingWord(null);
+  };
+
+  const handleJsonImport = async () => {
+    if (!jsonInput.trim()) return;
+
+    try {
+      setImporting(true);
+      setImportResult(null);
+      setError(null);
+
+      const data = JSON.parse(jsonInput);
+      const words = data.words || data;
+      const wordArray = Array.isArray(words) ? words : [words];
+
+      if (wordArray.length === 0) {
+        setError('No words found in JSON');
+        return;
+      }
+
+      let success = 0;
+      let failed = 0;
+      const errors: string[] = [];
+
+      for (const word of wordArray) {
+        try {
+          await createLanguageWord({
+            category: word.category,
+            difficulty: word.difficulty,
+            languageCode: word.languageCode || 'multi',
+            translations: word.translations,
+            imageUrl: word.imageUrl,
+            distractorImages: word.distractorImages || [],
+          });
+          success++;
+        } catch (err: any) {
+          failed++;
+          const enWord = word.translations?.en?.word || 'unknown';
+          errors.push(`${enWord}: ${err.message}`);
+        }
+      }
+
+      setImportResult({ success, failed, errors });
+      if (success > 0) {
+        await loadWords();
+        setJsonInput('');
+      }
+    } catch (err: any) {
+      setError(`Invalid JSON: ${err.message}`);
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const handleDeleteWord = async (wordId: string, wordLabel: string) => {
+    if (!window.confirm(`Delete "${wordLabel}"? This cannot be undone.`)) return;
+
+    try {
+      setError(null);
+      await deleteLanguageWord(wordId);
+      setWords(words.filter(w => w.wordId !== wordId));
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete word');
+    }
   };
 
   const handleImageUrlChange = (url: string) => {
@@ -106,6 +179,30 @@ const LanguageMaintenancePage = () => {
   // Get unique categories and languages
   const categories = [...new Set(words.map(w => w.category))].sort();
   const languages = [...new Set(words.flatMap(w => Object.keys(w.translations)))].sort();
+
+  if (isAdmin === null) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-blue mx-auto"></div>
+          <p className="mt-4 text-gray-600">Checking access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md text-center">
+          <div className="text-5xl mb-4">🔒</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Access Denied</h2>
+          <p className="text-gray-600 mb-6">You don't have permission to access this page.</p>
+          <Button onClick={() => navigate('/')}>Go Home</Button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -199,6 +296,56 @@ const LanguageMaintenancePage = () => {
           </div>
         </div>
 
+        {/* JSON Import Section */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">📥 Import Words from JSON</h2>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => { setShowImport(!showImport); setImportResult(null); }}
+            >
+              {showImport ? 'Hide' : 'Show'}
+            </Button>
+          </div>
+
+          {showImport && (
+            <div>
+              <p className="text-sm text-gray-600 mb-3">
+                Paste your JSON with a <code className="bg-gray-100 px-1 rounded">words</code> array. Each word needs: category, difficulty, languageCode, translations, imageUrl, distractorImages.
+              </p>
+              <textarea
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+                placeholder={'{\n  "words": [\n    {\n      "category": "animals",\n      "difficulty": "beginner",\n      "languageCode": "multi",\n      "translations": { "en": { "word": "dog", "pronunciation": "/dɔːɡ/" } },\n      "imageUrl": "https://...",\n      "distractorImages": ["https://...", "https://..."]\n    }\n  ]\n}'}
+                className="w-full h-48 border border-gray-300 rounded-md px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary-blue resize-y"
+                disabled={importing}
+              />
+              <div className="flex items-center gap-3 mt-3">
+                <Button onClick={handleJsonImport} disabled={importing || !jsonInput.trim()}>
+                  {importing ? 'Importing...' : 'Import Words'}
+                </Button>
+                {jsonInput && (
+                  <Button variant="secondary" size="sm" onClick={() => { setJsonInput(''); setImportResult(null); }}>
+                    Clear
+                  </Button>
+                )}
+              </div>
+
+              {importResult && (
+                <div className={`mt-3 p-3 rounded-md text-sm ${importResult.failed === 0 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'}`}>
+                  <p>✅ {importResult.success} word(s) imported{importResult.failed > 0 && `, ❌ ${importResult.failed} failed`}</p>
+                  {importResult.errors.length > 0 && (
+                    <ul className="mt-2 list-disc list-inside">
+                      {importResult.errors.map((err, i) => <li key={i}>{err}</li>)}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Words Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredWords.map((word) => (
@@ -206,6 +353,7 @@ const LanguageMaintenancePage = () => {
               key={word.wordId}
               word={word}
               onEdit={handleEditWord}
+              onDelete={handleDeleteWord}
               isEditing={editingWord?.wordId === word.wordId}
             />
           ))}
@@ -238,10 +386,12 @@ const LanguageMaintenancePage = () => {
 const WordCard = ({ 
   word, 
   onEdit, 
+  onDelete,
   isEditing 
 }: { 
   word: LanguageWordAdmin; 
   onEdit: (word: LanguageWordAdmin) => void;
+  onDelete: (wordId: string, wordLabel: string) => void;
   isEditing: boolean;
 }) => {
   const getTranslationText = (word: LanguageWordAdmin) => {
@@ -303,15 +453,22 @@ const WordCard = ({
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex gap-2">
           <Button
             onClick={() => onEdit(word)}
             disabled={isEditing}
-            className="w-full"
+            className="flex-1"
             size="sm"
           >
             {isEditing ? 'Editing...' : 'Edit'}
           </Button>
+          <button
+            onClick={() => onDelete(word.wordId, getTranslationText(word))}
+            className="px-3 py-1.5 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+            title="Delete word"
+          >
+            🗑️
+          </button>
         </div>
       </div>
     </div>

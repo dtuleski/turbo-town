@@ -50,7 +50,7 @@ export const devConfig: EnvironmentConfig = {
     admin: 512,
   },
   logRetentionDays: 7,
-  alarmEmailRecipients: ['dev-team@example.com'],
+  alarmEmailRecipients: ['diego.tuleski@gmail.com'],
   customDomain: {
     webApp: 'dev.dashden.app',
     assets: 'assets-dev.dashden.app',
@@ -95,7 +95,7 @@ export const prodConfig: EnvironmentConfig = {
     admin: 512,
   },
   logRetentionDays: 30,
-  alarmEmailRecipients: ['ops-team@example.com', 'alerts@example.com'],
+  alarmEmailRecipients: ['diego.tuleski@gmail.com'],
   customDomain: {
     webApp: 'dashden.app',
     assets: 'assets.dashden.app',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { GameState, GameTheme, DifficultyLevel, Card } from '@/types/game'
-import { generateCards, checkMatch, isGameComplete, calculateScore } from '@/utils/gameLogic'
+import { generateCards, checkMatch, isGameComplete } from '@/utils/gameLogic'
 import { startGame as startGameAPI, completeGame as completeGameAPI } from '@/api/game'
 
 export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
@@ -20,6 +20,8 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
   const [flippedCards, setFlippedCards] = useState<Card[]>([])
   const [isChecking, setIsChecking] = useState(false)
   const [gameId, setGameId] = useState<string | null>(null)
+  const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
+  const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
 
   // Timer effect
   useEffect(() => {
@@ -37,7 +39,11 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
 
   // Game completion effect - save to backend
   useEffect(() => {
-    if (gameState.status === 'COMPLETED' && gameId) {
+    // Check if all cards are matched but status is still IN_PROGRESS
+    const allMatched = gameState.cards.every(c => c.isMatched)
+    const needsCompletion = allMatched && gameState.status === 'IN_PROGRESS' && gameId && gameState.endTime
+    
+    if (needsCompletion) {
       const saveGame = async () => {
         try {
           console.log('Saving game to backend...', {
@@ -53,6 +59,22 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
           })
           
           console.log('Game saved successfully!', result)
+          
+          // CRITICAL: Update game state with backend score AND set status to COMPLETED
+          // This ensures the modal shows the correct score
+          setGameState(prev => ({
+            ...prev,
+            score: result.score || 0,
+            status: 'COMPLETED', // Now set to COMPLETED with correct score
+          }))
+          
+          // Capture score breakdown and leaderboard rank
+          if (result.scoreBreakdown) {
+            setScoreBreakdown(result.scoreBreakdown)
+          }
+          if (result.leaderboardRank) {
+            setLeaderboardRank(result.leaderboardRank)
+          }
         } catch (error) {
           console.error('Failed to save game:', error)
           // Log more details
@@ -60,20 +82,25 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
             console.error('Error message:', error.message)
             console.error('Error stack:', error.stack)
           }
+          // Even if backend fails, mark as completed with frontend score
+          setGameState(prev => ({
+            ...prev,
+            status: 'COMPLETED',
+          }))
         }
       }
       saveGame()
     }
-  }, [gameState.status, gameState.elapsedTime, gameState.attempts, gameId])
+  }, [gameState.cards, gameState.status, gameState.elapsedTime, gameState.attempts, gameState.endTime, gameId])
 
   // Start game
   const startGame = useCallback(async () => {
     try {
-      // Map difficulty to 1-5 scale
+      // Map difficulty to 1-3 scale
       const difficultyMap: Record<DifficultyLevel, number> = {
         EASY: 1,
-        MEDIUM: 3,
-        HARD: 5,
+        MEDIUM: 2,
+        HARD: 3,
       }
 
       console.log('Starting game...', {
@@ -150,6 +177,8 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
     setFlippedCards([])
     setIsChecking(false)
     setGameId(null)
+    setScoreBreakdown(null)
+    setLeaderboardRank(null)
   }, [theme, difficulty])
 
   // Handle card click
@@ -195,16 +224,16 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
 
               if (allMatched) {
                 const endTime = Date.now()
-                const timeSeconds = Math.floor((endTime - (prev.startTime || endTime)) / 1000)
-                const finalScore = calculateScore(newAttempts, timeSeconds, difficulty)
+                // Don't calculate score on frontend - backend will provide it
+                // Keep status as IN_PROGRESS until backend responds with score
 
                 return {
                   ...prev,
                   cards: matchedCards,
                   matches: newMatches,
                   attempts: newAttempts,
-                  score: finalScore,
-                  status: 'COMPLETED',
+                  score: 0, // Will be updated from backend
+                  status: 'IN_PROGRESS', // Keep as IN_PROGRESS until backend responds
                   endTime,
                 }
               }
@@ -244,5 +273,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
     resumeGame,
     restartGame,
     handleCardClick,
+    scoreBreakdown,
+    leaderboardRank,
   }
 }

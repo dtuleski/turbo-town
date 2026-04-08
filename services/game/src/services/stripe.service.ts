@@ -1,11 +1,50 @@
 import Stripe from 'stripe';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { logger } from '../utils/logger';
 import { SubscriptionTier } from '@memory-game/shared';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2022-11-15',
-});
+const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
+
+// Cache for secrets (Lambda container reuse)
+let cachedStripeKey: string | null = null;
+let cachedWebhookSecret: string | null = null;
+let stripeInstance: Stripe | null = null;
+
+async function getSecret(secretArn: string): Promise<string> {
+  const command = new GetSecretValueCommand({ SecretId: secretArn });
+  const response = await secretsManager.send(command);
+  return response.SecretString || '';
+}
+
+async function getStripeClient(): Promise<Stripe> {
+  if (stripeInstance) return stripeInstance;
+
+  const secretArn = process.env.STRIPE_SECRET_KEY_ARN;
+  if (secretArn) {
+    // Production: fetch from Secrets Manager
+    cachedStripeKey = await getSecret(secretArn);
+    logger.info('Stripe key loaded from Secrets Manager');
+  } else {
+    // Dev fallback: use env var directly
+    cachedStripeKey = process.env.STRIPE_SECRET_KEY || '';
+  }
+
+  stripeInstance = new Stripe(cachedStripeKey, { apiVersion: '2022-11-15' });
+  return stripeInstance;
+}
+
+async function getWebhookSecret(): Promise<string> {
+  if (cachedWebhookSecret) return cachedWebhookSecret;
+
+  const secretArn = process.env.STRIPE_WEBHOOK_SECRET_ARN;
+  if (secretArn) {
+    cachedWebhookSecret = await getSecret(secretArn);
+  } else {
+    cachedWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
+  }
+  return cachedWebhookSecret;
+}
 
 export interface CreateCheckoutSessionInput {
   userId: string;
@@ -32,6 +71,7 @@ export class StripeService {
     try {
       logger.info('Creating Stripe Checkout session', { userId: input.userId, tier: input.tier });
 
+      const stripe = await getStripeClient();
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         payment_method_types: ['card'],
@@ -70,6 +110,7 @@ export class StripeService {
     try {
       logger.info('Creating Stripe Customer Portal session', { customerId: input.customerId });
 
+      const stripe = await getStripeClient();
       const session = await stripe.billingPortal.sessions.create({
         customer: input.customerId,
         return_url: `${process.env.FRONTEND_URL}/subscription`,
@@ -245,8 +286,9 @@ export class StripeService {
   /**
    * Verify Stripe webhook signature
    */
-  static verifyWebhookSignature(payload: string, signature: string): Stripe.Event {
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
+  static async verifyWebhookSignature(payload: string, signature: string): Promise<Stripe.Event> {
+    const stripe = await getStripeClient();
+    const webhookSecret = await getWebhookSecret();
     
     try {
       return stripe.webhooks.constructEvent(payload, signature, webhookSecret);

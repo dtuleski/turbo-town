@@ -1,0 +1,26 @@
+{
+  "version": "0",
+  "id": "test-event-123",
+  "detail-type": "GameCompleted",
+  "source": "game-service",
+  "account": "848403890404",
+  "time": "2026-03-11T23:30:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "gameId": "test-game-123",
+    "userId": "c4c804d8-6071-70c6-d9e3-a2286ef3f13a",
+    "username": "dtuleski",
+    "gameType": "MEMORY_MATCH",
+    "difficulty": "MEDIUM",
+    "completionTime": 30,
+    "accuracy": 0.95,
+    "performanceMetrics": {
+      "attempts": 12,
+      "hintsUsed": 0,
+      "pauseCount": 0,
+      "averageResponseTime": 2
+    },
+    "timestamp": "2026-03-11T23:30:00.000Z"
+  }
+}

@@ -20,6 +20,9 @@ export class DatabaseStack extends cdk.Stack {
   public readonly languageWordsTable: dynamodb.Table;
   public readonly languageProgressTable: dynamodb.Table;
   public readonly languageResultsTable: dynamodb.Table;
+  public readonly leaderboardEntriesTable: dynamodb.Table;
+  public readonly userAggregatesTable: dynamodb.Table;
+  public readonly rateLimitBucketsTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -232,6 +235,78 @@ export class DatabaseStack extends cdk.Stack {
       sortKey: { name: 'completedAt', type: dynamodb.AttributeType.STRING },
     });
 
+    // LeaderboardEntries Table
+    this.leaderboardEntriesTable = new dynamodb.Table(this, 'LeaderboardEntriesTable', {
+      tableName: `memory-game-leaderboard-entries-${environment}`,
+      partitionKey: { name: 'gameType', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'scoreTimestamp', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    // DailyLeaderboardIndex - for daily leaderboard queries
+    this.leaderboardEntriesTable.addGlobalSecondaryIndex({
+      indexName: 'DailyLeaderboardIndex',
+      partitionKey: { name: 'gameTypeDate', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'score', type: dynamodb.AttributeType.NUMBER },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // WeeklyLeaderboardIndex - for weekly leaderboard queries
+    this.leaderboardEntriesTable.addGlobalSecondaryIndex({
+      indexName: 'WeeklyLeaderboardIndex',
+      partitionKey: { name: 'gameTypeWeek', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'score', type: dynamodb.AttributeType.NUMBER },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // MonthlyLeaderboardIndex - for monthly leaderboard queries
+    this.leaderboardEntriesTable.addGlobalSecondaryIndex({
+      indexName: 'MonthlyLeaderboardIndex',
+      partitionKey: { name: 'gameTypeMonth', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'score', type: dynamodb.AttributeType.NUMBER },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // UserScoreHistoryIndex - for user score history queries
+    this.leaderboardEntriesTable.addGlobalSecondaryIndex({
+      indexName: 'UserScoreHistoryIndex',
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'timestamp', type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // UserAggregates Table
+    this.userAggregatesTable = new dynamodb.Table(this, 'UserAggregatesTable', {
+      tableName: `memory-game-user-aggregates-${environment}`,
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'gameType', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    // OverallLeaderboardIndex - for overall leaderboard rankings
+    this.userAggregatesTable.addGlobalSecondaryIndex({
+      indexName: 'OverallLeaderboardIndex',
+      partitionKey: { name: 'gameType', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'totalScore', type: dynamodb.AttributeType.NUMBER },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // RateLimitBuckets Table - for leaderboard service rate limiting
+    this.rateLimitBucketsTable = new dynamodb.Table(this, 'RateLimitBucketsTable', {
+      tableName: `memory-game-rate-limit-buckets-${environment}`,
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      timeToLiveAttribute: 'expiresAt',
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
     // Outputs
     new cdk.CfnOutput(this, 'UsersTableName', {
       value: this.usersTable.tableName,
@@ -256,6 +331,21 @@ export class DatabaseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'LanguageResultsTableName', {
       value: this.languageResultsTable.tableName,
       exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-LanguageResultsTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'LeaderboardEntriesTableName', {
+      value: this.leaderboardEntriesTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-LeaderboardEntriesTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'UserAggregatesTableName', {
+      value: this.userAggregatesTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-UserAggregatesTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'RateLimitBucketsTableName', {
+      value: this.rateLimitBucketsTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-RateLimitBucketsTableName`,
     });
   }
 }

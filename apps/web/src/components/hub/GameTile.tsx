@@ -1,11 +1,12 @@
-import { GameCatalogItem } from '../../api/game'
+import { GameCatalogItem, ReviewStats } from '../../api/game'
 
 interface GameTileProps {
   game: GameCatalogItem
   onClick: () => void
+  rating?: ReviewStats
 }
 
-export default function GameTile({ game, onClick }: GameTileProps) {
+export default function GameTile({ game, onClick, rating }: GameTileProps) {
   const isActive = game.status === 'ACTIVE'
   const isComingSoon = game.status === 'COMING_SOON'
 
@@ -52,6 +53,19 @@ export default function GameTile({ game, onClick }: GameTileProps) {
           {game.category}
         </span>
       </div>
+
+      {/* Rating */}
+      {rating && rating.totalReviews > 0 && (
+        <div className="flex items-center justify-center gap-1.5 mt-3 text-sm">
+          <div className="flex">
+            {[1, 2, 3, 4, 5].map(s => (
+              <span key={s} className={`text-base ${s <= Math.round(rating.averageRating) ? 'opacity-100' : 'opacity-25'}`}>⭐</span>
+            ))}
+          </div>
+          <span className="font-bold text-gray-700">{rating.averageRating.toFixed(1)}</span>
+          <span className="text-gray-400">({rating.totalReviews})</span>
+        </div>
+      )}
 
       {/* Play Button (Active games only) */}
       {isActive && (

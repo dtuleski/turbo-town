@@ -97,7 +97,7 @@ export class GameService {
   /**
    * Complete a game
    */
-  async completeGame(userId: string, input: CompleteGameInput): Promise<CompleteGameResponse> {
+  async completeGame(userId: string, input: CompleteGameInput, username: string): Promise<CompleteGameResponse> {
     logger.info('Completing game', { userId, gameId: input.gameId });
 
     // Get game
@@ -122,18 +122,30 @@ export class GameService {
       throw new AuthorizationError(timeValidation.reason!);
     }
 
-    // Validate attempts
-    const attemptsValidation = validateAttempts(input.attempts, game.difficulty);
-    if (!attemptsValidation.valid) {
-      throw new AuthorizationError(attemptsValidation.reason!);
+    // Validate attempts (only for Memory Match which uses pairs-based logic)
+    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE'].includes(game.themeId)) {
+      const attemptsValidation = validateAttempts(input.attempts, game.difficulty);
+      if (!attemptsValidation.valid) {
+        throw new AuthorizationError(attemptsValidation.reason!);
+      }
     }
 
-    // Calculate score
-    const score = this.scoreCalculator.calculateScore(
+    // Calculate accuracy for non-Memory-Match games BEFORE score calculation
+    let preAccuracy: number | undefined
+    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE'].includes(game.themeId)) {
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      preAccuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+    }
+
+    // Calculate score (with accuracy override for non-Memory-Match games)
+    const scoreBreakdownForEvent = this.scoreCalculator.calculateScoreBreakdown(
       game.difficulty,
       input.completionTime,
-      input.attempts
+      input.attempts,
+      preAccuracy
     );
+    const score = scoreBreakdownForEvent.finalScore;
 
     // Update game record
     const completedGame = await this.gameRepository.update(input.gameId, {
@@ -160,21 +172,154 @@ export class GameService {
     // Publish metrics
     await metricsPublisher.publishGameCompleted(game.difficulty, tier, score);
 
-    // Publish GameCompleted event (async, fire-and-forget)
-    this.eventPublisher.publishGameCompleted({
-      gameId: completedGame.id,
+    // Calculate accuracy and performance metrics based on game type
+    let accuracy = 0;
+    let avgResponseTimeSeconds = 1;
+    let gameType = 'MEMORY_MATCH'; // Default
+    
+    // Determine game type from themeId
+    if (game.themeId === 'MATH_CHALLENGE') {
+      gameType = 'MATH_CHALLENGE';
+      // For Math Challenge: accuracy = correctAnswers / totalQuestions
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / totalQuestions));
+    } else if (game.themeId === 'WORD_PUZZLE') {
+      gameType = 'WORD_PUZZLE';
+      // For Word Puzzle: accuracy = wordsFound / totalWords
+      const wordsFound = input.wordsFound || 0;
+      const totalWords = input.totalWords || 1;
+      accuracy = totalWords > 0 ? wordsFound / totalWords : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (wordsFound || 1)));
+    } else if (game.themeId === 'LANGUAGE_LEARNING') {
+      gameType = 'LANGUAGE_LEARNING';
+      // For Language Learning: accuracy = correctAnswers / totalQuestions
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / totalQuestions));
+    } else if (game.themeId === 'SUDOKU') {
+      gameType = 'SUDOKU';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / totalQuestions));
+    } else if (game.themeId === 'JIGSAW_PUZZLE') {
+      gameType = 'JIGSAW_PUZZLE';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'BUBBLE_POP') {
+      gameType = 'BUBBLE_POP';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'SEQUENCE_MEMORY') {
+      gameType = 'SEQUENCE_MEMORY';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'CODE_A_BOT') {
+      gameType = 'CODE_A_BOT';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'GEO_QUIZ') {
+      gameType = 'GEO_QUIZ';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'HISTORY_QUIZ') {
+      gameType = 'HISTORY_QUIZ';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'CIVICS_QUIZ') {
+      gameType = 'CIVICS_QUIZ';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'COLOR_BY_NUMBER') {
+      gameType = 'COLOR_BY_NUMBER';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'HANGMAN') {
+      gameType = 'HANGMAN';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'TIC_TAC_TOE') {
+      gameType = 'TIC_TAC_TOE';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else {
+      // Memory Match (default)
+      // Map difficulty to pairs: 1->6, 2->12, 3->18, 4->24, 5->30
+      const pairsMap: Record<number, number> = { 1: 6, 2: 12, 3: 18, 4: 24, 5: 30 };
+      const pairs = pairsMap[game.difficulty] || 12;
+      const minAttempts = pairs * 2; // Perfect game = 2 attempts per pair
+      accuracy = Math.max(0, Math.min(1, 1 - (input.attempts - minAttempts) / minAttempts));
+      avgResponseTimeSeconds = Math.max(1, Math.round(completedGame.completionTime! / input.attempts));
+    }
+
+    // Publish GameCompleted event
+    // completionTime is already in seconds from the input
+    // Ensure minimum 1 second to avoid validation errors
+    const completionTimeSeconds = Math.max(1, completedGame.completionTime!);
+
+    logger.info('Publishing GameCompleted event', {
+      gameId: input.gameId,
       userId: completedGame.userId,
-      userName: '', // TODO: Get from user service
-      themeId: completedGame.themeId,
-      difficulty: completedGame.difficulty,
-      score: completedGame.score!,
-      completionTime: completedGame.completionTime!,
-      attempts: completedGame.attempts!,
-      completedAt: new Date(completedGame.completedAt!),
+      username: username,
+      gameType,
+      completionTimeSeconds,
+    });
+
+    await this.eventPublisher.publishGameCompleted({
+      gameId: input.gameId, // Use input.gameId instead of completedGame.id
+      userId: completedGame.userId,
+      username: username,
+      gameType: gameType as any,
+      difficulty: game.difficulty <= 1 ? 'EASY' : game.difficulty <= 2 ? 'MEDIUM' : 'HARD',
+      score: score, // Include the calculated score
+      completionTime: completionTimeSeconds,
+      accuracy: accuracy,
+      performanceMetrics: {
+        attempts: input.attempts,
+        correctAnswers: input.correctAnswers,
+        totalQuestions: input.totalQuestions,
+        wordsFound: input.wordsFound,
+        totalWords: input.totalWords,
+        hintsUsed: input.hintsUsed || 0,
+        pauseCount: input.pauseCount || 0,
+        averageResponseTime: avgResponseTimeSeconds,
+      },
+      timestamp: new Date().toISOString(),
     });
 
     // Invalidate statistics cache
     statisticsCache.delete(userId);
+
+    // Calculate score breakdown for frontend display
+    const scoreBreakdown = this.scoreCalculator.calculateScoreBreakdown(
+      game.difficulty,
+      input.completionTime,
+      input.attempts,
+      accuracy
+    );
 
     logger.info('Game completed successfully', {
       userId,
@@ -186,6 +331,7 @@ export class GameService {
     return {
       game: completedGame,
       achievements,
+      scoreBreakdown,
     };
   }
 

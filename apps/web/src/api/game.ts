@@ -32,6 +32,17 @@ const COMPLETE_GAME = gql`
       completionTime
       attempts
       score
+      scoreBreakdown {
+        baseScore
+        difficultyMultiplier
+        speedBonus
+        accuracyBonus
+        finalScore
+        difficulty
+        completionTime
+        accuracy
+      }
+      leaderboardRank
       achievements {
         type
         unlocked
@@ -114,6 +125,13 @@ export interface CompleteGameInput {
   gameId: string
   completionTime: number // seconds
   attempts: number
+  // Optional performance metrics for different game types
+  correctAnswers?: number // For Math Challenge, Language Learning
+  totalQuestions?: number // For Math Challenge, Language Learning
+  wordsFound?: number // For Word Puzzle
+  totalWords?: number // For Word Puzzle
+  hintsUsed?: number // Optional for all games
+  pauseCount?: number // Optional for all games
 }
 
 export interface GameHistoryInput {
@@ -139,6 +157,7 @@ export const completeGame = async (input: CompleteGameInput) => {
   const { data } = await gameClient.mutate({
     mutation: COMPLETE_GAME,
     variables: { input },
+    fetchPolicy: 'no-cache',
   })
   return data.completeGame
 }
@@ -202,4 +221,149 @@ export const listAvailableGames = async (): Promise<GameCatalogItem[]> => {
     fetchPolicy: 'network-only',
   })
   return data.listAvailableGames
+}
+
+
+// ── Reviews ────────────────────────────────────────────────────────────────────
+
+const SUBMIT_GAME_REVIEW = gql`
+  mutation SubmitGameReview($input: SubmitGameReviewInput!) {
+    submitGameReview(input: $input) {
+      success
+    }
+  }
+`
+
+const GET_USER_REVIEW = gql`
+  query GetUserReview($gameType: String!) {
+    getUserReview(gameType: $gameType) {
+      rating
+    }
+  }
+`
+
+const GET_REVIEW_STATS = gql`
+  query GetReviewStats {
+    getReviewStats {
+      perGame {
+        gameType
+        averageRating
+        totalReviews
+      }
+      overall {
+        gameType
+        averageRating
+        totalReviews
+      }
+    }
+  }
+`
+
+export interface ReviewStats {
+  gameType: string
+  averageRating: number
+  totalReviews: number
+}
+
+export const submitGameReview = async (gameType: string, rating: number): Promise<{ success: boolean }> => {
+  const { data } = await gameClient.mutate({
+    mutation: SUBMIT_GAME_REVIEW,
+    variables: { input: { gameType, rating } },
+  })
+  return data.submitGameReview
+}
+
+export const getUserReview = async (gameType: string): Promise<number | null> => {
+  const { data } = await gameClient.query({
+    query: GET_USER_REVIEW,
+    variables: { gameType },
+    fetchPolicy: 'network-only',
+  })
+  return data.getUserReview?.rating ?? null
+}
+
+export const getReviewStats = async (): Promise<{ perGame: ReviewStats[]; overall: ReviewStats }> => {
+  const { data } = await gameClient.query({
+    query: GET_REVIEW_STATS,
+    fetchPolicy: 'network-only',
+  })
+  return data.getReviewStats
+}
+
+
+// ── Email Preferences ──────────────────────────────────────────────────────
+
+const GET_EMAIL_PREFS = gql`
+  query GetEmailPrefs {
+    getEmailPrefs {
+      userId
+      dailyDigest
+    }
+  }
+`
+
+const SET_EMAIL_PREFS = gql`
+  mutation SetEmailPrefs($input: SetEmailPrefsInput!) {
+    setEmailPrefs(input: $input) {
+      userId
+      dailyDigest
+    }
+  }
+`
+
+export const getEmailPrefs = async (): Promise<{ userId: string; dailyDigest: boolean }> => {
+  const { data } = await gameClient.query({
+    query: GET_EMAIL_PREFS,
+    fetchPolicy: 'network-only',
+  })
+  return data.getEmailPrefs
+}
+
+export const setEmailPrefs = async (dailyDigest: boolean): Promise<{ userId: string; dailyDigest: boolean }> => {
+  const { data } = await gameClient.mutate({
+    mutation: SET_EMAIL_PREFS,
+    variables: { input: { dailyDigest } },
+  })
+  return data.setEmailPrefs
+}
+
+
+// ── Admin Email Preferences ────────────────────────────────────────────────
+
+const ADMIN_SET_EMAIL_PREFS = gql`
+  mutation AdminSetEmailPrefs($input: AdminSetEmailPrefsInput!) {
+    adminSetEmailPrefs(input: $input) {
+      userId
+      dailyDigest
+    }
+  }
+`
+
+const ADMIN_GET_ALL_EMAIL_PREFS = gql`
+  query AdminGetAllEmailPrefs {
+    adminGetAllEmailPrefs {
+      users {
+        userId
+        email
+        username
+        dailyDigest
+      }
+    }
+  }
+`
+
+export const adminSetEmailPrefs = async (userId: string, email: string, username: string, dailyDigest: boolean) => {
+  const { data } = await gameClient.mutate({
+    mutation: ADMIN_SET_EMAIL_PREFS,
+    variables: { input: { userId, email, username, dailyDigest } },
+  })
+  return data.adminSetEmailPrefs
+}
+
+export const adminGetAllEmailPrefs = async (): Promise<{ userId: string; email: string; username: string; dailyDigest: boolean }[]> => {
+  const { data } = await gameClient.query({
+    query: ADMIN_GET_ALL_EMAIL_PREFS,
+    fetchPolicy: 'network-only',
+  })
+  return data.adminGetAllEmailPrefs.users
 }

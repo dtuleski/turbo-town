@@ -40,7 +40,7 @@ const DIFFICULTIES = [
 
 const CATEGORIES = [
   { id: 'animals', name: 'Animals', icon: '🐕', description: 'Dogs, cats, birds, and more' },
-  { id: 'food', name: 'Food & Drinks', icon: '🍎', description: 'Fruits, vegetables, meals' },
+  { id: 'food_drinks', name: 'Food & Drinks', icon: '🍎', description: 'Fruits, vegetables, meals' },
   { id: 'colors', name: 'Colors', icon: '🌈', description: 'Basic and advanced colors' },
   { id: 'numbers', name: 'Numbers', icon: '🔢', description: 'Numbers 1-20 and beyond' },
   { id: 'objects', name: 'Objects', icon: '📱', description: 'Everyday items and tools' },

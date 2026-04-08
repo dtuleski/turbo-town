@@ -78,6 +78,9 @@ export const authClient = new ApolloClient({
     watchQuery: {
       fetchPolicy: 'cache-and-network',
     },
+    mutate: {
+      fetchPolicy: 'no-cache',
+    },
   },
 })
 
@@ -92,6 +95,9 @@ export const gameClient = new ApolloClient({
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-and-network',
+    },
+    mutate: {
+      fetchPolicy: 'no-cache',
     },
   },
 })

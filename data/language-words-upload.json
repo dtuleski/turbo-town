@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "tableName": "memory-game-language-words-dev",
+  "words": [
+    {
+      "category": "food_drinks",
+      "difficulty": "beginner",
+      "languageCode": "multi",
+      "translations": {
+        "en": { "word": "apple", "pronunciation": "/ˈæp.əl/" },
+        "es": { "word": "manzana", "pronunciation": "/manˈθana/" },
+        "fr": { "word": "pomme", "pronunciation": "/pɔm/" },
+        "it": { "word": "mela", "pronunciation": "/ˈme.la/" },
+        "de": { "word": "Apfel", "pronunciation": "/ˈapfəl/" },
+        "pt": { "word": "maçã", "pronunciation": "/maˈsɐ̃/" },
+        "el": { "word": "μήλο", "pronunciation": "/ˈmi.lo/" }
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop",
+      "distractorImages": [
+        "https://images.unsplash.com/photo-1557800636-894a64c1696f?w=300&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=300&h=300&fit=crop"
+      ]
+    },
+    {
+      "category": "nature",
+      "difficulty": "intermediate",
+      "languageCode": "multi",
+      "translations": {
+        "en": { "word": "mountain", "pronunciation": "/ˈmaʊn.tən/" },
+        "es": { "word": "montaña", "pronunciation": "/monˈtaɲa/" },
+        "fr": { "word": "montagne", "pronunciation": "/mɔ̃.taɲ/" },
+        "it": { "word": "montagna", "pronunciation": "/monˈtaɲ.ɲa/" },
+        "de": { "word": "Berg", "pronunciation": "/bɛrk/" },
+        "pt": { "word": "montanha", "pronunciation": "/mõˈtɐ.ɲɐ/" },
+        "el": { "word": "βουνό", "pronunciation": "/vuˈno/" }
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop",
+      "distractorImages": [
+        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&h=300&fit=crop"
+      ]
+    },
+    {
+      "category": "animals",
+      "difficulty": "advanced",
+      "languageCode": "multi",
+      "translations": {
+        "en": { "word": "hedgehog", "pronunciation": "/ˈhedʒ.hɒɡ/" },
+        "es": { "word": "erizo", "pronunciation": "/eˈɾiθo/" },
+        "fr": { "word": "hérisson", "pronunciation": "/e.ʁi.sɔ̃/" },
+        "it": { "word": "riccio", "pronunciation": "/ˈrit.tʃo/" },
+        "de": { "word": "Igel", "pronunciation": "/ˈiːɡəl/" },
+        "pt": { "word": "ouriço", "pronunciation": "/owˈɾi.su/" },
+        "el": { "word": "σκαντζόχοιρος", "pronunciation": "/skanˈdzo.çi.ros/" }
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1543411135-977670989360?w=300&h=300&fit=crop",
+      "distractorImages": [
+        "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=300&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=300&h=300&fit=crop"
+      ]
+    },
+    {
+      "category": "objects",
+      "difficulty": "beginner",
+      "languageCode": "multi",
+      "translations": {
+        "en": { "word": "book", "pronunciation": "/bʊk/" },
+        "es": { "word": "libro", "pronunciation": "/ˈli.βɾo/" },
+        "fr": { "word": "livre", "pronunciation": "/livʁ/" },
+        "it": { "word": "libro", "pronunciation": "/ˈli.bro/" },
+        "de": { "word": "Buch", "pronunciation": "/buːx/" },
+        "pt": { "word": "livro", "pronunciation": "/ˈli.vɾu/" },
+        "el": { "word": "βιβλίο", "pronunciation": "/viˈvli.o/" }
+      },
+      "imageUrl": "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&h=300&fit=crop",
+      "distractorImages": [
+        "https://images.unsplash.com/photo-1583484963886-cfe2bef37d7b?w=300&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1512418490979-91795d43a94b?w=300&h=300&fit=crop"
+      ]
+    }
+  ]
+}

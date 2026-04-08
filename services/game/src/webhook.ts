@@ -23,7 +23,7 @@ export async function handler(event: any): Promise<any> {
     }
 
     // Verify webhook signature and construct event
-    const stripeEvent = StripeService.verifyWebhookSignature(event.body || '', signature);
+    const stripeEvent = await StripeService.verifyWebhookSignature(event.body || '', signature);
 
     logger.info('Webhook signature verified', { type: stripeEvent.type, eventId: stripeEvent.id });
 

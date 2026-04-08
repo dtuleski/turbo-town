@@ -4,6 +4,7 @@ import { DatabaseStack } from '../lib/stacks/database-stack';
 import { CognitoStack } from '../lib/stacks/cognito-stack';
 import { EventBridgeStack } from '../lib/stacks/eventbridge-stack';
 import { LambdaStack } from '../lib/stacks/lambda-stack';
+import { LeaderboardLambdaStack } from '../lib/stacks/leaderboard-lambda-stack';
 import { ApiStack } from '../lib/stacks/api-stack';
 import { MonitoringStack } from '../lib/stacks/monitoring-stack';
 import { devConfig, stagingConfig, prodConfig, EnvironmentConfig } from '../lib/config/environment-config';
@@ -75,23 +76,40 @@ const lambdaStack = new LambdaStack(app, `MemoryGame-Lambda-${environment}`, {
   languageResultsTable: databaseStack.languageResultsTable,
   userPool: cognitoStack.userPool,
   userPoolClient: cognitoStack.userPoolClient,
-  eventBus: eventBridgeStack.eventBus,
+  eventBus: eventBridgeStack.gameEventsEventBus, // Use game-events-dev bus for game service
 });
 lambdaStack.addDependency(databaseStack);
 lambdaStack.addDependency(cognitoStack);
 lambdaStack.addDependency(eventBridgeStack);
 
-// 5. API Stack (depends on Lambda, Cognito)
+// 4.5. Leaderboard Lambda Stack (depends on Database, Cognito, EventBridge)
+const leaderboardLambdaStack = new LeaderboardLambdaStack(app, `MemoryGame-LeaderboardLambda-${environment}`, {
+  ...stackProps,
+  environment,
+  leaderboardEntriesTable: databaseStack.leaderboardEntriesTable,
+  userAggregatesTable: databaseStack.userAggregatesTable,
+  rateLimitBucketsTable: databaseStack.rateLimitBucketsTable,
+  userPool: cognitoStack.userPool,
+  gameEventsEventBusArn: eventBridgeStack.gameEventsEventBus.eventBusArn,
+  leaderboardDLQArn: eventBridgeStack.leaderboardDLQ.queueArn,
+});
+leaderboardLambdaStack.addDependency(databaseStack);
+leaderboardLambdaStack.addDependency(cognitoStack);
+leaderboardLambdaStack.addDependency(eventBridgeStack);
+
+// 5. API Stack (depends on Lambda, Cognito, Leaderboard Lambda)
 const apiStack = new ApiStack(app, `MemoryGame-API-${environment}`, {
   ...stackProps,
   environment,
   authLambda: lambdaStack.authFunction,
   gameLambda: lambdaStack.gameFunction,
+  leaderboardLambda: leaderboardLambdaStack.leaderboardFunction,
   userPool: cognitoStack.userPool,
   userPoolClient: cognitoStack.userPoolClient,
 });
 apiStack.addDependency(lambdaStack);
 apiStack.addDependency(cognitoStack);
+apiStack.addDependency(leaderboardLambdaStack);
 
 // 6. Monitoring Stack (depends on Lambda, Database, API)
 const monitoringStack = new MonitoringStack(app, `MemoryGame-Monitoring-${environment}`, {

@@ -65,17 +65,17 @@ export class SubscriptionRepository implements ISubscriptionRepository {
       // Get existing subscription
       const existing = await this.getByUserId(data.userId);
       
-      const subscription: Subscription = {
+      const subscription = {
         userId: data.userId,
         tier: data.tier || existing?.tier || SubscriptionTier.Free,
         status: data.status || existing?.status || 'ACTIVE',
         stripeCustomerId: data.stripeCustomerId || existing?.stripeCustomerId,
         stripeSubscriptionId: data.stripeSubscriptionId || existing?.stripeSubscriptionId,
-        currentPeriodStart: data.currentPeriodStart || existing?.currentPeriodStart,
-        currentPeriodEnd: data.currentPeriodEnd || existing?.currentPeriodEnd,
-        startDate: existing?.startDate || now,
-        createdAt: existing?.createdAt || now,
-        updatedAt: now,
+        currentPeriodStart: data.currentPeriodStart ? data.currentPeriodStart.toISOString() : existing?.currentPeriodStart,
+        currentPeriodEnd: data.currentPeriodEnd ? data.currentPeriodEnd.toISOString() : existing?.currentPeriodEnd,
+        startDate: existing?.startDate || now.toISOString(),
+        createdAt: existing?.createdAt || now.toISOString(),
+        updatedAt: now.toISOString(),
       };
 
       await docClient.send(

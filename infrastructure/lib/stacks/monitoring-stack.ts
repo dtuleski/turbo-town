@@ -34,9 +34,12 @@ export interface MonitoringStackProps extends cdk.StackProps {
  */
 export class MonitoringStack extends cdk.Stack {
   public readonly alarmTopic: sns.Topic;
+  private readonly envName: string;
 
   constructor(scope: Construct, id: string, props: MonitoringStackProps) {
     super(scope, id, props);
+
+    this.envName = props.environment;
 
     // Create SNS Topic for alarms
     this.alarmTopic = new sns.Topic(this, 'AlarmTopic', {
@@ -86,7 +89,7 @@ export class MonitoringStack extends cdk.Stack {
   private createLambdaAlarms(fn: lambda.Function, serviceName: string): void {
     // Error rate alarm (> 5%)
     const errorAlarm = new cloudwatch.Alarm(this, `${serviceName}ErrorAlarm`, {
-      alarmName: `MemoryGame-${serviceName}-ErrorRate`,
+      alarmName: `MemoryGame-${serviceName}-ErrorRate-${this.envName}`,
       metric: fn.metricErrors({
         statistic: 'Sum',
         period: cdk.Duration.minutes(5),
@@ -100,7 +103,7 @@ export class MonitoringStack extends cdk.Stack {
 
     // Duration alarm (> 5 seconds)
     const durationAlarm = new cloudwatch.Alarm(this, `${serviceName}DurationAlarm`, {
-      alarmName: `MemoryGame-${serviceName}-Duration`,
+      alarmName: `MemoryGame-${serviceName}-Duration-${this.envName}`,
       metric: fn.metricDuration({
         statistic: 'Average',
         period: cdk.Duration.minutes(5),
@@ -114,7 +117,7 @@ export class MonitoringStack extends cdk.Stack {
 
     // Throttle alarm
     const throttleAlarm = new cloudwatch.Alarm(this, `${serviceName}ThrottleAlarm`, {
-      alarmName: `MemoryGame-${serviceName}-Throttles`,
+      alarmName: `MemoryGame-${serviceName}-Throttles-${this.envName}`,
       metric: fn.metricThrottles({
         statistic: 'Sum',
         period: cdk.Duration.minutes(5),
@@ -130,7 +133,7 @@ export class MonitoringStack extends cdk.Stack {
   private createDynamoDBAlarms(table: dynamodb.Table, tableName: string): void {
     // Read throttle alarm
     const readThrottleAlarm = new cloudwatch.Alarm(this, `${tableName}ReadThrottleAlarm`, {
-      alarmName: `MemoryGame-${tableName}-ReadThrottles`,
+      alarmName: `MemoryGame-${tableName}-ReadThrottles-${this.envName}`,
       metric: table.metricUserErrors({
         statistic: 'Sum',
         period: cdk.Duration.minutes(5),
@@ -144,7 +147,7 @@ export class MonitoringStack extends cdk.Stack {
 
     // System errors alarm
     const systemErrorsAlarm = new cloudwatch.Alarm(this, `${tableName}SystemErrorsAlarm`, {
-      alarmName: `MemoryGame-${tableName}-SystemErrors`,
+      alarmName: `MemoryGame-${tableName}-SystemErrors-${this.envName}`,
       metric: table.metricSystemErrorsForOperations({
         operations: [dynamodb.Operation.GET_ITEM, dynamodb.Operation.PUT_ITEM, dynamodb.Operation.QUERY],
         statistic: 'Sum',
@@ -161,7 +164,7 @@ export class MonitoringStack extends cdk.Stack {
   private createApiGatewayAlarms(api: apigatewayv2.HttpApi): void {
     // 5xx error rate alarm
     const serverErrorAlarm = new cloudwatch.Alarm(this, 'Api5xxAlarm', {
-      alarmName: 'MemoryGame-API-5xxErrors',
+      alarmName: `MemoryGame-API-5xxErrors-${this.envName}`,
       metric: new cloudwatch.Metric({
         namespace: 'AWS/ApiGateway',
         metricName: '5XXError',
@@ -180,7 +183,7 @@ export class MonitoringStack extends cdk.Stack {
 
     // Latency alarm (> 1 second)
     const latencyAlarm = new cloudwatch.Alarm(this, 'ApiLatencyAlarm', {
-      alarmName: 'MemoryGame-API-Latency',
+      alarmName: `MemoryGame-API-Latency-${this.envName}`,
       metric: new cloudwatch.Metric({
         namespace: 'AWS/ApiGateway',
         metricName: 'Latency',

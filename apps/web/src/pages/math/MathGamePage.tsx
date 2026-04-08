@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
 import { generateQuestion, checkAnswer, type MathQuestion } from '@/utils/mathUtils'
 import { startGame, completeGame } from '@/api/game'
+import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 
 const DIFFICULTY_CONFIG = {
   easy: {
@@ -40,12 +41,14 @@ export default function MathGamePage() {
   const [userAnswer, setUserAnswer] = useState('')
   const [score, setScore] = useState(0)
   const [timeRemaining, setTimeRemaining] = useState(0)
-  const [gameStatus, setGameStatus] = useState<'loading' | 'playing' | 'completed'>('loading')
+  const [gameStatus, setGameStatus] = useState<'loading' | 'playing' | 'submitting' | 'completed'>('loading')
   const [feedback, setFeedback] = useState<{ show: boolean; correct: boolean; message: string }>({
     show: false,
     correct: false,
     message: '',
   })
+  const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
+  const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
 
   const config = DIFFICULTY_CONFIG[difficulty] || DIFFICULTY_CONFIG.easy
 
@@ -100,21 +103,32 @@ export default function MathGamePage() {
   }, [gameStatus])
 
   const endGame = useCallback(async () => {
-    if (gameStatus === 'completed') return
+    if (gameStatus === 'completed' || gameStatus === 'submitting') return
     
-    setGameStatus('completed')
+    setGameStatus('submitting')
     
     try {
       const completionTime = config.timeLimit - timeRemaining
-      await completeGame({
+      const result = await completeGame({
         gameId,
         completionTime,
         attempts: questionNumber,
+        correctAnswers: score,
+        totalQuestions: config.questions,
       })
+      
+      if (result.scoreBreakdown) {
+        setScoreBreakdown(result.scoreBreakdown)
+      }
+      if (result.leaderboardRank) {
+        setLeaderboardRank(result.leaderboardRank)
+      }
     } catch (error) {
       console.error('Failed to complete game:', error)
+    } finally {
+      setGameStatus('completed')
     }
-  }, [gameStatus, gameId, config.timeLimit, timeRemaining, questionNumber])
+  }, [gameStatus, gameId, config.timeLimit, config.questions, timeRemaining, questionNumber, score])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -162,7 +176,35 @@ export default function MathGamePage() {
     )
   }
 
+  if (gameStatus === 'submitting') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 flex items-center justify-center">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="text-2xl text-gray-700 font-bold">Calculating your score...</div>
+        </div>
+      </div>
+    )
+  }
+
   if (gameStatus === 'completed') {
+    // Show score breakdown modal if available, otherwise show simple completion screen
+    if (scoreBreakdown) {
+      return (
+        <>
+          <ScoreBreakdownModal
+            isOpen={true}
+            onClose={() => navigate(ROUTES.MATH_SETUP)}
+            scoreBreakdown={scoreBreakdown}
+            leaderboardRank={leaderboardRank}
+            onPlayAgain={() => window.location.reload()}
+            gameType="MATH_CHALLENGE"
+          />
+        </>
+      )
+    }
+    
+    // Fallback simple completion screen
     const percentage = Math.round((score / config.questions) * 100)
     const completionTime = config.timeLimit - timeRemaining
     

@@ -1,0 +1,47 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "xray:PutTelemetryRecords",
+                "xray:PutTraceSegments"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:UpdateItem"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-achievements-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-games-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-rate-limits-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-subscriptions-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-themes-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-language-words-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-language-progress-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-language-results-dev",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-games-dev/index/*",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-subscriptions-dev/index/*",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-themes-dev/index/*",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-language-words-dev/index/*",
+                "arn:aws:dynamodb:us-east-1:848403890404:table/memory-game-language-results-dev/index/*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": "events:PutEvents",
+            "Resource": "arn:aws:events:us-east-1:848403890404:event-bus/game-events-dev",
+            "Effect": "Allow"
+        }
+    ]
+}

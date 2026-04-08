@@ -86,7 +86,6 @@ export class LanguageRepository {
           ':difficulty': difficulty,
           ':languageCode': 'multi' // Look for multi-language entries
         },
-        Limit: count * 2 // Get more than needed to allow for shuffling
       });
 
       const result = await docClient.send(command);
@@ -159,8 +158,17 @@ export class LanguageRepository {
         requestedCount: count
       });
 
+      // Deduplicate by translated word (keep first occurrence)
+      const seen = new Set<string>();
+      const uniqueWords = transformedWords.filter(w => {
+        const key = w.word.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
       // Shuffle and return requested count
-      const shuffled = transformedWords.sort(() => Math.random() - 0.5);
+      const shuffled = uniqueWords.sort(() => Math.random() - 0.5);
       const finalResult = shuffled.slice(0, count);
       
       logger.info('Final result', {
@@ -373,6 +381,67 @@ export class LanguageRepository {
       };
     } catch (error) {
       logger.error('Failed to get language word by ID', error as Error, { wordId });
+      throw error;
+    }
+  }
+
+  /**
+   * Create a new language word (admin only)
+   */
+  async createLanguageWord(input: {
+    category: string;
+    difficulty: string;
+    languageCode: string;
+    translations: Record<string, { word: string; pronunciation: string }>;
+    imageUrl: string;
+    distractorImages: string[];
+  }): Promise<LanguageWordAdmin> {
+    try {
+      const wordId = `${input.category}_${input.translations.en?.word?.toLowerCase() || 'unknown'}_${Date.now()}`;
+      const now = new Date().toISOString();
+
+      const item = {
+        wordId,
+        category: input.category,
+        difficulty: input.difficulty,
+        languageCode: input.languageCode,
+        translations: input.translations,
+        imageUrl: input.imageUrl,
+        distractorImages: input.distractorImages,
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      await docClient.send(new PutCommand({
+        TableName: this.wordsTableName,
+        Item: item,
+      }));
+
+      logger.info('Created language word', { wordId, category: input.category });
+      return item;
+    } catch (error) {
+      logger.error('Failed to create language word', error as Error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a language word (admin only)
+   */
+  async deleteLanguageWord(wordId: string): Promise<boolean> {
+    try {
+      logger.info('Deleting language word', { wordId });
+
+      const { DeleteCommand } = await import('@aws-sdk/lib-dynamodb');
+      await docClient.send(new DeleteCommand({
+        TableName: this.wordsTableName,
+        Key: { wordId },
+      }));
+
+      logger.info('Deleted language word', { wordId });
+      return true;
+    } catch (error) {
+      logger.error('Failed to delete language word', error as Error, { wordId });
       throw error;
     }
   }

@@ -94,6 +94,7 @@ export async function saveLanguageGameResult(gameResult: Omit<LanguageGameResult
   const { data } = await gameClient.mutate({
     mutation: SAVE_LANGUAGE_GAME_RESULT,
     variables: { input: gameResult },
+    fetchPolicy: 'no-cache',
   });
   return data.saveLanguageGameResult;
 }

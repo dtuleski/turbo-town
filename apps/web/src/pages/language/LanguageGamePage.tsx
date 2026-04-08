@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { getLanguageWords, saveLanguageGameResult } from '../../api/language';
+import { getLanguageWords } from '../../api/language';
+import { startGame as startGameAPI, submitGameReview } from '../../api/game';
 
 interface Word {
   id: string;
@@ -44,6 +44,10 @@ export default function LanguageGamePage() {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
+  const [, setBackendGameId] = useState<string>('');
+  const [showResults, setShowResults] = useState(false);
+  const [finalGameState, setFinalGameState] = useState<GameState | null>(null);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   useEffect(() => {
     if (!settings || !languageCode) {
@@ -72,6 +76,18 @@ export default function LanguageGamePage() {
       
       setWords(words);
       setQuestionStartTime(Date.now());
+      
+      // Start game in backend for leaderboard tracking
+      try {
+        const difficultyMap: Record<string, number> = { easy: 1, medium: 2, hard: 3 };
+        const game = await startGameAPI({
+          themeId: 'LANGUAGE_LEARNING',
+          difficulty: difficultyMap[settings.difficulty] || 1,
+        });
+        setBackendGameId(game.id);
+      } catch (err) {
+        console.error('Failed to start backend game:', err);
+      }
     } catch (error) {
       console.error('Failed to load words:', error);
       navigate('/language');
@@ -80,6 +96,82 @@ export default function LanguageGamePage() {
 
   const currentWord = words[gameState.currentWordIndex];
   const progress = words.length > 0 ? ((gameState.currentWordIndex + 1) / words.length) * 100 : 0;
+
+  // Shuffle images once per question (stable across re-renders)
+  const shuffledImages = useMemo(() => {
+    if (!currentWord) return [];
+    const allImages = [currentWord.correctImageUrl, ...currentWord.distractorImages];
+    return [...allImages].sort(() => Math.random() - 0.5);
+  }, [currentWord?.id]);
+
+  // Show results page when game is finished (AFTER all hooks)
+  if (showResults && finalGameState) {
+    const finalScore = finalGameState.score;
+    const accuracy = finalGameState.correctAnswers / Math.max(1, words.length);
+    const completionTime = Math.floor((Date.now() - finalGameState.timeStarted) / 1000);
+    const diffLabel = settings.difficulty === 'advanced' ? 'Hard' : settings.difficulty === 'intermediate' ? 'Medium' : 'Easy';
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+          <div className="text-4xl mb-2">🎉</div>
+          <h2 className="text-2xl font-bold mb-4">Game Complete!</h2>
+          <div className="text-5xl font-black text-indigo-600 mb-1">{finalScore.toLocaleString()}</div>
+          <div className="text-sm text-gray-500 mb-6">Total Score</div>
+          <div className="grid grid-cols-3 gap-4 mb-6 text-center">
+            <div>
+              <div className="text-lg font-bold text-gray-800">{diffLabel}</div>
+              <div className="text-xs text-gray-500">Difficulty</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-gray-800">{Math.round(accuracy * 100)}%</div>
+              <div className="text-xs text-gray-500">Accuracy</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-gray-800">{completionTime}s</div>
+              <div className="text-xs text-gray-500">Time</div>
+            </div>
+          </div>
+          {/* Star Rating */}
+          {!reviewSubmitted ? (
+            <div className="mb-6">
+              <div className="text-sm text-gray-500 mb-2">Rate this game</div>
+              <div className="flex justify-center gap-1">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <button
+                    key={star}
+                    onClick={async () => {
+                      setReviewSubmitted(true);
+                      try { await submitGameReview('LANGUAGE_LEARNING', star); } catch {}
+                    }}
+                    className="text-3xl hover:scale-110 transition-transform"
+                  >
+                    {'☆'}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-sm text-green-500 font-medium mb-6">✓ Thanks for your feedback!</div>
+          )}
+          <div className="flex gap-3">
+            <button
+              onClick={() => navigate(`/language/setup/${languageCode}`, { state: { settings } })}
+              className="flex-1 bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors"
+            >
+              🎮 Play Again
+            </button>
+            <button
+              onClick={() => navigate('/hub')}
+              className="flex-1 border-2 border-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Hub
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleImageSelect = (imageUrl: string) => {
     if (showFeedback || !currentWord) return;
@@ -108,27 +200,12 @@ export default function LanguageGamePage() {
     }));
 
     // Auto-advance after 2 seconds
-    setTimeout(async () => {
+    setTimeout(() => {
       if (gameState.currentWordIndex + 1 >= words.length) {
-        // Game finished - save results
-        try {
-          await saveLanguageGameResult({
-            languageCode: languageCode!,
-            score: gameState.score + totalPoints,
-            correctAnswers: gameState.correctAnswers + (correct ? 1 : 0),
-            totalQuestions: words.length,
-            difficulty: settings.difficulty,
-            category: settings.category,
-            timeSpent: Math.floor((Date.now() - gameState.timeStarted) / 1000),
-            xpGained: Math.floor((gameState.score + totalPoints) / 10)
-          });
-        } catch (error) {
-          console.error('Failed to save game result:', error);
-        }
-        
-        navigate(`/language/results/${languageCode}`, {
-          state: { gameState: { ...gameState, score: gameState.score + totalPoints }, settings }
-        });
+        const finalCorrectAnswers = gameState.correctAnswers + (correct ? 1 : 0);
+        const finalScore = gameState.score + totalPoints;
+        setFinalGameState({ ...gameState, score: finalScore, correctAnswers: finalCorrectAnswers });
+        setShowResults(true);
       } else {
         // Next question
         setGameState(prev => ({ ...prev, currentWordIndex: prev.currentWordIndex + 1 }));
@@ -159,10 +236,6 @@ export default function LanguageGamePage() {
     );
   }
 
-  // Shuffle images for display
-  const allImages = [currentWord.correctImageUrl, ...currentWord.distractorImages];
-  const shuffledImages = [...allImages].sort(() => Math.random() - 0.5);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100">
       <div className="container mx-auto px-4 py-8">
@@ -186,7 +259,7 @@ export default function LanguageGamePage() {
           
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-            <motion.div 
+            <div 
               className="bg-indigo-600 h-3 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
@@ -199,13 +272,7 @@ export default function LanguageGamePage() {
 
         {/* Game Content */}
         <div className="max-w-4xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentWord.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+            <div
               className="bg-white rounded-xl shadow-lg p-8 mb-8"
             >
               {/* Word Display */}
@@ -231,11 +298,8 @@ export default function LanguageGamePage() {
               {/* Image Options */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {shuffledImages.map((imageUrl, index) => (
-                  <motion.div
+                  <div
                     key={imageUrl}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
                     className={`
                       relative cursor-pointer rounded-xl overflow-hidden border-4 transition-all duration-300
                       ${showFeedback
@@ -299,26 +363,20 @@ export default function LanguageGamePage() {
                         ) : null}
                       </div>
                     )}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
               {/* Streak Indicator */}
               {gameState.streak > 1 && !showFeedback && (
-                <motion.div 
-                  className="text-center mt-6"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                >
+                <div className="text-center mt-6">
                   <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full">
                     <span>🔥</span>
                     <span className="font-semibold">{gameState.streak} streak!</span>
                   </div>
-                </motion.div>
+                </div>
               )}
-            </motion.div>
-          </AnimatePresence>
+            </div>
         </div>
       </div>
     </div>

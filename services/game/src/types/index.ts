@@ -13,6 +13,13 @@ export interface CompleteGameInput {
   gameId: string;
   completionTime: number; // seconds
   attempts: number;
+  // Optional performance metrics for different game types
+  correctAnswers?: number; // For Math Challenge, Language Learning
+  totalQuestions?: number; // For Math Challenge, Language Learning
+  wordsFound?: number; // For Word Puzzle
+  totalWords?: number; // For Word Puzzle
+  hintsUsed?: number; // Optional for all games
+  pauseCount?: number; // Optional for all games
 }
 
 export interface GameHistoryInput {
@@ -39,6 +46,16 @@ export interface StartGameResponse {
 export interface CompleteGameResponse {
   game: Game;
   achievements: Achievement[];
+  scoreBreakdown?: {
+    baseScore: number;
+    difficultyMultiplier: number;
+    speedBonus: number;
+    accuracyBonus: number;
+    finalScore: number;
+    difficulty: string;
+    completionTime: number;
+    accuracy: number;
+  };
 }
 
 export interface GameHistoryResponse {
@@ -156,13 +173,23 @@ export interface QueryOptions {
 export interface GameCompletedEvent {
   gameId: string;
   userId: string;
-  userName: string;
-  themeId: string;
-  difficulty: number;
-  score: number;
+  username: string;
+  gameType: string;
+  difficulty: string;
+  score: number; // Calculated score from game service
   completionTime: number;
-  attempts: number;
-  completedAt: Date;
+  accuracy: number;
+  performanceMetrics: {
+    attempts: number;
+    correctAnswers?: number; // For Math Challenge, Language Learning
+    totalQuestions?: number; // For Math Challenge, Language Learning
+    wordsFound?: number; // For Word Puzzle
+    totalWords?: number; // For Word Puzzle
+    hintsUsed: number;
+    pauseCount: number;
+    averageResponseTime: number;
+  };
+  timestamp: string;
 }
 
 /**

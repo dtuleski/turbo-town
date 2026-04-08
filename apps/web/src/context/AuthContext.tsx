@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession, confirmSignUp, fetchUserAttributes } from 'aws-amplify/auth'
+import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession, confirmSignUp, fetchUserAttributes, signInWithRedirect } from 'aws-amplify/auth'
 import type { User, AuthContextType, LoginInput, RegisterInput, UpdateProfileInput } from '@/types/auth'
 import { storage } from '@/utils/storage'
 import { STORAGE_KEYS } from '@/config/constants'
@@ -28,14 +28,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         const currentUser = await getCurrentUser()
         const session = await fetchAuthSession()
-        const attributes = await fetchUserAttributes()
+        let attributes: Record<string, string | undefined> = {}
+        try {
+          attributes = await fetchUserAttributes() as Record<string, string | undefined>
+        } catch (attrErr) {
+          console.log('Could not fetch user attributes, using fallback:', attrErr)
+          // For OAuth users, extract from ID token payload
+          const payload = session.tokens?.idToken?.payload as Record<string, any> | undefined
+          if (payload) {
+            attributes = {
+              email: payload.email as string,
+              preferred_username: payload['cognito:username'] as string,
+              name: payload.name as string,
+              given_name: payload.given_name as string,
+            }
+          }
+        }
         
         if (currentUser && session.tokens) {
+          // For OAuth/federated users, also check ID token payload for name
+          const payload = session.tokens?.idToken?.payload as Record<string, any> | undefined
+          const displayName = attributes.name
+            || payload?.name as string
+            || attributes.given_name
+            || payload?.given_name as string
+            || (attributes.preferred_username?.startsWith('Google_') ? undefined : attributes.preferred_username)
+            || attributes.email?.split('@')[0]
+            || 'User'
+
           // Create user object from Cognito user
           const user: User = {
             id: currentUser.userId,
-            email: attributes.email || currentUser.signInDetails?.loginId || '',
-            username: attributes.preferred_username || attributes.name || attributes.email || 'User',
+            email: attributes.email || payload?.email as string || currentUser.signInDetails?.loginId || '',
+            username: displayName,
             tier: 'FREE', // Default tier, should be fetched from backend
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
@@ -178,11 +203,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  const loginWithGoogle = async () => {
+    try {
+      // Sign out first to avoid UserAlreadyAuthenticatedException
+      await signOut()
+    } catch {}
+    await signInWithRedirect({ provider: 'Google' })
+  }
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
     isLoading,
     login,
+    loginWithGoogle,
     register,
     logout,
     updateProfile,

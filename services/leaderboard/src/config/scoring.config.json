@@ -1,0 +1,86 @@
+{
+  "memoryMatch": {
+    "baseScore": 1000,
+    "difficultyMultipliers": {
+      "EASY": 1.0,
+      "MEDIUM": 1.5,
+      "HARD": 2.0
+    },
+    "speedBonusParams": {
+      "maxTime": 60,
+      "formula": "max(0, 1 + (maxTime - completionTime) / maxTime)"
+    },
+    "accuracyBonusParams": {
+      "formula": "1 + (1 - attempts / (pairs * 2)) * 0.5"
+    },
+    "validationRules": {
+      "minCompletionTime": 5,
+      "maxCompletionTime": 300,
+      "minScore": 0,
+      "maxScore": 6000
+    }
+  },
+  "mathChallenge": {
+    "baseScore": 100,
+    "difficultyMultipliers": {
+      "EASY": 1.0,
+      "MEDIUM": 1.5,
+      "HARD": 2.0
+    },
+    "speedBonusParams": {
+      "maxTime": 10,
+      "formula": "max(0, 1 + (timeLimit - avgTimePerQuestion) / timeLimit)"
+    },
+    "accuracyBonusParams": {
+      "formula": "correctAnswers / totalQuestions"
+    },
+    "validationRules": {
+      "minCompletionTime": 10,
+      "maxCompletionTime": 600,
+      "minScore": 0,
+      "maxScore": 10000
+    }
+  },
+  "wordPuzzle": {
+    "baseScore": 50,
+    "difficultyMultipliers": {
+      "EASY": 1.0,
+      "MEDIUM": 1.5,
+      "HARD": 2.0
+    },
+    "speedBonusParams": {
+      "maxTime": 180,
+      "formula": "max(0, 1 + (maxTime - completionTime) / maxTime)"
+    },
+    "accuracyBonusParams": {
+      "formula": "1 + (wordsFound / totalWords) * 0.5"
+    },
+    "validationRules": {
+      "minCompletionTime": 15,
+      "maxCompletionTime": 600,
+      "minScore": 0,
+      "maxScore": 6000
+    }
+  },
+  "languageLearning": {
+    "baseScore": 100,
+    "difficultyMultipliers": {
+      "BEGINNER": 1.0,
+      "INTERMEDIATE": 1.5,
+      "ADVANCED": 2.0
+    },
+    "speedBonusParams": {
+      "maxTime": 30,
+      "formula": "max(0, 1 + (maxTime - avgTimePerMatch) / maxTime)"
+    },
+    "accuracyBonusParams": {
+      "formula": "correctMatches / totalAttempts"
+    },
+    "validationRules": {
+      "minCompletionTime": 10,
+      "maxCompletionTime": 300,
+      "minScore": 0,
+      "maxScore": 8000
+    }
+  }
+}

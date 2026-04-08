@@ -1,7 +1,35 @@
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { getEmailPrefs, setEmailPrefs } from '@/api/game'
 
 const ProfilePage = () => {
   const { user } = useAuth()
+  const [dailyDigest, setDailyDigest] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const prefs = await getEmailPrefs()
+        setDailyDigest(prefs.dailyDigest || false)
+      } catch { /* no prefs yet */ }
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  const toggleDigest = async () => {
+    setSaving(true)
+    try {
+      const newVal = !dailyDigest
+      await setEmailPrefs(newVal)
+      setDailyDigest(newVal)
+    } catch (err) {
+      console.error('Failed to update email prefs:', err)
+    }
+    setSaving(false)
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -28,6 +56,31 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Email Preferences */}
+      <div className="card mt-6">
+        <h3 className="text-xl font-bold mb-4">📧 Email Preferences</h3>
+        <div className="flex items-center justify-between p-4 bg-card-hover rounded-lg">
+          <div>
+            <div className="font-medium">Daily Digest</div>
+            <div className="text-sm text-text-secondary">Get daily leaderboard highlights and game updates</div>
+          </div>
+          <button
+            onClick={toggleDigest}
+            disabled={loading || saving}
+            className={`relative w-14 h-7 rounded-full transition-colors duration-200 ${
+              dailyDigest ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
+            } ${loading || saving ? 'opacity-50' : 'cursor-pointer'}`}
+          >
+            <div className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${
+              dailyDigest ? 'translate-x-7' : 'translate-x-0'
+            }`} />
+          </button>
+        </div>
+        {dailyDigest && (
+          <p className="text-sm text-green-500 mt-2 px-1">✓ You'll receive daily updates at 8pm EST</p>
+        )}
       </div>
     </div>
   )

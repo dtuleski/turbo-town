@@ -34,7 +34,7 @@ export class EventPublisherService {
       logger.info('GameCompleted event published', {
         gameId: event.gameId,
         userId: event.userId,
-        score: event.score,
+        gameType: event.gameType,
       });
     } catch (error) {
       // Log error but don't throw - event publishing is non-critical

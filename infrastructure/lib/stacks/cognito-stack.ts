@@ -59,8 +59,8 @@ export class CognitoStack extends cdk.Stack {
         tier: new cognito.StringAttribute({ mutable: true }),
       },
       userVerification: {
-        emailSubject: 'Verify your email for Memory Game',
-        emailBody: 'Hello! Thanks for signing up for Memory Game. Your verification code is {####}. Please enter this code to complete your registration.',
+        emailSubject: 'Verify your email for DashDen',
+        emailBody: 'Hello! Thanks for signing up for DashDen. Your verification code is {####}. Please enter this code to complete your registration.',
         emailStyle: cognito.VerificationEmailStyle.CODE,
       },
       removalPolicy: cdk.RemovalPolicy.RETAIN,

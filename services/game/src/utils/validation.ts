@@ -14,6 +14,13 @@ export const completeGameInputSchema = z.object({
   gameId: z.string().uuid('Game ID must be a valid UUID'),
   completionTime: z.number().positive('Completion time must be positive'),
   attempts: z.number().int().positive('Attempts must be a positive integer'),
+  // Optional performance metrics for different game types
+  correctAnswers: z.number().int().nonnegative().optional(),
+  totalQuestions: z.number().int().positive().optional(),
+  wordsFound: z.number().int().nonnegative().optional(),
+  totalWords: z.number().int().positive().optional(),
+  hintsUsed: z.number().int().nonnegative().optional(),
+  pauseCount: z.number().int().nonnegative().optional(),
 });
 
 export const gameHistoryInputSchema = z.object({
@@ -104,20 +111,17 @@ export function validateAttempts(
 
 /**
  * Get number of pairs for difficulty level
+ * Memory Match sends: EASY=1 (6 pairs), MEDIUM=2 (8 pairs), HARD=3 (10 pairs)
  */
 function getPairsForDifficulty(difficulty: number): number {
   switch (difficulty) {
     case 1:
       return 6;
     case 2:
-      return 12;
+      return 8;
     case 3:
-      return 18;
-    case 4:
-      return 24;
-    case 5:
-      return 30;
+      return 10;
     default:
-      return 12;
+      return 8;
   }
 }

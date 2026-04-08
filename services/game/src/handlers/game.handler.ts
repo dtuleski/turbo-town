@@ -13,6 +13,8 @@ import { ScoreCalculatorService } from '../services/score-calculator.service';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { AchievementTrackerService } from '../services/achievement-tracker.service';
 import { EventPublisherService } from '../services/event-publisher.service';
+import { ReviewService } from '../services/review.service';
+import { EmailPrefsService } from '../services/email-prefs.service';
 import {
   validateStartGameInput,
   validateCompleteGameInput,
@@ -21,6 +23,13 @@ import {
 import { sanitizeError } from '../utils/error-mapper';
 import { logger } from '../utils/logger';
 import { GraphQLContext, GraphQLResponse } from '../types';
+
+const ADMIN_EMAILS = ['diegotuleski@gmail.com', 'diego.tuleski@gmail.com', 'benjamintuleski@gmail.com'];
+const ADMIN_USERNAMES = ['dtuleski', 'bentuleski'];
+
+function isAdminUser(username?: string, email?: string): boolean {
+  return ADMIN_USERNAMES.includes(username || '') || ADMIN_EMAILS.includes(email || '');
+}
 
 /**
  * GraphQL Handler
@@ -35,6 +44,8 @@ export class GameHandler {
   private languageRepository: LanguageRepository;
   private gameCatalogRepository: GameCatalogRepository;
   private subscriptionRepository: SubscriptionRepository;
+  private reviewService: ReviewService;
+  private emailPrefsService: EmailPrefsService;
 
   constructor() {
     // Initialize repositories
@@ -76,6 +87,10 @@ export class GameHandler {
     
     // Initialize language repository for admin functions
     this.languageRepository = new LanguageRepository();
+    
+    // Initialize review service
+    this.reviewService = new ReviewService();
+    this.emailPrefsService = new EmailPrefsService();
   }
 
   /**
@@ -152,7 +167,7 @@ export class GameHandler {
         return this.startGame(userId, variables.input);
 
       case 'completeGame':
-        return this.completeGame(userId, variables.input);
+        return this.completeGame(userId, variables.input, username);
 
       // Queries
       case 'getGame':
@@ -216,6 +231,46 @@ export class GameHandler {
       case 'updateLanguageWord':
         return this.updateLanguageWord(userId, variables.input, username, email);
 
+      case 'createLanguageWord':
+        return this.createLanguageWord(userId, variables.input, username, email);
+
+      case 'deleteLanguageWord':
+        return this.deleteLanguageWord(userId, variables.wordId, username, email);
+
+      // Admin - Subscription Management
+      case 'updateUserSubscription':
+        return this.updateUserSubscription(userId, variables.input, username, email);
+
+      // Reviews
+      case 'submitGameReview':
+        return this.reviewService.submitReview(userId, variables.input);
+
+      case 'getUserReview':
+        return { rating: await this.reviewService.getUserReview(userId, variables.gameType) };
+
+      case 'getReviewStats':
+        return this.reviewService.getReviewStats();
+
+      // Email Preferences
+      case 'getEmailPrefs':
+        return (await this.emailPrefsService.getPrefs(userId)) || { userId, dailyDigest: false };
+
+      case 'setEmailPrefs':
+        return this.emailPrefsService.setPrefs(userId, email || '', username || '', variables.input.dailyDigest);
+
+      case 'adminSetEmailPrefs':
+        if (!isAdminUser(username, email)) throw new Error('Unauthorized: Admin only');
+        return this.emailPrefsService.setPrefs(
+          variables.input.userId,
+          variables.input.email || '',
+          variables.input.username || '',
+          variables.input.dailyDigest
+        );
+
+      case 'adminGetAllEmailPrefs':
+        if (!isAdminUser(username, email)) throw new Error('Unauthorized: Admin only');
+        return { users: await this.emailPrefsService.getOptedInUsers() };
+
       default:
         throw new Error(`Unknown operation: ${operation}`);
     }
@@ -229,23 +284,21 @@ export class GameHandler {
     const result = await this.gameService.startGame(userId, validated);
 
     return {
-      startGame: {
-        id: result.game.id,
-        userId: result.game.userId,
-        themeId: result.game.themeId,
-        difficulty: result.game.difficulty,
-        status: result.game.status,
-        startedAt: result.game.startedAt,
-        canPlay: result.canPlay,
-        rateLimit: {
-          tier: result.rateLimit.tier,
-          limit: result.rateLimit.limit,
-          used: result.rateLimit.used,
-          remaining: result.rateLimit.remaining,
-          resetAt: typeof result.rateLimit.resetAt === 'string' 
-            ? result.rateLimit.resetAt 
-            : result.rateLimit.resetAt.toISOString(),
-        },
+      id: result.game.id,
+      userId: result.game.userId,
+      themeId: result.game.themeId,
+      difficulty: result.game.difficulty,
+      status: result.game.status,
+      startedAt: result.game.startedAt,
+      canPlay: result.canPlay,
+      rateLimit: {
+        tier: result.rateLimit.tier,
+        limit: result.rateLimit.limit,
+        used: result.rateLimit.used,
+        remaining: result.rateLimit.remaining,
+        resetAt: typeof result.rateLimit.resetAt === 'string' 
+          ? result.rateLimit.resetAt 
+          : result.rateLimit.resetAt.toISOString(),
       },
     };
   }
@@ -253,24 +306,24 @@ export class GameHandler {
   /**
    * Mutation: completeGame
    */
-  private async completeGame(userId: string, input: any): Promise<any> {
+  private async completeGame(userId: string, input: any, username?: string): Promise<any> {
     const validated = validateCompleteGameInput(input);
-    const result = await this.gameService.completeGame(userId, validated);
+    const result = await this.gameService.completeGame(userId, validated, username || 'Unknown');
 
     return {
-      completeGame: {
-        id: result.game.id,
-        status: result.game.status,
-        completedAt: result.game.completedAt,
-        completionTime: result.game.completionTime,
-        attempts: result.game.attempts,
-        score: result.game.score,
-        achievements: result.achievements.map((a) => ({
-          type: a.achievementType,
-          unlocked: a.completed,
-          progress: a.progress,
-        })),
-      },
+      id: result.game.id,
+      status: result.game.status,
+      completedAt: result.game.completedAt,
+      completionTime: result.game.completionTime,
+      attempts: result.game.attempts,
+      score: result.game.score,
+      scoreBreakdown: result.scoreBreakdown || null,
+      leaderboardRank: null,
+      achievements: result.achievements.map((a) => ({
+        type: a.achievementType,
+        unlocked: a.completed,
+        progress: a.progress,
+      })),
     };
   }
 
@@ -281,18 +334,16 @@ export class GameHandler {
     const game = await this.gameService.getGame(userId, gameId);
 
     return {
-      getGame: {
-        id: game.id,
-        userId: game.userId,
-        themeId: game.themeId,
-        difficulty: game.difficulty,
-        status: game.status,
-        startedAt: game.startedAt,
-        completedAt: game.completedAt,
-        completionTime: game.completionTime,
-        attempts: game.attempts,
-        score: game.score,
-      },
+      id: game.id,
+      userId: game.userId,
+      themeId: game.themeId,
+      difficulty: game.difficulty,
+      status: game.status,
+      startedAt: game.startedAt,
+      completedAt: game.completedAt,
+      completionTime: game.completionTime,
+      attempts: game.attempts,
+      score: game.score,
     };
   }
 
@@ -304,23 +355,21 @@ export class GameHandler {
     const result = await this.gameService.getGameHistory(userId, validated);
 
     return {
-      getGameHistory: {
-        games: result.games.map((g) => ({
-          id: g.id,
-          themeId: g.themeId,
-          themeName: '', // TODO: Populate from theme
-          difficulty: g.difficulty,
-          completedAt: g.completedAt,
-          completionTime: g.completionTime,
-          attempts: g.attempts,
-          score: g.score,
-        })),
-        pagination: {
-          total: result.pagination.total,
-          page: result.pagination.page,
-          pageSize: result.pagination.pageSize,
-          hasMore: result.pagination.hasMore,
-        },
+      games: result.games.map((g) => ({
+        id: g.id,
+        themeId: g.themeId,
+        themeName: '', // TODO: Populate from theme
+        difficulty: g.difficulty,
+        completedAt: g.completedAt,
+        completionTime: g.completionTime,
+        attempts: g.attempts,
+        score: g.score,
+      })),
+      pagination: {
+        total: result.pagination.total,
+        page: result.pagination.page,
+        pageSize: result.pagination.pageSize,
+        hasMore: result.pagination.hasMore,
       },
     };
   }
@@ -331,9 +380,8 @@ export class GameHandler {
   private async getUserStatistics(userId: string): Promise<any> {
     const stats = await this.gameService.getUserStatistics(userId);
 
-    return {
-      getUserStatistics: stats,
-    };
+    // Return stats directly, not wrapped in another object
+    return stats;
   }
 
   /**
@@ -343,17 +391,15 @@ export class GameHandler {
     const result = await this.gameService.canStartGame(userId);
 
     return {
-      canStartGame: {
-        canPlay: result.canPlay,
-        rateLimit: {
-          tier: result.rateLimit.tier,
-          limit: result.rateLimit.limit,
-          used: result.rateLimit.used,
-          remaining: result.rateLimit.remaining,
-          resetAt: result.rateLimit.resetAt.toISOString(),
-        },
-        message: result.message,
+      canPlay: result.canPlay,
+      rateLimit: {
+        tier: result.rateLimit.tier,
+        limit: result.rateLimit.limit,
+        used: result.rateLimit.used,
+        remaining: result.rateLimit.remaining,
+        resetAt: result.rateLimit.resetAt.toISOString(),
       },
+      message: result.message,
     };
   }
 
@@ -370,9 +416,7 @@ export class GameHandler {
    */
   private async getAdminAnalytics(userId: string, username?: string, email?: string): Promise<any> {
     // Check if user is admin by username or email
-    const isAdmin = username === 'dtuleski' || 
-                    email === 'diego.tuleski@gmail.com' || 
-                    email === 'diegotuleski@gmail.com';
+    const isAdmin = isAdminUser(username, email);
     
     if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
@@ -380,9 +424,8 @@ export class GameHandler {
 
     const analytics = await this.adminService.getAdminAnalytics();
 
-    return {
-      getAdminAnalytics: analytics,
-    };
+    // Return the analytics directly, not wrapped in another object
+    return analytics;
   }
 
   /**
@@ -390,9 +433,7 @@ export class GameHandler {
    */
   private async listAllUsers(userId: string, username?: string, email?: string, input?: any): Promise<any> {
     // Check if user is admin by username or email
-    const isAdmin = username === 'dtuleski' || 
-                    email === 'diego.tuleski@gmail.com' || 
-                    email === 'diegotuleski@gmail.com';
+    const isAdmin = isAdminUser(username, email);
     
     if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
@@ -400,9 +441,8 @@ export class GameHandler {
 
     const result = await this.adminService.listAllUsers(input);
 
-    return {
-      listAllUsers: result,
-    };
+    // Return the result directly, not wrapped in another object
+    return result;
   }
 
   /**
@@ -431,11 +471,10 @@ export class GameHandler {
       tier: input.tier,
     });
 
+    // Return the result directly, not wrapped in another object
     return {
-      createCheckoutSession: {
-        sessionId: result.sessionId,
-        url: result.url,
-      },
+      sessionId: result.sessionId,
+      url: result.url,
     };
   }
 
@@ -456,10 +495,9 @@ export class GameHandler {
       customerId: subscription.stripeCustomerId,
     });
 
+    // Return the result directly, not wrapped in another object
     return {
-      createPortalSession: {
-        url: result.url,
-      },
+      url: result.url,
     };
   }
 
@@ -468,9 +506,7 @@ export class GameHandler {
    */
   private async getAllLanguageWords(userId: string, username?: string, email?: string): Promise<any> {
     // Check if user is admin
-    const isAdmin = username === 'dtuleski' || 
-                    email === 'diego.tuleski@gmail.com' || 
-                    email === 'diegotuleski@gmail.com';
+    const isAdmin = isAdminUser(username, email);
     
     if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
@@ -485,9 +521,7 @@ export class GameHandler {
    */
   private async getLanguageWordById(userId: string, wordId: string, username?: string, email?: string): Promise<any> {
     // Check if user is admin
-    const isAdmin = username === 'dtuleski' || 
-                    email === 'diego.tuleski@gmail.com' || 
-                    email === 'diegotuleski@gmail.com';
+    const isAdmin = isAdminUser(username, email);
     
     if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
@@ -506,9 +540,7 @@ export class GameHandler {
    */
   private async updateLanguageWord(userId: string, input: any, username?: string, email?: string): Promise<any> {
     // Check if user is admin
-    const isAdmin = username === 'dtuleski' || 
-                    email === 'diego.tuleski@gmail.com' || 
-                    email === 'diegotuleski@gmail.com';
+    const isAdmin = isAdminUser(username, email);
     
     if (!isAdmin) {
       throw new Error('Unauthorized: Admin access required');
@@ -521,6 +553,65 @@ export class GameHandler {
     });
     
     return updatedWord;
+  }
+
+  /**
+   * Mutation: createLanguageWord (Admin only)
+   */
+  private async createLanguageWord(userId: string, input: any, username?: string, email?: string): Promise<any> {
+    const isAdmin = isAdminUser(username, email);
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    return this.languageRepository.createLanguageWord({
+      category: input.category,
+      difficulty: input.difficulty,
+      languageCode: input.languageCode || 'multi',
+      translations: input.translations,
+      imageUrl: input.imageUrl,
+      distractorImages: input.distractorImages || [],
+    });
+  }
+
+  /**
+   * Mutation: deleteLanguageWord (Admin only)
+   */
+  private async deleteLanguageWord(userId: string, wordId: string, username?: string, email?: string): Promise<any> {
+    const isAdmin = isAdminUser(username, email);
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    await this.languageRepository.deleteLanguageWord(wordId);
+    return { success: true, wordId };
+  }
+
+  /**
+   * Mutation: updateUserSubscription (Admin only)
+   */
+  private async updateUserSubscription(userId: string, input: any, username?: string, email?: string): Promise<any> {
+    // Check if user is admin
+    const isAdmin = isAdminUser(username, email);
+    
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    // Update subscription in database
+    await this.subscriptionRepository.updateSubscription({
+      userId: input.userId,
+      tier: input.tier,
+      status: input.status,
+    });
+
+    return {
+      userId: input.userId,
+      tier: input.tier,
+      status: input.status,
+    };
   }
 
   /**

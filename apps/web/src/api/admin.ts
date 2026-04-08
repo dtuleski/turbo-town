@@ -234,13 +234,111 @@ const UPDATE_LANGUAGE_WORD = gql`
   }
 `;
 
-export const getAdminAnalytics = async (): Promise<AdminAnalytics> => {
-  const { data } = await gameClient.query({
-    query: GET_ADMIN_ANALYTICS,
-    fetchPolicy: 'network-only', // Always fetch fresh data
-  });
+const CREATE_LANGUAGE_WORD = gql`
+  mutation CreateLanguageWord($input: CreateLanguageWordInput!) {
+    createLanguageWord(input: $input) {
+      wordId
+      category
+      difficulty
+      languageCode
+      imageUrl
+      distractorImages
+      translations {
+        en {
+          word
+          pronunciation
+        }
+        es {
+          word
+          pronunciation
+        }
+        fr {
+          word
+          pronunciation
+        }
+        de {
+          word
+          pronunciation
+        }
+        it {
+          word
+          pronunciation
+        }
+        pt {
+          word
+          pronunciation
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 
-  return data.getAdminAnalytics;
+const DELETE_LANGUAGE_WORD = gql`
+  mutation DeleteLanguageWord($wordId: String!) {
+    deleteLanguageWord(wordId: $wordId) {
+      success
+      wordId
+    }
+  }
+`;
+
+const UPDATE_USER_SUBSCRIPTION = gql`
+  mutation UpdateUserSubscription($input: UpdateUserSubscriptionInput!) {
+    updateUserSubscription(input: $input) {
+      userId
+      tier
+      status
+    }
+  }
+`;
+
+export const getAdminAnalytics = async (): Promise<AdminAnalytics> => {
+  try {
+    console.log('Starting GraphQL query for admin analytics...');
+    
+    const { data } = await gameClient.query({
+      query: GET_ADMIN_ANALYTICS,
+      fetchPolicy: 'network-only', // Always fetch fresh data
+      errorPolicy: 'all', // Return partial data even if there are errors
+    });
+
+    console.log('Raw GraphQL response:', JSON.stringify(data, null, 2));
+
+    if (!data || !data.getAdminAnalytics) {
+      throw new Error('No data received from GraphQL query');
+    }
+
+    const analytics = data.getAdminAnalytics;
+    console.log('Processed analytics:', analytics);
+    
+    return analytics;
+  } catch (error) {
+    console.error('Failed to fetch admin analytics:', error);
+    
+    // Return default structure if query fails
+    return {
+      overview: {
+        totalUsers: 0,
+        dau: 0,
+        mau: 0,
+        totalGamesPlayed: 0,
+        totalGamesToday: 0,
+        totalGamesThisWeek: 0,
+        totalGamesThisMonth: 0,
+        avgGamesPerUser: 0,
+        conversionRate: 0,
+      },
+      usersByTier: [],
+      recentActivity: {
+        last24Hours: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
+        last7Days: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
+        last30Days: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
+      },
+      topUsers: [],
+    };
+  }
 };
 
 export const listAllUsers = async (input?: {
@@ -295,4 +393,42 @@ export const updateLanguageWord = async (input: {
   });
 
   return data.updateLanguageWord;
+};
+
+export const updateUserSubscription = async (input: {
+  userId: string;
+  tier: string;
+  status: string;
+}): Promise<{ userId: string; tier: string; status: string }> => {
+  const { data } = await gameClient.mutate({
+    mutation: UPDATE_USER_SUBSCRIPTION,
+    variables: { input },
+  });
+
+  return data.updateUserSubscription;
+};
+
+export const createLanguageWord = async (input: {
+  category: string;
+  difficulty: string;
+  languageCode: string;
+  translations: Record<string, { word: string; pronunciation: string }>;
+  imageUrl: string;
+  distractorImages: string[];
+}): Promise<LanguageWordAdmin> => {
+  const { data } = await gameClient.mutate({
+    mutation: CREATE_LANGUAGE_WORD,
+    variables: { input },
+  });
+
+  return data.createLanguageWord;
+};
+
+export const deleteLanguageWord = async (wordId: string): Promise<{ success: boolean; wordId: string }> => {
+  const { data } = await gameClient.mutate({
+    mutation: DELETE_LANGUAGE_WORD,
+    variables: { wordId },
+  });
+
+  return data.deleteLanguageWord;
 };

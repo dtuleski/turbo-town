@@ -1,0 +1,26 @@
+{
+  "name": "@memory-game/leaderboard",
+  "version": "1.0.0",
+  "description": "Leaderboard Service - Score calculation and leaderboard management",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "aws-sdk-client-mock": "^4.1.0",
+    "fast-check": "^3.15.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  }
+}

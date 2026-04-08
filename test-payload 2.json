@@ -1,0 +1,22 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /game/graphql",
+  "rawPath": "/game/graphql",
+  "rawQueryString": "",
+  "headers": {
+    "content-type": "application/json"
+  },
+  "requestContext": {
+    "authorizer": {
+      "jwt": {
+        "claims": {
+          "sub": "c4c804d8-6071-70c6-d9e3-a2286ef3f13a",
+          "cognito:username": "dtuleski",
+          "preferred_username": "dtuleski"
+        }
+      }
+    }
+  },
+  "body": "{\"operationName\":\"StartGame\",\"variables\":{\"input\":{\"themeId\":\"ANIMALS\",\"difficulty\":1}},\"query\":\"mutation StartGame($input: StartGameInput!) { startGame(input: $input) { game { id themeId status } canPlay } }\"}",
+  "isBase64Encoded": false
+}

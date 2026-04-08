@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
 import { generateWordPuzzle, checkWord, isValidSelection } from '@/utils/wordPuzzleUtils'
 import { startGame, completeGame } from '@/api/game'
+import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 
 const DIFFICULTY_CONFIG = {
   easy: {
@@ -44,6 +45,10 @@ export default function WordPuzzleGamePage() {
     correct: false,
     message: '',
   })
+  const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
+  const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
+
+  const gridRef = useRef<HTMLDivElement>(null)
 
   const config = DIFFICULTY_CONFIG[difficulty]
 
@@ -52,7 +57,7 @@ export default function WordPuzzleGamePage() {
     const initGame = async () => {
       try {
         const game = await startGame({
-          themeId: 'ANIMALS', // Using existing theme for now
+          themeId: 'WORD_PUZZLE',
           difficulty: difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3,
         })
         setGameId(game.id)
@@ -104,15 +109,25 @@ export default function WordPuzzleGamePage() {
     
     try {
       const completionTime = config.timeLimit - timeRemaining
-      await completeGame({
+      const result = await completeGame({
         gameId,
         completionTime,
         attempts: foundWords.size,
+        wordsFound: foundWords.size, // Number of words found
+        totalWords: puzzle.words.length, // Total words in the puzzle
       })
+      
+      // Capture score breakdown and leaderboard rank
+      if (result.scoreBreakdown) {
+        setScoreBreakdown(result.scoreBreakdown)
+      }
+      if (result.leaderboardRank) {
+        setLeaderboardRank(result.leaderboardRank)
+      }
     } catch (error) {
       console.error('Failed to complete game:', error)
     }
-  }, [gameStatus, gameId, config.timeLimit, timeRemaining, foundWords.size])
+  }, [gameStatus, gameId, config.timeLimit, timeRemaining, foundWords.size, puzzle.words.length])
 
   const handleMouseDown = (row: number, col: number) => {
     setIsSelecting(true)
@@ -179,6 +194,80 @@ export default function WordPuzzleGamePage() {
     return false
   }
 
+  // Get grid cell from touch coordinates
+  const getCellFromTouch = useCallback((touch: React.Touch | Touch): Cell | null => {
+    if (!gridRef.current) return null
+    const gridEl = gridRef.current
+    const rect = gridEl.getBoundingClientRect()
+    const x = touch.clientX - rect.left
+    const y = touch.clientY - rect.top
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) return null
+    
+    const col = Math.floor((x / rect.width) * puzzle.gridSize)
+    const row = Math.floor((y / rect.height) * puzzle.gridSize)
+    
+    if (row < 0 || row >= puzzle.gridSize || col < 0 || col >= puzzle.gridSize) return null
+    return { row, col }
+  }, [puzzle.gridSize])
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    e.preventDefault()
+    const cell = getCellFromTouch(e.touches[0])
+    if (cell) {
+      setIsSelecting(true)
+      setSelectedCells([cell])
+    }
+  }, [getCellFromTouch])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault()
+    if (!isSelecting) return
+    const cell = getCellFromTouch(e.touches[0])
+    if (!cell) return
+
+    setSelectedCells(prev => {
+      const lastCell = prev[prev.length - 1]
+      if (!lastCell) return prev
+      // Same cell as last
+      if (lastCell.row === cell.row && lastCell.col === cell.col) return prev
+      
+      const rowDiff = Math.abs(cell.row - lastCell.row)
+      const colDiff = Math.abs(cell.col - lastCell.col)
+      
+      if (rowDiff <= 1 && colDiff <= 1 && (rowDiff > 0 || colDiff > 0)) {
+        const newSelection = [...prev, cell]
+        if (isValidSelection(newSelection)) {
+          return newSelection
+        }
+      }
+      return prev
+    })
+  }, [isSelecting, getCellFromTouch])
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    e.preventDefault()
+    if (!isSelecting) return
+    
+    setIsSelecting(false)
+
+    const word = checkWord(puzzle.grid, selectedCells, puzzle.words)
+    
+    if (word && !foundWords.has(word)) {
+      setFoundWords(new Set([...foundWords, word]))
+      setFeedback({ show: true, correct: true, message: `✅ Found: ${word}!` })
+      setTimeout(() => {
+        setFeedback({ show: false, correct: false, message: '' })
+      }, 1500)
+    } else if (word && foundWords.has(word)) {
+      setFeedback({ show: true, correct: false, message: '⚠️ Already found!' })
+      setTimeout(() => {
+        setFeedback({ show: false, correct: false, message: '' })
+      }, 1000)
+    }
+    
+    setSelectedCells([])
+  }, [isSelecting, selectedCells, puzzle.grid, puzzle.words, foundWords])
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -194,6 +283,23 @@ export default function WordPuzzleGamePage() {
   }
 
   if (gameStatus === 'completed') {
+    // Show score breakdown modal if available, otherwise show simple completion screen
+    if (scoreBreakdown) {
+      return (
+        <>
+          <ScoreBreakdownModal
+            isOpen={true}
+            onClose={() => navigate(ROUTES.HUB)}
+            scoreBreakdown={scoreBreakdown}
+            leaderboardRank={leaderboardRank}
+            onPlayAgain={() => window.location.reload()}
+            gameType="WORD_PUZZLE"
+          />
+        </>
+      )
+    }
+    
+    // Fallback simple completion screen
     const percentage = Math.round((foundWords.size / puzzle.words.length) * 100)
     const completionTime = config.timeLimit - timeRemaining
     const allWordsFound = foundWords.size === puzzle.words.length
@@ -286,7 +392,8 @@ export default function WordPuzzleGamePage() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-3xl shadow-2xl p-6">
               <div 
-                className="grid gap-1 select-none"
+                ref={gridRef}
+                className="grid gap-1 select-none touch-none"
                 style={{ 
                   gridTemplateColumns: `repeat(${puzzle.gridSize}, minmax(0, 1fr))`,
                 }}
@@ -295,6 +402,9 @@ export default function WordPuzzleGamePage() {
                     handleMouseUp()
                   }
                 }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
                 {puzzle.grid.map((row, rowIndex) =>
                   row.map((letter, colIndex) => (

@@ -1,57 +1,31 @@
-import { useState, useEffect } from 'react'
-import { canStartGame, getUserStatistics } from '@/api/game'
+import { useEffect, useState } from 'react'
+import { env } from '@/config/env'
 
-export const ApiDebug = () => {
-  const [status, setStatus] = useState({
-    gameApi: 'checking...',
-    hasStats: false,
-    error: null as string | null,
-  })
+const ApiDebug = () => {
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const checkApis = async () => {
-      try {
-        // Test game API
-        await canStartGame()
-        const stats = await getUserStatistics()
-        
-        setStatus({
-          gameApi: 'connected ✅',
-          hasStats: stats.totalGames > 0,
-          error: null,
-        })
-      } catch (error: any) {
-        setStatus({
-          gameApi: 'error ❌',
-          hasStats: false,
-          error: error.message || 'Unknown error',
-        })
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        setVisible((v) => !v)
       }
     }
-    checkApis()
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  if (!visible) return null
+
   return (
-    <div style={{ 
-      position: 'fixed', 
-      bottom: 10, 
-      left: 10, 
-      background: 'rgba(0,0,0,0.8)', 
-      color: 'white', 
-      padding: '10px', 
-      fontSize: '12px',
-      maxWidth: '300px',
-      zIndex: 9999,
-      borderRadius: '4px'
-    }}>
-      <h4 style={{ margin: '0 0 8px 0' }}>API Status</h4>
-      <div>Game API: {status.gameApi}</div>
-      <div>Has Stats: {status.hasStats ? 'Yes' : 'No'}</div>
-      {status.error && (
-        <div style={{ color: '#ff6b6b', marginTop: '8px', fontSize: '10px' }}>
-          Error: {status.error}
-        </div>
-      )}
+    <div className="fixed bottom-4 right-4 bg-black text-green-400 p-4 rounded-lg text-xs font-mono z-50 max-w-md">
+      <h3 className="text-white mb-2">API Debug</h3>
+      <div>API URL: {env.apiUrl}</div>
+      <div>Region: {env.cognito.region}</div>
+      <button onClick={() => setVisible(false)} className="mt-2 text-red-400 hover:text-red-300">
+        Close
+      </button>
     </div>
   )
 }
+
+export default ApiDebug

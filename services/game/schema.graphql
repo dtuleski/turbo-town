@@ -47,6 +47,11 @@ type Query {
   
   # Subscription queries
   getSubscription: SubscriptionInfo!
+  
+  # Leaderboard queries (routed to Leaderboard Service)
+  getLeaderboard(gameType: GameType!, timeframe: Timeframe!, limit: Int): LeaderboardResponse!
+  getUserRank(gameType: GameType!, timeframe: Timeframe!): UserRankResponse
+  getUserScoreHistory(gameType: GameType, limit: Int): [LeaderboardEntry!]!
 }
 
 # Input Types
@@ -105,6 +110,8 @@ type CompleteGameResponse {
   attempts: Int!
   score: Int!
   achievements: [Achievement!]!
+  scoreBreakdown: ScoreBreakdown # NEW - Score calculation details
+  leaderboardRank: Int # NEW - User's rank after this game
 }
 
 type GameHistoryResponse {
@@ -194,6 +201,17 @@ type Theme {
   name: String!
   category: String!
   pairs: Int!
+}
+
+type ScoreBreakdown {
+  baseScore: Float!
+  difficultyMultiplier: Float!
+  speedBonus: Float!
+  accuracyBonus: Float!
+  finalScore: Float!
+  difficulty: String!
+  completionTime: Float!
+  accuracy: Float!
 }
 
 type GameCatalogItem {
@@ -436,4 +454,50 @@ input UpdateLanguageTranslationsInput {
 input UpdateLanguageTranslationInput {
   word: String!
   pronunciation: String!
+}
+
+# Leaderboard Types
+
+type LeaderboardResponse {
+  entries: [LeaderboardEntry!]!
+  currentUserEntry: LeaderboardEntry
+  totalEntries: Int!
+  timeframe: Timeframe!
+}
+
+type LeaderboardEntry {
+  rank: Int!
+  userId: ID!
+  username: String!
+  score: Float!
+  gameType: GameType!
+  difficulty: String!
+  completionTime: Float!
+  accuracy: Float!
+  timestamp: String! # ISO 8601
+  isCurrentUser: Boolean!
+}
+
+type UserRankResponse {
+  rank: Int!
+  score: Float!
+  gameType: GameType!
+  timeframe: Timeframe!
+  totalPlayers: Int!
+  percentile: Float!
+}
+
+enum GameType {
+  MEMORY_MATCH
+  MATH_CHALLENGE
+  WORD_PUZZLE
+  LANGUAGE_LEARNING
+  OVERALL
+}
+
+enum Timeframe {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ALL_TIME
 }

@@ -1,0 +1,9 @@
+{
+  "httpMethod": "POST",
+  "path": "/graphql",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer test-token"
+  },
+  "body": "{\"query\":\"query { getAdminAnalytics { overview { totalUsers } } }\"}"
+}

@@ -68,6 +68,8 @@ export class AdminService {
    * Get comprehensive admin analytics
    */
   async getAdminAnalytics(): Promise<AdminAnalytics> {
+    console.log('AdminService: Starting getAdminAnalytics');
+    
     const [
       allGames,
       allRateLimits,
@@ -80,16 +82,31 @@ export class AdminService {
       this.getCognitoUsers()
     ]);
 
+    console.log('AdminService: Data retrieved:', {
+      gamesCount: allGames.length,
+      rateLimitsCount: allRateLimits.length,
+      subscriptionsCount: allSubscriptions.length,
+      cognitoUsersCount: cognitoUsers.length
+    });
+
     // Calculate date ranges
     const now = new Date();
     const today = now.toISOString().split('T')[0];
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
+    console.log('AdminService: Date ranges:', { today, weekAgo, monthAgo });
+
     // Filter games by time period
     const gamesToday = allGames.filter((g: any) => g.startedAt?.startsWith(today));
     const gamesThisWeek = allGames.filter((g: any) => g.startedAt >= weekAgo);
     const gamesThisMonth = allGames.filter((g: any) => g.startedAt >= monthAgo);
+
+    console.log('AdminService: Filtered games:', {
+      gamesToday: gamesToday.length,
+      gamesThisWeek: gamesThisWeek.length,
+      gamesThisMonth: gamesThisMonth.length
+    });
 
     // Calculate DAU (unique users today)
     const dauUsers = new Set(gamesToday.map((g: any) => g.userId));
@@ -101,6 +118,13 @@ export class AdminService {
 
     // Total users
     const totalUsers = cognitoUsers.length;
+
+    console.log('AdminService: Calculated metrics:', {
+      totalUsers,
+      dau,
+      mau,
+      totalGamesPlayed: allGames.length
+    });
 
     // Games per user
     const gamesPerUser: Record<string, number> = {};
@@ -302,16 +326,23 @@ export class AdminService {
   // Helper methods
 
   private async getAllGames() {
+    console.log('AdminService: Querying games table:', GAMES_TABLE);
     const result = await docClient.send(
       new ScanCommand({
         TableName: GAMES_TABLE,
         ProjectionExpression: 'userId,gameId,startedAt,completedAt,themeId'
       })
     );
+    console.log('AdminService: Games query result:', {
+      count: result.Items?.length || 0,
+      scannedCount: result.ScannedCount,
+      items: result.Items?.slice(0, 3) // Log first 3 items for debugging
+    });
     return result.Items || [];
   }
 
   private async getAllRateLimits() {
+    console.log('AdminService: Querying rate limits table:', RATE_LIMITS_TABLE);
     const result = await docClient.send(
       new ScanCommand({
         TableName: RATE_LIMITS_TABLE,
@@ -319,10 +350,15 @@ export class AdminService {
         ExpressionAttributeNames: { '#count': 'count' }
       })
     );
+    console.log('AdminService: Rate limits query result:', {
+      count: result.Items?.length || 0,
+      scannedCount: result.ScannedCount
+    });
     return result.Items || [];
   }
 
   private async getAllSubscriptions() {
+    console.log('AdminService: Querying subscriptions table:', SUBSCRIPTIONS_TABLE);
     const result = await docClient.send(
       new ScanCommand({
         TableName: SUBSCRIPTIONS_TABLE,
@@ -330,16 +366,25 @@ export class AdminService {
         ExpressionAttributeNames: { '#status': 'status' }
       })
     );
+    console.log('AdminService: Subscriptions query result:', {
+      count: result.Items?.length || 0,
+      scannedCount: result.ScannedCount
+    });
     return result.Items || [];
   }
 
   private async getCognitoUsers() {
+    console.log('AdminService: Querying Cognito user pool:', USER_POOL_ID);
     const result = await cognitoClient.send(
       new ListUsersCommand({
         UserPoolId: USER_POOL_ID,
         Limit: 60
       })
     );
+
+    console.log('AdminService: Cognito users query result:', {
+      count: result.Users?.length || 0
+    });
 
     return (result.Users || []).map((user: any) => ({
       userId: user.Username || '',

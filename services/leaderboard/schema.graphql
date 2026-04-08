@@ -1,0 +1,89 @@
+# Leaderboard Service GraphQL Schema
+
+# Queries
+
+type Query {
+  """
+  Get leaderboard rankings for a specific game type and timeframe
+  """
+  getLeaderboard(
+    gameType: GameType!
+    timeframe: Timeframe!
+    limit: Int = 100
+  ): LeaderboardResponse!
+
+  """
+  Get current user's rank for a specific game type and timeframe
+  """
+  getUserRank(
+    gameType: GameType!
+    timeframe: Timeframe!
+  ): UserRankResponse
+
+  """
+  Get user's score history across all games or a specific game type
+  """
+  getUserScoreHistory(
+    gameType: GameType
+    limit: Int = 50
+  ): [LeaderboardEntry!]!
+}
+
+# Response Types
+
+type LeaderboardResponse {
+  entries: [LeaderboardEntry!]!
+  currentUserEntry: LeaderboardEntry
+  totalEntries: Int!
+  timeframe: Timeframe!
+}
+
+type LeaderboardEntry {
+  rank: Int!
+  userId: ID!
+  username: String!
+  score: Float!
+  gameType: GameType!
+  difficulty: String!
+  completionTime: Float!
+  accuracy: Float!
+  timestamp: String! # ISO 8601
+  isCurrentUser: Boolean!
+}
+
+type UserRankResponse {
+  rank: Int!
+  score: Float!
+  gameType: GameType!
+  timeframe: Timeframe!
+  totalPlayers: Int!
+  percentile: Float!
+}
+
+type ScoreBreakdown {
+  baseScore: Float!
+  difficultyMultiplier: Float!
+  speedBonus: Float!
+  accuracyBonus: Float!
+  finalScore: Float!
+  difficulty: String!
+  completionTime: Float!
+  accuracy: Float!
+}
+
+# Enums
+
+enum GameType {
+  MEMORY_MATCH
+  MATH_CHALLENGE
+  WORD_PUZZLE
+  LANGUAGE_LEARNING
+  OVERALL
+}
+
+enum Timeframe {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ALL_TIME
+}

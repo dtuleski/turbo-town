@@ -42,11 +42,15 @@ export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
     super(scope, id, props);
 
+    // Resolve project root (works from both src and dist)
+    const projectRoot = path.resolve(__dirname, '..', '..', '..');
+    const servicesRoot = path.resolve(projectRoot, '..');
+
     // Auth Service Lambda with NodejsFunction for automatic bundling
     this.authFunction = new nodejs.NodejsFunction(this, 'AuthFunction', {
       functionName: `MemoryGame-AuthService-${props.environment}`,
       description: 'Authentication service - user registration, login, profile management',
-      entry: path.join(__dirname, '../../../services/auth/src/index.ts'),
+      entry: path.join(servicesRoot, 'services/auth/src/index.ts'),
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_20_X,
       memorySize: 512,
@@ -68,7 +72,7 @@ export class LambdaStack extends cdk.Stack {
         forceDockerBundling: false,
         format: nodejs.OutputFormat.CJS, // Force CommonJS output
         // Ensure the shared package is properly resolved
-        tsconfig: path.join(__dirname, '../../../services/auth/tsconfig.json'),
+        tsconfig: path.join(servicesRoot, 'services/auth/tsconfig.json'),
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
@@ -121,7 +125,7 @@ export class LambdaStack extends cdk.Stack {
     this.gameFunction = new nodejs.NodejsFunction(this, 'GameFunction', {
       functionName: `MemoryGame-GameService-${props.environment}`,
       description: 'Game service - gameplay, achievements, statistics',
-      entry: path.join(__dirname, '../../../services/game/src/index.ts'),
+      entry: path.join(servicesRoot, 'services/game/src/index.ts'),
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_20_X,
       memorySize: 1024,
@@ -141,6 +145,9 @@ export class LambdaStack extends cdk.Stack {
         COGNITO_USER_POOL_ID: props.userPool.userPoolId,
         EVENT_BUS_NAME: props.eventBus.eventBusName,
         LOG_LEVEL: props.environment === 'prod' ? 'INFO' : 'DEBUG',
+        STRIPE_SECRET_KEY_ARN: `arn:aws:secretsmanager:us-east-1:848403890404:secret:${props.environment}/stripe/secret-key`,
+        STRIPE_WEBHOOK_SECRET_ARN: `arn:aws:secretsmanager:us-east-1:848403890404:secret:${props.environment}/stripe/webhook-secret`,
+        FRONTEND_URL: props.environment === 'prod' ? 'https://dashden.app' : 'https://dev.dashden.app',
       },
       bundling: {
         minify: props.environment === 'prod',
@@ -150,7 +157,7 @@ export class LambdaStack extends cdk.Stack {
         forceDockerBundling: false,
         format: nodejs.OutputFormat.CJS, // Force CommonJS output
         // Ensure the shared package is properly resolved
-        tsconfig: path.join(__dirname, '../../../services/game/tsconfig.json'),
+        tsconfig: path.join(servicesRoot, 'services/game/tsconfig.json'),
       },
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
@@ -213,6 +220,17 @@ export class LambdaStack extends cdk.Stack {
           'cognito-idp:AdminGetUser',
         ],
         resources: [props.userPool.userPoolArn],
+      })
+    );
+
+    // Grant Game Lambda access to Stripe secrets in Secrets Manager
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['secretsmanager:GetSecretValue'],
+        resources: [
+          `arn:aws:secretsmanager:us-east-1:848403890404:secret:${props.environment}/stripe/*`,
+        ],
       })
     );
 

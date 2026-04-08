@@ -11,6 +11,7 @@ export interface ApiStackProps extends cdk.StackProps {
   environment: string;
   authLambda: lambda.Function;
   gameLambda: lambda.Function;
+  leaderboardLambda: lambda.Function; // NEW
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
 }
@@ -42,9 +43,11 @@ export class ApiStack extends cdk.Stack {
       description: 'Memory Game GraphQL API',
       corsPreflight: {
         allowOrigins: [
-          `https://${props.environment === 'prod' ? 'app' : `app-${props.environment}`}.memorygame.com`,
+          ...(props.environment === 'prod'
+            ? ['https://dashden.app', 'https://www.dashden.app']
+            : [`https://dev.dashden.app`]),
           'http://localhost:3000', // For local development
-          'https://dev.d34tkjkm4o0zpa.amplifyapp.com', // AWS Amplify deployment
+          'http://localhost:5173', // Vite dev server
         ],
         allowMethods: [
           apigatewayv2.CorsHttpMethod.GET,
@@ -82,6 +85,14 @@ export class ApiStack extends cdk.Stack {
       }
     );
 
+    const leaderboardIntegration = new apigatewayv2Integrations.HttpLambdaIntegration(
+      'LeaderboardIntegration',
+      props.leaderboardLambda,
+      {
+        payloadFormatVersion: apigatewayv2.PayloadFormatVersion.VERSION_2_0,
+      }
+    );
+
     // Add routes
     // Auth Service routes (public - no authorizer for login/register)
     this.httpApi.addRoutes({
@@ -95,6 +106,14 @@ export class ApiStack extends cdk.Stack {
       path: '/game/graphql',
       methods: [apigatewayv2.HttpMethod.POST],
       integration: gameIntegration,
+      authorizer: authorizer,
+    });
+
+    // Leaderboard Service routes (protected - requires Cognito JWT)
+    this.httpApi.addRoutes({
+      path: '/leaderboard/graphql',
+      methods: [apigatewayv2.HttpMethod.POST],
+      integration: leaderboardIntegration,
       authorizer: authorizer,
     });
 
@@ -158,6 +177,12 @@ export class ApiStack extends cdk.Stack {
       value: `${this.apiUrl}/game/graphql`,
       description: 'Game Service GraphQL Endpoint',
       exportName: `MemoryGame-GameEndpoint-${props.environment}`,
+    });
+
+    new cdk.CfnOutput(this, 'LeaderboardEndpoint', {
+      value: `${this.apiUrl}/leaderboard/graphql`,
+      description: 'Leaderboard Service GraphQL Endpoint',
+      exportName: `MemoryGame-LeaderboardEndpoint-${props.environment}`,
     });
 
     // Tags

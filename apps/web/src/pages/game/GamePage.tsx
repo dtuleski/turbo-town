@@ -6,6 +6,7 @@ import GameBoard from '@/components/game/GameBoard'
 import GameHeader from '@/components/game/GameHeader'
 import StartGameModal from '@/components/game/StartGameModal'
 import GameOverModal from '@/components/game/GameOverModal'
+import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 import AchievementToast from '@/components/game/AchievementToast'
 import type { GameTheme, DifficultyLevel } from '@/types/game'
 
@@ -31,7 +32,7 @@ const GamePage = () => {
     }
   }, [theme, difficulty, navigate])
 
-  const { gameState, startGame, pauseGame, resumeGame, restartGame, handleCardClick } = useGame(
+  const { gameState, startGame, pauseGame, resumeGame, restartGame, handleCardClick, scoreBreakdown, leaderboardRank } = useGame(
     theme,
     difficulty
   )
@@ -110,12 +111,24 @@ const GamePage = () => {
         <StartGameModal theme={theme} difficulty={difficulty} onStart={startGame} />
       )}
 
-      {/* Game Over Modal */}
-      <GameOverModal
-        isOpen={gameState.status === 'COMPLETED'}
-        gameState={gameState}
-        onPlayAgain={restartGame}
+      {/* Game Over Modal - Show if no score breakdown */}
+      {gameState.status === 'COMPLETED' && !scoreBreakdown && (
+        <GameOverModal
+          isOpen={true}
+          gameState={gameState}
+          onPlayAgain={restartGame}
+          onClose={() => navigate(ROUTES.GAME_SETUP)}
+        />
+      )}
+
+      {/* Score Breakdown Modal - Show if score breakdown available */}
+      <ScoreBreakdownModal
+        isOpen={gameState.status === 'COMPLETED' && !!scoreBreakdown}
         onClose={() => navigate(ROUTES.GAME_SETUP)}
+        scoreBreakdown={scoreBreakdown}
+        leaderboardRank={leaderboardRank}
+        onPlayAgain={restartGame}
+        gameType="MEMORY_MATCH"
       />
 
       {/* Achievement Toast */}

@@ -1,0 +1,8 @@
+{
+  "requestContext": {
+    "http": {
+      "method": "POST"
+    }
+  },
+  "body": "{\"query\":\"query GetLeaderboard { getLeaderboard(gameType: \\\"OVERALL\\\", timeframe: \\\"ALL_TIME\\\", limit: 10) { userId username score completionTime accuracy rank } }\"}"
+}
