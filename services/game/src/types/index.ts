@@ -155,6 +155,7 @@ export interface Subscription {
   stripeSubscriptionId?: string;
   currentPeriodStart?: Date;
   currentPeriodEnd?: Date;
+  effectiveDate?: string;
   createdAt: Date;
   updatedAt: Date;
 }

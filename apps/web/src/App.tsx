@@ -55,6 +55,7 @@ import HistoryPage from './pages/dashboard/HistoryPage'
 import AchievementsPage from './pages/dashboard/AchievementsPage'
 import LeaderboardPage from './pages/leaderboard/LeaderboardPage'
 import ProfilePage from './pages/profile/ProfilePage'
+import ContactPage from './pages/contact/ContactPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 // Components
@@ -117,6 +118,7 @@ function App() {
           <Route path={ROUTES.ACHIEVEMENTS} element={<AchievementsPage />} />
           <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
           <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+          <Route path={ROUTES.CONTACT} element={<ContactPage />} />
           <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
           <Route path="/admin/language-maintenance" element={<LanguageMaintenancePage />} />
           <Route path="/admin/subscriptions" element={<SubscriptionsPage />} />

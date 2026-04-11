@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/context/AuthContext'
 import { registerSchema } from '@/utils/validation'
 import { ROUTES } from '@/config/constants'
@@ -11,6 +12,7 @@ import Input from '@/components/common/Input'
 import { setEmailPrefs } from '@/api/game'
 
 const RegisterPage = () => {
+  const { t } = useTranslation()
   const { register: registerUser, confirmEmail, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
@@ -34,15 +36,14 @@ const RegisterPage = () => {
       setError('')
       setEmail(data.email)
       await registerUser(data)
-      // Save email preference after successful registration
       try { await setEmailPrefs(emailOptIn) } catch { /* non-blocking */ }
       navigate(ROUTES.HUB)
     } catch (err: any) {
       if (err.message === 'CONFIRM_EMAIL_REQUIRED') {
         setNeedsConfirmation(true)
-        setError('Please check your email for a confirmation code.')
+        setError(t('auth.checkEmailForCode'))
       } else {
-        setError(err.message || 'Registration failed. Please try again.')
+        setError(err.message || t('auth.registrationFailed'))
       }
     } finally {
       setIsLoading(false)
@@ -55,10 +56,9 @@ const RegisterPage = () => {
       setIsLoading(true)
       setError('')
       await confirmEmail(email, confirmationCode)
-      // After confirmation, try to login
       navigate(ROUTES.LOGIN)
     } catch (err: any) {
-      setError(err.message || 'Confirmation failed. Please try again.')
+      setError(err.message || t('auth.confirmationFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -67,7 +67,7 @@ const RegisterPage = () => {
   if (needsConfirmation) {
     return (
       <div>
-        <h2 className="text-2xl font-bold text-center mb-6">Confirm Your Email</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">{t('auth.confirmEmail')}</h2>
 
         {error && (
           <div className="bg-status-info/10 border border-status-info text-status-info px-4 py-3 rounded-lg mb-4">
@@ -76,12 +76,12 @@ const RegisterPage = () => {
         )}
 
         <p className="text-text-secondary mb-4 text-center">
-          We've sent a confirmation code to {email}. Please enter it below.
+          {t('auth.sentCodeTo', { email })}
         </p>
 
         <form onSubmit={onConfirmEmail} className="space-y-4">
           <Input
-            label="Confirmation Code"
+            label={t('auth.confirmationCode')}
             type="text"
             placeholder="123456"
             value={confirmationCode}
@@ -89,7 +89,7 @@ const RegisterPage = () => {
           />
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Confirm Email
+            {t('auth.confirmEmailBtn')}
           </Button>
         </form>
 
@@ -98,7 +98,7 @@ const RegisterPage = () => {
             onClick={() => setNeedsConfirmation(false)}
             className="text-primary-blue hover:underline font-medium"
           >
-            Back to registration
+            {t('auth.backToRegistration')}
           </button>
         </div>
       </div>
@@ -107,7 +107,7 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">{t('auth.createAccount')}</h2>
 
       {error && (
         <div className="bg-status-error/10 border border-status-error text-status-error px-4 py-3 rounded-lg mb-4">
@@ -117,7 +117,7 @@ const RegisterPage = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          label="Email"
+          label={t('auth.email')}
           type="email"
           placeholder="your@email.com"
           error={errors.email?.message}
@@ -125,7 +125,7 @@ const RegisterPage = () => {
         />
 
         <Input
-          label="Username"
+          label={t('auth.username')}
           type="text"
           placeholder="coolplayer123"
           error={errors.username?.message}
@@ -133,7 +133,7 @@ const RegisterPage = () => {
         />
 
         <Input
-          label="Password"
+          label={t('auth.password')}
           type="password"
           placeholder="••••••••"
           error={errors.password?.message}
@@ -141,7 +141,7 @@ const RegisterPage = () => {
         />
 
         <Input
-          label="Confirm Password"
+          label={t('auth.confirmPassword')}
           type="password"
           placeholder="••••••••"
           error={errors.confirmPassword?.message}
@@ -157,12 +157,12 @@ const RegisterPage = () => {
             className="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
           />
           <label htmlFor="emailOptIn" className="text-sm text-text-secondary cursor-pointer">
-            Send me daily game updates, leaderboard highlights, and new game alerts
+            {t('auth.emailOptIn')}
           </label>
         </div>
 
         <Button type="submit" className="w-full" isLoading={isLoading}>
-          Create Account
+          {t('auth.createAccount')}
         </Button>
       </form>
 
@@ -171,7 +171,7 @@ const RegisterPage = () => {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-text-secondary">or</span>
+          <span className="px-2 bg-white text-text-secondary">{t('auth.or')}</span>
         </div>
       </div>
 
@@ -186,13 +186,13 @@ const RegisterPage = () => {
           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
         </svg>
-        Sign up with Google
+        {t('auth.signUpGoogle')}
       </button>
 
       <div className="mt-6 text-center text-sm text-text-secondary">
-        Already have an account?{' '}
+        {t('auth.alreadyHaveAccount')}{' '}
         <Link to={ROUTES.LOGIN} className="text-primary-blue hover:underline font-medium">
-          Login
+          {t('auth.login')}
         </Link>
       </div>
     </div>

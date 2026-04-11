@@ -4,6 +4,7 @@ import { ROUTES } from '@/config/constants'
 import { generateQuestions, type GeoQuestion, type GameMode, COUNTRY_SILHOUETTES } from '@/utils/geoQuizData'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useTranslation } from 'react-i18next'
 
 const TOTAL_QUESTIONS = 10
 const TIMER_BY_DIFFICULTY: Record<string, number> = { easy: 15, medium: 12, hard: 10 }
@@ -13,6 +14,7 @@ type Phase = 'playing' | 'feedback' | 'submitting' | 'completed'
 export default function GeoQuizGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
   const difficulty = searchParams.get('difficulty') || 'easy'
   const mode = (searchParams.get('mode') || 'capitals') as GameMode
   const timeLimit = TIMER_BY_DIFFICULTY[difficulty] || 15
@@ -167,7 +169,7 @@ export default function GeoQuizGamePage() {
       <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-800 to-cyan-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading questions...</p>
+          <p className="text-white/60">{t('gameplay.loadingQuestions')}</p>
         </div>
       </div>
     )
@@ -206,7 +208,7 @@ export default function GeoQuizGamePage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
           <button onClick={() => navigate(ROUTES.GEO_QUIZ_SETUP)} className="text-white text-lg font-bold hover:underline">
-            ← Back
+            {t('game.back')}
           </button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(totalTime)}</span>
@@ -242,7 +244,7 @@ export default function GeoQuizGamePage() {
         {streak > 1 && phase === 'playing' && (
           <div className="text-center mb-3">
             <span className="inline-flex items-center gap-1 bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-bold">
-              🔥 {streak} streak! (+{streak * 25} bonus)
+              🔥 {streak} {t('game.streak')} (+{streak * 25} {t('game.bonus')})
             </span>
           </div>
         )}
@@ -254,7 +256,7 @@ export default function GeoQuizGamePage() {
             <div className="text-center mb-6">
               {mode === 'silhouettes' ? (
                 <div className="flex flex-col items-center gap-3">
-                  <div className="text-sm text-white/50 font-bold">Which country is this?</div>
+                  <div className="text-sm text-white/50 font-bold">{t('gameplay.whichCountry')}</div>
                   {renderSilhouette(currentQuestion.prompt)}
                 </div>
               ) : (
@@ -315,7 +317,7 @@ export default function GeoQuizGamePage() {
             {phase === 'feedback' && (
               <div className="mt-4 text-center">
                 <div className={`text-lg font-bold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? '🎉 Correct!' : `❌ The answer was: ${currentQuestion.correctAnswer}`}
+                  {isCorrect ? `🎉 ${t('game.correct')}` : `❌ ${t('gameplay.theAnswerWas', { answer: currentQuestion.correctAnswer })}`}
                 </div>
                 {currentQuestion.funFact && (
                   <div className="bg-white/5 rounded-xl p-3 text-sm text-white/70">
@@ -344,7 +346,7 @@ export default function GeoQuizGamePage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 text-center">
             <div className="text-4xl mb-4 animate-bounce">🌍</div>
-            <p className="text-xl font-bold">Calculating score...</p>
+            <p className="text-xl font-bold">{t('game.calculating')}</p>
           </div>
         </div>
       )}

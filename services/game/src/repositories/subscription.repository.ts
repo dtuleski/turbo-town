@@ -58,6 +58,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     stripeSubscriptionId?: string;
     currentPeriodStart?: Date;
     currentPeriodEnd?: Date;
+    effectiveDate?: Date;
   }): Promise<void> {
     try {
       const now = new Date();
@@ -73,6 +74,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
         stripeSubscriptionId: data.stripeSubscriptionId || existing?.stripeSubscriptionId,
         currentPeriodStart: data.currentPeriodStart ? data.currentPeriodStart.toISOString() : existing?.currentPeriodStart,
         currentPeriodEnd: data.currentPeriodEnd ? data.currentPeriodEnd.toISOString() : existing?.currentPeriodEnd,
+        effectiveDate: data.effectiveDate ? data.effectiveDate.toISOString() : existing?.effectiveDate || now.toISOString(),
         startDate: existing?.startDate || now.toISOString(),
         createdAt: existing?.createdAt || now.toISOString(),
         updatedAt: now.toISOString(),

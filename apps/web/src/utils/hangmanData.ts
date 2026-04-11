@@ -138,17 +138,177 @@ export const HARD_WORDS: HangmanWord[] = [
   { word: 'THUMBTACK', hint: 'Small pin for bulletin boards', category: 'Objects' },
 ]
 
+// ── Spanish Word Lists ────────────────────────────────────────────────────────
+
+// Easy: up to 5 letters (Spanish)
+export const EASY_WORDS_ES: HangmanWord[] = [
+  { word: 'GATO', hint: 'Animal que maulla', category: 'Animales' },
+  { word: 'LUNA', hint: 'Brilla en la noche', category: 'Naturaleza' },
+  { word: 'MESA', hint: 'Mueble para comer', category: 'Objetos' },
+  { word: 'AGUA', hint: 'Liquido para beber', category: 'Naturaleza' },
+  { word: 'FLOR', hint: 'Crece en el jardin', category: 'Naturaleza' },
+  { word: 'PERRO', hint: 'Mejor amigo del hombre', category: 'Animales' },
+  { word: 'ARBOL', hint: 'Planta grande con hojas', category: 'Naturaleza' },
+  { word: 'CIELO', hint: 'Lo ves al mirar arriba', category: 'Naturaleza' },
+  { word: 'PLAYA', hint: 'Arena junto al mar', category: 'Lugares' },
+  { word: 'LIBRO', hint: 'Tiene paginas para leer', category: 'Objetos' },
+  { word: 'FUEGO', hint: 'Produce calor y luz', category: 'Naturaleza' },
+  { word: 'NIEVE', hint: 'Cae blanca del cielo en invierno', category: 'Naturaleza' },
+  { word: 'RELOJ', hint: 'Muestra la hora', category: 'Objetos' },
+  { word: 'TIGRE', hint: 'Felino con rayas', category: 'Animales' },
+  { word: 'MUNDO', hint: 'Nuestro planeta', category: 'Ciencia' },
+  { word: 'NOCHE', hint: 'Cuando el sol se va', category: 'Tiempo' },
+  { word: 'LECHE', hint: 'Bebida blanca de la vaca', category: 'Comida' },
+  { word: 'QUESO', hint: 'Se hace con leche', category: 'Comida' },
+  { word: 'BARCO', hint: 'Navega en el agua', category: 'Transporte' },
+  { word: 'SILLA', hint: 'Te sientas en ella', category: 'Objetos' },
+  { word: 'HONGO', hint: 'Crece en lugares humedos', category: 'Naturaleza' },
+]
+
+// Medium: 6-10 letters (Spanish)
+export const MEDIUM_WORDS_ES: HangmanWord[] = [
+  { word: 'MARIPOSA', hint: 'Insecto con alas coloridas', category: 'Animales' },
+  { word: 'ELEFANTE', hint: 'Animal terrestre mas grande', category: 'Animales' },
+  { word: 'MONTANA', hint: 'Formacion de tierra muy alta', category: 'Naturaleza' },
+  { word: 'ESTRELLA', hint: 'Brilla en el cielo nocturno', category: 'Naturaleza' },
+  { word: 'CHOCOLATE', hint: 'Dulce hecho de cacao', category: 'Comida' },
+  { word: 'DINOSAURIO', hint: 'Reptil gigante extinto', category: 'Animales' },
+  { word: 'UNIVERSO', hint: 'Todo lo que existe', category: 'Ciencia' },
+  { word: 'CASCADA', hint: 'Agua que cae de un acantilado', category: 'Naturaleza' },
+  { word: 'GUITARRA', hint: 'Instrumento musical con cuerdas', category: 'Musica' },
+  { word: 'PARAGUAS', hint: 'Te protege de la lluvia', category: 'Objetos' },
+  { word: 'SANDWICH', hint: 'Comida entre dos panes', category: 'Comida' },
+  { word: 'TECLADO', hint: 'Dispositivo para escribir en la computadora', category: 'Tecnologia' },
+  { word: 'LIMONADA', hint: 'Bebida dulce de limon', category: 'Comida' },
+  { word: 'ARCOIRIS', hint: 'Arco de colores en el cielo', category: 'Naturaleza' },
+  { word: 'ESQUELETO', hint: 'Huesos del cuerpo', category: 'Cuerpo' },
+  { word: 'VOLCAN', hint: 'Montana que lanza lava', category: 'Naturaleza' },
+  { word: 'PANQUEQUE', hint: 'Comida plana para el desayuno', category: 'Comida' },
+  { word: 'TOMATE', hint: 'Fruta roja para ensaladas', category: 'Comida' },
+  { word: 'ZANAHORIA', hint: 'Vegetal naranja largo', category: 'Comida' },
+  { word: 'CARPINTERO', hint: 'Persona que trabaja con madera', category: 'Personas' },
+]
+
+// Hard: 11+ letters (Spanish)
+export const HARD_WORDS_ES: HangmanWord[] = [
+  { word: 'AGRICULTURA', hint: 'Cultivo de la tierra', category: 'Ciencia' },
+  { word: 'ELECTRICIDAD', hint: 'Energia que alimenta tu casa', category: 'Ciencia' },
+  { word: 'FOTOGRAFIA', hint: 'Arte de tomar fotos', category: 'Arte' },
+  { word: 'IMAGINACION', hint: 'Crear imagenes en tu mente', category: 'Acciones' },
+  { word: 'VETERINARIO', hint: 'Doctor de animales', category: 'Personas' },
+  { word: 'TERMOMETRO', hint: 'Mide la temperatura', category: 'Ciencia' },
+  { word: 'ENCICLOPEDIA', hint: 'Libro con todo el conocimiento', category: 'Objetos' },
+  { word: 'SALTAMONTES', hint: 'Insecto verde que salta', category: 'Animales' },
+  { word: 'OBSERVATORIO', hint: 'Lugar para ver las estrellas', category: 'Lugares' },
+  { word: 'VECINDARIO', hint: 'Zona donde vives', category: 'Lugares' },
+  { word: 'SOBRESALIENTE', hint: 'Excepcionalmente bueno', category: 'Lenguaje' },
+  { word: 'TRAMPOLIN', hint: 'Superficie para saltar', category: 'Deportes' },
+  { word: 'COMPUTADORA', hint: 'Maquina para trabajar y jugar', category: 'Tecnologia' },
+  { word: 'RESTAURANTE', hint: 'Lugar donde comes fuera de casa', category: 'Lugares' },
+  { word: 'HELICOPTERO', hint: 'Vehiculo volador con helices', category: 'Transporte' },
+  { word: 'SUPERMERCADO', hint: 'Tienda grande para comprar comida', category: 'Lugares' },
+  { word: 'COMUNICACION', hint: 'Intercambio de informacion', category: 'Lenguaje' },
+  { word: 'MATEMATICAS', hint: 'Ciencia de los numeros', category: 'Ciencia' },
+  { word: 'TEMPERATURA', hint: 'Medida de calor o frio', category: 'Ciencia' },
+  { word: 'ROMPECABEZAS', hint: 'Juego de piezas que encajan', category: 'Juegos' },
+]
+
+// ── Portuguese Word Lists ────────────────────────────────────────────────────
+
+// Easy: up to 5 letters (Portuguese)
+export const EASY_WORDS_PT: HangmanWord[] = [
+  { word: 'GATO', hint: 'Animal que mia', category: 'Animais' },
+  { word: 'LUA', hint: 'Brilha a noite', category: 'Natureza' },
+  { word: 'MESA', hint: 'Movel para comer', category: 'Objetos' },
+  { word: 'AGUA', hint: 'Liquido para beber', category: 'Natureza' },
+  { word: 'FLOR', hint: 'Cresce no jardim', category: 'Natureza' },
+  { word: 'PEIXE', hint: 'Vive na agua', category: 'Animais' },
+  { word: 'LIVRO', hint: 'Tem paginas para ler', category: 'Objetos' },
+  { word: 'FOGO', hint: 'Produz calor e luz', category: 'Natureza' },
+  { word: 'NEVE', hint: 'Cai branca do ceu no inverno', category: 'Natureza' },
+  { word: 'TIGRE', hint: 'Felino com listras', category: 'Animais' },
+  { word: 'MUNDO', hint: 'Nosso planeta', category: 'Ciencia' },
+  { word: 'NOITE', hint: 'Quando o sol se vai', category: 'Tempo' },
+  { word: 'LEITE', hint: 'Bebida branca da vaca', category: 'Comida' },
+  { word: 'QUEIJO', hint: 'Feito com leite', category: 'Comida' },
+  { word: 'BARCO', hint: 'Navega na agua', category: 'Transporte' },
+  { word: 'PRAIA', hint: 'Areia junto ao mar', category: 'Lugares' },
+  { word: 'PORTA', hint: 'Abre e fecha a entrada', category: 'Objetos' },
+  { word: 'PEDRA', hint: 'Encontrada no chao, dura', category: 'Natureza' },
+  { word: 'NUVEM', hint: 'Branca e fofa no ceu', category: 'Natureza' },
+  { word: 'CHUVA', hint: 'Agua que cai do ceu', category: 'Natureza' },
+]
+
+// Medium: 6-10 letters (Portuguese)
+export const MEDIUM_WORDS_PT: HangmanWord[] = [
+  { word: 'BORBOLETA', hint: 'Inseto com asas coloridas', category: 'Animais' },
+  { word: 'ELEFANTE', hint: 'Maior animal terrestre', category: 'Animais' },
+  { word: 'MONTANHA', hint: 'Formacao de terra muito alta', category: 'Natureza' },
+  { word: 'ESTRELA', hint: 'Brilha no ceu a noite', category: 'Natureza' },
+  { word: 'CHOCOLATE', hint: 'Doce feito de cacau', category: 'Comida' },
+  { word: 'UNIVERSO', hint: 'Tudo que existe', category: 'Ciencia' },
+  { word: 'CASCATA', hint: 'Agua caindo de um penhasco', category: 'Natureza' },
+  { word: 'GUITARRA', hint: 'Instrumento musical com cordas', category: 'Musica' },
+  { word: 'TECLADO', hint: 'Dispositivo para digitar', category: 'Tecnologia' },
+  { word: 'LIMONADA', hint: 'Bebida doce de limao', category: 'Comida' },
+  { word: 'ARCOIRIS', hint: 'Arco de cores no ceu', category: 'Natureza' },
+  { word: 'ESQUELETO', hint: 'Ossos do corpo', category: 'Corpo' },
+  { word: 'VULCAO', hint: 'Montanha que lanca lava', category: 'Natureza' },
+  { word: 'PANQUECA', hint: 'Comida plana para o cafe', category: 'Comida' },
+  { word: 'TOMATE', hint: 'Fruta vermelha para saladas', category: 'Comida' },
+  { word: 'CENOURA', hint: 'Vegetal laranja comprido', category: 'Comida' },
+  { word: 'TARTARUGA', hint: 'Animal lento com casco', category: 'Animais' },
+  { word: 'COGUMELO', hint: 'Fungo que cresce na floresta', category: 'Natureza' },
+  { word: 'CANGURU', hint: 'Animal australiano que pula', category: 'Animais' },
+  { word: 'GIRAFA', hint: 'Animal mais alto do mundo', category: 'Animais' },
+]
+
+// Hard: 11+ letters (Portuguese)
+export const HARD_WORDS_PT: HangmanWord[] = [
+  { word: 'AGRICULTURA', hint: 'Cultivo da terra', category: 'Ciencia' },
+  { word: 'ELETRICIDADE', hint: 'Energia que alimenta sua casa', category: 'Ciencia' },
+  { word: 'FOTOGRAFIA', hint: 'Arte de tirar fotos', category: 'Arte' },
+  { word: 'IMAGINACAO', hint: 'Criar imagens na mente', category: 'Acoes' },
+  { word: 'VETERINARIO', hint: 'Medico de animais', category: 'Pessoas' },
+  { word: 'TERMOMETRO', hint: 'Mede a temperatura', category: 'Ciencia' },
+  { word: 'ENCICLOPEDIA', hint: 'Livro com todo o conhecimento', category: 'Objetos' },
+  { word: 'GAFANHOTO', hint: 'Inseto verde que pula', category: 'Animais' },
+  { word: 'OBSERVATORIO', hint: 'Lugar para ver as estrelas', category: 'Lugares' },
+  { word: 'VIZINHANCA', hint: 'Area onde voce mora', category: 'Lugares' },
+  { word: 'EXCEPCIONAL', hint: 'Excepcionalmente bom', category: 'Linguagem' },
+  { word: 'TRAMPOLIM', hint: 'Superficie para pular', category: 'Esportes' },
+  { word: 'COMPUTADOR', hint: 'Maquina para trabalhar e jogar', category: 'Tecnologia' },
+  { word: 'RESTAURANTE', hint: 'Lugar onde come fora de casa', category: 'Lugares' },
+  { word: 'HELICOPTERO', hint: 'Veiculo voador com helices', category: 'Transporte' },
+  { word: 'SUPERMERCADO', hint: 'Loja grande para comprar comida', category: 'Lugares' },
+  { word: 'COMUNICACAO', hint: 'Troca de informacao', category: 'Linguagem' },
+  { word: 'MATEMATICA', hint: 'Ciencia dos numeros', category: 'Ciencia' },
+  { word: 'TEMPERATURA', hint: 'Medida de calor ou frio', category: 'Ciencia' },
+  { word: 'QUEBRACABECA', hint: 'Jogo de pecas que encaixam', category: 'Jogos' },
+]
+
 export const MAX_WRONG = 6 // head, body, left arm, right arm, left leg, right leg
 export const ROUNDS_PER_GAME = 5
 
-export function getWordsForDifficulty(difficulty: string): HangmanWord[] {
+export function getWordsForDifficulty(difficulty: string, lang: string = 'en'): HangmanWord[] {
+  if (lang === 'es') {
+    if (difficulty === 'easy') return EASY_WORDS_ES
+    if (difficulty === 'medium') return MEDIUM_WORDS_ES
+    return HARD_WORDS_ES
+  }
+  if (lang === 'pt') {
+    if (difficulty === 'easy') return EASY_WORDS_PT
+    if (difficulty === 'medium') return MEDIUM_WORDS_PT
+    return HARD_WORDS_PT
+  }
+  // Default: English
   if (difficulty === 'easy') return EASY_WORDS
   if (difficulty === 'medium') return MEDIUM_WORDS
   return HARD_WORDS
 }
 
-export function pickRandomWords(difficulty: string, count: number): HangmanWord[] {
-  const pool = getWordsForDifficulty(difficulty)
+export function pickRandomWords(difficulty: string, count: number, lang: string = 'en'): HangmanWord[] {
+  const pool = getWordsForDifficulty(difficulty, lang)
   const shuffled = [...pool].sort(() => Math.random() - 0.5)
   return shuffled.slice(0, count)
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import { PHOTO_DESIGNS, DIFFICULTY_CONFIG, pixelizeImage, type PixelizedResult } from '@/utils/colorByNumberData'
 import { startGame, completeGame } from '@/api/game'
@@ -8,6 +9,7 @@ import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 type Phase = 'loading' | 'playing' | 'submitting' | 'completed'
 
 export default function ColorByNumberGamePage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const difficulty = (searchParams.get('difficulty') || 'easy') as 'easy' | 'medium' | 'hard'
@@ -150,7 +152,7 @@ export default function ColorByNumberGamePage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
-          <button onClick={() => navigate(ROUTES.COLOR_BY_NUMBER_SETUP)} className="text-white text-lg font-bold hover:underline">← Back</button>
+          <button onClick={() => navigate(ROUTES.COLOR_BY_NUMBER_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(timer)}</span>
             <span>{Math.round(progress)}%</span>

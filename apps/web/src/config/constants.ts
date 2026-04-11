@@ -47,6 +47,7 @@ export const ROUTES = {
   ACHIEVEMENTS: '/dashboard/achievements',
   LEADERBOARD: '/leaderboard',
   PROFILE: '/profile',
+  CONTACT: '/contact',
   ADMIN: '/admin',
 } as const
 

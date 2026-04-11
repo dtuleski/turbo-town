@@ -4,6 +4,7 @@ import { ROUTES } from '@/config/constants'
 import { type Board, checkWinner, getWinningLine, isBoardFull, getAIMove, ROUNDS_PER_GAME } from '@/utils/ticTacToeAI'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useTranslation } from 'react-i18next'
 
 type RoundResult = 'win' | 'lose' | 'draw' | null
 type GamePhase = 'playing' | 'round-end' | 'submitting' | 'completed'
@@ -13,6 +14,7 @@ const EMPTY_BOARD: Board = Array(9).fill(null)
 export default function TicTacToeGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
   const difficulty = searchParams.get('difficulty') || 'easy'
 
   const [gameId, setGameId] = useState('')
@@ -133,10 +135,10 @@ export default function TicTacToeGamePage() {
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
-          <button onClick={() => navigate(ROUTES.TIC_TAC_TOE_SETUP)} className="text-white text-lg font-bold hover:underline">← Back</button>
+          <button onClick={() => navigate(ROUTES.TIC_TAC_TOE_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm">
             <span>⏱️ {formatTime(timer)}</span>
-            <span>Round {currentRound + 1}/{ROUNDS_PER_GAME}</span>
+            <span>{t('game.round')} {currentRound + 1}/{ROUNDS_PER_GAME}</span>
           </div>
         </div>
 
@@ -144,19 +146,19 @@ export default function TicTacToeGamePage() {
         <div className="flex justify-center gap-6 mb-4">
           <div className="text-center">
             <div className="text-2xl font-black text-green-400">{wins}</div>
-            <div className="text-xs text-white/60">Wins</div>
+            <div className="text-xs text-white/60">{t('gameplay.wins')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-black text-yellow-400">{draws}</div>
-            <div className="text-xs text-white/60">Draws</div>
+            <div className="text-xs text-white/60">{t('gameplay.draws')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-black text-red-400">{losses}</div>
-            <div className="text-xs text-white/60">Losses</div>
+            <div className="text-xs text-white/60">{t('gameplay.losses')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-black text-white">{score}</div>
-            <div className="text-xs text-white/60">Score</div>
+            <div className="text-xs text-white/60">{t('game.score')}</div>
           </div>
         </div>
 
@@ -164,7 +166,7 @@ export default function TicTacToeGamePage() {
         {gamePhase === 'playing' && !roundResult && (
           <div className="text-center mb-4">
             <span className={`inline-block px-4 py-1 rounded-full text-sm font-bold ${isPlayerTurn ? 'bg-blue-500 text-white' : 'bg-red-500/50 text-white/80'}`}>
-              {isPlayerTurn ? '❌ Your turn' : '⭕ AI thinking...'}
+              {isPlayerTurn ? `❌ ${t('gameplay.yourTurn')}` : `⭕ ${t('gameplay.aiThinking')}`}
             </span>
           </div>
         )}
@@ -197,11 +199,11 @@ export default function TicTacToeGamePage() {
             <div className={`text-3xl font-black mb-3 ${
               roundResult === 'win' ? 'text-green-400' : roundResult === 'draw' ? 'text-yellow-400' : 'text-red-400'
             }`}>
-              {roundResult === 'win' ? '🎉 You Win! +300' : roundResult === 'draw' ? '🤝 Draw! +100' : '💀 AI Wins!'}
+              {roundResult === 'win' ? `🎉 ${t('gameplay.youWin')}` : roundResult === 'draw' ? `🤝 ${t('gameplay.draw')}` : `💀 ${t('gameplay.aiWins')}`}
             </div>
             <button onClick={nextRound}
               className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-lg">
-              {currentRound + 1 >= ROUNDS_PER_GAME ? 'See Results 🏆' : 'Next Round →'}
+              {currentRound + 1 >= ROUNDS_PER_GAME ? t('game.seeResults') : t('game.nextRound')}
             </button>
           </div>
         )}
@@ -213,7 +215,7 @@ export default function TicTacToeGamePage() {
       )}
       {gamePhase === 'submitting' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">❌⭕</div><p className="text-xl font-bold">Calculating score...</p></div>
+          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">❌⭕</div><p className="text-xl font-bold">{t('game.calculating')}</p></div>
         </div>
       )}
     </div>

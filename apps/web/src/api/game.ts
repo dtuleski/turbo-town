@@ -367,3 +367,26 @@ export const adminGetAllEmailPrefs = async (): Promise<{ userId: string; email: 
   })
   return data.adminGetAllEmailPrefs.users
 }
+
+// Contact Form
+const SUBMIT_CONTACT_FORM = gql`
+  mutation SubmitContactForm($input: ContactFormInput!) {
+    submitContactForm(input: $input) {
+      success
+    }
+  }
+`
+
+export interface ContactFormInput {
+  type: 'bug' | 'feature' | 'question' | 'other'
+  subject: string
+  message: string
+}
+
+export const submitContactForm = async (input: ContactFormInput): Promise<{ success: boolean }> => {
+  const { data } = await gameClient.mutate({
+    mutation: SUBMIT_CONTACT_FORM,
+    variables: { input },
+  })
+  return data.submitContactForm
+}

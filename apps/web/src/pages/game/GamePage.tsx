@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import { useGame } from '@/hooks/useGame'
 import GameBoard from '@/components/game/GameBoard'
@@ -13,6 +14,7 @@ import type { GameTheme, DifficultyLevel } from '@/types/game'
 const GamePage = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { theme, difficulty } = (location.state as {
     theme: GameTheme
     difficulty: DifficultyLevel
@@ -95,12 +97,12 @@ const GamePage = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40">
           <div className="bg-white rounded-2xl p-8 text-center">
             <div className="text-6xl mb-4">⏸️</div>
-            <h2 className="text-3xl font-bold mb-4">Game Paused</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('setup.memoryMatch.gamePaused')}</h2>
             <button
               onClick={resumeGame}
               className="px-6 py-3 bg-primary-blue text-white rounded-lg text-lg font-medium hover:bg-opacity-90 transition-all"
             >
-              ▶️ Resume
+              ▶️ {t('setup.memoryMatch.resume')}
             </button>
           </div>
         </div>

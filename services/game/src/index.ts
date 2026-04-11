@@ -1,4 +1,5 @@
 import { GameHandler } from './handlers/game.handler';
+import { StripeService } from './services/stripe.service';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 
@@ -33,6 +34,12 @@ export async function handler(event: any, context: any): Promise<any> {
   logger.setContext({ correlationId, functionName: context.functionName });
 
   try {
+    // Check if this is a Stripe webhook
+    const path = event.rawPath || event.requestContext?.http?.path || '';
+    if (path.endsWith('/webhook')) {
+      return handleStripeWebhook(event);
+    }
+
     // Validate environment variables
     validateEnvironment();
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/context/AuthContext'
 import { loginSchema } from '@/utils/validation'
 import { ROUTES } from '@/config/constants'
@@ -10,6 +11,7 @@ import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
 
 const LoginPage = () => {
+  const { t } = useTranslation()
   const { login, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +32,7 @@ const LoginPage = () => {
       await login(data)
       navigate(ROUTES.HUB)
     } catch (err) {
-      setError('Invalid email or password')
+      setError(t('auth.invalidCredentials'))
     } finally {
       setIsLoading(false)
     }
@@ -38,7 +40,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">{t('auth.welcomeBack')}</h2>
 
       {error && (
         <div className="bg-status-error/10 border border-status-error text-status-error px-4 py-3 rounded-lg mb-4">
@@ -48,7 +50,7 @@ const LoginPage = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          label="Email"
+          label={t('auth.email')}
           type="email"
           placeholder="your@email.com"
           error={errors.email?.message}
@@ -56,7 +58,7 @@ const LoginPage = () => {
         />
 
         <Input
-          label="Password"
+          label={t('auth.password')}
           type="password"
           placeholder="••••••••"
           error={errors.password?.message}
@@ -66,15 +68,15 @@ const LoginPage = () => {
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />
-            <span className="text-text-secondary">Remember me</span>
+            <span className="text-text-secondary">{t('auth.rememberMe')}</span>
           </label>
           <Link to={ROUTES.FORGOT_PASSWORD} className="text-primary-blue hover:underline">
-            Forgot password?
+            {t('auth.forgotPassword')}
           </Link>
         </div>
 
         <Button type="submit" className="w-full" isLoading={isLoading}>
-          Login
+          {t('auth.login')}
         </Button>
       </form>
 
@@ -83,7 +85,7 @@ const LoginPage = () => {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-text-secondary">or</span>
+          <span className="px-2 bg-white text-text-secondary">{t('auth.or')}</span>
         </div>
       </div>
 
@@ -98,13 +100,13 @@ const LoginPage = () => {
           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
         </svg>
-        Continue with Google
+        {t('auth.continueWithGoogle')}
       </button>
 
       <div className="mt-6 text-center text-sm text-text-secondary">
-        Don't have an account?{' '}
+        {t('auth.dontHaveAccount')}{' '}
         <Link to={ROUTES.REGISTER} className="text-primary-blue hover:underline font-medium">
-          Sign up
+          {t('auth.signUp')}
         </Link>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import { pickRandomWords, MAX_WRONG, ROUNDS_PER_GAME, type HangmanWord } from '@/utils/hangmanData'
 import { startGame, completeGame } from '@/api/game'
@@ -48,6 +49,7 @@ function HangmanSVG({ wrongCount }: { wrongCount: number }) {
 export default function HangmanGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t, i18n } = useTranslation()
   const difficulty = searchParams.get('difficulty') || 'easy'
 
   const [gameId, setGameId] = useState('')
@@ -69,8 +71,8 @@ export default function HangmanGamePage() {
   const wrongCount = wrongLetters.length
 
   useEffect(() => {
-    setWords(pickRandomWords(difficulty, ROUNDS_PER_GAME))
-  }, [difficulty])
+    setWords(pickRandomWords(difficulty, ROUNDS_PER_GAME, i18n.language))
+  }, [difficulty, i18n.language])
 
   useEffect(() => {
     const init = async () => {
@@ -174,10 +176,10 @@ export default function HangmanGamePage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
-          <button onClick={() => navigate(ROUTES.HANGMAN_SETUP)} className="text-white text-lg font-bold hover:underline">← Back</button>
+          <button onClick={() => navigate(ROUTES.HANGMAN_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(timer)}</span>
-            <span>Round {currentRound + 1}/{ROUNDS_PER_GAME}</span>
+            <span>{t('game.round')} {currentRound + 1}/{ROUNDS_PER_GAME}</span>
             <span className="text-yellow-300">⭐ {totalScore}</span>
           </div>
         </div>
@@ -207,7 +209,7 @@ export default function HangmanGamePage() {
               <div key={idx} className={`w-4 h-4 rounded-full ${idx < wrongCount ? 'bg-red-500' : 'bg-white/20'}`} />
             ))}
           </div>
-          <p className="text-white/40 text-xs mt-1">{MAX_WRONG - wrongCount} guesses left</p>
+          <p className="text-white/40 text-xs mt-1">{t('gameplay.guessesLeft', { count: MAX_WRONG - wrongCount })}</p>
         </div>
 
         {/* Word display */}
@@ -229,11 +231,11 @@ export default function HangmanGamePage() {
         {roundPhase !== 'playing' && (
           <div className="text-center mb-4">
             <div className={`text-2xl font-black mb-2 ${roundPhase === 'won' ? 'text-green-400' : 'text-red-400'}`}>
-              {roundPhase === 'won' ? '🎉 Correct!' : `💀 The word was: ${currentWord.word}`}
+              {roundPhase === 'won' ? `🎉 ${t('game.correct')}` : `💀 ${t('gameplay.theWordWas', { word: currentWord.word })}`}
             </div>
             <button onClick={nextRound}
               className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-lg">
-              {currentRound + 1 >= ROUNDS_PER_GAME ? 'See Results 🏆' : 'Next Word →'}
+              {currentRound + 1 >= ROUNDS_PER_GAME ? t('game.seeResults') : t('game.nextRound')}
             </button>
           </div>
         )}
@@ -268,7 +270,7 @@ export default function HangmanGamePage() {
       )}
       {gamePhase === 'submitting' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">🪢</div><p className="text-xl font-bold">Calculating score...</p></div>
+          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">🪢</div><p className="text-xl font-bold">{t('game.calculating')}</p></div>
         </div>
       )}
     </div>

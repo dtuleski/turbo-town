@@ -19,11 +19,10 @@ export class CognitoStack extends cdk.Stack {
 
     // Create User Pool
     this.userPool = new cognito.UserPool(this, 'UserPool', {
-      userPoolName: `MemoryGame-UserPool-${props.environment}`,
+      userPoolName: `DashDen-UserPool-${props.environment}`,
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,
-        username: false,
       },
       autoVerify: {
         email: true,
@@ -136,7 +135,7 @@ export class CognitoStack extends cdk.Stack {
     // Add User Pool Domain
     const domain = this.userPool.addDomain('Domain', {
       cognitoDomain: {
-        domainPrefix: `memory-game-${props.environment}`,
+        domainPrefix: `dashden-${props.environment}`,
       },
     });
 

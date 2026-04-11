@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { listAvailableGames, GameCatalogItem, getReviewStats, ReviewStats } from '../../api/game'
 import GameTile from '../../components/hub/GameTile'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 // Subject-based category filter mapping (gameId -> filter group)
 const GAME_FILTER_MAP: Record<string, string> = {
@@ -24,11 +25,11 @@ const GAME_FILTER_MAP: Record<string, string> = {
 }
 
 const FILTER_CHIPS = [
-  { id: 'all', label: 'All', emoji: '🎮' },
-  { id: 'Science & Math', label: 'Science & Math', emoji: '🔬' },
-  { id: 'History & Civics', label: 'History & Civics', emoji: '📚' },
-  { id: 'Geography & Language', label: 'Geography & Language', emoji: '🌍' },
-  { id: 'Puzzles & Logic', label: 'Puzzles & Logic', emoji: '🧩' },
+  { id: 'all', labelKey: 'hub.filter.all', emoji: '🎮' },
+  { id: 'Science & Math', labelKey: 'hub.filter.scienceMath', emoji: '🔬' },
+  { id: 'History & Civics', labelKey: 'hub.filter.historyCivics', emoji: '📚' },
+  { id: 'Geography & Language', labelKey: 'hub.filter.geographyLanguage', emoji: '🌍' },
+  { id: 'Puzzles & Logic', labelKey: 'hub.filter.puzzlesLogic', emoji: '🧩' },
 ]
 
 export default function GameHubPage() {
@@ -38,6 +39,7 @@ export default function GameHubPage() {
   const [ratings, setRatings] = useState<Map<string, ReviewStats>>(new Map())
   const [activeFilter, setActiveFilter] = useState('all')
   const { user } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function GameHubPage() {
       }
     } catch (err) {
       console.error('Failed to load games:', err)
-      setError('Failed to load games. Please try again.')
+      setError(t('hub.failedToLoad'))
     } finally {
       setLoading(false)
     }
@@ -75,7 +77,7 @@ export default function GameHubPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 flex items-center justify-center">
         <div className="text-white text-2xl font-bold animate-pulse">
-          Loading games...
+          {t('hub.loadingGames')}
         </div>
       </div>
     )
@@ -85,18 +87,19 @@ export default function GameHubPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 flex items-center justify-center">
         <div className="bg-white rounded-3xl p-8 shadow-2xl max-w-md">
-          <p className="text-red-500 text-xl font-bold mb-4">Oops!</p>
+          <p className="text-red-500 text-xl font-bold mb-4">{t('hub.oops')}</p>
           <p className="text-gray-700 mb-4">{error}</p>
           <button
             onClick={loadGames}
             className="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-xl transition-colors"
           >
-            Try Again
+            {t('common.tryAgain')}
           </button>
         </div>
       </div>
     )
   }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 py-8 px-4">
@@ -104,13 +107,13 @@ export default function GameHubPage() {
         {/* Welcome Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
-            🎮 DashDen Game Hub
+            🎮 {t('hub.title')}
           </h1>
           <p className="text-2xl text-white font-bold drop-shadow mb-2">
-            Hi {user?.username || 'Player'}! Pick a game to play!
+            {t('hub.greeting', { name: user?.username || t('common.player') })}
           </p>
           <p className="text-lg text-white/90 drop-shadow">
-            Educational games that make learning fun
+            {t('hub.subtitle')}
           </p>
         </div>
 
@@ -121,14 +124,14 @@ export default function GameHubPage() {
             className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
           >
             <span className="text-2xl">📊</span>
-            <span>Dashboard</span>
+            <span>{t('hub.dashboard')}</span>
           </button>
           <button
             onClick={() => navigate('/leaderboard')}
             className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
           >
             <span className="text-2xl">🏆</span>
-            <span>Leaderboard</span>
+            <span>{t('hub.leaderboard')}</span>
           </button>
         </div>
 
@@ -145,7 +148,7 @@ export default function GameHubPage() {
               }`}
             >
               <span>{chip.emoji}</span>
-              <span>{chip.label}</span>
+              <span>{t(chip.labelKey)}</span>
             </button>
           ))}
         </div>
@@ -167,12 +170,12 @@ export default function GameHubPage() {
         {/* Empty State */}
         {games.length === 0 && (
           <div className="text-center text-white text-xl font-bold mt-12">
-            No games available right now. Check back soon!
+            {t('hub.noGames')}
           </div>
         )}
         {games.length > 0 && games.filter((g) => activeFilter === 'all' || GAME_FILTER_MAP[g.gameId] === activeFilter).length === 0 && (
           <div className="text-center text-white/80 text-lg font-bold mt-8">
-            No games in this category yet. Try another filter!
+            {t('hub.noGamesFilter')}
           </div>
         )}
       </div>

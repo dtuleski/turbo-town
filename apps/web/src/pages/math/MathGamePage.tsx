@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import { generateQuestion, checkAnswer, type MathQuestion } from '@/utils/mathUtils'
 import { startGame, completeGame } from '@/api/game'
@@ -32,6 +33,7 @@ const DIFFICULTY_CONFIG = {
 export default function MathGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
   const difficulty = searchParams.get('difficulty') as keyof typeof DIFFICULTY_CONFIG
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -139,12 +141,12 @@ export default function MathGamePage() {
     
     if (isCorrect) {
       setScore((prev) => prev + 1)
-      setFeedback({ show: true, correct: true, message: '✅ Correct!' })
+      setFeedback({ show: true, correct: true, message: t('setup.mathChallenge.correct') })
     } else {
       setFeedback({ 
         show: true, 
         correct: false, 
-        message: `❌ Wrong! Answer: ${currentQuestion.answer}` 
+        message: t('setup.mathChallenge.wrong', { answer: currentQuestion.answer })
       })
     }
 
@@ -171,7 +173,7 @@ export default function MathGamePage() {
   if (gameStatus === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 flex items-center justify-center">
-        <div className="text-4xl text-white font-bold">Loading...</div>
+        <div className="text-4xl text-white font-bold">{t('common.loading')}</div>
       </div>
     )
   }
@@ -181,7 +183,7 @@ export default function MathGamePage() {
       <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 flex items-center justify-center">
         <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <div className="text-2xl text-gray-700 font-bold">Calculating your score...</div>
+          <div className="text-2xl text-gray-700 font-bold">{t('setup.mathChallenge.calculatingScore')}</div>
         </div>
       </div>
     )
@@ -216,15 +218,15 @@ export default function MathGamePage() {
               {percentage >= 80 ? '🏆' : percentage >= 60 ? '⭐' : '💪'}
             </div>
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              {percentage >= 80 ? 'Amazing!' : percentage >= 60 ? 'Good Job!' : 'Keep Practicing!'}
+              {percentage >= 80 ? t('setup.mathChallenge.amazing') : percentage >= 60 ? t('setup.mathChallenge.goodJob') : t('setup.mathChallenge.keepPracticing')}
             </h1>
             
             <div className="space-y-4 mb-8">
               <div className="text-2xl font-bold text-gray-700">
-                Score: {score} / {config.questions} ({percentage}%)
+                {t('setup.mathChallenge.score')}: {score} / {config.questions} ({percentage}%)
               </div>
               <div className="text-xl text-gray-600">
-                Time: {formatTime(completionTime)}
+                {t('setup.mathChallenge.time')}: {formatTime(completionTime)}
               </div>
             </div>
 
@@ -233,13 +235,13 @@ export default function MathGamePage() {
                 onClick={() => navigate(ROUTES.MATH_SETUP)}
                 className="px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl font-bold hover:from-green-600 hover:to-blue-600 transition-all"
               >
-                Play Again
+                {t('setup.mathChallenge.playAgain')}
               </button>
               <button
                 onClick={() => navigate(ROUTES.HUB)}
                 className="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all"
               >
-                Back to Hub
+                {t('setup.mathChallenge.backToHub')}
               </button>
             </div>
           </div>
@@ -254,21 +256,21 @@ export default function MathGamePage() {
         {/* Header Stats */}
         <div className="flex justify-between items-center mb-8">
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Question</div>
+            <div className="text-sm text-gray-600">{t('setup.mathChallenge.question')}</div>
             <div className="text-2xl font-bold text-gray-800">
               {questionNumber} / {config.questions}
             </div>
           </div>
           
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Time</div>
+            <div className="text-sm text-gray-600">{t('setup.mathChallenge.time')}</div>
             <div className={`text-2xl font-bold ${timeRemaining < 30 ? 'text-red-500' : 'text-gray-800'}`}>
               {formatTime(timeRemaining)}
             </div>
           </div>
           
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Score</div>
+            <div className="text-sm text-gray-600">{t('setup.mathChallenge.score')}</div>
             <div className="text-2xl font-bold text-green-600">{score}</div>
           </div>
         </div>
@@ -282,7 +284,7 @@ export default function MathGamePage() {
                   {currentQuestion.question}
                 </div>
                 <div className="text-xl text-gray-600">
-                  {config.emoji} {config.name} Level
+                  {config.emoji} {t(`game.${config.name.toLowerCase()}`)}
                 </div>
               </div>
 
@@ -293,7 +295,7 @@ export default function MathGamePage() {
                   step="any"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Your answer..."
+                  placeholder={t('setup.mathChallenge.yourAnswer')}
                   className="w-full px-6 py-4 text-3xl text-center border-4 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none"
                   disabled={feedback.show}
                 />
@@ -310,7 +312,7 @@ export default function MathGamePage() {
                     }
                   `}
                 >
-                  Submit Answer
+                  {t('setup.mathChallenge.submitAnswer')}
                 </button>
               </form>
 

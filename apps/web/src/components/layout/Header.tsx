@@ -2,12 +2,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { ROUTES, APP_NAME } from '@/config/constants'
 import Button from '../common/Button'
+import LanguagePicker from '../common/LanguagePicker'
+import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 
 const Header = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { t } = useTranslation()
 
   const handleLogout = () => {
     logout()
@@ -25,20 +28,24 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link to={ROUTES.DASHBOARD} className="text-text-primary hover:text-primary-blue">
-              Dashboard
+              {t('nav.dashboard')}
             </Link>
             <Link to={ROUTES.LEADERBOARD} className="text-text-primary hover:text-primary-blue">
-              🏆 Leaderboard
+              🏆 {t('nav.leaderboard')}
             </Link>
             <Link to={ROUTES.ACHIEVEMENTS} className="text-text-primary hover:text-primary-blue">
-              Achievements
+              {t('nav.achievements')}
             </Link>
             <Link to={ROUTES.SUBSCRIPTION} className="text-text-primary hover:text-primary-blue">
-              💎 Change Plan
+              💎 {t('nav.changePlan')}
+            </Link>
+            <Link to={ROUTES.CONTACT} className="text-text-primary hover:text-primary-blue">
+              📬 {t('nav.contact')}
             </Link>
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <LanguagePicker />
             {user && (
               <>
                 {/* Desktop: Username and Logout side by side */}
@@ -89,28 +96,35 @@ const Header = () => {
                 className="text-text-primary hover:text-primary-blue"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Dashboard
+                {t('nav.dashboard')}
               </Link>
               <Link 
                 to={ROUTES.LEADERBOARD} 
                 className="text-text-primary hover:text-primary-blue"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🏆 Leaderboard
+                🏆 {t('nav.leaderboard')}
               </Link>
               <Link 
                 to={ROUTES.ACHIEVEMENTS} 
                 className="text-text-primary hover:text-primary-blue"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Achievements
+                {t('nav.achievements')}
               </Link>
               <Link 
                 to={ROUTES.SUBSCRIPTION} 
                 className="text-text-primary hover:text-primary-blue"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                💎 Change Plan
+                💎 {t('nav.changePlan')}
+              </Link>
+              <Link 
+                to={ROUTES.CONTACT} 
+                className="text-text-primary hover:text-primary-blue"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                📬 {t('nav.contact')}
               </Link>
               <Link 
                 to={ROUTES.PROFILE} 

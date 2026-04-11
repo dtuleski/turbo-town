@@ -15,6 +15,7 @@ import { AchievementTrackerService } from '../services/achievement-tracker.servi
 import { EventPublisherService } from '../services/event-publisher.service';
 import { ReviewService } from '../services/review.service';
 import { EmailPrefsService } from '../services/email-prefs.service';
+import { ContactService } from '../services/contact.service';
 import {
   validateStartGameInput,
   validateCompleteGameInput,
@@ -46,6 +47,7 @@ export class GameHandler {
   private subscriptionRepository: SubscriptionRepository;
   private reviewService: ReviewService;
   private emailPrefsService: EmailPrefsService;
+  private contactService: ContactService;
 
   constructor() {
     // Initialize repositories
@@ -91,6 +93,7 @@ export class GameHandler {
     // Initialize review service
     this.reviewService = new ReviewService();
     this.emailPrefsService = new EmailPrefsService();
+    this.contactService = new ContactService();
   }
 
   /**
@@ -270,6 +273,10 @@ export class GameHandler {
       case 'adminGetAllEmailPrefs':
         if (!isAdminUser(username, email)) throw new Error('Unauthorized: Admin only');
         return { users: await this.emailPrefsService.getOptedInUsers() };
+
+      // Contact form
+      case 'submitContactForm':
+        return this.contactService.submitContactForm(userId, username || 'Unknown', email || '', variables.input);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);

@@ -4,6 +4,7 @@ import { ROUTES } from '@/config/constants'
 import { generateCivicsQuestions, type CivicsGameQuestion, type CivicsCategory } from '@/utils/civicsQuizData'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useTranslation } from 'react-i18next'
 
 const TIME_LIMIT = 20
 
@@ -12,6 +13,7 @@ type Phase = 'playing' | 'feedback' | 'submitting' | 'completed'
 export default function CivicsQuizGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
   const category = (searchParams.get('category') || 'all') as CivicsCategory
   const totalQuestions = parseInt(searchParams.get('questions') || '10', 10)
   const level = searchParams.get('level') || 'medium'
@@ -110,14 +112,14 @@ export default function CivicsQuizGamePage() {
 
   if (!currentQuestion && phase !== 'submitting' && phase !== 'completed') {
     return (<div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 flex items-center justify-center">
-      <div className="text-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4" /><p className="text-white/60">Loading questions...</p></div></div>)
+      <div className="text-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4" /><p className="text-white/60">{t('gameplay.loadingQuestions')}</p></div></div>)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 py-4 px-2 md:px-4 select-none">
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-3 px-2">
-          <button onClick={() => navigate(ROUTES.CIVICS_QUIZ_SETUP)} className="text-white text-lg font-bold hover:underline">← Back</button>
+          <button onClick={() => navigate(ROUTES.CIVICS_QUIZ_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(totalTime)}</span><span>Q {currentIdx + 1}/{totalQuestions}</span><span className="text-blue-300">🎯 {score}</span>
           </div>
@@ -132,7 +134,7 @@ export default function CivicsQuizGamePage() {
           <div className={`text-center text-sm font-bold mt-1 ${timerColor}`}>{timer}s</div>
         </div>
         {streak > 1 && phase === 'playing' && (
-          <div className="text-center mb-3"><span className="inline-flex items-center gap-1 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-bold">🔥 {streak} streak! (+{streak * 25} bonus)</span></div>
+          <div className="text-center mb-3"><span className="inline-flex items-center gap-1 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-bold">🔥 {streak} {t('game.streak')} (+{streak * 25} {t('game.bonus')})</span></div>
         )}
         {currentQuestion && (
           <div className="bg-white/10 backdrop-blur rounded-2xl p-6 mb-4">
@@ -160,7 +162,7 @@ export default function CivicsQuizGamePage() {
             {phase === 'feedback' && (
               <div className="mt-4 text-center">
                 <div className={`text-lg font-bold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? '🎉 Correct!' : `❌ Answer: ${currentQuestion.correctAnswer}`}
+                  {isCorrect ? `🎉 ${t('game.correct')}` : `❌ ${t('gameplay.answer', { answer: currentQuestion.correctAnswer })}`}
                 </div>
                 {currentQuestion.funFact && <div className="bg-white/5 rounded-xl p-3 text-sm text-white/70">🌟 {currentQuestion.funFact}</div>}
               </div>
@@ -174,7 +176,7 @@ export default function CivicsQuizGamePage() {
       )}
       {phase === 'submitting' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">🇺🇸</div><p className="text-xl font-bold">Calculating score...</p></div>
+          <div className="bg-white rounded-2xl p-8 text-center"><div className="text-4xl mb-4 animate-bounce">🇺🇸</div><p className="text-xl font-bold">{t('game.calculating')}</p></div>
         </div>
       )}
     </div>

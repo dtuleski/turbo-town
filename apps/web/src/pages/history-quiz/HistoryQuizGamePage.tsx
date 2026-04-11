@@ -4,6 +4,7 @@ import { ROUTES } from '@/config/constants'
 import { generateHistoryQuestions, type HistoryQuestion, type HistoryGameMode } from '@/utils/historyQuizData'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useTranslation } from 'react-i18next'
 
 const TOTAL_QUESTIONS = 10
 const TIMER_BY_DIFFICULTY: Record<string, number> = { easy: 20, medium: 15, hard: 12 }
@@ -13,6 +14,7 @@ type Phase = 'playing' | 'feedback' | 'submitting' | 'completed'
 export default function HistoryQuizGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
   const difficulty = searchParams.get('difficulty') || 'easy'
   const mode = (searchParams.get('mode') || 'name-event') as HistoryGameMode
   const timeLimit = TIMER_BY_DIFFICULTY[difficulty] || 20
@@ -139,7 +141,7 @@ export default function HistoryQuizGamePage() {
       <div className="min-h-screen bg-gradient-to-br from-amber-900 via-orange-800 to-red-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading questions...</p>
+          <p className="text-white/60">{t('gameplay.loadingQuestions')}</p>
         </div>
       </div>
     )
@@ -150,7 +152,7 @@ export default function HistoryQuizGamePage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
-          <button onClick={() => navigate(ROUTES.HISTORY_QUIZ_SETUP)} className="text-white text-lg font-bold hover:underline">← Back</button>
+          <button onClick={() => navigate(ROUTES.HISTORY_QUIZ_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(totalTime)}</span>
             <span>Q {currentIdx + 1}/{TOTAL_QUESTIONS}</span>
@@ -176,7 +178,7 @@ export default function HistoryQuizGamePage() {
         {streak > 1 && phase === 'playing' && (
           <div className="text-center mb-3">
             <span className="inline-flex items-center gap-1 bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-bold">
-              🔥 {streak} streak! (+{streak * 25} bonus)
+              🔥 {streak} {t('game.streak')} (+{streak * 25} {t('game.bonus')})
             </span>
           </div>
         )}
@@ -226,7 +228,7 @@ export default function HistoryQuizGamePage() {
             {phase === 'feedback' && (
               <div className="mt-4 text-center">
                 <div className={`text-lg font-bold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? '🎉 Correct!' : `❌ The answer was: ${currentQuestion.correctAnswer}`}
+                  {isCorrect ? `🎉 ${t('game.correct')}` : `❌ ${t('gameplay.theAnswerWas', { answer: currentQuestion.correctAnswer })}`}
                 </div>
                 <div className="bg-white/5 rounded-xl p-3 text-sm text-white/70">🌟 {currentQuestion.funFact}</div>
               </div>
@@ -244,7 +246,7 @@ export default function HistoryQuizGamePage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 text-center">
             <div className="text-4xl mb-4 animate-bounce">📜</div>
-            <p className="text-xl font-bold">Calculating score...</p>
+            <p className="text-xl font-bold">{t('game.calculating')}</p>
           </div>
         </div>
       )}

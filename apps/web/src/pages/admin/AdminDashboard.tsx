@@ -19,7 +19,7 @@ const fetchAdminAnalyticsDirect = async (): Promise<AdminAnalytics> => {
 
     console.log('Making direct API call with token:', token.substring(0, 50) + '...');
 
-    const response = await fetch('https://ooihrv63q8.execute-api.us-east-1.amazonaws.com/game/graphql', {
+    const response = await fetch(import.meta.env.VITE_GAME_ENDPOINT || 'https://l8ra6nktb6.execute-api.us-east-1.amazonaws.com/game/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Modal from '@/components/common/Modal'
 import Button from '@/components/common/Button'
 import { ROUTES } from '@/config/constants'
@@ -33,6 +34,7 @@ const ScoreBreakdownModal = ({
   onPlayAgain,
   gameType,
 }: ScoreBreakdownModalProps) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [hoveredStar, setHoveredStar] = useState(0)
   const [selectedRating, setSelectedRating] = useState(0)
@@ -62,14 +64,14 @@ const ScoreBreakdownModal = ({
   const rankBadge = leaderboardRank ? getRankBadge(leaderboardRank) : null
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="🎉 Game Complete!" size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title={`🎉 ${t('game.gameComplete')}`} size="lg">
       <div className="space-y-3">
         {/* Final Score + Rank */}
         <div className="text-center py-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg">
           <div className="text-3xl font-bold text-primary">
             {Math.round(scoreBreakdown.finalScore).toLocaleString()}
           </div>
-          <div className="text-xs text-text-secondary">Total Score</div>
+          <div className="text-xs text-text-secondary">{t('game.totalScore')}</div>
           {rankBadge && (
             <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full text-white text-sm font-bold" style={{ backgroundColor: rankBadge.color === 'bg-yellow-500' ? '#eab308' : rankBadge.color === 'bg-gray-400' ? '#9ca3af' : rankBadge.color === 'bg-orange-600' ? '#ea580c' : rankBadge.color === 'bg-purple-500' ? '#a855f7' : rankBadge.color === 'bg-blue-500' ? '#3b82f6' : '#6366f1' }}>
               {rankBadge.icon} {rankBadge.text}
@@ -80,10 +82,10 @@ const ScoreBreakdownModal = ({
         {/* Score Breakdown — compact rows */}
         <div className="space-y-1">
           {[
-            { icon: '📊', label: 'Base Score', value: Math.round(scoreBreakdown.baseScore).toLocaleString(), sub: '' },
-            { icon: '⚡', label: 'Difficulty', value: formatMultiplier(scoreBreakdown.difficultyMultiplier), sub: scoreBreakdown.difficulty },
-            { icon: '⏱️', label: 'Speed', value: formatMultiplier(scoreBreakdown.speedBonus), sub: formatTime(scoreBreakdown.completionTime) },
-            { icon: '🎯', label: 'Accuracy', value: formatMultiplier(scoreBreakdown.accuracyBonus), sub: `${(scoreBreakdown.accuracy * 100).toFixed(0)}%` },
+            { icon: '📊', label: t('game.baseScore'), value: Math.round(scoreBreakdown.baseScore).toLocaleString(), sub: '' },
+            { icon: '⚡', label: t('game.difficulty'), value: formatMultiplier(scoreBreakdown.difficultyMultiplier), sub: scoreBreakdown.difficulty },
+            { icon: '⏱️', label: t('game.speed'), value: formatMultiplier(scoreBreakdown.speedBonus), sub: formatTime(scoreBreakdown.completionTime) },
+            { icon: '🎯', label: t('game.accuracy'), value: formatMultiplier(scoreBreakdown.accuracyBonus), sub: `${(scoreBreakdown.accuracy * 100).toFixed(0)}%` },
           ].map(row => (
             <div key={row.label} className="flex items-center justify-between px-3 py-2 bg-card rounded-lg text-sm">
               <div className="flex items-center gap-2">
@@ -100,10 +102,10 @@ const ScoreBreakdownModal = ({
         {gameType && (
           <div className="text-center py-2">
             {reviewSubmitted ? (
-              <div className="text-sm text-green-400 font-medium">✓ Thanks for your feedback!</div>
+              <div className="text-sm text-green-400 font-medium">{t('game.thanksFeedback')}</div>
             ) : (
               <div className="flex items-center justify-center gap-3">
-                <span className="text-sm text-text-secondary">Rate this game</span>
+                <span className="text-sm text-text-secondary">{t('game.rateGame')}</span>
                 <div className="flex gap-0.5">
                   {[1, 2, 3, 4, 5].map(star => (
                     <button
@@ -134,7 +136,7 @@ const ScoreBreakdownModal = ({
             className="flex-1"
             onClick={() => { navigate(ROUTES.LEADERBOARD); onClose() }}
           >
-            🏆 Leaderboard
+            {t('game.leaderboardBtn')}
           </Button>
           {onPlayAgain && (
             <Button
@@ -142,11 +144,11 @@ const ScoreBreakdownModal = ({
               className="flex-1"
               onClick={() => { onPlayAgain(); onClose() }}
             >
-              🎮 Play Again
+              {t('game.playAgainBtn')}
             </Button>
           )}
           <Button variant="secondary" onClick={onClose}>
-            Close
+            {t('game.close')}
           </Button>
         </div>
       </div>

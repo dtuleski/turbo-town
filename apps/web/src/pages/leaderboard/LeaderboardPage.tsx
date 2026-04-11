@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { fetchAuthSession } from 'aws-amplify/auth'
 import { GameType, Timeframe, getLeaderboard, LeaderboardResponse, clearAllRecords } from '@/api/leaderboard'
 import TimeframeSelector from '@/components/leaderboard/TimeframeSelector'
@@ -9,6 +10,7 @@ import Button from '@/components/common/Button'
 const ADMIN_EMAIL = 'diegotuleski@gmail.com'
 
 const LeaderboardPage = () => {
+  const { t } = useTranslation()
   const [gameType, setGameType] = useState<GameType>(GameType.OVERALL)
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.WEEKLY)
   const [leaderboard, setLeaderboard] = useState<LeaderboardResponse | null>(null)
@@ -41,14 +43,15 @@ const LeaderboardPage = () => {
         setLeaderboard(data)
       } catch (err) {
         console.error('Failed to fetch leaderboard:', err)
-        setError('Failed to load leaderboard. Please try again later.')
+        setError(t('leaderboard.failedToLoad'))
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchLeaderboard()
-  }, [gameType, timeframe])
+  }, [gameType, timeframe, t])
+
 
   const handleClearAllRecords = async () => {
     if (!isAdmin) return
@@ -65,7 +68,6 @@ const LeaderboardPage = () => {
       
       if (result.success) {
         alert('✅ ' + result.message)
-        // Refresh leaderboard
         const data = await getLeaderboard(gameType, timeframe, 100)
         setLeaderboard(data)
       } else {
@@ -79,12 +81,22 @@ const LeaderboardPage = () => {
     }
   }
 
+  const getTimeframeTitle = () => {
+    switch (timeframe) {
+      case Timeframe.DAILY: return t('leaderboard.todaysTop')
+      case Timeframe.WEEKLY: return t('leaderboard.thisWeeksTop')
+      case Timeframe.MONTHLY: return t('leaderboard.thisMonthsTop')
+      case Timeframe.ALL_TIME: return t('leaderboard.allTimeTop')
+      default: return t('leaderboard.topPlayers')
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">🏆 Leaderboard</h1>
+        <h1 className="text-4xl font-bold mb-2">🏆 {t('leaderboard.title')}</h1>
         <p className="text-text-secondary">
-          Compete with players worldwide and climb the ranks!
+          {t('leaderboard.subtitle')}
         </p>
       </div>
 
@@ -99,7 +111,7 @@ const LeaderboardPage = () => {
           <div className="flex items-center gap-3">
             <span className="text-2xl">⚠️</span>
             <div>
-              <h3 className="font-bold text-red-500">Error</h3>
+              <h3 className="font-bold text-red-500">{t('common.error')}</h3>
               <p className="text-text-secondary">{error}</p>
             </div>
           </div>
@@ -110,9 +122,9 @@ const LeaderboardPage = () => {
         <div className="card mb-6 bg-primary/5 border-2 border-primary/20">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h3 className="text-lg font-bold mb-1">Your Rank</h3>
+              <h3 className="text-lg font-bold mb-1">{t('leaderboard.yourRank')}</h3>
               <p className="text-text-secondary">
-                You're ranked #{leaderboard.currentUserEntry.rank} out of {leaderboard.totalEntries} players
+                {t('leaderboard.ranked', { rank: leaderboard.currentUserEntry.rank, total: leaderboard.totalEntries })}
               </p>
             </div>
             <div className="flex items-center gap-6">
@@ -120,13 +132,13 @@ const LeaderboardPage = () => {
                 <div className="text-2xl font-bold text-primary">
                   #{leaderboard.currentUserEntry.rank}
                 </div>
-                <div className="text-sm text-text-secondary">Rank</div>
+                <div className="text-sm text-text-secondary">{t('leaderboard.rank')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-primary">
                   {leaderboard.currentUserEntry.score.toLocaleString()}
                 </div>
-                <div className="text-sm text-text-secondary">Score</div>
+                <div className="text-sm text-text-secondary">{t('game.score')}</div>
               </div>
             </div>
           </div>
@@ -135,15 +147,12 @@ const LeaderboardPage = () => {
 
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-2xl font-bold">
-          {timeframe === Timeframe.DAILY && 'Today\'s Top Players'}
-          {timeframe === Timeframe.WEEKLY && 'This Week\'s Top Players'}
-          {timeframe === Timeframe.MONTHLY && 'This Month\'s Top Players'}
-          {timeframe === Timeframe.ALL_TIME && 'All-Time Top Players'}
+          {getTimeframeTitle()}
         </h2>
         <div className="flex items-center gap-4">
           {leaderboard && !isLoading && (
             <span className="text-text-secondary">
-              {leaderboard.totalEntries} {leaderboard.totalEntries === 1 ? 'player' : 'players'}
+              {leaderboard.totalEntries} {leaderboard.totalEntries === 1 ? t('leaderboard.player') : t('leaderboard.players')}
             </span>
           )}
           {isAdmin && (
@@ -154,7 +163,7 @@ const LeaderboardPage = () => {
               disabled={isClearing}
               className="bg-red-500/10 hover:bg-red-500/20 text-red-500 border-red-500/20"
             >
-              {isClearing ? '⏳ Clearing...' : '🗑️ Clear All Records'}
+              {isClearing ? t('leaderboard.clearing') : `🗑️ ${t('leaderboard.clearAll')}`}
             </Button>
           )}
         </div>
@@ -167,9 +176,9 @@ const LeaderboardPage = () => {
 
       {leaderboard && leaderboard.entries.length > 0 && !isLoading && (
         <div className="mt-6 text-center text-text-secondary text-sm">
-          <p>Showing top {leaderboard.entries.length} players</p>
+          <p>{t('leaderboard.showing', { count: leaderboard.entries.length })}</p>
           <p className="mt-2">
-            Keep playing to improve your rank! 🎮
+            {t('leaderboard.keepPlaying')} 🎮
           </p>
         </div>
       )}

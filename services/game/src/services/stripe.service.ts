@@ -50,7 +50,7 @@ export interface CreateCheckoutSessionInput {
   userId: string;
   email: string;
   priceId: string;
-  tier: 'LIGHT' | 'PREMIUM';
+  tier: 'LIGHT' | 'STANDARD' | 'PREMIUM';
 }
 
 export interface CreatePortalSessionInput {
@@ -175,7 +175,7 @@ export class StripeService {
    */
   private async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
     const userId = session.metadata?.userId || session.client_reference_id;
-    const tier = session.metadata?.tier as 'LIGHT' | 'PREMIUM';
+    const tier = session.metadata?.tier as 'LIGHT' | 'STANDARD' | 'PREMIUM';
 
     if (!userId || !tier) {
       logger.error('Missing userId or tier in checkout session', new Error('Missing userId or tier'), { sessionId: session.id });
@@ -185,7 +185,12 @@ export class StripeService {
     logger.info('Checkout completed', { userId, tier, customerId: session.customer });
 
     // Map tier to SubscriptionTier enum
-    const subscriptionTier = tier === 'LIGHT' ? SubscriptionTier.Light : SubscriptionTier.Premium;
+    const tierMap: Record<string, SubscriptionTier> = {
+      LIGHT: SubscriptionTier.Light,
+      STANDARD: SubscriptionTier.Standard,
+      PREMIUM: SubscriptionTier.Premium,
+    };
+    const subscriptionTier = tierMap[tier] || SubscriptionTier.Free;
 
     // Update subscription in DynamoDB
     await this.subscriptionRepo.updateSubscription({
@@ -195,7 +200,8 @@ export class StripeService {
       stripeSubscriptionId: session.subscription as string,
       status: 'ACTIVE',
       currentPeriodStart: new Date(),
-      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      effectiveDate: new Date(),
     });
   }
 

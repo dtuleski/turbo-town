@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import {
   pickWords,
@@ -14,6 +15,7 @@ import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 
 export default function BubblePopGamePage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const difficulty = (searchParams.get('difficulty') || 'easy') as BubbleDifficulty
@@ -164,7 +166,7 @@ export default function BubblePopGamePage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-3 px-2">
           <button onClick={() => navigate(ROUTES.BUBBLE_POP_SETUP)} className="text-white text-lg font-bold hover:underline">
-            ← Back
+            {t('game.back')}
           </button>
           <div className="flex items-center gap-3 text-white font-bold text-base md:text-lg">
             <span>⏱️ {formatTime(timer)}</span>
@@ -328,7 +330,7 @@ export default function BubblePopGamePage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 text-center">
             <div className="text-4xl mb-4 animate-bounce">🫧</div>
-            <p className="text-xl font-bold">Calculating score...</p>
+            <p className="text-xl font-bold">{t('game.calculating')}</p>
           </div>
         </div>
       )}

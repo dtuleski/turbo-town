@@ -205,10 +205,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const loginWithGoogle = async () => {
     try {
-      // Sign out first to avoid UserAlreadyAuthenticatedException
-      await signOut()
-    } catch {}
-    await signInWithRedirect({ provider: 'Google' })
+      await signInWithRedirect({ provider: 'Google' })
+    } catch (error) {
+      console.error('Google sign-in error:', error)
+    }
   }
 
   const value: AuthContextType = {

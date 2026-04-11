@@ -1,20 +1,30 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
-import { GAME_MODES, DIFFICULTY_MODES, type GameMode } from '@/utils/geoQuizData'
+import { DIFFICULTY_MODES, type GameMode } from '@/utils/geoQuizData'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 
-const DIFFICULTIES: { id: Difficulty; emoji: string; label: string; desc: string; timer: string }[] = [
-  { id: 'easy', emoji: '🟢', label: 'Easy', desc: 'Capitals, Flags & Continents', timer: '15s per question' },
-  { id: 'medium', emoji: '🟡', label: 'Medium', desc: 'States & Provinces', timer: '12s per question' },
-  { id: 'hard', emoji: '🔴', label: 'Hard', desc: 'Country Silhouettes', timer: '10s per question' },
-]
-
 export default function GeoQuizSetupPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [difficulty, setDifficulty] = useState<Difficulty | ''>('')
   const [mode, setMode] = useState<GameMode | ''>('')
+
+  const DIFFICULTIES: { id: Difficulty; emoji: string; label: string }[] = [
+    { id: 'easy', emoji: '🟢', label: t('game.easy') },
+    { id: 'medium', emoji: '🟡', label: t('game.medium') },
+    { id: 'hard', emoji: '🔴', label: t('game.hard') },
+  ]
+
+  const MODE_INFO: Record<GameMode, { icon: string; label: string }> = {
+    capitals: { icon: '🏛️', label: t('setup.geoModes.capitals') },
+    flags: { icon: '🏁', label: t('setup.geoModes.flags') },
+    states: { icon: '📍', label: t('setup.geoModes.usStates') },
+    silhouettes: { icon: '🗺️', label: t('setup.geoModes.silhouettes') },
+    continents: { icon: '🌍', label: t('setup.geoModes.continents') },
+  }
 
   const availableModes = difficulty ? DIFFICULTY_MODES[difficulty] : []
 
@@ -35,19 +45,19 @@ export default function GeoQuizSetupPage() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
-            🌍 Geo Quiz
+            🌍 {t('setup.geoQuiz.title')}
           </h1>
           <p className="text-xl text-white/80 font-bold">
-            Test your geography knowledge!
+            {t('setup.geoQuiz.subtitle')}
           </p>
           <p className="text-base text-white/60 mt-2">
-            10 questions · Progressive hints · Fun facts
+            {t('setup.geoQuiz.info')}
           </p>
         </div>
 
         {/* Difficulty selection */}
         <div className="bg-white/10 backdrop-blur rounded-2xl p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4 text-center">Choose Difficulty</h2>
+          <h2 className="text-2xl font-bold text-white mb-4 text-center">{t('game.chooseDifficulty')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {DIFFICULTIES.map((d) => (
               <button
@@ -61,8 +71,6 @@ export default function GeoQuizSetupPage() {
               >
                 <div className="text-3xl mb-2">{d.emoji}</div>
                 <div className="text-lg font-bold text-white">{d.label}</div>
-                <div className="text-sm text-white/60 mt-1">{d.desc}</div>
-                <div className="text-xs text-emerald-300 mt-2">⏱️ {d.timer}</div>
               </button>
             ))}
           </div>
@@ -71,10 +79,10 @@ export default function GeoQuizSetupPage() {
         {/* Game mode selection */}
         {difficulty && availableModes.length > 1 && (
           <div className="bg-white/10 backdrop-blur rounded-2xl p-6 mb-6">
-            <h2 className="text-xl font-bold text-white mb-4 text-center">Choose Game Mode</h2>
+            <h2 className="text-xl font-bold text-white mb-4 text-center">{t('game.chooseGameMode')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {availableModes.map((m) => {
-                const info = GAME_MODES[m]
+                const info = MODE_INFO[m]
                 return (
                   <button
                     key={m}
@@ -87,7 +95,6 @@ export default function GeoQuizSetupPage() {
                   >
                     <div className="text-2xl mb-1">{info.icon}</div>
                     <div className="font-bold text-white text-sm">{info.label}</div>
-                    <div className="text-xs text-white/50 mt-1">{info.description}</div>
                   </button>
                 )
               })}
@@ -106,19 +113,19 @@ export default function GeoQuizSetupPage() {
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }`}
           >
-            {difficulty && mode ? 'Start Quiz! 🚀' : 'Select Difficulty & Mode'}
+            {difficulty && mode ? t('game.startQuiz') : t('game.selectDifficultyAndMode')}
           </button>
         </div>
 
         {/* Info */}
         <div className="mt-8 bg-white/5 backdrop-blur rounded-2xl p-4">
-          <h3 className="text-sm font-bold text-white/60 mb-2 text-center">How It Works</h3>
+          <h3 className="text-sm font-bold text-white/60 mb-2 text-center">{t('setup.geoQuiz.howItWorks')}</h3>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-white/70">
-            <span>📝 10 Questions</span>
-            <span>⏱️ Timer per question</span>
-            <span>💡 Hints after 5s & 10s</span>
-            <span>🔥 Streak bonuses</span>
-            <span>🎉 Fun facts after each answer</span>
+            <span>📝 {t('setup.geoQuiz.questionsLabel')}</span>
+            <span>⏱️ {t('setup.geoQuiz.timerPerQ')}</span>
+            <span>💡 {t('setup.geoQuiz.hintsAfter')}</span>
+            <span>🔥 {t('setup.geoQuiz.streakBonuses')}</span>
+            <span>🎉 {t('setup.geoQuiz.funFacts')}</span>
           </div>
         </div>
       </div>
