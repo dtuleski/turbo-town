@@ -263,7 +263,9 @@ export class AdminService {
       };
 
       const limit = tierLimits[tier] || 3;
-      const used = rateLimit?.count || 0;
+      // If resetAt has passed, the count is effectively 0 (lazy reset on next game start)
+      const isExpired = rateLimit?.resetAt && new Date(rateLimit.resetAt) < new Date();
+      const used = isExpired ? 0 : (rateLimit?.count || 0);
 
       return {
         userId: user.userId,
@@ -387,7 +389,7 @@ export class AdminService {
     });
 
     return (result.Users || []).map((user: any) => ({
-      userId: user.Username || '',
+      userId: user.Attributes?.find((a: any) => a.Name === 'sub')?.Value || user.Username || '',
       email: user.Attributes?.find((a: any) => a.Name === 'email')?.Value || '',
       username: user.Attributes?.find((a: any) => a.Name === 'preferred_username')?.Value || 
                 user.Attributes?.find((a: any) => a.Name === 'name')?.Value || 

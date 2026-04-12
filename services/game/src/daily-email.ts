@@ -1,20 +1,46 @@
 /**
  * Daily Email Digest Lambda
- * Sends personalized email digests to opted-in users via SES.
+ * Sends personalized email digests to opted-in users via Resend.
  */
 
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import https from 'https';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
-const ses = new SESClient({ region: 'us-east-1' });
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'us-east-1' }));
 
 const EMAIL_PREFS_TABLE = process.env.EMAIL_PREFS_TABLE_NAME || 'memory-game-email-prefs-prod';
 const LEADERBOARD_TABLE = process.env.LEADERBOARD_TABLE_NAME || 'memory-game-leaderboard-entries-prod';
 const AGGREGATES_TABLE = process.env.AGGREGATES_TABLE_NAME || 'memory-game-user-aggregates-prod';
-const FROM_EMAIL = 'no-reply@dashden.app';
+const RESEND_API_KEY = process.env.RESEND_API_KEY!;
+const FROM_EMAIL = 'DashDen <no-reply@dashden.app>';
 const APP_URL = 'https://dashden.app';
+
+async function sendViaResend(to: string, subject: string, html: string): Promise<void> {
+  const body = JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html });
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.resend.com',
+      path: '/emails',
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) resolve();
+        else reject(new Error(`Resend error ${res.statusCode}: ${data}`));
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
 
 const ALL_GAMES = [
   'MEMORY_MATCH', 'MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING',
@@ -45,7 +71,17 @@ export async function handler() {
       FilterExpression: 'dailyDigest = :yes',
       ExpressionAttributeValues: { ':yes': true },
     }));
-    const users = (prefsResult.Items || []) as EmailPrefs[];
+    const allUsers = (prefsResult.Items || []) as EmailPrefs[];
+    // Deduplicate by email — keep the most recently updated record per address
+    const usersByEmail = new Map<string, EmailPrefs>();
+    for (const u of allUsers) {
+      if (!u.email) continue;
+      const existing = usersByEmail.get(u.email);
+      if (!existing || (u as any).updatedAt > (existing as any).updatedAt) {
+        usersByEmail.set(u.email, u);
+      }
+    }
+    const users = Array.from(usersByEmail.values());
     if (users.length === 0) return { statusCode: 200, body: 'No users to email' };
 
     // 2. Get today's entries
@@ -53,11 +89,25 @@ export async function handler() {
     const entriesResult = await ddb.send(new ScanCommand({ TableName: LEADERBOARD_TABLE, Limit: 500 }));
     const allEntries = (entriesResult.Items || []) as LeaderboardEntry[];
     const todayEntries = allEntries.filter(e => e.date === today);
-    const topToday = todayEntries.sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5);
+    // One entry per user — their highest score of the day across all games
+    const bestByUser = new Map<string, LeaderboardEntry>();
+    for (const entry of todayEntries) {
+      const existing = bestByUser.get(entry.userId);
+      if (!existing || entry.score > existing.score) {
+        bestByUser.set(entry.userId, entry);
+      }
+    }
+    const topToday = Array.from(bestByUser.values())
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
+      .slice(0, 5);
 
     // 3. Get all aggregates (for personal stats)
     const aggResult = await ddb.send(new ScanCommand({ TableName: AGGREGATES_TABLE, Limit: 1000 }));
     const allAggregates = (aggResult.Items || []) as Aggregate[];
+
+    // Full ranked list (one per user, sorted by score desc)
+    const rankedToday = Array.from(bestByUser.values())
+      .sort((a, b) => (b.score || 0) - (a.score || 0));
 
     // 4. Send personalized emails
     let sent = 0, failed = 0;
@@ -73,11 +123,11 @@ export async function handler() {
 
         // User's rank today
         let rankInfo = '';
-        if (todayEntries.length > 0) {
+        if (bestByUser.size > 0) {
           const userBestToday = userTodayEntries.sort((a, b) => b.score - a.score)[0];
           if (userBestToday) {
-            const rank = todayEntries.filter(e => e.score > userBestToday.score).length + 1;
-            const leader = topToday[0];
+            const rank = Array.from(bestByUser.values()).filter(e => e.score > userBestToday.score).length + 1;
+            const leader = rankedToday[0];
             if (rank === 1) {
               rankInfo = "🥇 You're #1 today! Can you hold the top spot?";
             } else if (leader) {
@@ -113,18 +163,9 @@ export async function handler() {
           activityInfo = `🎮 You played ${todayGamesCount} game${todayGamesCount > 1 ? 's' : ''} today — nice work!`;
         }
 
-        const html = buildEmailHTML(user.username, topToday, { rankInfo, beatInfo, tryInfo, activityInfo });
-        await ses.send(new SendEmailCommand({
-          Source: FROM_EMAIL,
-          Destination: { ToAddresses: [user.email] },
-          Message: {
-            Subject: { Data: `🎮 DashDen Daily — ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}` },
-            Body: {
-              Html: { Data: html },
-              Text: { Data: `Hi ${user.username}! Check out today's results at ${APP_URL}` },
-            },
-          },
-        }));
+        const html = buildEmailHTML(user.username, topToday, { rankInfo, beatInfo, tryInfo, activityInfo }, user.userId, rankedToday);
+        const subject = `🎮 DashDen Daily — ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`;
+        await sendViaResend(user.email, subject, html);
         sent++;
       } catch (err) {
         console.error(`Failed to send to ${user.email}:`, err);
@@ -141,12 +182,38 @@ export async function handler() {
 
 interface PersonalInfo { rankInfo: string; beatInfo: string; tryInfo: string; activityInfo: string }
 
-function buildEmailHTML(username: string, topScores: LeaderboardEntry[], personal: PersonalInfo): string {
-  const leaderboardRows = topScores.length > 0
-    ? topScores.map((entry, i) => `
-        <tr>
-          <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}</td>
-          <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-weight: bold;">${entry.username || 'Player'}</td>
+function buildEmailHTML(username: string, topScores: LeaderboardEntry[], personal: PersonalInfo, userId?: string, rankedToday?: LeaderboardEntry[]): string {
+  // Build personalized leaderboard: top 3 + user's position if outside top 3
+  let displayRows: Array<{ entry: LeaderboardEntry; rank: number; isUser: boolean }> = [];
+
+  if (rankedToday && rankedToday.length > 0) {
+    const userRank = userId ? rankedToday.findIndex(e => e.userId === userId) : -1;
+    const top3 = rankedToday.slice(0, 3);
+
+    // Always add top 3
+    top3.forEach((entry, i) => {
+      displayRows.push({ entry, rank: i + 1, isUser: entry.userId === userId });
+    });
+
+    // If user exists and is outside top 3, add their row
+    if (userRank >= 3) {
+      const userEntry = rankedToday[userRank];
+      displayRows.push({ entry: userEntry, rank: userRank + 1, isUser: true });
+    }
+  } else {
+    // Fallback to topScores if no ranked data
+    topScores.slice(0, 3).forEach((entry, i) => {
+      displayRows.push({ entry, rank: i + 1, isUser: false });
+    });
+  }
+
+  const rankLabel = (rank: number) => rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+
+  const leaderboardRows = displayRows.length > 0
+    ? displayRows.map(({ entry, rank, isUser }) => `
+        <tr style="${isUser ? 'background: #eff6ff;' : ''}">
+          <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${rankLabel(rank)}</td>
+          <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-weight: bold;">${entry.username || 'Player'}${isUser ? ' 👈' : ''}</td>
           <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${GAME_NAMES[entry.gameType] || entry.gameType}</td>
           <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-weight: bold; color: #6366f1;">${(entry.score || 0).toLocaleString()}</td>
         </tr>`).join('')

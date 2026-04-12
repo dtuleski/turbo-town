@@ -15,6 +15,11 @@ set -e
 ENV="${1:-dev}"
 FUNCTION_NAME="MemoryGame-GameService-${ENV}"
 REGION="us-east-1"
+# Use dashden-new profile for prod (account 342278407349), default for dev
+AWS_PROFILE_FLAG=""
+if [ "${ENV}" = "prod" ]; then
+  AWS_PROFILE_FLAG="--profile dashden-new"
+fi
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 GAME_DIR="${ROOT_DIR}/services/game"
 SHARED_DIR="${ROOT_DIR}/packages/shared"
@@ -136,29 +141,34 @@ aws lambda update-function-code \
   --function-name "${FUNCTION_NAME}" \
   --zip-file "fileb://${ZIP_PATH}" \
   --region "${REGION}" \
+  ${AWS_PROFILE_FLAG} \
   --output text \
   --query 'CodeSha256' > /dev/null 2>&1
 
 echo "  Waiting for update to complete..."
 aws lambda wait function-updated \
   --function-name "${FUNCTION_NAME}" \
-  --region "${REGION}"
+  --region "${REGION}" \
+  ${AWS_PROFILE_FLAG}
 
 # Ensure handler is set correctly (our zip uses dist/ prefix)
 CURRENT_HANDLER=$(aws lambda get-function-configuration \
   --function-name "${FUNCTION_NAME}" \
   --region "${REGION}" \
+  ${AWS_PROFILE_FLAG} \
   --query 'Handler' --output text 2>/dev/null)
 if [ "${CURRENT_HANDLER}" != "dist/index.handler" ]; then
   echo "  Fixing handler: ${CURRENT_HANDLER} → dist/index.handler"
   aws lambda update-function-configuration \
     --function-name "${FUNCTION_NAME}" \
     --region "${REGION}" \
+    ${AWS_PROFILE_FLAG} \
     --handler dist/index.handler \
     --output text --query 'Handler' > /dev/null 2>&1
   aws lambda wait function-updated \
     --function-name "${FUNCTION_NAME}" \
-    --region "${REGION}"
+    --region "${REGION}" \
+    ${AWS_PROFILE_FLAG}
 fi
 
 echo -e "${GREEN}  ✓ Lambda updated${NC}"
@@ -179,6 +189,7 @@ INVOKE_RESULT=$(aws lambda invoke \
   --function-name "${FUNCTION_NAME}" \
   --payload '{}' \
   --region "${REGION}" \
+  ${AWS_PROFILE_FLAG} \
   /tmp/game-lambda-test-response.json 2>&1)
 
 if echo "${INVOKE_RESULT}" | grep -q "FunctionError"; then

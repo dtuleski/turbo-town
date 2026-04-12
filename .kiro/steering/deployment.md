@@ -1,5 +1,19 @@
 # Deployment Rules
 
+## AWS Account Configuration (CRITICAL)
+There are TWO AWS accounts. ALWAYS use the correct one:
+
+| Account | Profile | Account ID | Purpose |
+|---------|---------|------------|---------|
+| `default` | (no profile flag) | `848403890404` | OLD account — dev/migration only |
+| `dashden-new` | `--profile dashden-new` | `342278407349` | PRODUCTION account |
+
+- **ALWAYS use `--profile dashden-new`** for any prod AWS CLI commands
+- **NEVER use the default profile** for prod operations (DynamoDB, Lambda, Cognito, etc.)
+- Prod Lambda functions live in `dashden-new`: `MemoryGame-GameService-prod`, `MemoryGame-LeaderboardService-prod`, `DashDen-EmailSender`, `DashDen-DailyEmail-prod`
+- Prod DynamoDB tables live in `dashden-new`: `memory-game-*-prod`, `memory-game-email-prefs-prod`
+- Prod Cognito user pool: `us-east-1_FoWLQ5lmI` (in `dashden-new`)
+
 ## Game Service Lambda Deployment
 - ALWAYS use `./scripts/deploy-game-lambda.sh` to deploy the game service Lambda
 - NEVER manually create or patch zip files for Lambda deployment
