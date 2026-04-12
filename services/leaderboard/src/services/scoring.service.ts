@@ -675,7 +675,7 @@ export class ScoringService {
           minCompletionTime: 5,
           maxCompletionTime: 300,
           minScore: 0,
-          maxScore: 6000,
+          maxScore: 10000,
         },
       },
       mathChallenge: {
@@ -717,7 +717,7 @@ export class ScoringService {
           minCompletionTime: 15,
           maxCompletionTime: 600,
           minScore: 0,
-          maxScore: 6000,
+          maxScore: 10000,
         },
       },
       languageLearning: {
@@ -780,7 +780,7 @@ export class ScoringService {
           minCompletionTime: 10,
           maxCompletionTime: 1800,
           minScore: 0,
-          maxScore: 6000,
+          maxScore: 10000,
         },
       },
       bubblePop: {
@@ -801,7 +801,7 @@ export class ScoringService {
           minCompletionTime: 5,
           maxCompletionTime: 600,
           minScore: 0,
-          maxScore: 6000,
+          maxScore: 10000,
         },
       },
       sequenceMemory: {
@@ -893,7 +893,7 @@ export class ScoringService {
         difficultyMultipliers: { [Difficulty.EASY]: 1.0, [Difficulty.MEDIUM]: 1.5, [Difficulty.HARD]: 2.0 },
         speedBonusParams: { maxTime: 300, formula: 'max(0.1, 1 + (maxTime - completionTime) / maxTime)' },
         accuracyBonusParams: { formula: '1 + (correctAnswers / totalQuestions) * 0.5' },
-        validationRules: { minCompletionTime: 5, maxCompletionTime: 600, minScore: 0, maxScore: 6000 },
+        validationRules: { minCompletionTime: 5, maxCompletionTime: 600, minScore: 0, maxScore: 10000 },
       },
       ticTacToe: {
         baseScore: 200,

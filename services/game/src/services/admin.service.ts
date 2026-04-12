@@ -258,8 +258,8 @@ export class AdminService {
         FREE: 3,
         LIGHT: 20,
         BASIC: 20,
-        STANDARD: 999999,
-        PREMIUM: 999999
+        STANDARD: 100,
+        PREMIUM: 1000
       };
 
       const limit = tierLimits[tier] || 3;

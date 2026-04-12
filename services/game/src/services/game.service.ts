@@ -133,9 +133,15 @@ export class GameService {
     // Calculate accuracy for non-Memory-Match games BEFORE score calculation
     let preAccuracy: number | undefined
     if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE'].includes(game.themeId)) {
-      const correctAnswers = input.correctAnswers || 0;
-      const totalQuestions = input.totalQuestions || 1;
-      preAccuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      if (game.themeId === 'WORD_PUZZLE') {
+        const wordsFound = input.wordsFound || 0;
+        const totalWords = input.totalWords || 1;
+        preAccuracy = totalWords > 0 ? wordsFound / totalWords : 0;
+      } else {
+        const correctAnswers = input.correctAnswers || 0;
+        const totalQuestions = input.totalQuestions || 1;
+        preAccuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      }
     }
 
     // Calculate score (with accuracy override for non-Memory-Match games)

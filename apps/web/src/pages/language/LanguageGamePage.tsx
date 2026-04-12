@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { getLanguageWords } from '../../api/language';
-import { startGame as startGameAPI, submitGameReview } from '../../api/game';
+import { startGame as startGameAPI, completeGame, submitGameReview } from '../../api/game';
 
 interface Word {
   id: string;
@@ -44,10 +44,11 @@ export default function LanguageGamePage() {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [showFeedback, setShowFeedback] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
-  const [, setBackendGameId] = useState<string>('');
+  const [backendGameId, setBackendGameId] = useState<string>('');
   const [showResults, setShowResults] = useState(false);
   const [finalGameState, setFinalGameState] = useState<GameState | null>(null);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [backendScore, setBackendScore] = useState<number | null>(null);
 
   useEffect(() => {
     if (!settings || !languageCode) {
@@ -106,7 +107,7 @@ export default function LanguageGamePage() {
 
   // Show results page when game is finished (AFTER all hooks)
   if (showResults && finalGameState) {
-    const finalScore = finalGameState.score;
+    const finalScore = backendScore ?? finalGameState.score;
     const accuracy = finalGameState.correctAnswers / Math.max(1, words.length);
     const completionTime = Math.floor((Date.now() - finalGameState.timeStarted) / 1000);
     const diffLabel = settings.difficulty === 'advanced' ? 'Hard' : settings.difficulty === 'intermediate' ? 'Medium' : 'Easy';
@@ -200,10 +201,30 @@ export default function LanguageGamePage() {
     }));
 
     // Auto-advance after 2 seconds
-    setTimeout(() => {
+    setTimeout(async () => {
       if (gameState.currentWordIndex + 1 >= words.length) {
         const finalCorrectAnswers = gameState.correctAnswers + (correct ? 1 : 0);
         const finalScore = gameState.score + totalPoints;
+        const completionTime = Math.floor((Date.now() - gameState.timeStarted) / 1000);
+        
+        // Complete game in backend for leaderboard
+        if (backendGameId) {
+          try {
+            const result = await completeGame({
+              gameId: backendGameId,
+              completionTime,
+              attempts: words.length,
+              correctAnswers: finalCorrectAnswers,
+              totalQuestions: words.length,
+            });
+            if (result?.score) {
+              setBackendScore(result.score);
+            }
+          } catch (err) {
+            console.error('Failed to complete backend game:', err);
+          }
+        }
+        
         setFinalGameState({ ...gameState, score: finalScore, correctAnswers: finalCorrectAnswers });
         setShowResults(true);
       } else {

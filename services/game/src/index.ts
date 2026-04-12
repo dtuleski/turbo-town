@@ -24,6 +24,20 @@ function getAllowedOrigin(origin?: string): string {
 // Initialize handler (singleton pattern for Lambda container reuse)
 const gameHandler = new GameHandler();
 
+async function handleStripeWebhook(event: any): Promise<any> {
+  try {
+    const signature = event.headers?.['stripe-signature'] || event.headers?.['Stripe-Signature'] || '';
+    const body = event.body || '';
+    const stripeEvent = await StripeService.verifyWebhookSignature(body, signature);
+    const stripeService = new StripeService();
+    await stripeService.handleWebhook(stripeEvent);
+    return { statusCode: 200, body: JSON.stringify({ received: true }) };
+  } catch (error) {
+    logger.error('Stripe webhook failed', error as Error);
+    return { statusCode: 400, body: JSON.stringify({ error: 'Webhook failed' }) };
+  }
+}
+
 /**
  * Lambda handler for Game Service GraphQL API
  * Handles game lifecycle, rate limiting, achievements, and statistics
