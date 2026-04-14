@@ -134,7 +134,7 @@ const ScoreBreakdownModal = ({
           <Button
             variant="primary"
             className="flex-1"
-            onClick={() => { navigate(ROUTES.LEADERBOARD); onClose() }}
+            onClick={() => navigate(ROUTES.LEADERBOARD)}
           >
             {t('game.leaderboardBtn')}
           </Button>
