@@ -17,12 +17,12 @@ export default function ScratchCodingSetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
-            🧩 {t('scratchCoding.title')}
+            🚀 {t('scratchCoding.title')}
           </h1>
           <p className="text-xl text-white/80 font-bold">
             {t('scratchCoding.subtitle')}
@@ -36,19 +36,19 @@ export default function ScratchCodingSetupPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div className="p-4">
-              <div className="text-4xl mb-2">🧱</div>
+              <div className="text-4xl mb-2">🛸</div>
               <p className="text-white/80 text-sm font-medium">
                 {t('scratchCoding.howToPlayStep1', 'Drag code blocks from the palette into the editor')}
               </p>
             </div>
             <div className="p-4">
-              <div className="text-4xl mb-2">🔗</div>
+              <div className="text-4xl mb-2">⚡</div>
               <p className="text-white/80 text-sm font-medium">
                 {t('scratchCoding.howToPlayStep2', 'Snap blocks together to build your program')}
               </p>
             </div>
             <div className="p-4">
-              <div className="text-4xl mb-2">▶️</div>
+              <div className="text-4xl mb-2">🧑‍🚀</div>
               <p className="text-white/80 text-sm font-medium">
                 {t('scratchCoding.howToPlayStep3', 'Press Run and watch your character follow the instructions!')}
               </p>
@@ -70,7 +70,7 @@ export default function ScratchCodingSetupPage() {
                   onClick={() => setSelected(d)}
                   className={`p-5 rounded-xl border-2 transition-all text-left ${
                     selected === d
-                      ? 'border-yellow-400 bg-white/20 scale-105 shadow-lg'
+                      ? 'border-cyan-400 bg-white/20 scale-105 shadow-lg'
                       : 'border-white/20 bg-white/5 hover:border-white/40'
                   }`}
                 >
@@ -97,7 +97,7 @@ export default function ScratchCodingSetupPage() {
             disabled={!selected}
             className={`px-10 py-4 text-xl font-black rounded-2xl transition-all shadow-lg ${
               selected
-                ? 'bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:scale-105 cursor-pointer'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:scale-105 cursor-pointer'
                 : 'bg-gray-600 text-gray-400 cursor-not-allowed'
             }`}
           >

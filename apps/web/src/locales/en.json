@@ -353,22 +353,22 @@
     }
   },
   "scratchCoding": {
-    "title": "Scratch Coding",
-    "subtitle": "Learn to code with visual blocks!",
+    "title": "Space Coder",
+    "subtitle": "Program your astronaut through the space station!",
     "howToPlay": "How to Play",
     "chooseDifficulty": "Choose Difficulty",
     "startCoding": "Start Coding! 🚀",
     "howToPlayStep1": "Drag code blocks from the palette into the editor",
     "howToPlayStep2": "Snap blocks together to build your program",
-    "howToPlayStep3": "Press Run and watch your character follow the instructions!",
+    "howToPlayStep3": "Press Run and watch your astronaut follow the instructions!",
     "blocks": {
       "onStart": "On Start",
       "moveForward": "Move Forward",
       "turnLeft": "Turn Left",
       "turnRight": "Turn Right",
       "repeat": "Repeat",
-      "ifWallAhead": "If Wall Ahead",
-      "ifOnGoal": "If On Goal"
+      "ifWallAhead": "If Asteroid Ahead",
+      "ifOnGoal": "If At Airlock"
     },
     "categories": {
       "motion": "Motion",
@@ -393,25 +393,25 @@
       "seeScore": "See Score 🏆",
       "tryAgain": "Try Again 🔄",
       "endGame": "End Game",
-      "hitWall": "Character hit a wall! 💥",
-      "offGrid": "Character went off the grid! 💥",
-      "didntReachGoal": "Character didn't reach the goal 🤔",
+      "hitWall": "Astronaut hit an asteroid! ☄️",
+      "offGrid": "Astronaut drifted into space! ☄️",
+      "didntReachGoal": "Astronaut didn't reach the airlock 🤔",
       "tryDifferent": "Try a different sequence"
     },
     "difficulty": {
       "easy": {
         "label": "Easy",
-        "desc": "6×6 grid · Motion blocks",
+        "desc": "Navigate the station corridors",
         "features": "Move & Turn"
       },
       "medium": {
         "label": "Medium",
-        "desc": "7×7 grid · Loops!",
+        "desc": "Use loops to explore efficiently",
         "features": "Motion + Repeat"
       },
       "hard": {
         "label": "Hard",
-        "desc": "8×8 grid · Conditionals!",
+        "desc": "Handle obstacles with smart conditionals",
         "features": "Motion + Loops + If/Else"
       }
     }

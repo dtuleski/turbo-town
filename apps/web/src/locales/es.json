@@ -353,22 +353,22 @@
     }
   },
   "scratchCoding": {
-    "title": "Programación Scratch",
-    "subtitle": "¡Aprende a programar con bloques visuales!",
+    "title": "Programador Espacial",
+    "subtitle": "¡Programa a tu astronauta por la estación espacial!",
     "howToPlay": "Cómo Jugar",
     "chooseDifficulty": "Elige la Dificultad",
     "startCoding": "¡A Programar! 🚀",
     "howToPlayStep1": "Arrastra bloques de código de la paleta al editor",
     "howToPlayStep2": "Conecta los bloques para construir tu programa",
-    "howToPlayStep3": "¡Presiona Ejecutar y mira a tu personaje seguir las instrucciones!",
+    "howToPlayStep3": "¡Presiona Ejecutar y mira a tu astronauta seguir las instrucciones!",
     "blocks": {
       "onStart": "Al Iniciar",
       "moveForward": "Avanzar",
       "turnLeft": "Girar Izquierda",
       "turnRight": "Girar Derecha",
       "repeat": "Repetir",
-      "ifWallAhead": "Si Hay Pared",
-      "ifOnGoal": "Si En Meta"
+      "ifWallAhead": "Si Hay Asteroide",
+      "ifOnGoal": "Si En Esclusa"
     },
     "categories": {
       "motion": "Movimiento",
@@ -393,25 +393,25 @@
       "seeScore": "Ver Puntuación 🏆",
       "tryAgain": "Intentar de Nuevo 🔄",
       "endGame": "Terminar Juego",
-      "hitWall": "¡El personaje chocó con una pared! 💥",
-      "offGrid": "¡El personaje salió de la cuadrícula! 💥",
-      "didntReachGoal": "El personaje no llegó a la meta 🤔",
+      "hitWall": "¡El astronauta chocó con un asteroide! ☄️",
+      "offGrid": "¡El astronauta se perdió en el espacio! ☄️",
+      "didntReachGoal": "El astronauta no llegó a la esclusa 🤔",
       "tryDifferent": "Prueba una secuencia diferente"
     },
     "difficulty": {
       "easy": {
         "label": "Fácil",
-        "desc": "Cuadrícula 6×6 · Bloques de movimiento",
+        "desc": "Navega por los corredores de la estación",
         "features": "Mover y Girar"
       },
       "medium": {
         "label": "Medio",
-        "desc": "Cuadrícula 7×7 · ¡Bucles!",
+        "desc": "Usa bucles para explorar eficientemente",
         "features": "Movimiento + Repetir"
       },
       "hard": {
         "label": "Difícil",
-        "desc": "Cuadrícula 8×8 · ¡Condicionales!",
+        "desc": "Maneja obstáculos con condicionales inteligentes",
         "features": "Movimiento + Bucles + Si/Sino"
       }
     }

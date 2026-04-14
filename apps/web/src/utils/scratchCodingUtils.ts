@@ -121,15 +121,15 @@ const DIFFICULTY_RANK: Record<Difficulty, number> = { easy: 1, medium: 2, hard: 
 
 export const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
   easy: {
-    label: 'Easy', emoji: '🟢', description: '6×6 grid · Motion blocks',
+    label: 'Easy', emoji: '🟢', description: 'Navigate the station corridors',
     levelCount: 5, gridSize: 6, availableCategories: ['motion', 'events'],
   },
   medium: {
-    label: 'Medium', emoji: '🟡', description: '7×7 grid · Loops!',
+    label: 'Medium', emoji: '🟡', description: 'Use loops to explore efficiently',
     levelCount: 5, gridSize: 7, availableCategories: ['motion', 'events', 'control'],
   },
   hard: {
-    label: 'Hard', emoji: '🔴', description: '8×8 grid · Conditionals!',
+    label: 'Hard', emoji: '🔴', description: 'Handle obstacles with smart conditionals',
     levelCount: 5, gridSize: 8, availableCategories: ['motion', 'events', 'control'],
   },
 };

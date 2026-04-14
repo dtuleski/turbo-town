@@ -296,19 +296,26 @@ function GameStage({ level, characterPos, characterDir, isAnimating }: GameStage
     const isChar = characterPos.row === row && characterPos.col === col
     const isGoal = level.goal.row === row && level.goal.col === col
 
-    let bg = 'bg-slate-700/50'
+    let bg = 'bg-slate-900/60'
     let content = ''
+
+    // Subtle star decorations for empty cells
+    if (cell === 'empty' && !isChar && !isGoal) {
+      const hash = (row * 7 + col * 13) % 10
+      if (hash < 2) content = '✦'
+      else if (hash < 4) content = '·'
+    }
 
     if (cell === 'wall') {
       bg = 'bg-slate-500'
-      content = '🧱'
+      content = '🪨'
     }
     if (isGoal && !isChar) {
-      bg = 'bg-green-800/40'
-      content = '⭐'
+      bg = 'bg-cyan-900/40'
+      content = '🚀'
     }
     if (isChar) {
-      content = '🐱'
+      content = '🧑‍🚀'
     }
 
     return (
@@ -331,7 +338,7 @@ function GameStage({ level, characterPos, characterDir, isAnimating }: GameStage
   return (
     <div className="bg-white/10 backdrop-blur rounded-2xl p-4 flex items-center justify-center">
       <div
-        className="inline-grid gap-1"
+        className="inline-grid gap-1 border-2 border-cyan-500/30 rounded-xl p-1 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
         style={{ gridTemplateColumns: `repeat(${level.cols}, minmax(0, 1fr))` }}
       >
         {Array.from({ length: level.rows }, (_, r) =>
@@ -454,14 +461,14 @@ export default function ScratchCodingGamePage() {
       } else if (!lastStep.alive) {
         setFailMessage(
           lastStep.hitWall
-            ? t('scratchCoding.game.hitWall', 'Character hit a wall! 💥')
+            ? t('scratchCoding.game.hitWall', 'Astronaut hit an asteroid! ☄️')
             : lastStep.outOfBounds
-              ? t('scratchCoding.game.offGrid', 'Character went off the grid! 💥')
-              : t('scratchCoding.game.didntReachGoal', "Character didn't reach the goal 🤔")
+              ? t('scratchCoding.game.offGrid', 'Astronaut drifted into space! ☄️')
+              : t('scratchCoding.game.didntReachGoal', "Astronaut didn't reach the airlock 🤔")
         )
         setPhase('fail')
       } else {
-        setFailMessage(t('scratchCoding.game.didntReachGoal', "Character didn't reach the goal 🤔"))
+        setFailMessage(t('scratchCoding.game.didntReachGoal', "Astronaut didn't reach the airlock 🤔"))
         setPhase('fail')
       }
       setHighlightedBlockId(null)
@@ -588,7 +595,7 @@ export default function ScratchCodingGamePage() {
   // ── Render ─────────────────────────────────────────────────────────────
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 py-3 px-2 md:px-4 select-none">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-3 px-2 md:px-4 select-none">
         <div className="max-w-6xl mx-auto">
           {/* ── Header ──────────────────────────────────────────────── */}
           <div className="flex items-center justify-between mb-3 px-2">
@@ -667,7 +674,7 @@ export default function ScratchCodingGamePage() {
           {phase === 'success' && (
             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
               <div className="bg-white rounded-3xl p-8 text-center shadow-2xl max-w-sm mx-4">
-                <div className="text-5xl mb-3">⭐</div>
+                <div className="text-5xl mb-3">🚀</div>
                 <h2 className="text-3xl font-black text-gray-800 mb-2">
                   {t('scratchCoding.game.levelComplete', 'Level Complete!')}
                 </h2>
@@ -676,12 +683,19 @@ export default function ScratchCodingGamePage() {
                     count: program.length,
                   })}
                 </p>
-                <p className="text-gray-500 mb-4">
+                <p className="text-gray-500 mb-1">
                   {isOptimal
                     ? `🌟 ${t('scratchCoding.game.optimalSolution', 'Optimal solution!')}`
                     : t('scratchCoding.game.optimalHint', 'Optimal: {{count}} blocks', {
                         count: level.optimalBlocks,
                       })}
+                </p>
+                <p className="text-lg mb-4">
+                  {program.length <= level.optimalBlocks
+                    ? '⚡ Efficiency Rating: Perfect!'
+                    : program.length <= level.optimalBlocks + 2
+                      ? '👍 Efficiency Rating: Good'
+                      : '🤔 Efficiency Rating: Can improve'}
                 </p>
                 <button
                   onClick={handleNextLevel}
@@ -699,7 +713,7 @@ export default function ScratchCodingGamePage() {
           {phase === 'fail' && (
             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
               <div className="bg-white rounded-3xl p-8 text-center shadow-2xl max-w-sm mx-4">
-                <div className="text-5xl mb-3">💥</div>
+                <div className="text-5xl mb-3">☄️</div>
                 <h2 className="text-2xl font-black text-gray-800 mb-2">{failMessage}</h2>
                 <p className="text-gray-500 mb-4">
                   {t('scratchCoding.game.tryDifferent', 'Try a different sequence')}
@@ -739,7 +753,7 @@ export default function ScratchCodingGamePage() {
         {phase === 'submitting' && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-8 text-center">
-              <div className="text-4xl mb-4 animate-bounce">🧩</div>
+              <div className="text-4xl mb-4 animate-bounce">🛸</div>
               <p className="text-xl font-bold">{t('game.calculating', 'Calculating score...')}</p>
             </div>
           </div>

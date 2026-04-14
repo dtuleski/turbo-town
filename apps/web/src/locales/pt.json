@@ -353,22 +353,22 @@
     }
   },
   "scratchCoding": {
-    "title": "Programação Scratch",
-    "subtitle": "Aprenda a programar com blocos visuais!",
+    "title": "Programador Espacial",
+    "subtitle": "Programe seu astronauta pela estação espacial!",
     "howToPlay": "Como Jogar",
     "chooseDifficulty": "Escolha a Dificuldade",
     "startCoding": "Começar a Programar! 🚀",
     "howToPlayStep1": "Arraste blocos de código da paleta para o editor",
     "howToPlayStep2": "Conecte os blocos para construir seu programa",
-    "howToPlayStep3": "Pressione Executar e veja seu personagem seguir as instruções!",
+    "howToPlayStep3": "Pressione Executar e veja seu astronauta seguir as instruções!",
     "blocks": {
       "onStart": "Ao Iniciar",
       "moveForward": "Avançar",
       "turnLeft": "Virar Esquerda",
       "turnRight": "Virar Direita",
       "repeat": "Repetir",
-      "ifWallAhead": "Se Há Parede",
-      "ifOnGoal": "Se Na Meta"
+      "ifWallAhead": "Se Há Asteroide",
+      "ifOnGoal": "Se Na Eclusa"
     },
     "categories": {
       "motion": "Movimento",
@@ -393,25 +393,25 @@
       "seeScore": "Ver Pontuação 🏆",
       "tryAgain": "Tentar Novamente 🔄",
       "endGame": "Encerrar Jogo",
-      "hitWall": "O personagem bateu em uma parede! 💥",
-      "offGrid": "O personagem saiu da grade! 💥",
-      "didntReachGoal": "O personagem não chegou ao objetivo 🤔",
+      "hitWall": "O astronauta bateu em um asteroide! ☄️",
+      "offGrid": "O astronauta se perdeu no espaço! ☄️",
+      "didntReachGoal": "O astronauta não chegou à eclusa 🤔",
       "tryDifferent": "Tente uma sequência diferente"
     },
     "difficulty": {
       "easy": {
         "label": "Fácil",
-        "desc": "Grade 6×6 · Blocos de movimento",
+        "desc": "Navegue pelos corredores da estação",
         "features": "Mover e Virar"
       },
       "medium": {
         "label": "Médio",
-        "desc": "Grade 7×7 · Loops!",
+        "desc": "Use loops para explorar eficientemente",
         "features": "Movimento + Repetir"
       },
       "hard": {
         "label": "Difícil",
-        "desc": "Grade 8×8 · Condicionais!",
+        "desc": "Lide com obstáculos usando condicionais inteligentes",
         "features": "Movimento + Loops + Se/Senão"
       }
     }
