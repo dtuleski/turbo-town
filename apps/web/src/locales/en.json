@@ -352,6 +352,70 @@
       "scoring": "Win = 300pts · Draw = 100pts · Lose = 0pts · Faster = bonus points"
     }
   },
+  "scratchCoding": {
+    "title": "Scratch Coding",
+    "subtitle": "Learn to code with visual blocks!",
+    "howToPlay": "How to Play",
+    "chooseDifficulty": "Choose Difficulty",
+    "startCoding": "Start Coding! 🚀",
+    "howToPlayStep1": "Drag code blocks from the palette into the editor",
+    "howToPlayStep2": "Snap blocks together to build your program",
+    "howToPlayStep3": "Press Run and watch your character follow the instructions!",
+    "blocks": {
+      "onStart": "On Start",
+      "moveForward": "Move Forward",
+      "turnLeft": "Turn Left",
+      "turnRight": "Turn Right",
+      "repeat": "Repeat",
+      "ifWallAhead": "If Wall Ahead",
+      "ifOnGoal": "If On Goal"
+    },
+    "categories": {
+      "motion": "Motion",
+      "control": "Control",
+      "events": "Events"
+    },
+    "game": {
+      "blocks": "Blocks",
+      "noMoreBlocks": "Maximum blocks reached!",
+      "program": "Program",
+      "blocksUsed": "{{used}}/{{max}} blocks",
+      "dragHere": "Click or drag blocks here...",
+      "clearAll": "Clear All ✕",
+      "clickToRemove": "click to remove",
+      "run": "Run",
+      "level": "Level {{current}}/{{total}}",
+      "levelComplete": "Level Complete!",
+      "blocksUsedCount": "Solved in {{count}} blocks",
+      "optimalSolution": "Optimal solution!",
+      "optimalHint": "Optimal: {{count}} blocks",
+      "nextLevel": "Next Level →",
+      "seeScore": "See Score 🏆",
+      "tryAgain": "Try Again 🔄",
+      "endGame": "End Game",
+      "hitWall": "Character hit a wall! 💥",
+      "offGrid": "Character went off the grid! 💥",
+      "didntReachGoal": "Character didn't reach the goal 🤔",
+      "tryDifferent": "Try a different sequence"
+    },
+    "difficulty": {
+      "easy": {
+        "label": "Easy",
+        "desc": "6×6 grid · Motion blocks",
+        "features": "Move & Turn"
+      },
+      "medium": {
+        "label": "Medium",
+        "desc": "7×7 grid · Loops!",
+        "features": "Motion + Repeat"
+      },
+      "hard": {
+        "label": "Hard",
+        "desc": "8×8 grid · Conditionals!",
+        "features": "Motion + Loops + If/Else"
+      }
+    }
+  },
   "gameplay": {
     "loadingQuestions": "Loading questions...",
     "whichCountry": "Which country is this?",

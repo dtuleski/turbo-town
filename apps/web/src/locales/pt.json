@@ -352,6 +352,70 @@
       "scoring": "Vitória = 300pts · Empate = 100pts · Derrota = 0pts · Mais rápido = bônus"
     }
   },
+  "scratchCoding": {
+    "title": "Programação Scratch",
+    "subtitle": "Aprenda a programar com blocos visuais!",
+    "howToPlay": "Como Jogar",
+    "chooseDifficulty": "Escolha a Dificuldade",
+    "startCoding": "Começar a Programar! 🚀",
+    "howToPlayStep1": "Arraste blocos de código da paleta para o editor",
+    "howToPlayStep2": "Conecte os blocos para construir seu programa",
+    "howToPlayStep3": "Pressione Executar e veja seu personagem seguir as instruções!",
+    "blocks": {
+      "onStart": "Ao Iniciar",
+      "moveForward": "Avançar",
+      "turnLeft": "Virar Esquerda",
+      "turnRight": "Virar Direita",
+      "repeat": "Repetir",
+      "ifWallAhead": "Se Há Parede",
+      "ifOnGoal": "Se Na Meta"
+    },
+    "categories": {
+      "motion": "Movimento",
+      "control": "Controle",
+      "events": "Eventos"
+    },
+    "game": {
+      "blocks": "Blocos",
+      "noMoreBlocks": "Máximo de blocos atingido!",
+      "program": "Programa",
+      "blocksUsed": "{{used}}/{{max}} blocos",
+      "dragHere": "Clique ou arraste blocos aqui...",
+      "clearAll": "Limpar Tudo ✕",
+      "clickToRemove": "clique para remover",
+      "run": "Executar",
+      "level": "Nível {{current}}/{{total}}",
+      "levelComplete": "Nível Completo!",
+      "blocksUsedCount": "Resolvido em {{count}} blocos",
+      "optimalSolution": "Solução ótima!",
+      "optimalHint": "Ótimo: {{count}} blocos",
+      "nextLevel": "Próximo Nível →",
+      "seeScore": "Ver Pontuação 🏆",
+      "tryAgain": "Tentar Novamente 🔄",
+      "endGame": "Encerrar Jogo",
+      "hitWall": "O personagem bateu em uma parede! 💥",
+      "offGrid": "O personagem saiu da grade! 💥",
+      "didntReachGoal": "O personagem não chegou ao objetivo 🤔",
+      "tryDifferent": "Tente uma sequência diferente"
+    },
+    "difficulty": {
+      "easy": {
+        "label": "Fácil",
+        "desc": "Grade 6×6 · Blocos de movimento",
+        "features": "Mover e Virar"
+      },
+      "medium": {
+        "label": "Médio",
+        "desc": "Grade 7×7 · Loops!",
+        "features": "Movimento + Repetir"
+      },
+      "hard": {
+        "label": "Difícil",
+        "desc": "Grade 8×8 · Condicionais!",
+        "features": "Movimento + Loops + Se/Senão"
+      }
+    }
+  },
   "gameplay": {
     "loadingQuestions": "Carregando perguntas...",
     "whichCountry": "Qual país é este?",

@@ -352,6 +352,70 @@
       "scoring": "Victoria = 300pts · Empate = 100pts · Derrota = 0pts · Más rápido = bonus"
     }
   },
+  "scratchCoding": {
+    "title": "Programación Scratch",
+    "subtitle": "¡Aprende a programar con bloques visuales!",
+    "howToPlay": "Cómo Jugar",
+    "chooseDifficulty": "Elige la Dificultad",
+    "startCoding": "¡A Programar! 🚀",
+    "howToPlayStep1": "Arrastra bloques de código de la paleta al editor",
+    "howToPlayStep2": "Conecta los bloques para construir tu programa",
+    "howToPlayStep3": "¡Presiona Ejecutar y mira a tu personaje seguir las instrucciones!",
+    "blocks": {
+      "onStart": "Al Iniciar",
+      "moveForward": "Avanzar",
+      "turnLeft": "Girar Izquierda",
+      "turnRight": "Girar Derecha",
+      "repeat": "Repetir",
+      "ifWallAhead": "Si Hay Pared",
+      "ifOnGoal": "Si En Meta"
+    },
+    "categories": {
+      "motion": "Movimiento",
+      "control": "Control",
+      "events": "Eventos"
+    },
+    "game": {
+      "blocks": "Bloques",
+      "noMoreBlocks": "¡Máximo de bloques alcanzado!",
+      "program": "Programa",
+      "blocksUsed": "{{used}}/{{max}} bloques",
+      "dragHere": "Haz clic o arrastra bloques aquí...",
+      "clearAll": "Borrar Todo ✕",
+      "clickToRemove": "clic para eliminar",
+      "run": "Ejecutar",
+      "level": "Nivel {{current}}/{{total}}",
+      "levelComplete": "¡Nivel Completado!",
+      "blocksUsedCount": "Resuelto en {{count}} bloques",
+      "optimalSolution": "¡Solución óptima!",
+      "optimalHint": "Óptimo: {{count}} bloques",
+      "nextLevel": "Siguiente Nivel →",
+      "seeScore": "Ver Puntuación 🏆",
+      "tryAgain": "Intentar de Nuevo 🔄",
+      "endGame": "Terminar Juego",
+      "hitWall": "¡El personaje chocó con una pared! 💥",
+      "offGrid": "¡El personaje salió de la cuadrícula! 💥",
+      "didntReachGoal": "El personaje no llegó a la meta 🤔",
+      "tryDifferent": "Prueba una secuencia diferente"
+    },
+    "difficulty": {
+      "easy": {
+        "label": "Fácil",
+        "desc": "Cuadrícula 6×6 · Bloques de movimiento",
+        "features": "Mover y Girar"
+      },
+      "medium": {
+        "label": "Medio",
+        "desc": "Cuadrícula 7×7 · ¡Bucles!",
+        "features": "Movimiento + Repetir"
+      },
+      "hard": {
+        "label": "Difícil",
+        "desc": "Cuadrícula 8×8 · ¡Condicionales!",
+        "features": "Movimiento + Bucles + Si/Sino"
+      }
+    }
+  },
   "gameplay": {
     "loadingQuestions": "Cargando preguntas...",
     "whichCountry": "¿Qué país es este?",

@@ -22,6 +22,7 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'color-by-number': 'Puzzles & Logic',
   'hangman': 'Puzzles & Logic',
   'tic-tac-toe': 'Puzzles & Logic',
+  'scratch-coding': 'Puzzles & Logic',
 }
 
 const FILTER_CHIPS = [

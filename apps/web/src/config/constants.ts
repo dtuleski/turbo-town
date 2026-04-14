@@ -39,6 +39,8 @@ export const ROUTES = {
   HANGMAN_GAME: '/hangman/game',
   TIC_TAC_TOE_SETUP: '/tic-tac-toe/setup',
   TIC_TAC_TOE_GAME: '/tic-tac-toe/game',
+  SCRATCH_CODING_SETUP: '/scratch-coding/setup',
+  SCRATCH_CODING_GAME: '/scratch-coding/game',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',

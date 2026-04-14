@@ -44,6 +44,8 @@ import HangmanSetupPage from './pages/hangman/HangmanSetupPage'
 import HangmanGamePage from './pages/hangman/HangmanGamePage'
 import TicTacToeSetupPage from './pages/tic-tac-toe/TicTacToeSetupPage'
 import TicTacToeGamePage from './pages/tic-tac-toe/TicTacToeGamePage'
+import ScratchCodingSetupPage from './pages/scratch-coding/ScratchCodingSetupPage'
+import ScratchCodingGamePage from './pages/scratch-coding/ScratchCodingGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -109,6 +111,8 @@ function App() {
           <Route path={ROUTES.HANGMAN_GAME} element={<HangmanGamePage />} />
           <Route path={ROUTES.TIC_TAC_TOE_SETUP} element={<TicTacToeSetupPage />} />
           <Route path={ROUTES.TIC_TAC_TOE_GAME} element={<TicTacToeGamePage />} />
+          <Route path={ROUTES.SCRATCH_CODING_SETUP} element={<ScratchCodingSetupPage />} />
+          <Route path={ROUTES.SCRATCH_CODING_GAME} element={<ScratchCodingGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
