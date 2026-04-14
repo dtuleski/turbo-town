@@ -10,7 +10,6 @@ import {
   type Direction,
   type Position,
   type Difficulty,
-  type CellType,
 } from '../scratchCodingUtils';
 
 // Simple path tracer to verify levels are solvable
