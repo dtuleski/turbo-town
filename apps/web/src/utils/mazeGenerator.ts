@@ -356,8 +356,8 @@ export function generateMaze(difficulty: DifficultyLevel): MazeData {
   carveMaze(grid, rows, cols)
 
   // Add extra passages to guarantee multiple paths
-  // Scale extra passages with grid size
-  const extraPassages = Math.max(3, Math.floor((rows * cols) / 15))
+  // Keep it minimal — just enough for 2+ paths, not so many that the maze becomes trivial
+  const extraPassages = difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4
   addExtraPassages(grid, rows, cols, extraPassages)
 
   // 3. Place start at top-left region, exit at bottom-right region
@@ -448,7 +448,10 @@ function placeGates(
   const cols = grid[0].length
 
   // Collect candidate path cells (not start, not exit, not adjacent to start/exit)
-  const candidates: Position[] = []
+  // Prioritize cells on shortest paths so gates can't be easily bypassed
+  const shortestPathCells = findShortestPathCells(grid, start, exit)
+  const onShortestPath: Position[] = []
+  const offShortestPath: Position[] = []
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       if (grid[r][c] !== 'path') continue
@@ -456,11 +459,17 @@ function placeGates(
       const distToStart = Math.abs(r - start.row) + Math.abs(c - start.col)
       const distToExit = Math.abs(r - exit.row) + Math.abs(c - exit.col)
       if (distToStart <= 1 || distToExit <= 1) continue
-      candidates.push({ row: r, col: c })
+      const pos = { row: r, col: c }
+      if (shortestPathCells.has(posKey(pos))) {
+        onShortestPath.push(pos)
+      } else {
+        offShortestPath.push(pos)
+      }
     }
   }
 
-  const shuffled = shuffle(candidates)
+  // Place gates on shortest-path cells first, then fill with off-path cells
+  const shuffled = [...shuffle(onShortestPath), ...shuffle(offShortestPath)]
 
   for (const pos of shuffled) {
     if (gates.length >= count) break
