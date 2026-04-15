@@ -545,7 +545,51 @@ export default function MathMazeGamePage() {
           playerPosition={playerPosition}
           gateStates={gateStates}
           collectedItems={collectedItems}
+          onCellClick={(pos) => {
+            // Only allow clicking adjacent cells
+            const dRow = pos.row - playerPosition.row
+            const dCol = pos.col - playerPosition.col
+            if (Math.abs(dRow) + Math.abs(dCol) === 1) {
+              tryMove(dRow, dCol)
+            }
+          }}
         />
+
+        {/* Arrow Controls for mobile/touch */}
+        <div className="flex justify-center mt-4">
+          <div className="grid grid-cols-3 gap-1 w-36">
+            <div />
+            <button
+              onClick={() => tryMove(-1, 0)}
+              className="bg-white rounded-xl p-3 shadow-lg text-2xl font-bold text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              aria-label="Move up"
+            >
+              ↑
+            </button>
+            <div />
+            <button
+              onClick={() => tryMove(0, -1)}
+              className="bg-white rounded-xl p-3 shadow-lg text-2xl font-bold text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              aria-label="Move left"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => tryMove(1, 0)}
+              className="bg-white rounded-xl p-3 shadow-lg text-2xl font-bold text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              aria-label="Move down"
+            >
+              ↓
+            </button>
+            <button
+              onClick={() => tryMove(0, 1)}
+              className="bg-white rounded-xl p-3 shadow-lg text-2xl font-bold text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+              aria-label="Move right"
+            >
+              →
+            </button>
+          </div>
+        </div>
 
         {/* Gate Prompt Overlay */}
         {gameStatus === 'gate-prompt' && activeGate && (
