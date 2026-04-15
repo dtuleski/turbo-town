@@ -101,7 +101,7 @@ function generateAlgebra(): MathEquation {
   const x = randInt(1, 20)
   const b = randInt(1, 30)
   const c = a * x + b
-  return { display: `${a}x + ${b} = ${c}, x = ?`, answer: x, operation: 'algebra' }
+  return { display: `${a}x + ${b} = ${c}\nSolve for x`, answer: x, operation: 'algebra' }
 }
 
 // ── Public API ─────────────────────────────────────────────────────────────

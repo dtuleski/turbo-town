@@ -59,7 +59,7 @@ export const GatePrompt: React.FC<GatePromptProps> = ({
         </p>
 
         {/* Equation display */}
-        <p className="text-2xl font-bold text-center text-gray-900 mb-5">
+        <p className="text-2xl font-bold text-center text-gray-900 mb-5 whitespace-pre-line">
           {equation.display}
         </p>
 
