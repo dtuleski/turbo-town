@@ -72,6 +72,7 @@ export default function MathMazeGamePage() {
   const [gateFeedback, setGateFeedback] = useState<
     { correct: boolean; correctAnswer?: number } | undefined
   >()
+  const [stepsTaken, setStepsTaken] = useState(0)
 
   // Score state
   const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
@@ -93,6 +94,8 @@ export default function MathMazeGamePage() {
   mazeRef.current = maze
   const gameIdRef = useRef(gameId)
   gameIdRef.current = gameId
+  const stepsTakenRef = useRef(stepsTaken)
+  stepsTakenRef.current = stepsTaken
 
   // Touch tracking
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
@@ -162,6 +165,8 @@ export default function MathMazeGamePage() {
         gatesSolved: gatesSolvedRef.current,
         collectiblesGathered: collectedItemsRef.current.size,
         totalCollectibles: currentMaze?.collectibles.length ?? 0,
+        totalGates: currentMaze?.gates.length ?? 0,
+        stepsTaken: stepsTakenRef.current,
         reachedExit: reason === 'exit-reached',
       })
       setLocalScore(localResult)
@@ -252,10 +257,12 @@ export default function MathMazeGamePage() {
           })
         }
 
+        // Count the step
+        setStepsTaken((prev) => prev + 1)
+
         // Exit — end game
         if (cell === 'exit') {
           const newPos = { row: nr, col: nc }
-          // Use setTimeout to allow state update before ending
           setTimeout(() => endGame('exit-reached'), 0)
           return newPos
         }
@@ -536,6 +543,12 @@ export default function MathMazeGamePage() {
             <div className="text-xl font-bold text-yellow-600">
               {t('mathMaze.collected', { collected: collectedItems.size, total: totalCollectibles })}
             </div>
+          </div>
+
+          {/* Steps */}
+          <div className="bg-white rounded-2xl px-4 py-2 shadow-lg">
+            <div className="text-xs text-gray-500">Steps</div>
+            <div className="text-xl font-bold text-purple-600">{stepsTaken}</div>
           </div>
         </div>
 

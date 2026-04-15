@@ -344,6 +344,11 @@ describe('Math Maze — Property-Based Tests', () => {
         medium: 1.5,
         hard: 2.0,
       }
+      const OPTIMAL_STEPS: Record<DifficultyLevel, number> = {
+        easy: 12,
+        medium: 18,
+        hard: 24,
+      }
 
       const gameResultArb = fc.record({
         difficulty: difficultyArb,
@@ -353,6 +358,8 @@ describe('Math Maze — Property-Based Tests', () => {
         gatesSolved: fc.integer({ min: 0, max: 20 }),
         collectiblesGathered: fc.integer({ min: 0, max: 10 }),
         totalCollectibles: fc.integer({ min: 0, max: 10 }),
+        totalGates: fc.integer({ min: 0, max: 20 }),
+        stepsTaken: fc.integer({ min: 1, max: 200 }),
         reachedExit: fc.boolean(),
       }).filter(
         (r) =>
@@ -365,25 +372,29 @@ describe('Math Maze — Property-Based Tests', () => {
         fc.property(gameResultArb, (result: MazeGameResult) => {
           const breakdown = calculateMazeScore(result)
 
-          // Independently compute expected values
           const expectedDiffMult = DIFFICULTY_MULTIPLIERS[result.difficulty]
           const expectedSpeedBonus = Math.max(
             0.1,
             1 + (result.totalTime - result.completionTime) / result.totalTime,
           )
           const expectedAccuracyBonus =
-            1 +
-            (result.gatesSolved / Math.max(1, result.gatesAttempted)) * 0.5
+            1 + (result.gatesSolved / Math.max(1, result.gatesAttempted)) * 0.5
+          const optimalSteps = OPTIMAL_STEPS[result.difficulty]
+          const stepRatio = Math.max(1, result.stepsTaken) / optimalSteps
+          const expectedEfficiencyBonus = Math.max(0.5, 1.5 / stepRatio)
+          const expectedGatesSolvedBonus = result.gatesSolved * 100
           const expectedCollectibleBonus = result.collectiblesGathered * 50
           const expectedFinal =
             Math.round(
-              1000 * expectedDiffMult * expectedSpeedBonus * expectedAccuracyBonus,
-            ) + expectedCollectibleBonus
+              1000 * expectedDiffMult * expectedSpeedBonus * expectedAccuracyBonus * expectedEfficiencyBonus,
+            ) + expectedGatesSolvedBonus + expectedCollectibleBonus
 
           expect(breakdown.baseScore).toBe(1000)
           expect(breakdown.difficultyMultiplier).toBe(expectedDiffMult)
           expect(breakdown.speedBonus).toBeCloseTo(expectedSpeedBonus, 10)
           expect(breakdown.accuracyBonus).toBeCloseTo(expectedAccuracyBonus, 10)
+          expect(breakdown.efficiencyBonus).toBeCloseTo(expectedEfficiencyBonus, 10)
+          expect(breakdown.gatesSolvedBonus).toBe(expectedGatesSolvedBonus)
           expect(breakdown.collectibleBonus).toBe(expectedCollectibleBonus)
           expect(breakdown.finalScore).toBe(expectedFinal)
         }),
