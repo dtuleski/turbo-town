@@ -151,6 +151,7 @@ export enum GameType {
   COLOR_BY_NUMBER = 'COLOR_BY_NUMBER',
   HANGMAN = 'HANGMAN',
   TIC_TAC_TOE = 'TIC_TAC_TOE',
+  MATH_MAZE = 'MATH_MAZE',
   OVERALL = 'OVERALL',
 }
 
