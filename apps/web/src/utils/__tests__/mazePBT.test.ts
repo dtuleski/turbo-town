@@ -310,12 +310,7 @@ describe('Math Maze — Property-Based Tests', () => {
         fc.property(difficultyArb, (difficulty) => {
           const maze = generateMaze(difficulty)
 
-          // Block ALL gate positions — this may disconnect the maze
-          const allGateKeys = new Set(
-            maze.gates.map((g) => posKey(g.position)),
-          )
-
-          // Also create a scenario where we wall off the exit entirely
+          // Create a scenario where we wall off the exit entirely
           const isolatedGrid = maze.grid.map((row) => [...row])
           // Wall off all neighbors of exit
           for (const d of DIRS) {
