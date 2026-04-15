@@ -41,6 +41,8 @@ export const ROUTES = {
   TIC_TAC_TOE_GAME: '/tic-tac-toe/game',
   SCRATCH_CODING_SETUP: '/scratch-coding/setup',
   SCRATCH_CODING_GAME: '/scratch-coding/game',
+  MATH_MAZE_SETUP: '/math-maze/setup',
+  MATH_MAZE_GAME: '/math-maze/game',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',

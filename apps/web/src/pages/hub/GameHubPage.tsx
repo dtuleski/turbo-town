@@ -23,6 +23,7 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'hangman': 'Puzzles & Logic',
   'tic-tac-toe': 'Puzzles & Logic',
   'scratch-coding': 'Puzzles & Logic',
+  'math-maze': 'Science & Math',
 }
 
 const FILTER_CHIPS = [

@@ -435,5 +435,27 @@
     "youWin": "¡Ganaste! +300",
     "draw": "¡Empate! +100",
     "aiWins": "¡Gana la IA!"
+  },
+  "mathMaze": {
+    "title": "Laberinto Matemático",
+    "subtitle": "¡Resuelve ecuaciones para encontrar tu camino!",
+    "chooseLevel": "Elige tu Nivel",
+    "easyDesc": "Suma y resta, laberinto pequeño, 3 min",
+    "mediumDesc": "Las 4 operaciones, laberinto mediano, 4 min",
+    "hardDesc": "Matemáticas avanzadas y álgebra, laberinto grande, 5 min",
+    "startGame": "¡Entrar al Laberinto!",
+    "selectLevel": "Selecciona un Nivel",
+    "gatePrompt": "Resuelve para abrir la puerta:",
+    "submitAnswer": "Enviar",
+    "correct": "¡Correcto! ¡Puerta abierta!",
+    "incorrect": "¡Incorrecto! La respuesta era {{answer}}. ¡Camino bloqueado!",
+    "timeUp": "¡Se acabó el tiempo!",
+    "mazeComplete": "¡Laberinto Completado!",
+    "noPath": "¡No hay camino disponible!",
+    "gatesLabel": "Puertas",
+    "collectiblesLabel": "Estrellas",
+    "timerLabel": "Tiempo",
+    "scoreLabel": "Puntuación",
+    "collected": "{{collected}} / {{total}}"
   }
 }

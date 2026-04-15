@@ -435,5 +435,27 @@
     "youWin": "You Win! +300",
     "draw": "Draw! +100",
     "aiWins": "AI Wins!"
+  },
+  "mathMaze": {
+    "title": "Math Maze",
+    "subtitle": "Solve equations to find your way!",
+    "chooseLevel": "Choose Your Level",
+    "easyDesc": "Addition & subtraction, small maze, 3 min",
+    "mediumDesc": "All 4 operations, medium maze, 4 min",
+    "hardDesc": "Advanced math & algebra, large maze, 5 min",
+    "startGame": "Enter the Maze!",
+    "selectLevel": "Select a Level",
+    "gatePrompt": "Solve to open the gate:",
+    "submitAnswer": "Submit",
+    "correct": "Correct! Gate opened!",
+    "incorrect": "Wrong! The answer was {{answer}}. Path blocked!",
+    "timeUp": "Time's Up!",
+    "mazeComplete": "Maze Complete!",
+    "noPath": "No Path Available!",
+    "gatesLabel": "Gates",
+    "collectiblesLabel": "Stars",
+    "timerLabel": "Time",
+    "scoreLabel": "Score",
+    "collected": "{{collected}} / {{total}}"
   }
 }
