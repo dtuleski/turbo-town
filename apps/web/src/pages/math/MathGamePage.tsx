@@ -159,7 +159,7 @@ export default function MathGamePage() {
         endGame()
       } else {
         setQuestionNumber((prev) => prev + 1)
-        setCurrentQuestion(generateQuestion(config.operations, difficulty))
+        setCurrentQuestion(generateQuestion(config.operations, difficulty, currentQuestion?.question))
       }
     }, 1500)
   }

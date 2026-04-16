@@ -78,26 +78,44 @@ const generateRoot = (): MathQuestion => {
 
 export const generateQuestion = (
   operations: readonly MathOperation[],
-  difficulty: string
+  difficulty: string,
+  previousQuestion?: string
 ): MathQuestion => {
-  const operation = operations[Math.floor(Math.random() * operations.length)]
+  const maxAttempts = 10
+  for (let i = 0; i < maxAttempts; i++) {
+    const operation = operations[Math.floor(Math.random() * operations.length)]
+    let question: MathQuestion
 
-  switch (operation) {
-    case 'addition':
-      return generateAddition(difficulty)
-    case 'subtraction':
-      return generateSubtraction(difficulty)
-    case 'multiplication':
-      return generateMultiplication(difficulty)
-    case 'division':
-      return generateDivision(difficulty)
-    case 'power':
-      return generatePower()
-    case 'root':
-      return generateRoot()
-    default:
-      return generateAddition(difficulty)
+    switch (operation) {
+      case 'addition':
+        question = generateAddition(difficulty)
+        break
+      case 'subtraction':
+        question = generateSubtraction(difficulty)
+        break
+      case 'multiplication':
+        question = generateMultiplication(difficulty)
+        break
+      case 'division':
+        question = generateDivision(difficulty)
+        break
+      case 'power':
+        question = generatePower()
+        break
+      case 'root':
+        question = generateRoot()
+        break
+      default:
+        question = generateAddition(difficulty)
+    }
+
+    if (question.question !== previousQuestion || i === maxAttempts - 1) {
+      return question
+    }
   }
+
+  // Fallback (shouldn't reach here)
+  return generateAddition(difficulty)
 }
 
 export const checkAnswer = (question: MathQuestion, userAnswer: number): boolean => {
