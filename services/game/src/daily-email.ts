@@ -86,14 +86,16 @@ export async function handler() {
     const users = Array.from(usersByEmail.values());
     if (users.length === 0) return { statusCode: 200, body: 'No users to email' };
 
-    // 2. Get today's entries
+    // 2. Get yesterday's entries (email fires in the morning, so we report on the previous day)
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const today = new Date().toISOString().split('T')[0];
     const entriesResult = await ddb.send(new ScanCommand({ TableName: LEADERBOARD_TABLE, Limit: 500 }));
     const allEntries = (entriesResult.Items || []) as LeaderboardEntry[];
-    const todayEntries = allEntries.filter(e => e.date === today);
+    // Include both yesterday and today to catch games across timezone boundaries
+    const recentEntries = allEntries.filter(e => e.date === yesterday || e.date === today);
     // One entry per user — their highest score of the day across all games
     const bestByUser = new Map<string, LeaderboardEntry>();
-    for (const entry of todayEntries) {
+    for (const entry of recentEntries) {
       const existing = bestByUser.get(entry.userId);
       if (!existing || entry.score > existing.score) {
         bestByUser.set(entry.userId, entry);
@@ -120,7 +122,7 @@ export async function handler() {
         const userAggs = allAggregates.filter(a => a.userId === user.userId);
         const gamesPlayed = userAggs.map(a => a.gameType);
         const gamesNotPlayed = ALL_GAMES.filter(g => !gamesPlayed.includes(g));
-        const userTodayEntries = todayEntries.filter(e => e.userId === user.userId);
+        const userTodayEntries = recentEntries.filter(e => e.userId === user.userId);
         const todayGamesCount = userTodayEntries.length;
 
         // User's rank today
@@ -160,9 +162,9 @@ export async function handler() {
         // Activity status
         let activityInfo = '';
         if (todayGamesCount === 0) {
-          activityInfo = "😴 You haven't played today — jump in and climb the ranks!";
+          activityInfo = "😴 You haven't played recently — jump in and climb the ranks!";
         } else {
-          activityInfo = `🎮 You played ${todayGamesCount} game${todayGamesCount > 1 ? 's' : ''} today — nice work!`;
+          activityInfo = `🎮 You played ${todayGamesCount} game${todayGamesCount > 1 ? 's' : ''} recently — nice work!`;
         }
 
         const html = buildEmailHTML(user.username, topToday, { rankInfo, beatInfo, tryInfo, activityInfo }, user.userId, rankedToday);
