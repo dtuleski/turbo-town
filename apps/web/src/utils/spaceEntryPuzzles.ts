@@ -35,48 +35,43 @@ function round1(n: number): number {
 /* ------------------------------------------------------------------ */
 
 export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPuzzle {
+  // Import the reference angle so the correct answer = perfect landing
+  const refAngles: Record<SpaceEntryDifficulty, number> = { easy: 8.5, medium: 7.25, hard: 7 }
+  // Use integer answers for kids — round the reference angle
+  const idealAnswer = Math.round(refAngles[difficulty])
+
   switch (difficulty) {
     case 'easy': {
-      // "A triangle has angles A° and B°. What is the third angle?"
-      // answer is between 5-12
-      const answer = randInt(5, 12)
       const a = randInt(70, 95)
-      const b = 180 - a - answer
+      const b = 180 - a - idealAnswer
       return {
         type: 'angle',
         question: `A triangle has angles of ${a}° and ${b}°. What is the third angle?`,
         visual: '📐 △  A° + B° + ?° = 180°',
-        correctAnswer: answer,
+        correctAnswer: idealAnswer,
         unit: '°',
       }
     }
 
     case 'medium': {
-      // "Two supplementary angles: one is X°. What is 180° - X - Y°?"
-      // answer between 5.5-9 (use integers or .5)
-      const halfAnswer = randInt(11, 18) // 5.5 to 9.0 in half-steps
-      const answer = halfAnswer / 2
       const y = randInt(1, 4)
-      const x = 180 - answer - y
+      const x = 180 - idealAnswer - y
       return {
         type: 'angle',
         question: `Two supplementary angles add to 180°. One is ${x}°. The entry angle is 180° − ${x}° − ${y}°. What is it?`,
         visual: '📐 180° − X° − Y° = ?°',
-        correctAnswer: answer,
+        correctAnswer: idealAnswer,
         unit: '°',
       }
     }
 
     case 'hard': {
-      // "In a right triangle, one angle is X°. The entry angle equals 90° - X°."
-      // answer 6-8
-      const answer = randInt(6, 8)
-      const x = 90 - answer
+      const x = 90 - idealAnswer
       return {
         type: 'angle',
         question: `In a right triangle, one angle is 90° and another is ${x}°. What is the third angle?`,
         visual: '📐 90° + X° + ?° = 180°',
-        correctAnswer: answer,
+        correctAnswer: idealAnswer,
         unit: '°',
       }
     }
@@ -91,13 +86,13 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
 /* ------------------------------------------------------------------ */
 
 export function generateThrusterPuzzle(difficulty: SpaceEntryDifficulty): MissionPuzzle {
+  // Correct answer = optimal thruster power for the difficulty
+  const optimalPowers: Record<SpaceEntryDifficulty, number> = { easy: 60, medium: 65, hard: 70 }
+  const answer = optimalPowers[difficulty]
+
   switch (difficulty) {
     case 'medium': {
-      // "Fuel tank: X liters. Mission needs Y liters. What percentage should you use?"
-      // answer 50-80%
-      const answer = randInt(50, 80)
-      // pick a tank size that divides cleanly
-      const tank = randInt(2, 5) * 100 // 200, 300, 400, 500
+      const tank = randInt(2, 5) * 100
       const needed = Math.round((answer / 100) * tank)
       return {
         type: 'thruster',
@@ -109,16 +104,11 @@ export function generateThrusterPuzzle(difficulty: SpaceEntryDifficulty): Missio
     }
 
     case 'hard': {
-      // "Spacecraft mass: X kg. Required thrust: Y N. Each 1% power = Z N.
-      //  What power level do you need?"
-      // answer 60-80%
-      const answer = randInt(60, 80)
-      const perPercent = randInt(5, 10) * 10 // 50-100 N per %
+      const perPercent = randInt(5, 10) * 10
       const requiredThrust = answer * perPercent
-      const mass = randInt(10, 30) * 100
       return {
         type: 'thruster',
-        question: `Spacecraft mass: ${mass} kg. Required thrust: ${requiredThrust} N. Each 1% power gives ${perPercent} N. What power level (%) do you need?`,
+        question: `Required thrust: ${requiredThrust} N. Each 1% power gives ${perPercent} N. What power level (%) do you need?`,
         visual: '🚀 thrust ÷ N-per-% = ?%',
         correctAnswer: answer,
         unit: '%',
@@ -138,32 +128,21 @@ export function generateLateralPuzzle(
   _difficulty: SpaceEntryDifficulty,
   targetLng: number,
 ): MissionPuzzle {
-  // Two variants, picked at random
-  const variant = Math.random() < 0.5 ? 'offset' : 'correction'
+  // Correct answer = 0 (no lateral correction needed for perfect landing)
+  // But the puzzle is framed so the player has to calculate it
+  const offset = randInt(3, 12)
+  const direction = Math.random() < 0.5 ? 'east' : 'west'
+  // "You're X° off course to the east. What correction do you need?"
+  // If off to the east, need negative correction. If west, positive.
+  const answer = direction === 'east' ? -offset : offset
+  const currentLng = targetLng + (direction === 'east' ? offset : -offset)
+  const currentDir = currentLng >= 0 ? 'E' : 'W'
+  const targetDir = targetLng >= 0 ? 'E' : 'W'
 
-  if (variant === 'offset') {
-    // "Current longitude: X°E. Target: Y°E. What correction is needed?"
-    const correction = randInt(-12, 12) || 1 // avoid 0
-    const currentLng = round1(targetLng - correction)
-    const dir = currentLng >= 0 ? 'E' : 'W'
-    const targetDir = targetLng >= 0 ? 'E' : 'W'
-    return {
-      type: 'lateral',
-      question: `Current longitude: ${Math.abs(round1(currentLng))}°${dir}. Target: ${Math.abs(round1(targetLng))}°${targetDir}. What correction is needed?`,
-      visual: '↔️ Target − Current = ?°',
-      correctAnswer: correction,
-      unit: '°',
-    }
-  }
-
-  // correction variant
-  const off = randInt(1, 12)
-  const eastWest = Math.random() < 0.5 ? 'east' : 'west'
-  const answer = eastWest === 'east' ? -off : off
   return {
     type: 'lateral',
-    question: `You're ${off}° off course to the ${eastWest}. What correction do you need?`,
-    visual: `↔️ Off ${eastWest} → correct opposite`,
+    question: `Current position: ${Math.abs(Math.round(currentLng))}°${currentDir}. Target: ${Math.abs(Math.round(targetLng))}°${targetDir}. What correction is needed? (negative = west, positive = east)`,
+    visual: '↔️ Target − Current = ?°',
     correctAnswer: answer,
     unit: '°',
   }
