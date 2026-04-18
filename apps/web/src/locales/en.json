@@ -526,7 +526,11 @@
     "tryAgain": "Try Again",
     "heatShieldAtFailure": "Heat Shield at Failure",
     "angleUsed": "Entry Angle Used",
-    "remaining": "Remaining"
+    "remaining": "Remaining",
+    "hintEasy": "💡 Safe range: 5° - 12°",
+    "hintMedium": "💡 Aim for around 7°",
+    "countdown": "Time Left",
+    "autoFire": "Auto-firing in {{seconds}}s!"
   },
   "mathMaze": {
     "title": "Math Maze",

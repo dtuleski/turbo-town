@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
-import { DIFFICULTY_CONFIGS, MAX_GAME_TIME_SECONDS } from '@/utils/spaceEntryConfig'
+import { DIFFICULTY_CONFIGS } from '@/utils/spaceEntryConfig'
 import type { SpaceEntryDifficulty, DifficultyConfig } from '@/utils/spaceEntryConfig'
 import { calculateTrajectory } from '@/utils/spaceEntryPhysics'
 import type { TrajectoryResult } from '@/utils/spaceEntryPhysics'
@@ -22,6 +22,7 @@ function latLngToGlobeXY(lat: number, lng: number, radius: number): { x: number;
 
 /** Get trajectory arc color based on angle relative to config */
 function getTrajectoryColor(angle: number, config: DifficultyConfig): string {
+  if (!config.showTrajectoryColor) return '#a78bfa' // neutral purple
   const min = config.idealAngleMin - config.tolerance
   const max = config.idealAngleMax + config.tolerance
   if (angle >= config.idealAngleMin && angle <= config.idealAngleMax) return '#22c55e' // green
@@ -42,9 +43,9 @@ export default function SpaceEntryGamePage() {
   const [gameId, setGameId] = useState('')
   const [phase, setPhase] = useState<GamePhase>('loading')
   const [targetZone, setTargetZone] = useState<LandingZone | null>(null)
-  const [entryAngle, setEntryAngle] = useState(8)
+  const [entryAngle, setEntryAngle] = useState(() => Math.round(Math.random() * 900) / 10)
   const [heatShieldIntegrity, setHeatShieldIntegrity] = useState(config.initialHeatShield)
-  const [elapsedTime, setElapsedTime] = useState(0)
+  const [countdown, setCountdown] = useState(config.countdownSeconds)
   const [attempts, setAttempts] = useState(1)
   const [trajectoryResult, setTrajectoryResult] = useState<TrajectoryResult | null>(null)
   const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
@@ -72,16 +73,16 @@ export default function SpaceEntryGamePage() {
     initGame()
   }, [difficulty, difficultyNum, config.initialHeatShield, navigate])
 
-  // Timer
+  // Countdown timer
   useEffect(() => {
     if (phase === 'setup') {
       timerRef.current = setInterval(() => {
-        setElapsedTime(prev => {
-          if (prev >= MAX_GAME_TIME_SECONDS) {
+        setCountdown(prev => {
+          if (prev <= 1) {
             handleInitiateReentry()
-            return prev
+            return 0
           }
-          return prev + 1
+          return prev - 1
         })
       }, 1000)
     }
@@ -127,7 +128,7 @@ export default function SpaceEntryGamePage() {
     try {
       const result = await completeGame({
         gameId,
-        completionTime: Math.max(1, elapsedTime),
+        completionTime: Math.max(1, config.countdownSeconds - countdown),
         attempts,
         correctAnswers: 1,
         totalQuestions: 1,
@@ -143,8 +144,9 @@ export default function SpaceEntryGamePage() {
 
   const handleTryAgain = () => {
     setAttempts(prev => prev + 1)
-    setEntryAngle(8)
+    setEntryAngle(Math.round(Math.random() * 900) / 10)
     setHeatShieldIntegrity(config.initialHeatShield)
+    setCountdown(config.countdownSeconds)
     setTrajectoryResult(null)
     setPhase('setup')
   }
@@ -231,8 +233,8 @@ export default function SpaceEntryGamePage() {
             🚀 {t('spaceEntry.missionControl')}
           </h1>
           <div className="flex items-center gap-4">
-            <div className="bg-white/10 rounded-xl px-4 py-2 text-white font-mono">
-              ⏱️ {formatTime(elapsedTime)}
+            <div className={`bg-white/10 rounded-xl px-4 py-2 font-mono ${countdown <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+              ⏱️ {t('spaceEntry.countdown')}: {formatTime(countdown)}
             </div>
             <div className="bg-white/10 rounded-xl px-4 py-2 text-white">
               🔥 {Math.round(heatShieldIntegrity)}%
@@ -372,6 +374,16 @@ export default function SpaceEntryGamePage() {
                 <span>45°</span>
                 <span>90°</span>
               </div>
+              {config.showAngleHint && config.hintText && (
+                <p className="mt-2 text-sm text-purple-300 bg-purple-500/20 rounded-lg px-3 py-1.5">
+                  {t(config.hintText)}
+                </p>
+              )}
+              {countdown <= 10 && countdown > 0 && phase === 'setup' && (
+                <p className="mt-2 text-sm text-red-400 font-bold animate-pulse">
+                  {t('spaceEntry.autoFire', { seconds: countdown })}
+                </p>
+              )}
             </div>
 
             {/* Atmospheric Density (Medium/Hard) */}

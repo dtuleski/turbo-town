@@ -12,6 +12,10 @@ export interface DifficultyConfig {
   baseDegradationRate: number
   referenceAngle: number
   turbulenceRange: number // 0 for easy/medium
+  countdownSeconds: number // time limit to set angle
+  showAngleHint: boolean // whether to show the safe range hint
+  showTrajectoryColor: boolean // whether trajectory arc shows color feedback
+  hintText: string // i18n key for the hint text
 }
 
 export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> = {
@@ -23,6 +27,10 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 15,
     referenceAngle: 8.5,
     turbulenceRange: 0,
+    countdownSeconds: 60,
+    showAngleHint: true,
+    showTrajectoryColor: true,
+    hintText: 'spaceEntry.hintEasy',
   },
   medium: {
     idealAngleMin: 5.5,
@@ -32,6 +40,10 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 25,
     referenceAngle: 7.25,
     turbulenceRange: 0,
+    countdownSeconds: 30,
+    showAngleHint: true,
+    showTrajectoryColor: false,
+    hintText: 'spaceEntry.hintMedium',
   },
   hard: {
     idealAngleMin: 6,
@@ -41,6 +53,10 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 35,
     referenceAngle: 7,
     turbulenceRange: 0.5,
+    countdownSeconds: 15,
+    showAngleHint: false,
+    showTrajectoryColor: false,
+    hintText: '',
   },
 }
 

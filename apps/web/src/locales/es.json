@@ -526,7 +526,11 @@
     "tryAgain": "Intentar de Nuevo",
     "heatShieldAtFailure": "Escudo Térmico al Fallar",
     "angleUsed": "Ángulo de Entrada Usado",
-    "remaining": "Restante"
+    "remaining": "Restante",
+    "hintEasy": "💡 Rango seguro: 5° - 12°",
+    "hintMedium": "💡 Apunta alrededor de 7°",
+    "countdown": "Tiempo Restante",
+    "autoFire": "¡Disparo automático en {{seconds}}s!"
   },
   "mathMaze": {
     "title": "Laberinto Matemático",
