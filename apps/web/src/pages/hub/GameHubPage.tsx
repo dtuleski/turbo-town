@@ -24,6 +24,7 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'tic-tac-toe': 'Puzzles & Logic',
   'scratch-coding': 'Puzzles & Logic',
   'math-maze': 'Science & Math',
+  'pattern-recall': 'Puzzles & Logic',
 }
 
 const FILTER_CHIPS = [

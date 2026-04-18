@@ -19,6 +19,7 @@ export enum GameType {
   HANGMAN = 'HANGMAN',
   TIC_TAC_TOE = 'TIC_TAC_TOE',
   MATH_MAZE = 'MATH_MAZE',
+  PATTERN_RECALL = 'PATTERN_RECALL',
   OVERALL = 'OVERALL',
 }
 

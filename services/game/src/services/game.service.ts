@@ -123,7 +123,7 @@ export class GameService {
     }
 
     // Validate attempts (only for Memory Match which uses pairs-based logic)
-    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE'].includes(game.themeId)) {
+    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL'].includes(game.themeId)) {
       const attemptsValidation = validateAttempts(input.attempts, game.difficulty);
       if (!attemptsValidation.valid) {
         throw new AuthorizationError(attemptsValidation.reason!);
@@ -132,7 +132,7 @@ export class GameService {
 
     // Calculate accuracy for non-Memory-Match games BEFORE score calculation
     let preAccuracy: number | undefined
-    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE'].includes(game.themeId)) {
+    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL'].includes(game.themeId)) {
       if (game.themeId === 'WORD_PUZZLE') {
         const wordsFound = input.wordsFound || 0;
         const totalWords = input.totalWords || 1;
@@ -273,6 +273,12 @@ export class GameService {
       avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
     } else if (game.themeId === 'MATH_MAZE') {
       gameType = 'MATH_MAZE';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'PATTERN_RECALL') {
+      gameType = 'PATTERN_RECALL';
       const correctAnswers = input.correctAnswers || 0;
       const totalQuestions = input.totalQuestions || 1;
       accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;

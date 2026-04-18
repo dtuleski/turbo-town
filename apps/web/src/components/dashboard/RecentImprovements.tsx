@@ -29,6 +29,7 @@ const gameTypeInfo: Record<GameType, { icon: string; name: string }> = {
   [GameType.HANGMAN]: { icon: '🪢', name: 'Hangman' },
   [GameType.TIC_TAC_TOE]: { icon: '❌', name: 'Tic Tac Toe' },
   [GameType.MATH_MAZE]: { icon: '🧮', name: 'Math Maze' },
+  [GameType.PATTERN_RECALL]: { icon: '🧩', name: 'Pattern Recall' },
   [GameType.OVERALL]: { icon: '🏆', name: 'Overall' },
 }
 

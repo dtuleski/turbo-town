@@ -436,6 +436,69 @@
     "draw": "¡Empate! +100",
     "aiWins": "¡Gana la IA!"
   },
+  "patternRecall": {
+    "setup": {
+      "title": "Recuerda el Patrón",
+      "subtitle": "¡Memoriza y repite el patrón!",
+      "chooseTheme": "Elige un Tema",
+      "chooseDifficulty": "Elige la Dificultad",
+      "startGame": "¡Comenzar! 🧩",
+      "selectBoth": "Selecciona tema y dificultad"
+    },
+    "themes": {
+      "colors": "Colores",
+      "animals": "Animales",
+      "musicalNotes": "Notas Musicales",
+      "emojis": "Emojis"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Medio",
+      "hard": "Difícil",
+      "easyDesc": "Reproducción lenta, 4 elementos",
+      "mediumDesc": "Velocidad media, 5 elementos",
+      "hardDesc": "Reproducción rápida, 6 elementos"
+    },
+    "game": {
+      "round": "Ronda {{current}}",
+      "time": "Tiempo",
+      "watchPattern": "¡Observa el patrón!",
+      "yourTurn": "¡Tu turno!",
+      "correct": "¡Correcto!",
+      "nextRound": "Siguiente ronda...",
+      "gameOver": "¡Fin del Juego!",
+      "roundsCompleted": "Rondas completadas: {{count}}",
+      "totalTime": "Tiempo total: {{time}}",
+      "seeScore": "Ver Puntuación 🏆",
+      "tryAgain": "Intentar de Nuevo"
+    },
+    "items": {
+      "red": "Rojo",
+      "blue": "Azul",
+      "green": "Verde",
+      "yellow": "Amarillo",
+      "purple": "Morado",
+      "orange": "Naranja",
+      "dog": "Perro",
+      "cat": "Gato",
+      "rabbit": "Conejo",
+      "bear": "Oso",
+      "fox": "Zorro",
+      "penguin": "Pingüino",
+      "quarterNote": "Negra",
+      "eighthNote": "Corchea",
+      "trumpet": "Trompeta",
+      "guitar": "Guitarra",
+      "drum": "Tambor",
+      "piano": "Piano",
+      "smile": "Sonrisa",
+      "heart": "Corazón",
+      "star": "Estrella",
+      "fire": "Fuego",
+      "rainbow": "Arcoíris",
+      "rocket": "Cohete"
+    }
+  },
   "mathMaze": {
     "title": "Laberinto Matemático",
     "subtitle": "¡Resuelve ecuaciones para encontrar tu camino!",

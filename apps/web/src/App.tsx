@@ -48,6 +48,8 @@ import ScratchCodingSetupPage from './pages/scratch-coding/ScratchCodingSetupPag
 import ScratchCodingGamePage from './pages/scratch-coding/ScratchCodingGamePage'
 import MathMazeSetupPage from './pages/math-maze/MathMazeSetupPage'
 import MathMazeGamePage from './pages/math-maze/MathMazeGamePage'
+import PatternRecallSetupPage from './pages/pattern-recall/PatternRecallSetupPage'
+import PatternRecallGamePage from './pages/pattern-recall/PatternRecallGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -117,6 +119,8 @@ function App() {
           <Route path={ROUTES.SCRATCH_CODING_GAME} element={<ScratchCodingGamePage />} />
           <Route path={ROUTES.MATH_MAZE_SETUP} element={<MathMazeSetupPage />} />
           <Route path={ROUTES.MATH_MAZE_GAME} element={<MathMazeGamePage />} />
+          <Route path={ROUTES.PATTERN_RECALL_SETUP} element={<PatternRecallSetupPage />} />
+          <Route path={ROUTES.PATTERN_RECALL_GAME} element={<PatternRecallGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />

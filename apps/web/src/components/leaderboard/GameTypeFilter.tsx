@@ -23,6 +23,7 @@ const gameTypes = [
   { value: GameType.HANGMAN, label: 'Hangman', icon: '🪢' },
   { value: GameType.TIC_TAC_TOE, label: 'Tic Tac Toe', icon: '❌' },
   { value: GameType.MATH_MAZE, label: 'Math Maze', icon: '🧮' },
+  { value: GameType.PATTERN_RECALL, label: 'Pattern Recall', icon: '🧩' },
 ]
 
 const GameTypeFilter = ({ selected, onChange }: GameTypeFilterProps) => {

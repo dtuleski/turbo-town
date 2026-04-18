@@ -436,6 +436,69 @@
     "draw": "Draw! +100",
     "aiWins": "AI Wins!"
   },
+  "patternRecall": {
+    "setup": {
+      "title": "Pattern Recall",
+      "subtitle": "Memorize and repeat the pattern!",
+      "chooseTheme": "Choose a Theme",
+      "chooseDifficulty": "Choose Difficulty",
+      "startGame": "Start Game! 🧩",
+      "selectBoth": "Select theme & difficulty"
+    },
+    "themes": {
+      "colors": "Colors",
+      "animals": "Animals",
+      "musicalNotes": "Musical Notes",
+      "emojis": "Emojis"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "easyDesc": "Slower playback, 4 items",
+      "mediumDesc": "Medium speed, 5 items",
+      "hardDesc": "Fast playback, 6 items"
+    },
+    "game": {
+      "round": "Round {{current}}",
+      "time": "Time",
+      "watchPattern": "Watch the pattern!",
+      "yourTurn": "Your turn!",
+      "correct": "Correct!",
+      "nextRound": "Next round...",
+      "gameOver": "Game Over!",
+      "roundsCompleted": "Rounds completed: {{count}}",
+      "totalTime": "Total time: {{time}}",
+      "seeScore": "See Score 🏆",
+      "tryAgain": "Try Again"
+    },
+    "items": {
+      "red": "Red",
+      "blue": "Blue",
+      "green": "Green",
+      "yellow": "Yellow",
+      "purple": "Purple",
+      "orange": "Orange",
+      "dog": "Dog",
+      "cat": "Cat",
+      "rabbit": "Rabbit",
+      "bear": "Bear",
+      "fox": "Fox",
+      "penguin": "Penguin",
+      "quarterNote": "Quarter Note",
+      "eighthNote": "Eighth Note",
+      "trumpet": "Trumpet",
+      "guitar": "Guitar",
+      "drum": "Drum",
+      "piano": "Piano",
+      "smile": "Smile",
+      "heart": "Heart",
+      "star": "Star",
+      "fire": "Fire",
+      "rainbow": "Rainbow",
+      "rocket": "Rocket"
+    }
+  },
   "mathMaze": {
     "title": "Math Maze",
     "subtitle": "Solve equations to find your way!",

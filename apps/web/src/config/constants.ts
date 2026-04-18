@@ -43,6 +43,8 @@ export const ROUTES = {
   SCRATCH_CODING_GAME: '/scratch-coding/game',
   MATH_MAZE_SETUP: '/math-maze/setup',
   MATH_MAZE_GAME: '/math-maze/game',
+  PATTERN_RECALL_SETUP: '/pattern-recall/setup',
+  PATTERN_RECALL_GAME: '/pattern-recall/game',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',

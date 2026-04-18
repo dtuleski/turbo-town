@@ -436,6 +436,69 @@
     "draw": "Empate! +100",
     "aiWins": "IA Ganhou!"
   },
+  "patternRecall": {
+    "setup": {
+      "title": "Lembre o Padrão",
+      "subtitle": "Memorize e repita o padrão!",
+      "chooseTheme": "Escolha um Tema",
+      "chooseDifficulty": "Escolha a Dificuldade",
+      "startGame": "Começar! 🧩",
+      "selectBoth": "Selecione tema e dificuldade"
+    },
+    "themes": {
+      "colors": "Cores",
+      "animals": "Animais",
+      "musicalNotes": "Notas Musicais",
+      "emojis": "Emojis"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Médio",
+      "hard": "Difícil",
+      "easyDesc": "Reprodução lenta, 4 itens",
+      "mediumDesc": "Velocidade média, 5 itens",
+      "hardDesc": "Reprodução rápida, 6 itens"
+    },
+    "game": {
+      "round": "Rodada {{current}}",
+      "time": "Tempo",
+      "watchPattern": "Observe o padrão!",
+      "yourTurn": "Sua vez!",
+      "correct": "Correto!",
+      "nextRound": "Próxima rodada...",
+      "gameOver": "Fim de Jogo!",
+      "roundsCompleted": "Rodadas completadas: {{count}}",
+      "totalTime": "Tempo total: {{time}}",
+      "seeScore": "Ver Pontuação 🏆",
+      "tryAgain": "Tentar Novamente"
+    },
+    "items": {
+      "red": "Vermelho",
+      "blue": "Azul",
+      "green": "Verde",
+      "yellow": "Amarelo",
+      "purple": "Roxo",
+      "orange": "Laranja",
+      "dog": "Cachorro",
+      "cat": "Gato",
+      "rabbit": "Coelho",
+      "bear": "Urso",
+      "fox": "Raposa",
+      "penguin": "Pinguim",
+      "quarterNote": "Semínima",
+      "eighthNote": "Colcheia",
+      "trumpet": "Trompete",
+      "guitar": "Violão",
+      "drum": "Tambor",
+      "piano": "Piano",
+      "smile": "Sorriso",
+      "heart": "Coração",
+      "star": "Estrela",
+      "fire": "Fogo",
+      "rainbow": "Arco-íris",
+      "rocket": "Foguete"
+    }
+  },
   "mathMaze": {
     "title": "Labirinto Matemático",
     "subtitle": "Resolva equações para encontrar o caminho!",

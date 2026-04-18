@@ -46,7 +46,7 @@ const ALL_GAMES = [
   'MEMORY_MATCH', 'MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING',
   'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT',
   'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'HANGMAN', 'TIC_TAC_TOE',
-  'MATH_MAZE',
+  'MATH_MAZE', 'PATTERN_RECALL',
 ];
 
 const GAME_NAMES: Record<string, string> = {
@@ -57,7 +57,7 @@ const GAME_NAMES: Record<string, string> = {
   CODE_A_BOT: '🤖 Code-a-Bot', GEO_QUIZ: '🌍 Geo Quiz',
   HISTORY_QUIZ: '📜 History Quiz', CIVICS_QUIZ: '🇺🇸 Civics Quiz',
   HANGMAN: '🪢 Hangman', TIC_TAC_TOE: '❌ Tic Tac Toe',
-  MATH_MAZE: '🧮 Math Maze',
+  MATH_MAZE: '🧮 Math Maze', PATTERN_RECALL: '🧩 Pattern Recall',
 };
 
 interface EmailPrefs { userId: string; email: string; username: string; dailyDigest: boolean }
