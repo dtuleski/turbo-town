@@ -31,9 +31,8 @@ function randInt(min: number, max: number): number {
 
 export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPuzzle {
   // Import the reference angle so the correct answer = perfect landing
-  const refAngles: Record<SpaceEntryDifficulty, number> = { easy: 8.5, medium: 7.25, hard: 7 }
-  // Use integer answers for kids — round the reference angle
-  const idealAnswer = Math.round(refAngles[difficulty])
+  const refAngles: Record<SpaceEntryDifficulty, number> = { easy: 8, medium: 7, hard: 7 }
+  const idealAnswer = refAngles[difficulty]
 
   switch (difficulty) {
     case 'easy': {
@@ -121,24 +120,30 @@ export function generateThrusterPuzzle(difficulty: SpaceEntryDifficulty): Missio
 
 export function generateLateralPuzzle(
   _difficulty: SpaceEntryDifficulty,
-  targetLng: number,
+  _targetLng: number,
 ): MissionPuzzle {
-  // Correct answer = 0 (no lateral correction needed for perfect landing)
-  // But the puzzle is framed so the player has to calculate it
-  const offset = randInt(3, 12)
-  const direction = Math.random() < 0.5 ? 'east' : 'west'
-  // "You're X° off course to the east. What correction do you need?"
-  // If off to the east, need negative correction. If west, positive.
-  const answer = direction === 'east' ? -offset : offset
-  const currentLng = targetLng + (direction === 'east' ? offset : -offset)
-  const currentDir = currentLng >= 0 ? 'E' : 'W'
-  const targetDir = targetLng >= 0 ? 'E' : 'W'
+  // The correct answer for a perfect landing is 0° lateral correction.
+  // The puzzle is framed as a math problem that equals 0.
+  const a = randInt(3, 15)
+  const variant = Math.random() < 0.5 ? 'subtract' : 'add'
 
+  if (variant === 'subtract') {
+    // "Wind pushes you X° east, then X° west. Net correction needed?"
+    return {
+      type: 'lateral',
+      question: `Wind pushes your spacecraft ${a}° east, then ${a}° west. What is the net lateral correction needed?`,
+      visual: '↔️ +X° then −X° = ?°',
+      correctAnswer: 0,
+      unit: '°',
+    }
+  }
+
+  // "You're on course. East drift: +X°. West drift: -X°. Total correction?"
   return {
     type: 'lateral',
-    question: `Current position: ${Math.abs(Math.round(currentLng))}°${currentDir}. Target: ${Math.abs(Math.round(targetLng))}°${targetDir}. What correction is needed? (negative = west, positive = east)`,
-    visual: '↔️ Target − Current = ?°',
-    correctAnswer: answer,
+    question: `East atmospheric drift: +${a}°. West atmospheric drift: −${a}°. What total lateral correction do you need?`,
+    visual: '↔️ (+X) + (−X) = ?°',
+    correctAnswer: 0,
     unit: '°',
   }
 }
