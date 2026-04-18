@@ -21,6 +21,9 @@ export interface DifficultyConfig {
   optimalThrusterPower: number // the ideal thruster power for this difficulty (50-70)
   thrusterTolerance: number // how far from optimal before accuracy drops
   tutorialKey: string // i18n key for tutorial text
+  latSensitivity: number // how much 1° angle moves landing lat
+  lngSensitivity: number // how much 1° lateral moves landing lng
+  distancePenalty: number // how fast accuracy drops with distance
 }
 
 export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> = {
@@ -41,6 +44,9 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     optimalThrusterPower: 60,
     thrusterTolerance: 30,
     tutorialKey: 'spaceEntry.tutorialEasy',
+    latSensitivity: 2,
+    lngSensitivity: 0,
+    distancePenalty: 0.5,
   },
   medium: {
     idealAngleMin: 5.5,
@@ -59,6 +65,9 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     optimalThrusterPower: 65,
     thrusterTolerance: 15,
     tutorialKey: 'spaceEntry.tutorialMedium',
+    latSensitivity: 4,
+    lngSensitivity: 0,
+    distancePenalty: 1,
   },
   hard: {
     idealAngleMin: 6,
@@ -77,6 +86,9 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     optimalThrusterPower: 70,
     thrusterTolerance: 10,
     tutorialKey: 'spaceEntry.tutorialHard',
+    latSensitivity: 6,
+    lngSensitivity: 3,
+    distancePenalty: 2,
   },
 }
 

@@ -536,7 +536,10 @@
     "optimalThruster": "Óptimo: ~{{value}}%",
     "tutorialEasy": "🎯 Ajusta el ángulo de entrada para aterrizar de forma segura. ¡Observa el color de la trayectoria!",
     "tutorialMedium": "🎯 Configura el ángulo de entrada Y la potencia del propulsor. ¡Más potencia = aterrizaje más rápido pero más daño al escudo!",
-    "tutorialHard": "🎯 Domina los 3 controles: ángulo, potencia del propulsor y corrección lateral. ¡Sin pistas — confía en tus instrumentos!"
+    "tutorialHard": "🎯 Domina los 3 controles: ángulo, potencia del propulsor y corrección lateral. ¡Sin pistas — confía en tus instrumentos!",
+    "predictedLanding": "Aterrizaje Previsto",
+    "accuracy": "Precisión",
+    "distanceFromTarget": "Distancia"
   },
   "mathMaze": {
     "title": "Laberinto Matemático",

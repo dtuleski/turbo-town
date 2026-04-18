@@ -536,7 +536,10 @@
     "optimalThruster": "Ótimo: ~{{value}}%",
     "tutorialEasy": "🎯 Ajuste o ângulo de entrada para pousar com segurança. Observe a cor da trajetória!",
     "tutorialMedium": "🎯 Configure o ângulo de entrada E a potência do propulsor. Mais potência = pouso mais rápido mas mais dano ao escudo!",
-    "tutorialHard": "🎯 Domine os 3 controles: ângulo, potência do propulsor e correção lateral. Sem dicas — confie nos seus instrumentos!"
+    "tutorialHard": "🎯 Domine os 3 controles: ângulo, potência do propulsor e correção lateral. Sem dicas — confie nos seus instrumentos!",
+    "predictedLanding": "Pouso Previsto",
+    "accuracy": "Precisão",
+    "distanceFromTarget": "Distância"
   },
   "mathMaze": {
     "title": "Labirinto Matemático",

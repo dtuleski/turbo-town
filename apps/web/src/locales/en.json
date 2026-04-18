@@ -536,7 +536,10 @@
     "optimalThruster": "Optimal: ~{{value}}%",
     "tutorialEasy": "🎯 Adjust the entry angle to land safely. Watch the trajectory color!",
     "tutorialMedium": "🎯 Set your entry angle AND thruster power. Higher thrust = faster landing but more heat shield damage!",
-    "tutorialHard": "🎯 Master all 3 controls: angle, thruster power, and lateral correction. No hints — trust your instruments!"
+    "tutorialHard": "🎯 Master all 3 controls: angle, thruster power, and lateral correction. No hints — trust your instruments!",
+    "predictedLanding": "Predicted Landing",
+    "accuracy": "Accuracy",
+    "distanceFromTarget": "Distance"
   },
   "mathMaze": {
     "title": "Math Maze",

@@ -1,129 +1,113 @@
 /**
- * Space Entry Game — Pure physics functions for trajectory calculation
- * No side effects — all randomness is injected via parameters.
+ * Space Entry Game — Spatial Precision Physics
+ *
+ * New model: the player adjusts controls to overlap a predicted landing spot
+ * (green dot) with a target (red dot) on a globe, then fires.
+ *
+ * Controls → landing position:
+ *   Entry Angle  → latitude offset
+ *   Thruster Power → distance multiplier (medium/hard)
+ *   Lateral Correction → longitude offset (hard only)
  */
 
 import type { DifficultyConfig } from './spaceEntryConfig'
 
 export type Outcome = 'SUCCESSFUL_LANDING' | 'ORBITAL_BURN_UP' | 'SKIP_OFF'
 
-export interface TrajectoryResult {
-  outcome: Outcome
-  landingZoneAccuracy: number // 0–100
+export interface LandingPrediction {
+  predictedLat: number // -90 to 90
+  predictedLng: number // -180 to 180
+  distanceKm: number // great-circle distance from target
+  accuracy: number // 0–100 (100 = perfect landing)
   heatShieldRemaining: number // 0–100
-  finalAngle: number // effective angle after turbulence
-  thrusterAccuracy: number // 0–100
-  lateralAccuracy: number // 0–100
+  outcome: Outcome
 }
 
-/**
- * Determine outcome from effective angle and difficulty thresholds.
- * - Below idealAngleMin - tolerance → SKIP_OFF
- * - Above idealAngleMax + tolerance → ORBITAL_BURN_UP
- * - Otherwise → SUCCESSFUL_LANDING
- */
-export function determineOutcome(
-  effectiveAngle: number,
-  config: DifficultyConfig
-): Outcome {
-  if (effectiveAngle < config.idealAngleMin - config.tolerance) {
-    return 'SKIP_OFF'
-  }
-  if (effectiveAngle > config.idealAngleMax + config.tolerance) {
-    return 'ORBITAL_BURN_UP'
-  }
-  return 'SUCCESSFUL_LANDING'
+/* ------------------------------------------------------------------ */
+/*  Haversine distance (km) between two lat/lng pairs                 */
+/* ------------------------------------------------------------------ */
+const EARTH_RADIUS_KM = 6371
+
+export function haversineDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLng = toRad(lng2 - lng1)
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2
+  return EARTH_RADIUS_KM * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-/**
- * Calculate heat shield degradation.
- * Formula: baseDegradationRate × (entryAngle / referenceAngle) × atmosphericDensity
- * Returns a non-negative degradation amount.
- */
+/* ------------------------------------------------------------------ */
+/*  Heat-shield degradation (steeper angle = more heat)               */
+/* ------------------------------------------------------------------ */
 export function calculateHeatShieldDegradation(
   entryAngle: number,
-  atmosphericDensity: number,
-  config: DifficultyConfig
+  config: DifficultyConfig,
 ): number {
   const degradation =
-    config.baseDegradationRate *
-    (entryAngle / config.referenceAngle) *
-    atmosphericDensity
+    config.baseDegradationRate * (entryAngle / config.referenceAngle)
   return Math.max(0, degradation)
 }
 
-/**
- * Calculate landing accuracy based on angular deviation from ideal.
- * Zero deviation → 100, maximum tolerated deviation → 0.
- */
-export function calculateLandingAccuracy(
+/* ------------------------------------------------------------------ */
+/*  Core prediction — pure function                                   */
+/* ------------------------------------------------------------------ */
+export function predictLanding(
+  targetLat: number,
+  targetLng: number,
   entryAngle: number,
-  idealAngle: number,
-  tolerance: number
-): number {
-  const deviation = Math.abs(entryAngle - idealAngle)
-  if (tolerance <= 0) return deviation === 0 ? 100 : 0
-  const accuracy = Math.max(0, 100 * (1 - deviation / tolerance))
-  return accuracy
-}
-
-/**
- * Core trajectory calculator — pure function.
- * Applies turbulence offset, determines outcome, computes degradation,
- * checks shield depletion override, and returns TrajectoryResult.
- */
-export function calculateTrajectory(
-  entryAngle: number,
-  atmosphericDensity: number,
+  thrusterPower: number,
+  lateralCorrection: number,
   config: DifficultyConfig,
   turbulenceOffset: number = 0,
-  thrusterPower: number = 60,
-  lateralCorrection: number = 0
-): TrajectoryResult {
-  // Apply turbulence to get effective angle
+): LandingPrediction {
+  // --- latitude offset from entry angle ---
   const effectiveAngle = entryAngle + turbulenceOffset
+  let latOffset = (effectiveAngle - config.referenceAngle) * config.latSensitivity
 
-  // Determine base outcome
-  let outcome = determineOutcome(effectiveAngle, config)
+  // --- longitude offset from lateral correction ---
+  let lngOffset = lateralCorrection * config.lngSensitivity
 
-  // Compute heat shield degradation (thruster power adds extra degradation)
-  const degradation = calculateHeatShieldDegradation(
-    effectiveAngle,
-    atmosphericDensity,
-    config
-  ) + thrusterPower * 0.1
-  const heatShieldRemaining = Math.max(0, config.initialHeatShield - degradation)
+  // --- thruster distance multiplier ---
+  const distanceMultiplier =
+    1 + (thrusterPower - config.optimalThrusterPower) * 0.02
+  latOffset *= distanceMultiplier
+  lngOffset *= distanceMultiplier
 
-  // Heat shield depletion overrides outcome to burn-up
+  // --- predicted position (clamped to valid ranges) ---
+  const predictedLat = Math.max(-90, Math.min(90, targetLat + latOffset))
+  const predictedLng = Math.max(-180, Math.min(180, targetLng + lngOffset))
+
+  // --- distance & accuracy ---
+  const distanceKm = haversineDistance(predictedLat, predictedLng, targetLat, targetLng)
+  const accuracy = Math.max(0, Math.min(100, 100 - distanceKm * config.distancePenalty))
+
+  // --- heat shield ---
+  const degradation = calculateHeatShieldDegradation(effectiveAngle, config)
+  const heatShieldRemaining = Math.max(0, Math.min(100, config.initialHeatShield - degradation))
+
+  // --- outcome ---
+  let outcome: Outcome
   if (heatShieldRemaining <= 0) {
     outcome = 'ORBITAL_BURN_UP'
+  } else if (accuracy <= 20) {
+    outcome = 'SKIP_OFF'
+  } else {
+    outcome = 'SUCCESSFUL_LANDING'
   }
 
-  // Compute landing accuracy (use midpoint of ideal range as the ideal angle)
-  const idealAngle = (config.idealAngleMin + config.idealAngleMax) / 2
-  // Use the full half-range + tolerance as the tolerance for accuracy calculation
-  const accuracyTolerance = (config.idealAngleMax - config.idealAngleMin) / 2 + config.tolerance
-  const baseAccuracy = calculateLandingAccuracy(
-    effectiveAngle,
-    idealAngle,
-    accuracyTolerance
-  )
-
-  // Thruster accuracy penalty: being far from optimal reduces accuracy
-  const thrusterAccuracy = Math.max(0, 100 - Math.abs(thrusterPower - config.optimalThrusterPower) / config.thrusterTolerance * 50)
-
-  // Lateral penalty: any lateral offset reduces accuracy
-  const lateralAccuracy = Math.max(0, 100 - Math.abs(lateralCorrection) * 5)
-
-  // Final accuracy = min(baseAccuracy, thrusterAccuracy) * (lateralAccuracy / 100)
-  const landingZoneAccuracy = Math.min(baseAccuracy, thrusterAccuracy) * (lateralAccuracy / 100)
-
   return {
+    predictedLat,
+    predictedLng,
+    distanceKm,
+    accuracy,
+    heatShieldRemaining,
     outcome,
-    landingZoneAccuracy: Math.min(100, Math.max(0, landingZoneAccuracy)),
-    heatShieldRemaining: Math.min(100, Math.max(0, heatShieldRemaining)),
-    finalAngle: effectiveAngle,
-    thrusterAccuracy: Math.min(100, Math.max(0, thrusterAccuracy)),
-    lateralAccuracy: Math.min(100, Math.max(0, lateralAccuracy)),
   }
 }
