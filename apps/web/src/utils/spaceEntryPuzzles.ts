@@ -25,11 +25,6 @@ function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-/** Round to one decimal place */
-function round1(n: number): number {
-  return Math.round(n * 10) / 10
-}
-
 /* ------------------------------------------------------------------ */
 /*  Angle Puzzles                                                      */
 /* ------------------------------------------------------------------ */
