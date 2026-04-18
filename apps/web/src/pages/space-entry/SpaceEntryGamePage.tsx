@@ -51,6 +51,8 @@ export default function SpaceEntryGamePage() {
   const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
   const [animationClass, setAnimationClass] = useState('')
+  const [thrusterPower, setThrusterPower] = useState(50)
+  const [lateralCorrection, setLateralCorrection] = useState(0)
 
   // Initialize game on mount
   useEffect(() => {
@@ -103,7 +105,9 @@ export default function SpaceEntryGamePage() {
       entryAngle,
       targetZone.atmosphericDensity,
       config,
-      turbulenceOffset
+      turbulenceOffset,
+      thrusterPower,
+      lateralCorrection
     )
 
     setTrajectoryResult(result)
@@ -120,7 +124,7 @@ export default function SpaceEntryGamePage() {
       setPhase('results')
       setAnimationClass('')
     }, 4000)
-  }, [phase, targetZone, entryAngle, config])
+  }, [phase, targetZone, entryAngle, config, thrusterPower, lateralCorrection])
 
   const handleSeeScore = async () => {
     if (!trajectoryResult || !gameId) return
@@ -148,6 +152,8 @@ export default function SpaceEntryGamePage() {
     setHeatShieldIntegrity(config.initialHeatShield)
     setCountdown(config.countdownSeconds)
     setTrajectoryResult(null)
+    setThrusterPower(50)
+    setLateralCorrection(0)
     setPhase('setup')
   }
 
@@ -335,6 +341,11 @@ export default function SpaceEntryGamePage() {
 
           {/* Right: Instrument Panel */}
           <div className="flex-1 space-y-4">
+            {/* Tutorial Text */}
+            <div className="bg-indigo-500/20 backdrop-blur-sm rounded-2xl p-4 border border-indigo-400/30">
+              <p className="text-sm text-indigo-200">{t(config.tutorialKey)}</p>
+            </div>
+
             {/* Target Info */}
             {targetZone && (
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
@@ -385,6 +396,67 @@ export default function SpaceEntryGamePage() {
                 </p>
               )}
             </div>
+
+            {/* Thruster Power Slider */}
+            {config.showThrusterPower && (
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                <label htmlFor="thruster-power" className="text-lg font-bold text-white mb-2 block">
+                  🔥 {t('spaceEntry.thrusterPower')}: <span className="text-orange-300">{thrusterPower}%</span>
+                </label>
+                <input
+                  id="thruster-power"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={thrusterPower}
+                  onChange={(e) => setThrusterPower(parseInt(e.target.value))}
+                  disabled={phase !== 'setup'}
+                  className="w-full h-3 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  aria-label={t('spaceEntry.thrusterPower')}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={thrusterPower}
+                />
+                <div className="flex justify-between text-xs text-purple-400 mt-1">
+                  <span>0%</span>
+                  <span>50%</span>
+                  <span>100%</span>
+                </div>
+                <p className="mt-2 text-xs text-purple-300">
+                  {t('spaceEntry.optimalThruster', { value: config.optimalThrusterPower })}
+                </p>
+              </div>
+            )}
+
+            {/* Lateral Correction Slider */}
+            {config.showLateralCorrection && (
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                <label htmlFor="lateral-correction" className="text-lg font-bold text-white mb-2 block">
+                  ↔️ {t('spaceEntry.lateralCorrection')}: <span className="text-cyan-300">{lateralCorrection.toFixed(1)}°</span>
+                </label>
+                <input
+                  id="lateral-correction"
+                  type="range"
+                  min="-15"
+                  max="15"
+                  step="0.5"
+                  value={lateralCorrection}
+                  onChange={(e) => setLateralCorrection(parseFloat(e.target.value))}
+                  disabled={phase !== 'setup'}
+                  className="w-full h-3 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                  aria-label={t('spaceEntry.lateralCorrection')}
+                  aria-valuemin={-15}
+                  aria-valuemax={15}
+                  aria-valuenow={lateralCorrection}
+                />
+                <div className="flex justify-between text-xs text-purple-400 mt-1">
+                  <span>-15°</span>
+                  <span>0°</span>
+                  <span>+15°</span>
+                </div>
+              </div>
+            )}
 
             {/* Atmospheric Density (Medium/Hard) */}
             {(difficulty === 'medium' || difficulty === 'hard') && targetZone && (
@@ -458,6 +530,18 @@ export default function SpaceEntryGamePage() {
                       <span>🛡️ {t('spaceEntry.heatShield')} {t('spaceEntry.remaining')}</span>
                       <span className="font-bold">{trajectoryResult.heatShieldRemaining.toFixed(1)}%</span>
                     </div>
+                    {config.showThrusterPower && (
+                      <div className="flex justify-between text-white">
+                        <span>🔥 {t('spaceEntry.thrusterPower')}</span>
+                        <span className="font-bold">{trajectoryResult.thrusterAccuracy.toFixed(1)}%</span>
+                      </div>
+                    )}
+                    {config.showLateralCorrection && (
+                      <div className="flex justify-between text-white">
+                        <span>↔️ {t('spaceEntry.lateralCorrection')}</span>
+                        <span className="font-bold">{trajectoryResult.lateralAccuracy.toFixed(1)}%</span>
+                      </div>
+                    )}
                   </div>
                   <div className="bg-white/10 rounded-xl p-4 mb-6">
                     <h3 className="text-sm font-bold text-purple-300 mb-1">💡 {t('spaceEntry.geographyFact')}</h3>

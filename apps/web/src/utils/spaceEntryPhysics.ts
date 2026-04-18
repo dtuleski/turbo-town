@@ -12,6 +12,8 @@ export interface TrajectoryResult {
   landingZoneAccuracy: number // 0–100
   heatShieldRemaining: number // 0–100
   finalAngle: number // effective angle after turbulence
+  thrusterAccuracy: number // 0–100
+  lateralAccuracy: number // 0–100
 }
 
 /**
@@ -74,7 +76,9 @@ export function calculateTrajectory(
   entryAngle: number,
   atmosphericDensity: number,
   config: DifficultyConfig,
-  turbulenceOffset: number = 0
+  turbulenceOffset: number = 0,
+  thrusterPower: number = 60,
+  lateralCorrection: number = 0
 ): TrajectoryResult {
   // Apply turbulence to get effective angle
   const effectiveAngle = entryAngle + turbulenceOffset
@@ -82,12 +86,12 @@ export function calculateTrajectory(
   // Determine base outcome
   let outcome = determineOutcome(effectiveAngle, config)
 
-  // Compute heat shield degradation
+  // Compute heat shield degradation (thruster power adds extra degradation)
   const degradation = calculateHeatShieldDegradation(
     effectiveAngle,
     atmosphericDensity,
     config
-  )
+  ) + thrusterPower * 0.1
   const heatShieldRemaining = Math.max(0, config.initialHeatShield - degradation)
 
   // Heat shield depletion overrides outcome to burn-up
@@ -99,16 +103,27 @@ export function calculateTrajectory(
   const idealAngle = (config.idealAngleMin + config.idealAngleMax) / 2
   // Use the full half-range + tolerance as the tolerance for accuracy calculation
   const accuracyTolerance = (config.idealAngleMax - config.idealAngleMin) / 2 + config.tolerance
-  const landingZoneAccuracy = calculateLandingAccuracy(
+  const baseAccuracy = calculateLandingAccuracy(
     effectiveAngle,
     idealAngle,
     accuracyTolerance
   )
+
+  // Thruster accuracy penalty: being far from optimal reduces accuracy
+  const thrusterAccuracy = Math.max(0, 100 - Math.abs(thrusterPower - config.optimalThrusterPower) / config.thrusterTolerance * 50)
+
+  // Lateral penalty: any lateral offset reduces accuracy
+  const lateralAccuracy = Math.max(0, 100 - Math.abs(lateralCorrection) * 5)
+
+  // Final accuracy = min(baseAccuracy, thrusterAccuracy) * (lateralAccuracy / 100)
+  const landingZoneAccuracy = Math.min(baseAccuracy, thrusterAccuracy) * (lateralAccuracy / 100)
 
   return {
     outcome,
     landingZoneAccuracy: Math.min(100, Math.max(0, landingZoneAccuracy)),
     heatShieldRemaining: Math.min(100, Math.max(0, heatShieldRemaining)),
     finalAngle: effectiveAngle,
+    thrusterAccuracy: Math.min(100, Math.max(0, thrusterAccuracy)),
+    lateralAccuracy: Math.min(100, Math.max(0, lateralAccuracy)),
   }
 }

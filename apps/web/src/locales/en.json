@@ -530,7 +530,13 @@
     "hintEasy": "💡 Safe range: 5° - 12°",
     "hintMedium": "💡 Aim for around 7°",
     "countdown": "Time Left",
-    "autoFire": "Auto-firing in {{seconds}}s!"
+    "autoFire": "Auto-firing in {{seconds}}s!",
+    "thrusterPower": "Thruster Power",
+    "lateralCorrection": "Lateral Correction",
+    "optimalThruster": "Optimal: ~{{value}}%",
+    "tutorialEasy": "🎯 Adjust the entry angle to land safely. Watch the trajectory color!",
+    "tutorialMedium": "🎯 Set your entry angle AND thruster power. Higher thrust = faster landing but more heat shield damage!",
+    "tutorialHard": "🎯 Master all 3 controls: angle, thruster power, and lateral correction. No hints — trust your instruments!"
   },
   "mathMaze": {
     "title": "Math Maze",

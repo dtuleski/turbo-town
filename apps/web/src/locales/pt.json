@@ -530,7 +530,13 @@
     "hintEasy": "💡 Faixa segura: 5° - 12°",
     "hintMedium": "💡 Mire em torno de 7°",
     "countdown": "Tempo Restante",
-    "autoFire": "Disparo automático em {{seconds}}s!"
+    "autoFire": "Disparo automático em {{seconds}}s!",
+    "thrusterPower": "Potência do Propulsor",
+    "lateralCorrection": "Correção Lateral",
+    "optimalThruster": "Ótimo: ~{{value}}%",
+    "tutorialEasy": "🎯 Ajuste o ângulo de entrada para pousar com segurança. Observe a cor da trajetória!",
+    "tutorialMedium": "🎯 Configure o ângulo de entrada E a potência do propulsor. Mais potência = pouso mais rápido mas mais dano ao escudo!",
+    "tutorialHard": "🎯 Domine os 3 controles: ângulo, potência do propulsor e correção lateral. Sem dicas — confie nos seus instrumentos!"
   },
   "mathMaze": {
     "title": "Labirinto Matemático",

@@ -16,6 +16,11 @@ export interface DifficultyConfig {
   showAngleHint: boolean // whether to show the safe range hint
   showTrajectoryColor: boolean // whether trajectory arc shows color feedback
   hintText: string // i18n key for the hint text
+  showThrusterPower: boolean // whether thruster power slider is shown
+  showLateralCorrection: boolean // whether lateral correction slider is shown
+  optimalThrusterPower: number // the ideal thruster power for this difficulty (50-70)
+  thrusterTolerance: number // how far from optimal before accuracy drops
+  tutorialKey: string // i18n key for tutorial text
 }
 
 export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> = {
@@ -31,6 +36,11 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     showAngleHint: true,
     showTrajectoryColor: true,
     hintText: 'spaceEntry.hintEasy',
+    showThrusterPower: false,
+    showLateralCorrection: false,
+    optimalThrusterPower: 60,
+    thrusterTolerance: 30,
+    tutorialKey: 'spaceEntry.tutorialEasy',
   },
   medium: {
     idealAngleMin: 5.5,
@@ -44,6 +54,11 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     showAngleHint: true,
     showTrajectoryColor: false,
     hintText: 'spaceEntry.hintMedium',
+    showThrusterPower: true,
+    showLateralCorrection: false,
+    optimalThrusterPower: 65,
+    thrusterTolerance: 15,
+    tutorialKey: 'spaceEntry.tutorialMedium',
   },
   hard: {
     idealAngleMin: 6,
@@ -57,6 +72,11 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     showAngleHint: false,
     showTrajectoryColor: false,
     hintText: '',
+    showThrusterPower: true,
+    showLateralCorrection: true,
+    optimalThrusterPower: 70,
+    thrusterTolerance: 10,
+    tutorialKey: 'spaceEntry.tutorialHard',
   },
 }
 
