@@ -77,7 +77,7 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 35,
     referenceAngle: 7,
     turbulenceRange: 0.5,
-    countdownSeconds: 15,
+    countdownSeconds: 20,
     showAngleHint: false,
     showTrajectoryColor: false,
     hintText: '',
