@@ -10,6 +10,12 @@ import { predictLanding } from '@/utils/spaceEntryPhysics'
 import type { LandingPrediction } from '@/utils/spaceEntryPhysics'
 import { getRandomLandingZone } from '@/utils/spaceEntryLandingZones'
 import type { LandingZone } from '@/utils/spaceEntryLandingZones'
+import {
+  generateAnglePuzzle,
+  generateThrusterPuzzle,
+  generateLateralPuzzle,
+} from '@/utils/spaceEntryPuzzles'
+import type { MissionPuzzle } from '@/utils/spaceEntryPuzzles'
 
 type GamePhase = 'loading' | 'setup' | 'reentry' | 'results' | 'submitting' | 'completed'
 
@@ -26,9 +32,9 @@ function latLngToGlobeXY(
 
 /** Accuracy-based colour for the predicted-landing dot */
 function accuracyColor(accuracy: number): string {
-  if (accuracy >= 80) return '#22c55e' // bright green
-  if (accuracy >= 50) return '#eab308' // yellow
-  return '#f97316' // orange
+  if (accuracy >= 80) return '#22c55e'
+  if (accuracy >= 50) return '#eab308'
+  return '#f97316'
 }
 
 export default function SpaceEntryGamePage() {
@@ -42,13 +48,10 @@ export default function SpaceEntryGamePage() {
   const config = DIFFICULTY_CONFIGS[difficulty] || DIFFICULTY_CONFIGS.easy
   const difficultyNum = difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3
 
-  // ── state ──────────────────────────────────────────────────────────
+  // ── core state ─────────────────────────────────────────────────────
   const [gameId, setGameId] = useState('')
   const [phase, setPhase] = useState<GamePhase>('loading')
   const [targetZone, setTargetZone] = useState<LandingZone | null>(null)
-  const [entryAngle, setEntryAngle] = useState(8.5)
-  const [thrusterPower, setThrusterPower] = useState(50)
-  const [lateralCorrection, setLateralCorrection] = useState(0)
   const [countdown, setCountdown] = useState(config.countdownSeconds)
   const [attempts, setAttempts] = useState(1)
   const [finalResult, setFinalResult] = useState<LandingPrediction | null>(null)
@@ -56,18 +59,67 @@ export default function SpaceEntryGamePage() {
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
   const [animationClass, setAnimationClass] = useState('')
 
-  // ── live prediction (recalculated on every control change) ────────
+  // ── puzzle state ───────────────────────────────────────────────────
+  const [anglePuzzle, setAnglePuzzle] = useState<MissionPuzzle | null>(null)
+  const [thrusterPuzzle, setThrusterPuzzle] = useState<MissionPuzzle | null>(null)
+  const [lateralPuzzle, setLateralPuzzle] = useState<MissionPuzzle | null>(null)
+
+  const [angleAnswer, setAngleAnswer] = useState('')
+  const [thrusterAnswer, setThrusterAnswer] = useState('')
+  const [lateralAnswer, setLateralAnswer] = useState('')
+
+  const [angleSubmitted, setAngleSubmitted] = useState(false)
+  const [thrusterSubmitted, setThrusterSubmitted] = useState(false)
+  const [lateralSubmitted, setLateralSubmitted] = useState(false)
+
+  const [angleCorrect, setAngleCorrect] = useState<boolean | null>(null)
+  const [thrusterCorrect, setThrusterCorrect] = useState<boolean | null>(null)
+  const [lateralCorrect, setLateralCorrect] = useState<boolean | null>(null)
+
+  // ── derived: how many puzzles required & how many submitted ────────
+  const totalPuzzles = 1 + (config.showThrusterPower ? 1 : 0) + (config.showLateralCorrection ? 1 : 0)
+  const submittedCount =
+    (angleSubmitted ? 1 : 0) +
+    (thrusterSubmitted ? 1 : 0) +
+    (lateralSubmitted ? 1 : 0)
+  const allSubmitted =
+    angleSubmitted &&
+    (!config.showThrusterPower || thrusterSubmitted) &&
+    (!config.showLateralCorrection || lateralSubmitted)
+
+  // ── resolved parameter values (player answers or defaults) ────────
+  const resolvedAngle = angleSubmitted ? parseFloat(angleAnswer) || 0 : 0
+  const resolvedThruster = thrusterSubmitted
+    ? parseFloat(thrusterAnswer) || 50
+    : config.optimalThrusterPower
+  const resolvedLateral = lateralSubmitted ? parseFloat(lateralAnswer) || 0 : 0
+
+  // ── live prediction (recalculated after each puzzle submission) ────
   const prediction: LandingPrediction | null = useMemo(() => {
     if (!targetZone) return null
     return predictLanding(
       targetZone.latitude,
       targetZone.longitude,
-      entryAngle,
-      thrusterPower,
-      lateralCorrection,
+      resolvedAngle,
+      resolvedThruster,
+      resolvedLateral,
       config,
     )
-  }, [targetZone, entryAngle, thrusterPower, lateralCorrection, config])
+  }, [targetZone, resolvedAngle, resolvedThruster, resolvedLateral, config])
+
+  // ── generate puzzles helper ────────────────────────────────────────
+  const generatePuzzles = useCallback(
+    (zone: LandingZone) => {
+      setAnglePuzzle(generateAnglePuzzle(difficulty))
+      setThrusterPuzzle(config.showThrusterPower ? generateThrusterPuzzle(difficulty) : null)
+      setLateralPuzzle(
+        config.showLateralCorrection
+          ? generateLateralPuzzle(difficulty, zone.longitude)
+          : null,
+      )
+    },
+    [difficulty, config],
+  )
 
   // ── init game ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -75,7 +127,9 @@ export default function SpaceEntryGamePage() {
       try {
         const game = await startGame({ themeId: 'SPACE_ENTRY', difficulty: difficultyNum })
         setGameId(game.id)
-        setTargetZone(getRandomLandingZone())
+        const zone = getRandomLandingZone()
+        setTargetZone(zone)
+        generatePuzzles(zone)
         setPhase('setup')
       } catch (error: any) {
         if (
@@ -90,7 +144,7 @@ export default function SpaceEntryGamePage() {
       }
     }
     initGame()
-  }, [difficulty, difficultyNum, navigate])
+  }, [difficulty, difficultyNum, navigate, generatePuzzles])
 
   // ── countdown timer ───────────────────────────────────────────────
   useEffect(() => {
@@ -110,6 +164,31 @@ export default function SpaceEntryGamePage() {
     }
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── puzzle submission handlers ─────────────────────────────────────
+  const handleSubmitAngle = () => {
+    if (!anglePuzzle || angleSubmitted) return
+    const val = parseFloat(angleAnswer)
+    if (isNaN(val)) return
+    setAngleSubmitted(true)
+    setAngleCorrect(val === anglePuzzle.correctAnswer)
+  }
+
+  const handleSubmitThruster = () => {
+    if (!thrusterPuzzle || thrusterSubmitted) return
+    const val = parseFloat(thrusterAnswer)
+    if (isNaN(val)) return
+    setThrusterSubmitted(true)
+    setThrusterCorrect(val === thrusterPuzzle.correctAnswer)
+  }
+
+  const handleSubmitLateral = () => {
+    if (!lateralPuzzle || lateralSubmitted) return
+    const val = parseFloat(lateralAnswer)
+    if (isNaN(val)) return
+    setLateralSubmitted(true)
+    setLateralCorrect(val === lateralPuzzle.correctAnswer)
+  }
+
   // ── fire ──────────────────────────────────────────────────────────
   const handleInitiateReentry = useCallback(() => {
     if (phase !== 'setup' || !targetZone) return
@@ -119,12 +198,19 @@ export default function SpaceEntryGamePage() {
         ? (Math.random() * 2 - 1) * config.turbulenceRange
         : 0
 
+    // Use player's submitted answers as parameter values
+    const angle = angleSubmitted ? parseFloat(angleAnswer) || 0 : 0
+    const thruster = thrusterSubmitted
+      ? parseFloat(thrusterAnswer) || 50
+      : config.optimalThrusterPower
+    const lateral = lateralSubmitted ? parseFloat(lateralAnswer) || 0 : 0
+
     const result = predictLanding(
       targetZone.latitude,
       targetZone.longitude,
-      entryAngle,
-      thrusterPower,
-      lateralCorrection,
+      angle,
+      thruster,
+      lateral,
       config,
       turbulenceOffset,
     )
@@ -140,19 +226,30 @@ export default function SpaceEntryGamePage() {
       setPhase('results')
       setAnimationClass('')
     }, 4000)
-  }, [phase, targetZone, entryAngle, thrusterPower, lateralCorrection, config])
+  }, [
+    phase, targetZone, config,
+    angleSubmitted, angleAnswer,
+    thrusterSubmitted, thrusterAnswer,
+    lateralSubmitted, lateralAnswer,
+  ])
 
   // ── score submission ──────────────────────────────────────────────
   const handleSeeScore = async () => {
     if (!finalResult || !gameId) return
     setPhase('submitting')
+
+    const correctCount =
+      (angleCorrect ? 1 : 0) +
+      (thrusterCorrect ? 1 : 0) +
+      (lateralCorrect ? 1 : 0)
+
     try {
       const result = await completeGame({
         gameId,
         completionTime: Math.max(1, config.countdownSeconds - countdown),
         attempts,
-        correctAnswers: 1,
-        totalQuestions: 1,
+        correctAnswers: correctCount,
+        totalQuestions: totalPuzzles,
       })
       if (result.scoreBreakdown) setScoreBreakdown(result.scoreBreakdown)
       if (result.leaderboardRank) setLeaderboardRank(result.leaderboardRank)
@@ -166,11 +263,22 @@ export default function SpaceEntryGamePage() {
   // ── retry ─────────────────────────────────────────────────────────
   const handleTryAgain = () => {
     setAttempts((prev) => prev + 1)
-    setEntryAngle(config.referenceAngle)
-    setThrusterPower(config.optimalThrusterPower)
-    setLateralCorrection(0)
     setCountdown(config.countdownSeconds)
     setFinalResult(null)
+
+    // Reset puzzle answers
+    setAngleAnswer('')
+    setThrusterAnswer('')
+    setLateralAnswer('')
+    setAngleSubmitted(false)
+    setThrusterSubmitted(false)
+    setLateralSubmitted(false)
+    setAngleCorrect(null)
+    setThrusterCorrect(null)
+    setLateralCorrect(null)
+
+    // Generate new puzzles
+    if (targetZone) generatePuzzles(targetZone)
     setPhase('setup')
   }
 
@@ -219,8 +327,7 @@ export default function SpaceEntryGamePage() {
     )
   }
 
-  // ── globe radius ───────────────────────────────────────────────
-  const GLOBE_R = 144 // half of w-72 (288px)
+  const GLOBE_R = 144
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-black p-3 md:p-4 flex flex-col">
@@ -270,13 +377,10 @@ export default function SpaceEntryGamePage() {
             <span className="bg-white/10 rounded-lg px-3 py-1.5 text-white font-mono">
               🔥 {Math.round(shieldPct)}%
             </span>
-            <span className="bg-white/10 rounded-lg px-3 py-1.5 font-mono text-white">
-              🎯 {prediction ? `${Math.round(prediction.accuracy)}%` : '—'}
-            </span>
           </div>
         </div>
 
-        {/* ── MAIN: Globe (left) + Controls (right) ───────────────── */}
+        {/* ── MAIN: Globe (left) + Puzzles (right) ────────────────── */}
         <div className="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
           {/* ── GLOBE ─────────────────────────────────────────────── */}
           <div className="flex-shrink-0 flex justify-center items-start">
@@ -305,13 +409,12 @@ export default function SpaceEntryGamePage() {
               {targetZone && (() => {
                 const r = GLOBE_R
                 const pos = latLngToGlobeXY(targetZone.latitude, targetZone.longitude, r)
-                const scale = 1 // globe container already sized via tailwind
                 return (
                   <div
                     className="absolute pulse-dot"
                     style={{
-                      left: `${pos.x * scale}px`,
-                      top: `${pos.y * scale}px`,
+                      left: `${pos.x}px`,
+                      top: `${pos.y}px`,
                       width: 14,
                       height: 14,
                       borderRadius: '50%',
@@ -324,8 +427,8 @@ export default function SpaceEntryGamePage() {
                 )
               })()}
 
-              {/* predicted landing (green/yellow/orange) dot */}
-              {prediction && targetZone && phase === 'setup' && (() => {
+              {/* predicted landing (green/yellow/orange) dot — shown after at least one puzzle submitted */}
+              {prediction && targetZone && phase === 'setup' && submittedCount > 0 && (() => {
                 const r = GLOBE_R
                 const pos = latLngToGlobeXY(prediction.predictedLat, prediction.predictedLng, r)
                 return (
@@ -365,7 +468,7 @@ export default function SpaceEntryGamePage() {
             </div>
           </div>
 
-          {/* ── INSTRUMENT PANEL (right) ──────────────────────────── */}
+          {/* ── PUZZLE PANEL (right) ──────────────────────────────── */}
           <div className="flex-1 flex flex-col gap-3 min-w-0">
             {/* target info */}
             {targetZone && (
@@ -381,89 +484,158 @@ export default function SpaceEntryGamePage() {
               </div>
             )}
 
-            {/* controls card */}
+            {/* puzzle cards container */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 space-y-4">
-              {/* Entry Angle */}
-              <div>
-                <label htmlFor="entry-angle" className="flex items-center justify-between text-sm text-white font-medium mb-1">
-                  <span>📐 {t('spaceEntry.entryAngle')}</span>
-                  <span className="text-purple-300 font-mono">{entryAngle.toFixed(1)}°</span>
-                </label>
-                <input
-                  id="entry-angle"
-                  type="range"
-                  min="0"
-                  max="90"
-                  step="0.1"
-                  value={entryAngle}
-                  onChange={(e) => setEntryAngle(parseFloat(e.target.value))}
-                  disabled={phase !== 'setup'}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                  aria-label={t('spaceEntry.entryAngle')}
-                  aria-valuemin={0}
-                  aria-valuemax={90}
-                  aria-valuenow={entryAngle}
-                />
-                {config.showAngleHint && config.hintText && (
-                  <p className="mt-1 text-xs text-purple-300">{t(config.hintText)}</p>
-                )}
+              {/* ── ANGLE PUZZLE ──────────────────────────────────── */}
+              {anglePuzzle && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-white font-medium">
+                    <span>📐</span>
+                    <span>{t('spaceEntry.entryAngle')}</span>
+                    {angleSubmitted && (
+                      <span className={`ml-auto text-xs font-bold ${angleCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                        {angleCorrect
+                          ? t('spaceEntry.correctAnswer')
+                          : t('spaceEntry.wrongAnswer', { answer: anglePuzzle.correctAnswer + anglePuzzle.unit })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                    {anglePuzzle.visual && (
+                      <p className="text-xs text-purple-300 mb-1">{anglePuzzle.visual}</p>
+                    )}
+                    <p className="text-white text-sm">{anglePuzzle.question}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="angle-answer" className="sr-only">{t('spaceEntry.yourAnswer')}</label>
+                    <input
+                      id="angle-answer"
+                      type="number"
+                      step="any"
+                      value={angleAnswer}
+                      onChange={(e) => setAngleAnswer(e.target.value)}
+                      disabled={angleSubmitted || phase !== 'setup'}
+                      placeholder={t('spaceEntry.yourAnswer')}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleSubmitAngle() }}
+                      aria-label={`${t('spaceEntry.entryAngle')} ${t('spaceEntry.yourAnswer')}`}
+                    />
+                    <span className="text-white text-sm">{anglePuzzle.unit}</span>
+                    <button
+                      onClick={handleSubmitAngle}
+                      disabled={angleSubmitted || !angleAnswer || phase !== 'setup'}
+                      className="bg-green-500 hover:bg-green-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg px-3 py-2 text-sm font-bold transition-colors"
+                      aria-label={t('spaceEntry.submit')}
+                    >
+                      ✅
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ── THRUSTER PUZZLE (medium/hard) ─────────────────── */}
+              {thrusterPuzzle && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-white font-medium">
+                    <span>🔥</span>
+                    <span>{t('spaceEntry.thrusterPower')}</span>
+                    {thrusterSubmitted && (
+                      <span className={`ml-auto text-xs font-bold ${thrusterCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                        {thrusterCorrect
+                          ? t('spaceEntry.correctAnswer')
+                          : t('spaceEntry.wrongAnswer', { answer: thrusterPuzzle.correctAnswer + thrusterPuzzle.unit })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                    {thrusterPuzzle.visual && (
+                      <p className="text-xs text-orange-300 mb-1">{thrusterPuzzle.visual}</p>
+                    )}
+                    <p className="text-white text-sm">{thrusterPuzzle.question}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="thruster-answer" className="sr-only">{t('spaceEntry.yourAnswer')}</label>
+                    <input
+                      id="thruster-answer"
+                      type="number"
+                      step="any"
+                      value={thrusterAnswer}
+                      onChange={(e) => setThrusterAnswer(e.target.value)}
+                      disabled={thrusterSubmitted || phase !== 'setup'}
+                      placeholder={t('spaceEntry.yourAnswer')}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm placeholder-orange-300/50 focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50"
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleSubmitThruster() }}
+                      aria-label={`${t('spaceEntry.thrusterPower')} ${t('spaceEntry.yourAnswer')}`}
+                    />
+                    <span className="text-white text-sm">{thrusterPuzzle.unit}</span>
+                    <button
+                      onClick={handleSubmitThruster}
+                      disabled={thrusterSubmitted || !thrusterAnswer || phase !== 'setup'}
+                      className="bg-green-500 hover:bg-green-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg px-3 py-2 text-sm font-bold transition-colors"
+                      aria-label={t('spaceEntry.submit')}
+                    >
+                      ✅
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* ── LATERAL PUZZLE (hard only) ────────────────────── */}
+              {lateralPuzzle && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-white font-medium">
+                    <span>↔️</span>
+                    <span>{t('spaceEntry.lateralCorrection')}</span>
+                    {lateralSubmitted && (
+                      <span className={`ml-auto text-xs font-bold ${lateralCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                        {lateralCorrect
+                          ? t('spaceEntry.correctAnswer')
+                          : t('spaceEntry.wrongAnswer', { answer: lateralPuzzle.correctAnswer + lateralPuzzle.unit })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                    {lateralPuzzle.visual && (
+                      <p className="text-xs text-cyan-300 mb-1">{lateralPuzzle.visual}</p>
+                    )}
+                    <p className="text-white text-sm">{lateralPuzzle.question}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="lateral-answer" className="sr-only">{t('spaceEntry.yourAnswer')}</label>
+                    <input
+                      id="lateral-answer"
+                      type="number"
+                      step="any"
+                      value={lateralAnswer}
+                      onChange={(e) => setLateralAnswer(e.target.value)}
+                      disabled={lateralSubmitted || phase !== 'setup'}
+                      placeholder={t('spaceEntry.yourAnswer')}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50"
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleSubmitLateral() }}
+                      aria-label={`${t('spaceEntry.lateralCorrection')} ${t('spaceEntry.yourAnswer')}`}
+                    />
+                    <span className="text-white text-sm">{lateralPuzzle.unit}</span>
+                    <button
+                      onClick={handleSubmitLateral}
+                      disabled={lateralSubmitted || !lateralAnswer || phase !== 'setup'}
+                      className="bg-green-500 hover:bg-green-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg px-3 py-2 text-sm font-bold transition-colors"
+                      aria-label={t('spaceEntry.submit')}
+                    >
+                      ✅
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* puzzle progress */}
+              <div className="text-xs text-purple-300 pt-2 border-t border-white/10">
+                {allSubmitted
+                  ? `✅ ${t('spaceEntry.allPuzzlesSolved')}`
+                  : `🧮 ${t('spaceEntry.puzzlesRemaining', { count: totalPuzzles - submittedCount })}`}
               </div>
 
-              {/* Thruster Power */}
-              {config.showThrusterPower && (
-                <div>
-                  <label htmlFor="thruster-power" className="flex items-center justify-between text-sm text-white font-medium mb-1">
-                    <span>🔥 {t('spaceEntry.thrusterPower')}</span>
-                    <span className="text-orange-300 font-mono">{thrusterPower}%</span>
-                  </label>
-                  <input
-                    id="thruster-power"
-                    type="range"
-                    min="0"
-                    max="100"
-                    step="1"
-                    value={thrusterPower}
-                    onChange={(e) => setThrusterPower(parseInt(e.target.value))}
-                    disabled={phase !== 'setup'}
-                    className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-orange-500"
-                    aria-label={t('spaceEntry.thrusterPower')}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-valuenow={thrusterPower}
-                  />
-                  <p className="mt-1 text-xs text-purple-400">
-                    {t('spaceEntry.optimalThruster', { value: config.optimalThrusterPower })}
-                  </p>
-                </div>
-              )}
-
-              {/* Lateral Correction */}
-              {config.showLateralCorrection && (
-                <div>
-                  <label htmlFor="lateral-correction" className="flex items-center justify-between text-sm text-white font-medium mb-1">
-                    <span>↔️ {t('spaceEntry.lateralCorrection')}</span>
-                    <span className="text-cyan-300 font-mono">{lateralCorrection.toFixed(1)}°</span>
-                  </label>
-                  <input
-                    id="lateral-correction"
-                    type="range"
-                    min="-15"
-                    max="15"
-                    step="0.5"
-                    value={lateralCorrection}
-                    onChange={(e) => setLateralCorrection(parseFloat(e.target.value))}
-                    disabled={phase !== 'setup'}
-                    className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                    aria-label={t('spaceEntry.lateralCorrection')}
-                    aria-valuemin={-15}
-                    aria-valuemax={15}
-                    aria-valuenow={lateralCorrection}
-                  />
-                </div>
-              )}
-
-              {/* live distance readout */}
-              {prediction && (
+              {/* live distance readout (after at least one puzzle submitted) */}
+              {prediction && submittedCount > 0 && (
                 <div className="flex items-center gap-4 text-xs text-purple-300 pt-1 border-t border-white/10">
                   <span>
                     {t('spaceEntry.distanceFromTarget')}: <strong className="text-white">{prediction.distanceKm.toFixed(0)} km</strong>
@@ -489,11 +661,16 @@ export default function SpaceEntryGamePage() {
               </p>
             )}
 
-            {/* FIRE button */}
+            {/* FIRE button — disabled until all puzzles submitted */}
             {phase === 'setup' && (
               <button
                 onClick={handleInitiateReentry}
-                className="w-full py-3 rounded-xl text-lg font-bold bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600 transition-all duration-300 transform hover:scale-[1.03] shadow-xl"
+                disabled={!allSubmitted}
+                className={`w-full py-3 rounded-xl text-lg font-bold transition-all duration-300 transform shadow-xl ${
+                  allSubmitted
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600 hover:scale-[1.03]'
+                    : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                }`}
                 aria-label={t('spaceEntry.initiateReentry')}
               >
                 🚀 {t('spaceEntry.initiateReentry')}

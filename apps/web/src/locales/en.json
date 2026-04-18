@@ -539,7 +539,14 @@
     "tutorialHard": "🎯 Master all 3 controls: angle, thruster power, and lateral correction. No hints — trust your instruments!",
     "predictedLanding": "Predicted Landing",
     "accuracy": "Accuracy",
-    "distanceFromTarget": "Distance"
+    "distanceFromTarget": "Distance",
+    "solveToCalculate": "Solve to calculate:",
+    "yourAnswer": "Your answer",
+    "submit": "Submit",
+    "correctAnswer": "Correct!",
+    "wrongAnswer": "Wrong! Answer was {{answer}}",
+    "allPuzzlesSolved": "All calculations complete!",
+    "puzzlesRemaining": "{{count}} calculation(s) remaining"
   },
   "mathMaze": {
     "title": "Math Maze",

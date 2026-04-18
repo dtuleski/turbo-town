@@ -539,7 +539,14 @@
     "tutorialHard": "🎯 Domina los 3 controles: ángulo, potencia del propulsor y corrección lateral. ¡Sin pistas — confía en tus instrumentos!",
     "predictedLanding": "Aterrizaje Previsto",
     "accuracy": "Precisión",
-    "distanceFromTarget": "Distancia"
+    "distanceFromTarget": "Distancia",
+    "solveToCalculate": "Resuelve para calcular:",
+    "yourAnswer": "Tu respuesta",
+    "submit": "Enviar",
+    "correctAnswer": "¡Correcto!",
+    "wrongAnswer": "¡Incorrecto! La respuesta era {{answer}}",
+    "allPuzzlesSolved": "¡Todos los cálculos completos!",
+    "puzzlesRemaining": "{{count}} cálculo(s) restante(s)"
   },
   "mathMaze": {
     "title": "Laberinto Matemático",
