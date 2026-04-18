@@ -50,6 +50,8 @@ import MathMazeSetupPage from './pages/math-maze/MathMazeSetupPage'
 import MathMazeGamePage from './pages/math-maze/MathMazeGamePage'
 import PatternRecallSetupPage from './pages/pattern-recall/PatternRecallSetupPage'
 import PatternRecallGamePage from './pages/pattern-recall/PatternRecallGamePage'
+import SpaceEntrySetupPage from './pages/space-entry/SpaceEntrySetupPage'
+import SpaceEntryGamePage from './pages/space-entry/SpaceEntryGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -121,6 +123,8 @@ function App() {
           <Route path={ROUTES.MATH_MAZE_GAME} element={<MathMazeGamePage />} />
           <Route path={ROUTES.PATTERN_RECALL_SETUP} element={<PatternRecallSetupPage />} />
           <Route path={ROUTES.PATTERN_RECALL_GAME} element={<PatternRecallGamePage />} />
+          <Route path={ROUTES.SPACE_ENTRY_SETUP} element={<SpaceEntrySetupPage />} />
+          <Route path={ROUTES.SPACE_ENTRY_GAME} element={<SpaceEntryGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />

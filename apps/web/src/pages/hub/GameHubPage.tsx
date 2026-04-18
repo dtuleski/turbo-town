@@ -25,6 +25,7 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'scratch-coding': 'Puzzles & Logic',
   'math-maze': 'Science & Math',
   'pattern-recall': 'Puzzles & Logic',
+  'space-entry': 'Science & Math',
 }
 
 const FILTER_CHIPS = [

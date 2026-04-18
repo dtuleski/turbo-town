@@ -30,6 +30,7 @@ const gameTypeInfo: Record<GameType, { icon: string; name: string }> = {
   [GameType.TIC_TAC_TOE]: { icon: '❌', name: 'Tic Tac Toe' },
   [GameType.MATH_MAZE]: { icon: '🧮', name: 'Math Maze' },
   [GameType.PATTERN_RECALL]: { icon: '🧩', name: 'Pattern Recall' },
+  [GameType.SPACE_ENTRY]: { icon: '🚀', name: 'Space Entry' },
   [GameType.OVERALL]: { icon: '🏆', name: 'Overall' },
 }
 

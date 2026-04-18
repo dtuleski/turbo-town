@@ -45,6 +45,8 @@ export const ROUTES = {
   MATH_MAZE_GAME: '/math-maze/game',
   PATTERN_RECALL_SETUP: '/pattern-recall/setup',
   PATTERN_RECALL_GAME: '/pattern-recall/game',
+  SPACE_ENTRY_SETUP: '/space-entry/setup',
+  SPACE_ENTRY_GAME: '/space-entry/game',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',
