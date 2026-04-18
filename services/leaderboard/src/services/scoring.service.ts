@@ -77,6 +77,13 @@ export class ScoringService {
       case GameType.TIC_TAC_TOE:
         breakdown = this.calculateTicTacToeScore(difficulty, completionTime, performanceMetrics);
         break;
+      case GameType.MATH_MAZE:
+      case GameType.PATTERN_RECALL:
+      case GameType.SPACE_ENTRY:
+        // These games use the standard scoring formula from the game service
+        // The leaderboard just needs to accept the score passed via the event
+        breakdown = this.calculateMathChallengeScore(difficulty, completionTime, performanceMetrics);
+        break;
       default:
         throw new Error(`Unknown game type: ${gameType}`);
     }
@@ -612,6 +619,12 @@ export class ScoringService {
         break;
       case GameType.TIC_TAC_TOE:
         config = this.config.ticTacToe;
+        break;
+      case GameType.MATH_MAZE:
+      case GameType.PATTERN_RECALL:
+      case GameType.SPACE_ENTRY:
+        // Use math challenge config for validation (standard scoring games)
+        config = this.config.mathChallenge;
         break;
       default:
         errors.push(`Unknown game type: ${gameType}`);
