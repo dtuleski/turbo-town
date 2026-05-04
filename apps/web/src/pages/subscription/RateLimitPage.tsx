@@ -13,6 +13,7 @@ export default function RateLimitPage() {
   const [loading, setLoading] = useState<string | null>(null)
   const [createCheckout] = useMutation(CREATE_CHECKOUT_SESSION, { client: gameClient })
   const isRateLimited = location.state?.rateLimited === true
+  const isPremiumRequired = location.state?.premiumRequired === true
 
   const handleSubscribe = async (tier: 'LIGHT' | 'STANDARD' | 'PREMIUM', priceId: string) => {
     setLoading(tier)
@@ -62,6 +63,12 @@ export default function RateLimitPage() {
               <div className="text-6xl mb-4">⏰</div>
               <h1 className="text-5xl font-black text-white mb-4 drop-shadow-lg">Daily Limit Reached!</h1>
               <p className="text-2xl text-white font-bold drop-shadow">Upgrade to keep playing!</p>
+            </>
+          ) : isPremiumRequired ? (
+            <>
+              <div className="text-6xl mb-4">👑</div>
+              <h1 className="text-5xl font-black text-white mb-4 drop-shadow-lg">Premium Game</h1>
+              <p className="text-2xl text-white font-bold drop-shadow">This game requires a Premium subscription!</p>
             </>
           ) : (
             <>

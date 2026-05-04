@@ -27,11 +27,19 @@ export class AchievementRepository implements IAchievementRepository {
       updatedAt: now,
     };
 
+    // Convert Date objects to ISO strings for DynamoDB
+    const item = {
+      ...newAchievement,
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString(),
+      ...(newAchievement.completedAt ? { completedAt: newAchievement.completedAt instanceof Date ? newAchievement.completedAt.toISOString() : newAchievement.completedAt } : {}),
+    };
+
     try {
       await docClient.send(
         new PutCommand({
           TableName: TABLE_NAME,
-          Item: newAchievement,
+          Item: item,
         })
       );
 
@@ -99,12 +107,13 @@ export class AchievementRepository implements IAchievementRepository {
     Object.entries(updates).forEach(([key, value]) => {
       updateExpression.push(`#${key} = :${key}`);
       expressionAttributeNames[`#${key}`] = key;
-      expressionAttributeValues[`:${key}`] = value;
+      // Convert Date objects to ISO strings for DynamoDB
+      expressionAttributeValues[`:${key}`] = value instanceof Date ? value.toISOString() : value;
     });
 
     updateExpression.push('#updatedAt = :updatedAt');
     expressionAttributeNames['#updatedAt'] = 'updatedAt';
-    expressionAttributeValues[':updatedAt'] = now;
+    expressionAttributeValues[':updatedAt'] = now.toISOString();
 
     try {
       const result = await docClient.send(
@@ -150,8 +159,8 @@ export class AchievementRepository implements IAchievementRepository {
           },
           ExpressionAttributeValues: {
             ':unlocked': true,
-            ':completedAt': now,
-            ':updatedAt': now,
+            ':completedAt': now.toISOString(),
+            ':updatedAt': now.toISOString(),
           },
           ReturnValues: 'ALL_NEW',
         })

@@ -131,20 +131,18 @@ function buildEmail(triggerSource, codeOrLink, userAttributes) {
 /**
  * Decrypt the code from Cognito (uses KMS encryption)
  */
-async function decryptCode(encryptedCode) {
-  // Cognito CustomEmailSender passes the code encrypted with KMS
-  // We need to decrypt it using AWS KMS
-  const { KMSClient, DecryptCommand } = require('@aws-sdk/client-kms');
-  const kms = new KMSClient({ region: process.env.AWS_REGION || 'us-east-1' });
+async function decryptCode(encryptedCode, userPoolId) {
+  // Cognito CustomEmailSender uses the AWS Encryption SDK (envelope encryption),
+  // NOT plain KMS. We must use @aws-crypto/client-node to decrypt.
+  const { buildClient, CommitmentPolicy, KmsKeyringNode } = require('@aws-crypto/client-node');
   
-  const result = await kms.send(new DecryptCommand({
-    CiphertextBlob: Buffer.from(encryptedCode, 'base64'),
-    EncryptionContext: {
-      'cognito-user-pool-id': process.env.COGNITO_USER_POOL_ID || '',
-    },
-  }));
+  const { decrypt } = buildClient(CommitmentPolicy.REQUIRE_ENCRYPT_ALLOW_DECRYPT);
   
-  return Buffer.from(result.Plaintext).toString('utf-8');
+  const keyArn = process.env.KMS_KEY_ARN || `arn:aws:kms:${process.env.AWS_REGION || 'us-east-1'}:342278407349:key/52aa98d5-e499-4d8c-a767-59b2bee2601a`;
+  const keyring = new KmsKeyringNode({ keyIds: [keyArn] });
+  
+  const { plaintext } = await decrypt(keyring, Buffer.from(encryptedCode, 'base64'));
+  return plaintext.toString('utf-8');
 }
 
 exports.handler = async (event) => {
@@ -168,9 +166,9 @@ exports.handler = async (event) => {
     let code = request.code;
     if (code) {
       try {
-        code = await decryptCode(code);
+        code = await decryptCode(code, event.userPoolId);
       } catch (err) {
-        console.error('Failed to decrypt code, using as-is:', err.message);
+        console.error('Failed to decrypt code:', err.message);
         // If decryption fails, use the code as-is (may happen in test scenarios)
       }
     }

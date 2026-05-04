@@ -24,6 +24,8 @@ export interface DifficultyConfig {
   latSensitivity: number // how much 1° angle moves landing lat
   lngSensitivity: number // how much 1° lateral moves landing lng
   distancePenalty: number // how fast accuracy drops with distance
+  bonusPuzzleCount: number // extra math puzzles beyond the control puzzles
+  wrongAnswerPenalty: number // accuracy penalty per wrong bonus puzzle (0-1 scale)
 }
 
 export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> = {
@@ -35,7 +37,7 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 15,
     referenceAngle: 8,
     turbulenceRange: 0,
-    countdownSeconds: 60,
+    countdownSeconds: 90,
     showAngleHint: true,
     showTrajectoryColor: true,
     hintText: 'spaceEntry.hintEasy',
@@ -47,6 +49,8 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     latSensitivity: 0.5,
     lngSensitivity: 0,
     distancePenalty: 0.05,
+    bonusPuzzleCount: 2,
+    wrongAnswerPenalty: 0.15,
   },
   medium: {
     idealAngleMin: 5.5,
@@ -56,7 +60,7 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 25,
     referenceAngle: 7,
     turbulenceRange: 0,
-    countdownSeconds: 30,
+    countdownSeconds: 60,
     showAngleHint: true,
     showTrajectoryColor: false,
     hintText: 'spaceEntry.hintMedium',
@@ -68,6 +72,8 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     latSensitivity: 1,
     lngSensitivity: 0,
     distancePenalty: 0.1,
+    bonusPuzzleCount: 3,
+    wrongAnswerPenalty: 0.12,
   },
   hard: {
     idealAngleMin: 6,
@@ -77,7 +83,7 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     baseDegradationRate: 35,
     referenceAngle: 7,
     turbulenceRange: 0.3,
-    countdownSeconds: 20,
+    countdownSeconds: 45,
     showAngleHint: false,
     showTrajectoryColor: false,
     hintText: '',
@@ -89,6 +95,8 @@ export const DIFFICULTY_CONFIGS: Record<SpaceEntryDifficulty, DifficultyConfig> 
     latSensitivity: 1.5,
     lngSensitivity: 1,
     distancePenalty: 0.15,
+    bonusPuzzleCount: 4,
+    wrongAnswerPenalty: 0.10,
   },
 }
 

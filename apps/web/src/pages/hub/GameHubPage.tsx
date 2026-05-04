@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { listAvailableGames, GameCatalogItem, getReviewStats, ReviewStats } from '../../api/game'
-import GameTile from '../../components/hub/GameTile'
+import { listAvailableGames, GameCatalogItem, getReviewStats, ReviewStats, canStartGame } from '../../api/game'
+import GameTile, { PREMIUM_GAMES } from '../../components/hub/GameTile'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
+import { ROUTES } from '@/config/constants'
 
 // Subject-based category filter mapping (gameId -> filter group)
 const GAME_FILTER_MAP: Record<string, string> = {
@@ -42,6 +43,7 @@ export default function GameHubPage() {
   const [error, setError] = useState<string | null>(null)
   const [ratings, setRatings] = useState<Map<string, ReviewStats>>(new Map())
   const [activeFilter, setActiveFilter] = useState('all')
+  const [userTier, setUserTier] = useState('FREE')
   const { user } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -53,15 +55,19 @@ export default function GameHubPage() {
   const loadGames = async () => {
     try {
       setLoading(true)
-      const [data, reviewData] = await Promise.allSettled([
+      const [data, reviewData, tierData] = await Promise.allSettled([
         listAvailableGames(),
         getReviewStats(),
+        canStartGame(),
       ])
       if (data.status === 'fulfilled') setGames(data.value)
       if (reviewData.status === 'fulfilled') {
         const map = new Map<string, ReviewStats>()
         reviewData.value.perGame.forEach(r => map.set(r.gameType, r))
         setRatings(map)
+      }
+      if (tierData.status === 'fulfilled' && tierData.value?.rateLimit?.tier) {
+        setUserTier(tierData.value.rateLimit.tier)
       }
     } catch (err) {
       console.error('Failed to load games:', err)
@@ -73,6 +79,11 @@ export default function GameHubPage() {
 
   const handleGameClick = (game: GameCatalogItem) => {
     if (game.status === 'ACTIVE') {
+      // If premium game and user is not premium, redirect to subscription page
+      if (PREMIUM_GAMES.has(game.gameId) && userTier !== 'PREMIUM') {
+        navigate(ROUTES.SUBSCRIPTION, { state: { premiumRequired: true } })
+        return
+      }
       navigate(game.route)
     }
   }
@@ -167,6 +178,7 @@ export default function GameHubPage() {
               game={game}
               onClick={() => handleGameClick(game)}
               rating={ratings.get(game.gameId.toUpperCase().replace(/-/g, '_'))}
+              userTier={userTier}
             />
           ))}
         </div>

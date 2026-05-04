@@ -1,0 +1,335 @@
+# Implementation Plan: Space Coder Terminal Rework
+
+## Overview
+
+Complete replacement of the Space Coder game's Scratch-style block editor with a retro terminal-style text coding interface. The implementation proceeds bottom-up: new data model and types → core utility functions → obstacle generation → execution engine → level definitions → UI components → game page wiring → scoring integration → i18n → cleanup. All code is TypeScript in the existing `apps/web` React project, tested with Vitest and fast-check.
+
+## Tasks
+
+- [ ] 1. Define new data model and command types in scratchCodingUtils.ts
+  - [x] 1.1 Replace old block types with new command types and interfaces
+    - Remove `BlockType`, `Block`, `BlockDefinition`, `BlockCategory`, `BlockPath` types
+    - Add `CommandType` union type: `'FORWARD' | 'TURN_LEFT' | 'TURN_RIGHT' | 'JUMP' | 'LOOP' | 'IF_OBSTACLE' | 'WHILE_NOT_GOAL'`
+    - Add `Command` interface with `id`, `type`, `parameter?`, `body?`, `elseBody?`
+    - Add `CommandDefinition` interface with `type`, `label`, `textRepresentation`, `isControlStructure`, `hasParameter`, `parameterDefault`, `parameterMin`, `parameterMax`, `hasBody`, `hasElseBody`, `minDifficulty`
+    - Add `InsertionCursor` interface with `parentId`, `branch`, `index`
+    - Add `'obstacle'` to `CellType` union
+    - _Requirements: 18.1, 18.2, 17.5_
+  - [x] 1.2 Define COMMAND_DEFINITIONS array and updated DIFFICULTY_CONFIG
+    - Create the 7 command definitions (FORWARD, TURN_LEFT, TURN_RIGHT, JUMP, LOOP, IF_OBSTACLE, WHILE_NOT_GOAL) with correct `minDifficulty` values
+    - Update `DIFFICULTY_CONFIG` with new grid sizes (6×6, 8×8, 12×12), `availableCommands` arrays, and updated descriptions
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 5.1, 5.2, 5.3_
+  - [x] 1.3 Update Level interface and ExecutionStep interface
+    - Replace `maxBlocks`/`optimalBlocks` with `maxLines`/`optimalLines` in `Level`
+    - Add `availableCommands`, `generateObstacles?`, `obstacleCount?` fields to `Level`
+    - Add `hitObstacle`, `isJumpMidpoint`, `errorType?`, `lineIndex` fields to `ExecutionStep`
+    - _Requirements: 18.1, 7.4, 6.3, 6.4_
+
+- [ ] 2. Implement core utility functions
+  - [x] 2.1 Implement `programToText` function
+    - Accept `Command[]`, return `string[]` of indented text lines
+    - Simple commands render as their `textRepresentation`
+    - LOOP renders as `loop(n)` + indented body + `next`
+    - IF_OBSTACLE renders as `if(obstacle-ahead)` + indented then body + `else` + indented else body + `end-if`
+    - WHILE_NOT_GOAL renders as `while(not-at-goal)` + indented body + `end-while`
+    - Indent by 2 spaces per nesting level
+    - _Requirements: 18.4, 1.2, 1.3_
+  - [x] 2.2 Implement `textToProgram` function
+    - Accept `string[]` of indented text lines, return `Command[]`
+    - Use stack-based parser: track indentation, push/pop control structures
+    - Parse `loop(n)` extracting parameter, `if(obstacle-ahead)`, `while(not-at-goal)`, `else`, closing keywords
+    - _Requirements: 18.5_
+  - [ ]* 2.3 Write property test: Program text round-trip (Property 1)
+    - **Property 1: Program text round-trip**
+    - Generate random program trees (arbitrary command types, nesting ≤ 3, random loop params)
+    - Verify `textToProgram(programToText(program))` produces equivalent tree
+    - **Validates: Requirements 18.5, 1.2, 1.3**
+  - [x] 2.4 Implement `countAllLines` function
+    - Accept `Command[]`, return total line count recursively
+    - Simple command = 1 line; LOOP = 1 + body + 1; IF_OBSTACLE = 1 + then + 1 + else + 1; WHILE = 1 + body + 1
+    - _Requirements: 18.3, 18.6_
+  - [ ]* 2.5 Write property test: countAllLines invariant (Property 12)
+    - **Property 12: countAllLines invariant**
+    - Generate random program trees, verify `countAllLines(program) >= program.length`
+    - **Validates: Requirements 18.3, 18.6**
+  - [x] 2.6 Implement `insertCommand` function
+    - Accept `program`, `CommandType`, `InsertionCursor`, return `{ program, cursor }`
+    - Simple commands: insert at cursor position, advance cursor index by 1
+    - Control structures: insert structure, move cursor inside body at index 0
+    - Handle insertion into nested bodies and else branches
+    - _Requirements: 2.5, 2.6, 2.7, 2.8, 4.2, 4.4, 4.5_
+  - [x] 2.7 Implement `removeAtLine` function
+    - Accept `program`, `lineIndex`, return `{ program, cursor }`
+    - Map `lineIndex` to the command in the tree using `programToText` line mapping
+    - If line is a control structure opening or closing, remove entire structure
+    - If line is a simple command inside a structure, remove only that command
+    - _Requirements: 3.1, 3.2, 3.3, 3.7_
+  - [ ]* 2.8 Write property test: Command insertion line count (Property 3)
+    - **Property 3: Command insertion produces correct line count and cursor position**
+    - Generate random programs + command types, verify line count delta: +1 for simple, +2 for LOOP/WHILE, +3 for IF_OBSTACLE
+    - Verify cursor is inside body for control structures, advanced by 1 for simple commands
+    - **Validates: Requirements 2.5, 2.6, 2.7, 2.8, 4.2, 4.4, 4.5**
+  - [ ]* 2.9 Write property test: Control structure removal (Property 4)
+    - **Property 4: Control structure removal removes entire structure**
+    - Generate programs with ≥1 control structure, remove at structure's opening/closing line
+    - Verify line count decreases by total structure line count
+    - **Validates: Requirements 3.2, 3.7**
+
+- [ ] 3. Implement obstacle generation with BFS validation
+  - [x] 3.1 Implement `bfsPathExists` function
+    - Standard BFS on 4-connected grid treating `wall` and `obstacle` as impassable
+    - Accept `grid`, `start`, `goal`, return `boolean`
+    - _Requirements: 21.3_
+  - [x] 3.2 Implement `generateObstacles` function
+    - Accept `rows`, `cols`, `start`, `goal`, `targetCount`, return `CellType[][]`
+    - Collect candidate cells (exclude start, goal, cells adjacent to start)
+    - Shuffle candidates, place obstacles one at a time, BFS-validate after each
+    - If BFS fails, remove last obstacle and continue
+    - _Requirements: 21.1, 21.2, 21.3, 21.4, 21.5, 13.2, 13.7, 13.8_
+  - [ ]* 3.3 Write property test: Obstacle generator solvability and bounds (Property 10)
+    - **Property 10: Obstacle generator solvability and bounds**
+    - Generate random 12×12 start/goal positions, target counts [8, 20]
+    - Verify: BFS path exists, no obstacles on start/goal/adjacent-to-start, obstacle count in [1, target]
+    - **Validates: Requirements 13.2, 13.7, 21.2, 21.3, 21.6, 21.7**
+
+- [ ] 4. Checkpoint — Verify core utilities
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 5. Update execution engine with new command types
+  - [x] 5.1 Implement FORWARD execution (1-step, collision detection)
+    - Move astronaut 1 cell in current direction
+    - Collision if wall, obstacle, or out of bounds — set `alive=false` with appropriate error flags
+    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+  - [x] 5.2 Implement JUMP execution
+    - If obstacle directly ahead and landing cell (2 ahead) is empty/goal: produce 2 ExecutionSteps (midpoint + landing)
+    - If no obstacle ahead: error `no-obstacle-to-jump`
+    - If landing cell blocked/OOB: error `jump-landing-blocked`
+    - _Requirements: 7.1, 7.2, 7.3, 7.4_
+  - [x] 5.3 Implement LOOP execution
+    - Execute body N times, support nesting up to depth 3
+    - 500-step safeguard
+    - _Requirements: 8.1, 8.2, 8.3, 8.4_
+  - [x] 5.4 Implement IF_OBSTACLE execution
+    - Check cell ahead for obstacle/wall → execute then-branch; else → execute else-branch
+    - Support nesting in both branches
+    - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
+  - [x] 5.5 Implement WHILE_NOT_GOAL execution
+    - Repeat body until astronaut is on goal cell
+    - 500-step safeguard
+    - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
+  - [x] 5.6 Add `lineIndex` mapping to ExecutionSteps
+    - Map each ExecutionStep to the corresponding line in `programToText` output for CodeEditor highlighting
+    - _Requirements: 14.2_
+  - [ ]* 5.7 Write property test: Forward collision detection (Property 5)
+    - **Property 5: Forward collision detection**
+    - Generate grids with walls/obstacles, positions facing blocked cells
+    - Verify FORWARD produces `alive=false` with correct error flag
+    - **Validates: Requirements 6.1, 6.3, 6.4**
+  - [ ]* 5.8 Write property test: Jump command correctness (Property 6)
+    - **Property 6: Jump command correctness**
+    - Generate grids with obstacles, test valid jump, no-obstacle, and blocked-landing scenarios
+    - Verify step count and error conditions
+    - **Validates: Requirements 7.1, 7.2, 7.3, 7.4**
+  - [ ]* 5.9 Write property test: If-structure branching (Property 7)
+    - **Property 7: If-structure branches correctly based on obstacle-ahead condition**
+    - Generate positions with/without obstacles, verify correct branch executed
+    - **Validates: Requirements 9.1, 9.2, 9.3**
+  - [ ]* 5.10 Write property test: While loop termination (Property 8)
+    - **Property 8: While loop terminates when goal is reached**
+    - Generate small grids with short paths + `while(not-at-goal) { forward() }`
+    - Verify final step has `reachedGoal=true`
+    - **Validates: Requirements 10.1, 10.2, 10.3**
+  - [ ]* 5.11 Write property test: Execution step limit safeguard (Property 9)
+    - **Property 9: Execution step limit safeguard**
+    - Generate programs with large loops that don't reach goal
+    - Verify execution stops at ≤500 steps with `infinite-loop` error
+    - **Validates: Requirements 8.4, 10.4**
+
+- [ ] 6. Implement `computeLineEfficiency` and scoring integration
+  - [x] 6.1 Implement `computeLineEfficiency` function
+    - Accept `Array<{ optimalLines: number; actualLines: number }>`, return `min(1.0, sumOptimal / sumActual)`
+    - Return 1.0 when sumActual is 0
+    - _Requirements: 15.1_
+  - [ ]* 6.2 Write property test: Line efficiency calculation (Property 11)
+    - **Property 11: Line efficiency calculation**
+    - Generate arrays of `{optimalLines, actualLines}` with positive values
+    - Verify result equals `min(1.0, sum(optimalLines) / sum(actualLines))`
+    - **Validates: Requirements 15.1**
+  - [ ]* 6.3 Write property test: Command visibility by difficulty (Property 2)
+    - **Property 2: Command visibility is determined by difficulty threshold**
+    - Enumerate all command definitions × all difficulties
+    - Verify command available iff `minDifficulty` rank ≤ current difficulty rank
+    - **Validates: Requirements 2.2, 2.3, 2.4**
+
+- [ ] 7. Checkpoint — Verify execution engine and scoring
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 8. Define new level data
+  - [x] 8.1 Create 5 easy levels (6×6 grid)
+    - Straight-line path, L-shape, U-turn, zigzag, multi-turn
+    - Only FORWARD, TURN_LEFT, TURN_RIGHT commands
+    - No obstacles; set `maxLines` to `optimalLines + 4` or more
+    - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5_
+  - [x] 8.2 Create 5 medium levels (8×8 grid)
+    - Corridors with repeating patterns (staircases, zigzags, spirals)
+    - Set `maxLines` so flat solutions exceed limit, forcing loop usage
+    - Walls but no obstacles
+    - _Requirements: 12.1, 12.2, 12.3, 12.4_
+  - [x] 8.3 Create 5 hard level templates (12×12 grid)
+    - Set `generateObstacles: true` and `obstacleCount` between 8–20
+    - Define start/goal positions; obstacles generated at runtime via `generateObstacles`
+    - At least 2 levels requiring jump(), 2 requiring if(obstacle-ahead), 1 requiring while(not-at-goal)
+    - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 13.7, 13.8_
+  - [ ]* 8.4 Write unit tests for level definitions
+    - Verify each easy level is solvable with only forward/turn commands
+    - Verify each medium level's `maxLines` forces loop usage
+    - Verify hard level templates have valid start/goal positions and obstacle counts in range
+    - _Requirements: 11.1–11.5, 12.1–12.4, 13.1–13.8_
+
+- [ ] 9. Build CommandPalette component
+  - [x] 9.1 Implement CommandPalette inline component
+    - Render command buttons filtered by difficulty using `COMMAND_DEFINITIONS` and `minDifficulty`
+    - Style as retro terminal buttons (dark background, green/amber monospace text)
+    - Disable all buttons when `disabled` or `maxReached` is true
+    - Show "Maximum lines reached!" indicator when `maxReached`
+    - Call `onCommandInsert(type)` on button click
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.10_
+  - [ ]* 9.2 Write unit tests for CommandPalette
+    - Verify correct buttons rendered per difficulty (easy: 3, medium: 4, hard: 7)
+    - Verify buttons disabled when `disabled=true` or `maxReached=true`
+    - Verify click calls `onCommandInsert` with correct type
+    - _Requirements: 2.1–2.10_
+
+- [ ] 10. Build CodeEditor component
+  - [x] 10.1 Implement CodeEditor inline component
+    - Render `programToText(program)` as numbered lines with green (#00FF00) monospace on black (#000) background
+    - Show blinking cursor/insertion indicator at the insertion cursor position
+    - Highlight active line during execution (bright yellow/cyan background) using `highlightedLineIndex`
+    - Click a line → call `onLineClick(lineIndex)` for removal or insertion point selection
+    - Show inline editable number input on `loop(n)` lines (default 2, min 1, max 20)
+    - Show "Clear All" button calling `onClearAll`
+    - Vertical scroll when program exceeds visible area
+    - Visually highlight current insertion context (active control structure body or else branch)
+    - Read-only for keyboard typing
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 3.1, 3.4, 3.5, 3.6, 4.1, 4.3, 4.6, 14.2_
+  - [ ]* 10.2 Write unit tests for CodeEditor
+    - Verify line numbers rendered
+    - Verify green-on-black styling applied
+    - Verify blinking cursor present
+    - Verify click on line calls `onLineClick`
+    - Verify loop parameter input renders with correct min/max
+    - _Requirements: 1.1–1.7, 3.1, 3.4, 3.5_
+
+- [ ] 11. Update GameStage component
+  - [x] 11.1 Modify GameStage for new grid sizes and obstacles
+    - Support 6×6, 8×8, and 12×12 grids with proportional cell scaling
+    - Render `obstacle` cells as rocks (🪨) distinct from walls
+    - Implement jump animation: show mid-jump position above obstacle using `isJumpMidpoint`
+    - Scale cells to fit viewport without horizontal scrolling
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 7.4, 14.1_
+  - [ ]* 11.2 Write unit tests for GameStage
+    - Verify correct grid dimensions rendered per difficulty
+    - Verify obstacle cells render with rock indicator
+    - _Requirements: 5.1–5.5_
+
+- [ ] 12. Checkpoint — Verify UI components
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 13. Rework SpaceCoderGamePage to wire new components
+  - [x] 13.1 Refactor SpaceCoderGamePage state and imports
+    - Remove all `@dnd-kit` imports (`DndContext`, `useDraggable`, `useDroppable`, `PointerSensor`, `TouchSensor`, `useSensors`, `DragEndEvent`)
+    - Remove `BlockRenderer` import and `BlockPath` usage
+    - Replace `program: Block[]` state with `program: Command[]`
+    - Add `insertionCursor: InsertionCursor` state
+    - Keep phase type: `'building' | 'running' | 'success' | 'fail' | 'submitting' | 'completed'`
+    - _Requirements: 17.1, 17.2, 17.3, 17.4, 17.5_
+  - [x] 13.2 Wire CommandPalette, CodeEditor, and GameStage
+    - Replace old `BlockPalette` with new `CommandPalette`, passing difficulty, disabled, maxReached, onCommandInsert
+    - Replace old `BlockEditor` with new `CodeEditor`, passing program, maxLines, highlightedLineIndex, insertionCursor, disabled, onLineClick, onLoopParameterChange, onClearAll
+    - Wire `onCommandInsert` to call `insertCommand` and update program + cursor state
+    - Wire `onLineClick` to call `removeAtLine` (or move insertion cursor) and update state
+    - Wire `onLoopParameterChange` to update the loop command's parameter in the program tree
+    - Wire `onClearAll` to reset program to `[]` and cursor to top-level
+    - _Requirements: 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 3.5, 3.6, 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [x] 13.3 Wire execution flow and animation
+    - On Run button click: call `executeProgram(level, program)` to get `ExecutionStep[]`
+    - Animate steps with 350ms interval, updating `characterPos`, `characterDir`, and `highlightedLineIndex`
+    - On success (reachedGoal): show level-complete overlay with line count vs optimal, "Perfect Code"/"Clean Code" indicators
+    - On failure: show error message with "Try Again" option
+    - Disable Run button and CommandPalette during execution
+    - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.3, 15.4, 15.5_
+  - [x] 13.4 Wire level progression and obstacle generation
+    - On level load: if `level.generateObstacles`, call `generateObstacles` to create obstacle grid
+    - Progress through levels; on final level complete, trigger scoring
+    - Track total run attempts across all levels
+    - Track elapsed time with visible timer
+    - _Requirements: 13.2, 13.7, 16.4, 16.5_
+  - [x] 13.5 Wire scoring and completeGame API call
+    - On game complete: compute `computeLineEfficiency` from level results
+    - Call `completeGame` mutation with `gameId`, `completionTime`, `attempts`, `correctAnswers` (efficiency-weighted), `totalQuestions`
+    - Use `themeId: "SCRATCH_CODING"`
+    - Display `ScoreBreakdownModal` with score data
+    - _Requirements: 15.1, 15.2, 16.1, 16.2, 16.3_
+  - [x] 13.6 Implement responsive three-panel layout
+    - CommandPalette left, GameStage center, CodeEditor right
+    - Adapt layout for 768px–1440px screen widths
+    - Keyboard-accessible Run button, retry, navigation, and command palette buttons
+    - Touch interactions for CodeEditor line selection on tablets
+    - _Requirements: 22.1, 22.2, 22.3, 22.4, 22.5_
+
+- [x] 14. Update ScratchCodingSetupPage
+  - Update difficulty descriptions to reflect new grid sizes (6×6, 8×8, 12×12) and command sets
+  - Update "How to Play" text to describe terminal-style coding instead of drag-and-drop
+  - Preserve existing route `/scratch-coding/setup`, navigation, and difficulty selection UI
+  - _Requirements: 20.1, 20.5, 12.5_
+
+- [ ] 15. Add i18n translations
+  - [x] 15.1 Add `spaceCoder.commands.*` keys to en.json, es.json, pt.json
+    - Keys: `forward`, `turnLeft`, `turnRight`, `jump`, `loop`, `ifObstacle`, `whileNotGoal`
+    - _Requirements: 19.1_
+  - [x] 15.2 Add Code Editor UI text keys
+    - Keys: `lineNumbers`, `clearAll`, `insertionHint`, `maxLinesReached`
+    - _Requirements: 19.2_
+  - [x] 15.3 Add execution error message keys
+    - Keys: `collision`, `hitObstacle`, `outOfBounds`, `noObstacleToJump`, `jumpLandingBlocked`, `infiniteLoop`
+    - _Requirements: 19.3_
+  - [x] 15.4 Add efficiency label keys
+    - Keys: `perfectCode`, `cleanCode`, `optimalIndicator`
+    - _Requirements: 19.4_
+  - [x] 15.5 Verify command text in CodeEditor remains English regardless of locale
+    - Ensure `programToText` output uses English keywords (`forward()`, `turn-left()`, etc.) not translated strings
+    - _Requirements: 19.6_
+
+- [ ] 16. Checkpoint — Verify full game flow
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 17. Cleanup: remove old drag-and-drop code
+  - [x] 17.1 Delete `BlockRenderer.tsx`
+    - Remove `apps/web/src/pages/scratch-coding/BlockRenderer.tsx` entirely
+    - _Requirements: 17.2_
+  - [x] 17.2 Remove `@dnd-kit` imports and old block references
+    - Verify no `@dnd-kit/core` or `@dnd-kit` package imports remain in any scratch-coding files
+    - Verify no `BlockRenderer`, `ContainerBlockWrapper`, `DndContext`, `useDraggable`, `useDroppable` references remain
+    - Verify no `BlockPath`, `insertBlockAtPath`, `removeBlockAtPath`, `updateParameterAtPath` references remain
+    - Verify no old block types (`MOVE_FORWARD`, `REPEAT`, `IF_WALL_AHEAD`, `IF_ON_GOAL`, `ON_START`) remain
+    - _Requirements: 17.1, 17.2, 17.3, 17.4, 17.5_
+  - [x] 17.3 Remove old `scratchCoding.*` i18n keys that reference blocks
+    - Update locale files to remove block-related keys (e.g., `blocks`, `dragHint`, `blockCount`)
+    - Replace with new terminal-style keys added in task 15
+    - _Requirements: 17.4, 19.1_
+
+- [ ] 18. Final checkpoint — Full regression
+  - Ensure all tests pass, ask the user if questions arise.
+  - Verify no `@dnd-kit` imports remain in the codebase scratch-coding files
+  - Verify all 12 correctness properties pass as property-based tests
+  - Verify all easy, medium, and hard levels are solvable
+
+## Notes
+
+- Tasks marked with `*` are optional and can be skipped for faster MVP
+- Each task references specific requirements for traceability
+- Checkpoints ensure incremental validation
+- Property tests validate universal correctness properties from the design document (Properties 1–12)
+- Unit tests validate specific examples, edge cases, and UI behavior
+- All code is TypeScript; tests use Vitest + fast-check (both already in `apps/web` devDependencies)
+- The existing test files in `apps/web/src/utils/__tests__/scratchCoding*.test.ts` will need to be updated or replaced to match the new data model

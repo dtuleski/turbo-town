@@ -34,6 +34,10 @@ interface AchievementDef {
   check: (history: LeaderboardEntry[]) => { unlocked: boolean; date?: string; progress?: string }
 }
 
+// Sort history chronologically (oldest first) so .find() returns the earliest qualifying entry
+const sortOldestFirst = (h: LeaderboardEntry[]) =>
+  [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+
 const ACHIEVEMENTS: AchievementDef[] = [
   // ── Getting Started ──
   {
@@ -42,8 +46,8 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'getting-started',
     check: (h) => {
       if (h.length === 0) return { unlocked: false, progress: '0/1' }
-      const oldest = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())[0]
-      return { unlocked: true, date: oldest.timestamp }
+      const sorted = sortOldestFirst(h)
+      return { unlocked: true, date: sorted[0].timestamp }
     },
   },
   {
@@ -51,7 +55,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Get 90%+ accuracy on any game',
     category: 'getting-started',
     check: (h) => {
-      const match = h.find(e => e.accuracy >= 0.9)
+      const match = sortOldestFirst(h).find(e => e.accuracy >= 0.9)
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false, progress: `Best: ${Math.round(Math.max(0, ...h.map(e => e.accuracy)) * 100)}%` }
     },
   },
@@ -60,7 +64,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Complete any game under 30 seconds',
     category: 'getting-started',
     check: (h) => {
-      const match = h.find(e => e.completionTime < 30)
+      const match = sortOldestFirst(h).find(e => e.completionTime < 30)
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false, progress: `Fastest: ${h.length > 0 ? Math.round(Math.min(...h.map(e => e.completionTime))) + 's' : '—'}` }
     },
   },
@@ -70,12 +74,10 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'getting-started',
     check: (h) => {
       const types = new Set(h.map(e => e.gameType))
-      const first3 = types.size >= 3
-      if (!first3) return { unlocked: false, progress: `${types.size}/3` }
+      if (types.size < 3) return { unlocked: false, progress: `${types.size}/3` }
       // Find when the 3rd unique game was played
       const seen = new Set<string>()
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-      for (const e of sorted) {
+      for (const e of sortOldestFirst(h)) {
         seen.add(e.gameType)
         if (seen.size >= 3) return { unlocked: true, date: e.timestamp }
       }
@@ -87,7 +89,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Score over 5,000 in any game',
     category: 'getting-started',
     check: (h) => {
-      const match = h.find(e => e.score >= 5000)
+      const match = sortOldestFirst(h).find(e => e.score >= 5000)
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false, progress: `Best: ${h.length > 0 ? Math.max(...h.map(e => e.score)).toLocaleString() : '0'}` }
     },
   },
@@ -99,7 +101,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'dedication',
     check: (h) => {
       if (h.length < 10) return { unlocked: false, progress: `${h.length}/10` }
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+      const sorted = sortOldestFirst(h)
       return { unlocked: true, date: sorted[9]?.timestamp }
     },
   },
@@ -109,7 +111,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'dedication',
     check: (h) => {
       if (h.length < 25) return { unlocked: false, progress: `${h.length}/25` }
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+      const sorted = sortOldestFirst(h)
       return { unlocked: true, date: sorted[24]?.timestamp }
     },
   },
@@ -119,7 +121,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'dedication',
     check: (h) => {
       if (h.length < 50) return { unlocked: false, progress: `${h.length}/50` }
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+      const sorted = sortOldestFirst(h)
       return { unlocked: true, date: sorted[49]?.timestamp }
     },
   },
@@ -129,7 +131,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     category: 'dedication',
     check: (h) => {
       if (h.length < 100) return { unlocked: false, progress: `${h.length}/100` }
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+      const sorted = sortOldestFirst(h)
       return { unlocked: true, date: sorted[99]?.timestamp }
     },
   },
@@ -144,7 +146,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
       return gamesOver5k.size >= 3
         ? { unlocked: true, date: (() => {
             const seen = new Set<string>()
-            const sorted = [...h].filter(e => e.score >= 5000).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+            const sorted = sortOldestFirst(h).filter(e => e.score >= 5000)
             for (const e of sorted) { seen.add(e.gameType); if (seen.size >= 3) return e.timestamp }
             return undefined
           })() }
@@ -156,7 +158,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Get 100% accuracy on any game',
     category: 'mastery',
     check: (h) => {
-      const match = h.find(e => e.accuracy >= 1.0)
+      const match = sortOldestFirst(h).find(e => e.accuracy >= 1.0)
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false }
     },
   },
@@ -169,8 +171,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
       const total = ALL_GAME_TYPES.length
       if (types.size < total) return { unlocked: false, progress: `${types.size}/${total}` }
       const seen = new Set<string>()
-      const sorted = [...h].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-      for (const e of sorted) { seen.add(e.gameType); if (seen.size >= total) return { unlocked: true, date: e.timestamp } }
+      for (const e of sortOldestFirst(h)) { seen.add(e.gameType); if (seen.size >= total) return { unlocked: true, date: e.timestamp } }
       return { unlocked: false, progress: `${types.size}/${total}` }
     },
   },
@@ -179,7 +180,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Score over 7,000 in any game',
     category: 'mastery',
     check: (h) => {
-      const match = h.find(e => e.score >= 7000)
+      const match = sortOldestFirst(h).find(e => e.score >= 7000)
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false, progress: `Best: ${h.length > 0 ? Math.max(...h.map(e => e.score)).toLocaleString() : '0'}` }
     },
   },
@@ -188,7 +189,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
     description: 'Complete a game on Hard difficulty',
     category: 'mastery',
     check: (h) => {
-      const match = h.find(e => e.difficulty.toLowerCase() === 'hard')
+      const match = sortOldestFirst(h).find(e => e.difficulty.toLowerCase() === 'hard')
       return match ? { unlocked: true, date: match.timestamp } : { unlocked: false }
     },
   },
@@ -203,7 +204,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
       description: `Score 5,000+ in ${info.name}`,
       category: 'game-specific',
       check: (h) => {
-        const match = h.find(e => e.gameType === type && e.score >= 5000)
+        const match = sortOldestFirst(h).find(e => e.gameType === type && e.score >= 5000)
         if (match) return { unlocked: true, date: match.timestamp }
         const best = h.filter(e => e.gameType === type).reduce((max, e) => Math.max(max, e.score), 0)
         return { unlocked: false, progress: best > 0 ? `Best: ${best.toLocaleString()}` : undefined }

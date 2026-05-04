@@ -1,16 +1,22 @@
 import { GameCatalogItem, ReviewStats } from '../../api/game'
 import { useTranslation } from 'react-i18next'
 
+/** Games that require Premium subscription */
+export const PREMIUM_GAMES = new Set(['space-entry'])
+
 interface GameTileProps {
   game: GameCatalogItem
   onClick: () => void
   rating?: ReviewStats
+  userTier?: string
 }
 
-export default function GameTile({ game, onClick, rating }: GameTileProps) {
+export default function GameTile({ game, onClick, rating, userTier = 'FREE' }: GameTileProps) {
   const { t } = useTranslation()
   const isActive = game.status === 'ACTIVE'
   const isComingSoon = game.status === 'COMING_SOON'
+  const isPremiumGame = PREMIUM_GAMES.has(game.gameId)
+  const isLocked = isPremiumGame && userTier !== 'PREMIUM'
 
   // Use translated title/description/category if available, fallback to server data
   const title = t(`games.${game.gameId}.title`, { defaultValue: game.title })
@@ -35,7 +41,13 @@ export default function GameTile({ game, onClick, rating }: GameTileProps) {
         </div>
       )}
 
-      <div className="text-7xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+      {isPremiumGame && (
+        <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
+          👑 Premium
+        </div>
+      )}
+
+      <div className={`text-7xl mb-4 transform group-hover:scale-110 transition-transform duration-300 ${isLocked ? 'grayscale opacity-60' : ''}`}>
         {game.icon}
       </div>
 
@@ -65,9 +77,15 @@ export default function GameTile({ game, onClick, rating }: GameTileProps) {
 
       {isActive && (
         <div className="mt-6">
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-xl group-hover:from-purple-600 group-hover:to-pink-600 transition-colors">
-            {t('hub.playNow')}
-          </div>
+          {isLocked ? (
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-xl group-hover:from-purple-700 group-hover:to-indigo-700 transition-colors flex items-center justify-center gap-2">
+              🔒 {t('hub.upgradeToPremium', { defaultValue: 'Upgrade to Premium' })}
+            </div>
+          ) : (
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-xl group-hover:from-purple-600 group-hover:to-pink-600 transition-colors">
+              {t('hub.playNow')}
+            </div>
+          )}
         </div>
       )}
     </button>

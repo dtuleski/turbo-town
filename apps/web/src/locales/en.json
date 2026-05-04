@@ -354,12 +354,12 @@
   },
   "scratchCoding": {
     "title": "Space Coder",
-    "subtitle": "Program your astronaut through the space station!",
+    "subtitle": "Program your astronaut to the airlock with the fewest lines of code!",
     "howToPlay": "How to Play",
     "chooseDifficulty": "Choose Difficulty",
     "startCoding": "Start Coding! 🚀",
-    "howToPlayStep1": "Drag code blocks from the palette into the editor",
-    "howToPlayStep2": "Snap blocks together to build your program",
+    "howToPlayStep1": "Click command buttons from the palette to add code lines",
+    "howToPlayStep2": "Build your program in the terminal-style code editor",
     "howToPlayStep3": "Press Run and watch your astronaut follow the instructions!",
     "blocks": {
       "onStart": "On Start",
@@ -376,19 +376,19 @@
       "events": "Events"
     },
     "game": {
-      "blocks": "Blocks",
-      "noMoreBlocks": "Maximum blocks reached!",
+      "blocks": "Commands",
+      "noMoreBlocks": "Maximum lines reached!",
       "program": "Program",
-      "blocksUsed": "{{used}}/{{max}} blocks",
-      "dragHere": "Click or drag blocks here...",
+      "blocksUsed": "{{used}}/{{max}} lines",
+      "dragHere": "Click commands to add code here...",
       "clearAll": "Clear All ✕",
       "clickToRemove": "click to remove",
       "run": "Run",
       "level": "Level {{current}}/{{total}}",
       "levelComplete": "Level Complete!",
-      "blocksUsedCount": "Solved in {{count}} blocks",
+      "blocksUsedCount": "Solved in {{count}} lines",
       "optimalSolution": "Optimal solution!",
-      "optimalHint": "Optimal: {{count}} blocks",
+      "optimalHint": "Optimal: {{count}} lines",
       "nextLevel": "Next Level →",
       "seeScore": "See Score 🏆",
       "tryAgain": "Try Again 🔄",
@@ -401,19 +401,93 @@
     "difficulty": {
       "easy": {
         "label": "Easy",
-        "desc": "Navigate the station corridors",
-        "features": "Move & Turn"
+        "desc": "6×6 grid · forward, turn",
+        "features": "forward() · turn-left() · turn-right()"
       },
       "medium": {
         "label": "Medium",
-        "desc": "Use loops to explore efficiently",
-        "features": "Motion + Repeat"
+        "desc": "8×8 grid · loops!",
+        "features": "forward() · turns · loop(n)"
       },
       "hard": {
         "label": "Hard",
-        "desc": "Handle obstacles with smart conditionals",
-        "features": "Motion + Loops + If/Else"
+        "desc": "12×12 grid · obstacles & conditionals",
+        "features": "All commands · jump() · if/while"
       }
+    },
+    "nesting": {
+      "ifLabel": "If",
+      "elseLabel": "Else",
+      "dropHere": "Drop blocks here",
+      "maxDepthReached": "Maximum nesting depth reached!",
+      "perfectEfficiency": "Perfect Code ⚡",
+      "goodEfficiency": "Clean Code 👍",
+      "canImprove": "Can improve — use fewer lines!"
+    },
+    "hints": {
+      "easy1": "Move right to reach the airlock — use forward() five times",
+      "easy2": "Move right and down to reach the airlock",
+      "easy3": "Go around the wall — U-turn through the corridor",
+      "easy4": "Navigate around the asteroids with turns",
+      "easy5": "Zigzag through the S-shaped corridor",
+      "medium1": "See the staircase pattern? Use loop() to repeat: forward + turn + forward + turn",
+      "medium2": "The path zigzags — use loop() to repeat the zigzag pattern",
+      "medium3": "Navigate the spiral — loops help with repeating patterns",
+      "medium4": "Two identical L-turns — put the L-shape inside a loop(2)",
+      "medium5": "Tiny diagonal steps repeat 6 times — perfect for a loop()",
+      "hard1": "Obstacles block your path! Use jump() to hop over them",
+      "hard2": "Use if(obstacle-ahead) to decide when to jump",
+      "hard3": "Dense obstacles — combine jump() with if(obstacle-ahead) and its else branch",
+      "hard4": "Use if(obstacle-ahead) to navigate around obstacles",
+      "hard5": "Use while(not-at-goal) to keep moving until you reach the airlock"
+    }
+  },
+  "spaceCoder": {
+    "commands": {
+      "forward": "forward()",
+      "turnLeft": "turn-left()",
+      "turnRight": "turn-right()",
+      "jump": "jump()",
+      "loop": "loop(n)",
+      "if": "if(...)",
+      "while": "while(...)",
+      "varNumDecl": "var-num",
+      "varCharDecl": "var-char",
+      "varNumInc": "var-num++",
+      "varNumDec": "var-num--"
+    },
+    "conditions": {
+      "sensorMode": "Sensor",
+      "comparisonMode": "Compare",
+      "obstacleAhead": "obstacle-ahead()",
+      "atGoal": "at-goal()",
+      "notAtGoal": "not-at-goal()",
+      "edgeAhead": "edge-ahead()"
+    },
+    "variables": {
+      "sectionTitle": "Variables",
+      "numLabel": "Number",
+      "charLabel": "Character"
+    },
+    "editor": {
+      "lineNumbers": "Line Numbers",
+      "clearAll": "Clear All",
+      "insertionHint": "Click a command to insert it here",
+      "maxLinesReached": "Maximum lines reached!"
+    },
+    "errors": {
+      "collision": "Astronaut hit an asteroid! ☄️",
+      "hitObstacle": "Astronaut hit a rock! Use jump() to hop over obstacles 🪨",
+      "outOfBounds": "Astronaut drifted into space! ☄️",
+      "noObstacleToJump": "Nothing to jump over! jump() needs an obstacle ahead 🤔",
+      "jumpLandingBlocked": "Can't land there! The landing spot is blocked ☄️",
+      "infiniteLoop": "Program ran too long! Check your loops 🔄",
+      "undefinedVarNum": "Variable not defined! Add var-num = <value> before using it.",
+      "undefinedVarChar": "Variable not defined! Add var-char = '<value>' before using it."
+    },
+    "efficiency": {
+      "perfectCode": "Perfect Code ⚡",
+      "cleanCode": "Clean Code 👍"
     }
   },
   "gameplay": {
@@ -503,9 +577,9 @@
     "title": "Space Entry",
     "subtitle": "Land your spacecraft safely on Earth!",
     "chooseDifficulty": "Choose Your Mission Difficulty",
-    "easyDesc": "Wider angle tolerance, stronger heat shield, fewer variables",
-    "mediumDesc": "All variables active, moderate tolerances",
-    "hardDesc": "Tight tolerances, atmospheric turbulence, limited heat shield",
+    "easyDesc": "3 puzzles, wider angle tolerance, stronger heat shield",
+    "mediumDesc": "5 puzzles, all variables active, moderate tolerances",
+    "hardDesc": "7 puzzles, tight tolerances, turbulence, limited heat shield",
     "startMission": "Launch Mission",
     "selectDifficulty": "Select a difficulty to launch",
     "missionControl": "Mission Control",
@@ -546,7 +620,10 @@
     "correctAnswer": "Correct!",
     "wrongAnswer": "Wrong! Answer was {{answer}}",
     "allPuzzlesSolved": "All calculations complete!",
-    "puzzlesRemaining": "{{count}} calculation(s) remaining"
+    "puzzlesRemaining": "{{count}} calculation(s) remaining",
+    "controlPuzzles": "Flight Controls",
+    "missionChecks": "Mission Checks",
+    "puzzleScore": "Puzzles Correct"
   },
   "mathMaze": {
     "title": "Math Maze",

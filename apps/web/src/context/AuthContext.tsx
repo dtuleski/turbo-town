@@ -90,8 +90,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (input: LoginInput) => {
     try {
+      const normalizedEmail = input.email.toLowerCase().trim()
       const { isSignedIn, nextStep } = await signIn({
-        username: input.email,
+        username: normalizedEmail,
         password: input.password,
       })
       
@@ -103,7 +104,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         const user: User = {
           id: currentUser.userId,
-          email: attributes.email || input.email,
+          email: attributes.email || normalizedEmail,
           username: attributes.preferred_username || attributes.name || attributes.email?.split('@')[0] || 'User',
           tier: 'FREE',
           createdAt: new Date().toISOString(),
@@ -129,6 +130,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (input: RegisterInput) => {
     try {
+      const normalizedEmail = input.email.toLowerCase().trim()
       // Split username into given name and family name for Cognito
       // If username doesn't have a space, use it as given name and set family name to username
       const nameParts = input.username.trim().split(' ')
@@ -136,11 +138,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const familyName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : input.username
       
       const { isSignUpComplete, userId, nextStep } = await signUp({
-        username: input.email,
+        username: normalizedEmail,
         password: input.password,
         options: {
           userAttributes: {
-            email: input.email,
+            email: normalizedEmail,
             preferred_username: input.username,
             name: input.username, // Full name
             given_name: givenName,
@@ -156,7 +158,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (isSignUpComplete && userId) {
         // Auto-login after successful registration
-        await login({ email: input.email, password: input.password })
+        await login({ email: normalizedEmail, password: input.password })
       }
     } catch (error: any) {
       console.error('Registration error:', error)
@@ -170,7 +172,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const confirmEmail = async (email: string, code: string) => {
     try {
       await confirmSignUp({
-        username: email,
+        username: email.toLowerCase().trim(),
         confirmationCode: code,
       })
     } catch (error: any) {

@@ -354,12 +354,12 @@
   },
   "scratchCoding": {
     "title": "Programador Espacial",
-    "subtitle": "¡Programa a tu astronauta por la estación espacial!",
+    "subtitle": "¡Programa a tu astronauta hasta la esclusa con la menor cantidad de líneas de código!",
     "howToPlay": "Cómo Jugar",
     "chooseDifficulty": "Elige la Dificultad",
     "startCoding": "¡A Programar! 🚀",
-    "howToPlayStep1": "Arrastra bloques de código de la paleta al editor",
-    "howToPlayStep2": "Conecta los bloques para construir tu programa",
+    "howToPlayStep1": "Haz clic en los botones de comando de la paleta para agregar líneas de código",
+    "howToPlayStep2": "Construye tu programa en el editor de código estilo terminal",
     "howToPlayStep3": "¡Presiona Ejecutar y mira a tu astronauta seguir las instrucciones!",
     "blocks": {
       "onStart": "Al Iniciar",
@@ -376,19 +376,19 @@
       "events": "Eventos"
     },
     "game": {
-      "blocks": "Bloques",
-      "noMoreBlocks": "¡Máximo de bloques alcanzado!",
+      "blocks": "Comandos",
+      "noMoreBlocks": "¡Máximo de líneas alcanzado!",
       "program": "Programa",
-      "blocksUsed": "{{used}}/{{max}} bloques",
-      "dragHere": "Haz clic o arrastra bloques aquí...",
+      "blocksUsed": "{{used}}/{{max}} líneas",
+      "dragHere": "Haz clic en comandos para agregar código aquí...",
       "clearAll": "Borrar Todo ✕",
       "clickToRemove": "clic para eliminar",
       "run": "Ejecutar",
       "level": "Nivel {{current}}/{{total}}",
       "levelComplete": "¡Nivel Completado!",
-      "blocksUsedCount": "Resuelto en {{count}} bloques",
+      "blocksUsedCount": "Resuelto en {{count}} líneas",
       "optimalSolution": "¡Solución óptima!",
-      "optimalHint": "Óptimo: {{count}} bloques",
+      "optimalHint": "Óptimo: {{count}} líneas",
       "nextLevel": "Siguiente Nivel →",
       "seeScore": "Ver Puntuación 🏆",
       "tryAgain": "Intentar de Nuevo 🔄",
@@ -401,19 +401,93 @@
     "difficulty": {
       "easy": {
         "label": "Fácil",
-        "desc": "Navega por los corredores de la estación",
-        "features": "Mover y Girar"
+        "desc": "Cuadrícula 6×6 · avanzar, girar",
+        "features": "forward() · turn-left() · turn-right()"
       },
       "medium": {
         "label": "Medio",
-        "desc": "Usa bucles para explorar eficientemente",
-        "features": "Movimiento + Repetir"
+        "desc": "Cuadrícula 8×8 · ¡bucles!",
+        "features": "forward() · giros · loop(n)"
       },
       "hard": {
         "label": "Difícil",
-        "desc": "Maneja obstáculos con condicionales inteligentes",
-        "features": "Movimiento + Bucles + Si/Sino"
+        "desc": "Cuadrícula 12×12 · obstáculos y condicionales",
+        "features": "Todos los comandos · jump() · if/while"
       }
+    },
+    "nesting": {
+      "ifLabel": "Si",
+      "elseLabel": "Sino",
+      "dropHere": "Arrastra bloques aquí",
+      "maxDepthReached": "¡Profundidad máxima de anidamiento alcanzada!",
+      "perfectEfficiency": "Código Perfecto ⚡",
+      "goodEfficiency": "Código Limpio 👍",
+      "canImprove": "Puede mejorar — ¡usa menos líneas!"
+    },
+    "hints": {
+      "easy1": "Mueve a la derecha para llegar a la esclusa — usa forward() cinco veces",
+      "easy2": "Mueve a la derecha y abajo para llegar a la esclusa",
+      "easy3": "Rodea la pared — giro en U por el corredor",
+      "easy4": "Navega alrededor de los asteroides con giros",
+      "easy5": "Zigzaguea por el corredor en forma de S",
+      "medium1": "¿Ves el patrón de escalera? Usa loop() para repetir: forward + giro + forward + giro",
+      "medium2": "El camino zigzaguea — usa loop() para repetir el patrón",
+      "medium3": "Navega la espiral — los bucles ayudan con patrones repetitivos",
+      "medium4": "Dos giros en L idénticos — pon la forma L dentro de un loop(2)",
+      "medium5": "Pequeños pasos diagonales se repiten 6 veces — perfecto para un loop()",
+      "hard1": "¡Los obstáculos bloquean tu camino! Usa jump() para saltarlos",
+      "hard2": "Usa if(obstacle-ahead) para decidir cuándo saltar",
+      "hard3": "Obstáculos densos — combina jump() con if(obstacle-ahead) y su rama else",
+      "hard4": "Usa if(obstacle-ahead) para navegar alrededor de obstáculos",
+      "hard5": "Usa while(not-at-goal) para seguir moviéndote hasta llegar a la esclusa"
+    }
+  },
+  "spaceCoder": {
+    "commands": {
+      "forward": "forward()",
+      "turnLeft": "turn-left()",
+      "turnRight": "turn-right()",
+      "jump": "jump()",
+      "loop": "loop(n)",
+      "if": "si(...)",
+      "while": "mientras(...)",
+      "varNumDecl": "var-num",
+      "varCharDecl": "var-char",
+      "varNumInc": "var-num++",
+      "varNumDec": "var-num--"
+    },
+    "conditions": {
+      "sensorMode": "Sensor",
+      "comparisonMode": "Comparar",
+      "obstacleAhead": "obstacle-ahead()",
+      "atGoal": "at-goal()",
+      "notAtGoal": "not-at-goal()",
+      "edgeAhead": "edge-ahead()"
+    },
+    "variables": {
+      "sectionTitle": "Variables",
+      "numLabel": "Número",
+      "charLabel": "Carácter"
+    },
+    "editor": {
+      "lineNumbers": "Números de Línea",
+      "clearAll": "Borrar Todo",
+      "insertionHint": "Haz clic en un comando para insertarlo aquí",
+      "maxLinesReached": "¡Máximo de líneas alcanzado!"
+    },
+    "errors": {
+      "collision": "¡El astronauta chocó con un asteroide! ☄️",
+      "hitObstacle": "¡El astronauta chocó con una roca! Usa jump() para saltar obstáculos 🪨",
+      "outOfBounds": "¡El astronauta se perdió en el espacio! ☄️",
+      "noObstacleToJump": "¡Nada que saltar! jump() necesita un obstáculo adelante 🤔",
+      "jumpLandingBlocked": "¡No puede aterrizar ahí! El punto de aterrizaje está bloqueado ☄️",
+      "infiniteLoop": "¡El programa tardó demasiado! Revisa tus bucles 🔄",
+      "undefinedVarNum": "¡Variable no definida! Agrega var-num = <valor> antes de usarla.",
+      "undefinedVarChar": "¡Variable no definida! Agrega var-char = '<valor>' antes de usarla."
+    },
+    "efficiency": {
+      "perfectCode": "Código Perfecto ⚡",
+      "cleanCode": "Código Limpio 👍"
     }
   },
   "gameplay": {
@@ -503,9 +577,9 @@
     "title": "Entrada Espacial",
     "subtitle": "¡Aterriza tu nave espacial de forma segura en la Tierra!",
     "chooseDifficulty": "Elige la Dificultad de tu Misión",
-    "easyDesc": "Mayor tolerancia de ángulo, escudo térmico más fuerte, menos variables",
-    "mediumDesc": "Todas las variables activas, tolerancias moderadas",
-    "hardDesc": "Tolerancias ajustadas, turbulencia atmosférica, escudo térmico limitado",
+    "easyDesc": "3 puzzles, mayor tolerancia de ángulo, escudo térmico más fuerte",
+    "mediumDesc": "5 puzzles, todas las variables activas, tolerancias moderadas",
+    "hardDesc": "7 puzzles, tolerancias ajustadas, turbulencia, escudo limitado",
     "startMission": "Lanzar Misión",
     "selectDifficulty": "Selecciona una dificultad para lanzar",
     "missionControl": "Control de Misión",
@@ -546,7 +620,10 @@
     "correctAnswer": "¡Correcto!",
     "wrongAnswer": "¡Incorrecto! La respuesta era {{answer}}",
     "allPuzzlesSolved": "¡Todos los cálculos completos!",
-    "puzzlesRemaining": "{{count}} cálculo(s) restante(s)"
+    "puzzlesRemaining": "{{count}} cálculo(s) restante(s)",
+    "controlPuzzles": "Controles de Vuelo",
+    "missionChecks": "Verificaciones de Misión",
+    "puzzleScore": "Puzzles Correctos"
   },
   "mathMaze": {
     "title": "Laberinto Matemático",

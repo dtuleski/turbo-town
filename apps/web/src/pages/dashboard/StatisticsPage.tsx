@@ -20,6 +20,10 @@ const GAME_INFO: Record<string, { icon: string; name: string; color: string }> =
   COLOR_BY_NUMBER:  { icon: '🎨', name: 'Color by Number',  color: '#ec4899' },
   HANGMAN:          { icon: '🪢', name: 'Hangman',          color: '#475569' },
   TIC_TAC_TOE:      { icon: '❌', name: 'Tic Tac Toe',      color: '#7c3aed' },
+  MATH_MAZE:        { icon: '🧮', name: 'Math Maze',        color: '#f97316' },
+  PATTERN_RECALL:   { icon: '🧩', name: 'Pattern Recall',   color: '#0ea5e9' },
+  SPACE_ENTRY:      { icon: '🚀', name: 'Space Entry',      color: '#22d3ee' },
+  SCRATCH_CODING:   { icon: '👨‍🚀', name: 'Space Coder',      color: '#818cf8' },
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -128,13 +132,25 @@ const StatisticsPage = () => {
   // Score progression (chronological)
   const chronological = [...filtered].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
   const scoreProgression = chronological.slice(-20) // last 20 games
-  const maxProgScore = Math.max(1, ...scoreProgression.map(e => e.score))
 
-  // Running best score
-  let runningBest = 0
-  const bestScoreLine = scoreProgression.map(e => {
-    runningBest = Math.max(runningBest, e.score)
-    return runningBest
+  // Compute per-game-type max scores for normalization
+  const gameTypeMaxScores = new Map<string, number>()
+  chronological.forEach(e => {
+    const current = gameTypeMaxScores.get(e.gameType) || 0
+    if (e.score > current) gameTypeMaxScores.set(e.gameType, e.score)
+  })
+
+  // Normalized score: each game's score as % of that game type's best score (0-100)
+  const normalizedProgression = scoreProgression.map(e => {
+    const typeBest = gameTypeMaxScores.get(e.gameType) || 1
+    return Math.round((e.score / typeBest) * 100)
+  })
+
+  // Running average (rolling window of 5) for trend line
+  const rollingAvg = normalizedProgression.map((_, i) => {
+    const windowStart = Math.max(0, i - 4)
+    const window = normalizedProgression.slice(windowStart, i + 1)
+    return Math.round(window.reduce((s, v) => s + v, 0) / window.length)
   })
 
   // Game breakdown
@@ -277,33 +293,42 @@ const StatisticsPage = () => {
       {/* Score progression */}
       <div className="card mb-8">
         <h2 className="text-lg font-bold mb-4">📈 Score Progression</h2>
+        <p className="text-text-secondary text-xs mb-3">Each bar shows your score as a % of your personal best for that game type. The line shows your rolling average trend.</p>
         {scoreProgression.length < 2 ? (
           <p className="text-text-secondary text-center py-8">Play more games to see your progression!</p>
         ) : (
           <>
             <div className="flex items-end gap-1 h-48 relative">
-              {/* Best score line (background) */}
+              {/* SVG trend line overlay */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" preserveAspectRatio="none" viewBox={`0 0 ${scoreProgression.length * 100} 100`}>
+                <polyline
+                  fill="none"
+                  stroke="#f59e0b"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  points={rollingAvg.map((v, i) => `${i * 100 + 50},${100 - v}`).join(' ')}
+                />
+              </svg>
               {scoreProgression.map((entry, i) => {
-                const scoreH = (entry.score / maxProgScore) * 100
-                const bestH = (bestScoreLine[i] / maxProgScore) * 100
+                const normalizedH = normalizedProgression[i]
+                const gameInfo = GAME_INFO[entry.gameType] || { icon: '🎮', name: entry.gameType, color: '#888' }
                 return (
                   <div key={i} className="flex-1 relative group" style={{ height: '100%' }}>
-                    {/* Best score watermark */}
-                    <div
-                      className="absolute bottom-0 w-full bg-yellow-500/10 rounded-t"
-                      style={{ height: `${bestH}%` }}
-                    />
                     {/* Actual score bar */}
                     <div
                       className="absolute bottom-0 w-full rounded-t transition-all hover:opacity-80"
                       style={{
-                        height: `${Math.max(scoreH, 3)}%`,
-                        backgroundColor: GAME_INFO[entry.gameType]?.color || '#6366f1',
+                        height: `${Math.max(normalizedH, 3)}%`,
+                        backgroundColor: gameInfo.color,
+                        opacity: 0.8,
                       }}
                     />
                     {/* Tooltip */}
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                      {GAME_INFO[entry.gameType]?.icon} {entry.score.toLocaleString()}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20">
+                      {gameInfo.icon} {entry.score.toLocaleString()} pts
+                      <br />
+                      {normalizedH}% of your best
                       <br />
                       {new Date(entry.timestamp).toLocaleDateString()}
                     </div>
@@ -314,7 +339,7 @@ const StatisticsPage = () => {
             <div className="flex justify-between text-xs text-text-secondary mt-2">
               <span>{new Date(scoreProgression[0].timestamp).toLocaleDateString()}</span>
               <span className="flex items-center gap-1">
-                <span className="inline-block w-3 h-2 bg-yellow-500/30 rounded" /> Personal best line
+                <span className="inline-block w-4 h-0.5 bg-yellow-500 rounded" /> Rolling average
               </span>
               <span>{new Date(scoreProgression[scoreProgression.length - 1].timestamp).toLocaleDateString()}</span>
             </div>
@@ -331,18 +356,40 @@ const StatisticsPage = () => {
             <p className="text-text-secondary text-center py-8">Need more games for accuracy trend</p>
           ) : (
             <>
-              <div className="flex items-end gap-1 h-32">
-                {accuracyData.map((acc, i) => (
-                  <div key={i} className="flex-1 relative group">
-                    <div
-                      className="w-full bg-green-500/70 rounded-t hover:bg-green-500 transition-all"
-                      style={{ height: `${Math.max(acc, 3)}%` }}
-                    />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                      {acc}%
-                    </div>
-                  </div>
-                ))}
+              <div className="h-32 relative">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox={`0 0 ${(accuracyData.length - 1) * 100} 100`}>
+                  {/* Grid lines */}
+                  {[25, 50, 75, 100].map(y => (
+                    <line key={y} x1="0" y1={100 - y} x2={(accuracyData.length - 1) * 100} y2={100 - y} stroke="currentColor" strokeOpacity="0.08" strokeWidth="1" />
+                  ))}
+                  {/* Area fill */}
+                  <polygon
+                    fill="url(#accGrad)"
+                    points={`0,100 ${accuracyData.map((v, i) => `${i * 100},${100 - v}`).join(' ')} ${(accuracyData.length - 1) * 100},100`}
+                  />
+                  {/* Line */}
+                  <polyline
+                    fill="none"
+                    stroke="#22c55e"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={accuracyData.map((v, i) => `${i * 100},${100 - v}`).join(' ')}
+                  />
+                  {/* Dots */}
+                  {accuracyData.map((v, i) => (
+                    <circle key={i} cx={i * 100} cy={100 - v} r="4" fill="#22c55e" stroke="white" strokeWidth="2" />
+                  ))}
+                  <defs>
+                    <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#22c55e" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="#22c55e" stopOpacity="0.02" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                {/* Y-axis labels */}
+                <span className="absolute top-0 left-0 text-[9px] text-text-secondary">100%</span>
+                <span className="absolute bottom-0 left-0 text-[9px] text-text-secondary">0%</span>
               </div>
               <div className="flex justify-between items-center mt-2 text-sm">
                 <span className="text-text-secondary">Avg: {avgAccuracy.toFixed(0)}%</span>
@@ -369,21 +416,46 @@ const StatisticsPage = () => {
             <p className="text-text-secondary text-center py-8">Need more games for speed trend</p>
           ) : (
             <>
-              <div className="flex items-end gap-1 h-32">
+              <div className="h-32 relative">
                 {(() => {
                   const maxT = Math.max(1, ...speedData)
-                  return speedData.map((t, i) => (
-                    <div key={i} className="flex-1 relative group">
-                      <div
-                        className="w-full bg-blue-500/70 rounded-t hover:bg-blue-500 transition-all"
-                        style={{ height: `${Math.max((t / maxT) * 100, 3)}%` }}
+                  const normalized = speedData.map(t => Math.round((t / maxT) * 100))
+                  return (
+                    <svg className="w-full h-full" preserveAspectRatio="none" viewBox={`0 0 ${(speedData.length - 1) * 100} 100`}>
+                      {/* Grid lines */}
+                      {[25, 50, 75, 100].map(y => (
+                        <line key={y} x1="0" y1={100 - y} x2={(speedData.length - 1) * 100} y2={100 - y} stroke="currentColor" strokeOpacity="0.08" strokeWidth="1" />
+                      ))}
+                      {/* Area fill */}
+                      <polygon
+                        fill="url(#speedGrad)"
+                        points={`0,100 ${normalized.map((v, i) => `${i * 100},${100 - v}`).join(' ')} ${(speedData.length - 1) * 100},100`}
                       />
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                        {formatTime(t)}
-                      </div>
-                    </div>
-                  ))
+                      {/* Line */}
+                      <polyline
+                        fill="none"
+                        stroke="#3b82f6"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        points={normalized.map((v, i) => `${i * 100},${100 - v}`).join(' ')}
+                      />
+                      {/* Dots */}
+                      {normalized.map((v, i) => (
+                        <circle key={i} cx={i * 100} cy={100 - v} r="4" fill="#3b82f6" stroke="white" strokeWidth="2" />
+                      ))}
+                      <defs>
+                        <linearGradient id="speedGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  )
                 })()}
+                {/* Y-axis labels */}
+                <span className="absolute top-0 left-0 text-[9px] text-text-secondary">{formatTime(Math.max(...speedData))}</span>
+                <span className="absolute bottom-0 left-0 text-[9px] text-text-secondary">0s</span>
               </div>
               <div className="flex justify-between items-center mt-2 text-sm">
                 <span className="text-text-secondary">Avg: {formatTime(avgSpeed)}</span>

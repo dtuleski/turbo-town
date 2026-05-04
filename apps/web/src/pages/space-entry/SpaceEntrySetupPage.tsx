@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
+import { canStartGame } from '@/api/game'
 import type { SpaceEntryDifficulty } from '@/utils/spaceEntryConfig'
 
 const DIFFICULTY_LEVELS: Array<{
@@ -19,6 +20,21 @@ export default function SpaceEntrySetupPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [selectedDifficulty, setSelectedDifficulty] = useState<SpaceEntryDifficulty | ''>('')
+
+  // Premium gate: check user tier on mount
+  useEffect(() => {
+    const checkAccess = async () => {
+      try {
+        const result = await canStartGame()
+        if (result?.rateLimit?.tier !== 'PREMIUM') {
+          navigate(ROUTES.SUBSCRIPTION, { state: { premiumRequired: true }, replace: true })
+        }
+      } catch {
+        // If we can't check, let the backend startGame handle it
+      }
+    }
+    checkAccess()
+  }, [navigate])
 
   const handleStart = () => {
     if (selectedDifficulty) {

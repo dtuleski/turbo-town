@@ -22,14 +22,14 @@ export default function ScratchCodingSetupPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
-            🚀 {t('scratchCoding.title')}
+            💻 {t('scratchCoding.title')}
           </h1>
           <p className="text-xl text-white/80 font-bold">
             {t('scratchCoding.subtitle')}
           </p>
         </div>
 
-        {/* How to Play */}
+        {/* How to Play — updated for terminal-style coding (Task 14) */}
         <div className="bg-white/10 backdrop-blur rounded-2xl p-6 mb-6">
           <h2 className="text-2xl font-bold text-white mb-4 text-center">
             {t('scratchCoding.howToPlay')}
@@ -38,25 +38,25 @@ export default function ScratchCodingSetupPage() {
             <div className="p-4">
               <div className="text-4xl mb-2">🛸</div>
               <p className="text-white/80 text-sm font-medium">
-                {t('scratchCoding.howToPlayStep1', 'Drag code blocks from the palette into the editor')}
+                {t('scratchCoding.howToPlayStep1', 'Click command buttons from the palette to add code lines')}
               </p>
             </div>
             <div className="p-4">
               <div className="text-4xl mb-2">⚡</div>
               <p className="text-white/80 text-sm font-medium">
-                {t('scratchCoding.howToPlayStep2', 'Snap blocks together to build your program')}
+                {t('scratchCoding.howToPlayStep2', 'Build your program in the terminal-style code editor')}
               </p>
             </div>
             <div className="p-4">
               <div className="text-4xl mb-2">🧑‍🚀</div>
               <p className="text-white/80 text-sm font-medium">
-                {t('scratchCoding.howToPlayStep3', 'Press Run and watch your character follow the instructions!')}
+                {t('scratchCoding.howToPlayStep3', 'Press Run and watch your astronaut follow the instructions!')}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Difficulty Selection */}
+        {/* Difficulty Selection — updated descriptions (Task 14) */}
         <div className="bg-white/10 backdrop-blur rounded-2xl p-6 mb-6">
           <h2 className="text-2xl font-bold text-white mb-4 text-center">
             {t('scratchCoding.chooseDifficulty')}
@@ -81,8 +81,8 @@ export default function ScratchCodingSetupPage() {
                   <div className="text-sm text-white/60 mt-1">
                     {t(`scratchCoding.difficulty.${d}.desc`, config.description)}
                   </div>
-                  <div className="text-xs text-white/40 mt-2">
-                    {t(`scratchCoding.difficulty.${d}.features`, config.availableCategories.join(' + '))}
+                  <div className="text-xs text-white/40 mt-2 font-mono">
+                    {t(`scratchCoding.difficulty.${d}.features`, config.availableCommands.join(' + '))}
                   </div>
                 </button>
               )

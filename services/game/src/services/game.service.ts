@@ -47,6 +47,12 @@ export class GameService {
     // Get user's subscription tier
     const tier = await this.subscriptionRepository.getTier(userId);
 
+    // Check if game requires premium tier
+    const PREMIUM_GAMES = ['SPACE_ENTRY'];
+    if (PREMIUM_GAMES.includes(input.themeId) && tier !== SubscriptionTier.Premium) {
+      throw new AuthorizationError('This game requires a Premium subscription. Upgrade to play!');
+    }
+
     // Check rate limit
     await this.rateLimiter.checkLimit(userId, tier);
 
@@ -337,13 +343,8 @@ export class GameService {
     // Invalidate statistics cache
     statisticsCache.delete(userId);
 
-    // Calculate score breakdown for frontend display
-    const scoreBreakdown = this.scoreCalculator.calculateScoreBreakdown(
-      game.difficulty,
-      input.completionTime,
-      input.attempts,
-      accuracy
-    );
+    // Use the same score breakdown that was used to compute the stored score
+    const scoreBreakdown = scoreBreakdownForEvent;
 
     logger.info('Game completed successfully', {
       userId,
