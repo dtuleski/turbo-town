@@ -28,6 +28,60 @@ export class AuthenticationError extends Error {
   }
 }
 
+// JWKS cache for Cognito public keys
+let jwksCache: { keys: any[]; fetchedAt: number } | null = null;
+const JWKS_CACHE_TTL_MS = 3600000; // 1 hour
+
+async function getJwks(userPoolId: string, region: string): Promise<any[]> {
+  const now = Date.now();
+  if (jwksCache && (now - jwksCache.fetchedAt) < JWKS_CACHE_TTL_MS) {
+    return jwksCache.keys;
+  }
+
+  const jwksUrl = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`;
+  const response = await fetch(jwksUrl);
+  if (!response.ok) {
+    throw new AuthenticationError('Failed to fetch JWKS keys');
+  }
+  const data = await response.json();
+  jwksCache = { keys: data.keys, fetchedAt: now };
+  return data.keys;
+}
+
+function base64UrlToBuffer(base64url: string): Buffer {
+  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = '='.repeat((4 - (base64.length % 4)) % 4);
+  return Buffer.from(base64 + padding, 'base64');
+}
+
+async function verifySignature(token: string, keys: any[]): Promise<boolean> {
+  const crypto = await import('crypto');
+  const parts = token.split('.');
+  const header = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf-8'));
+
+  // Find the matching key by kid
+  const key = keys.find((k: any) => k.kid === header.kid);
+  if (!key) {
+    throw new AuthenticationError('Token signing key not found in JWKS');
+  }
+
+  // Build RSA public key from JWK
+  const publicKey = crypto.createPublicKey({ key, format: 'jwk' });
+
+  // Verify signature
+  const signatureBuffer = base64UrlToBuffer(parts[2]);
+  const dataToVerify = `${parts[0]}.${parts[1]}`;
+
+  const isValid = crypto.verify(
+    header.alg === 'RS256' ? 'sha256' : 'sha384',
+    Buffer.from(dataToVerify),
+    publicKey,
+    signatureBuffer
+  );
+
+  return isValid;
+}
+
 /**
  * Validates a JWT token from AWS Cognito
  * 
@@ -77,6 +131,13 @@ export async function validateToken(
     // Validate token use (should be 'access' or 'id')
     if (!['access', 'id'].includes(payload.token_use)) {
       throw new AuthenticationError('Invalid token use');
+    }
+
+    // Verify cryptographic signature against Cognito JWKS
+    const jwks = await getJwks(userPoolId, region);
+    const signatureValid = await verifySignature(token, jwks);
+    if (!signatureValid) {
+      throw new AuthenticationError('Invalid token signature');
     }
 
     // Extract user information

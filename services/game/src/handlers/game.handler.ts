@@ -28,6 +28,9 @@ import { GraphQLContext, GraphQLResponse } from '../types';
 const ADMIN_EMAILS = ['diegotuleski@gmail.com', 'diego.tuleski@gmail.com', 'benjamintuleski@gmail.com'];
 const ADMIN_USERNAMES = ['dtuleski', 'bentuleski'];
 
+// In-memory rate limit for checkout sessions (resets on cold start)
+const checkoutRateLimits = new Map<string, number[]>();
+
 function isAdminUser(username?: string, email?: string): boolean {
   return ADMIN_USERNAMES.includes(username || '') || ADMIN_EMAILS.includes(email || '');
 }
@@ -469,12 +472,55 @@ export class GameHandler {
       throw new Error('priceId and tier are required');
     }
 
+    // Validate tier is an allowed value
+    const ALLOWED_TIERS = ['LIGHT', 'STANDARD', 'PREMIUM'] as const;
+    if (!ALLOWED_TIERS.includes(input.tier)) {
+      throw new Error(`Invalid tier: ${input.tier}. Must be one of: ${ALLOWED_TIERS.join(', ')}`);
+    }
+
+    // Validate priceId matches the declared tier (server-side enforcement)
+    const TIER_PRICE_MAP: Record<string, string> = {
+      LIGHT: process.env.STRIPE_PRICE_LIGHT || 'price_1Tla6fD1JApM7NxilsPnWDmq',
+      STANDARD: process.env.STRIPE_PRICE_STANDARD || 'price_1Tla6gD1JApM7NxiAv5siMlb',
+      PREMIUM: process.env.STRIPE_PRICE_PREMIUM || 'price_1Tla6fD1JApM7NxiNhbaOCG8',
+    };
+
+    const expectedPriceId = TIER_PRICE_MAP[input.tier];
+    if (input.priceId !== expectedPriceId) {
+      logger.error('Price ID mismatch', new Error('Price ID mismatch'), {
+        userId,
+        tier: input.tier,
+        providedPriceId: input.priceId,
+        expectedPriceId,
+      });
+      throw new Error('Invalid price ID for the selected tier');
+    }
+
+    // Rate limit checkout session creation (max 5 per hour per user)
+    const rateLimitKey = `checkout:${userId}`;
+    const now = Date.now();
+    const oneHourAgo = now - 3600000;
+    
+    // Simple in-memory rate limit (resets on Lambda cold start, which is acceptable)
+    if (!checkoutRateLimits.has(rateLimitKey)) {
+      checkoutRateLimits.set(rateLimitKey, []);
+    }
+    const timestamps = checkoutRateLimits.get(rateLimitKey)!;
+    // Remove entries older than 1 hour
+    const recentTimestamps = timestamps.filter(t => t > oneHourAgo);
+    if (recentTimestamps.length >= 5) {
+      logger.error('Checkout rate limit exceeded', new Error('Rate limit'), { userId });
+      throw new Error('Too many checkout attempts. Please try again later.');
+    }
+    recentTimestamps.push(now);
+    checkoutRateLimits.set(rateLimitKey, recentTimestamps);
+
     logger.info('Creating checkout session', { userId, tier: input.tier });
 
     const result = await this.stripeService.createCheckoutSession({
       userId,
       email,
-      priceId: input.priceId,
+      priceId: expectedPriceId, // Use server-validated priceId, not user input
       tier: input.tier,
     });
 
