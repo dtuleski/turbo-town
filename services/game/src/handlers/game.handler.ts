@@ -487,13 +487,13 @@ export class GameHandler {
 
     const expectedPriceId = TIER_PRICE_MAP[input.tier];
     if (input.priceId !== expectedPriceId) {
-      logger.error('Price ID mismatch', new Error('Price ID mismatch'), {
+      // Log mismatch but don't reject — use server-side price (client may have stale code)
+      logger.info('Price ID mismatch (using server-side price)', {
         userId,
         tier: input.tier,
         providedPriceId: input.priceId,
         expectedPriceId,
       });
-      throw new Error('Invalid price ID for the selected tier');
     }
 
     // Rate limit checkout session creation (max 5 per hour per user)
