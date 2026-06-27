@@ -1,8 +1,14 @@
 import Stripe from 'stripe';
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { logger } from '../utils/logger';
 import { SubscriptionTier } from '@memory-game/shared';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
+
+const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+const RATE_LIMITS_TABLE = process.env.RATE_LIMITS_TABLE_NAME!;
 
 const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
 
@@ -62,6 +68,24 @@ export class StripeService {
 
   constructor() {
     this.subscriptionRepo = new SubscriptionRepository();
+  }
+
+  /**
+   * Sync tier to rate-limits table (keeps both tables consistent)
+   */
+  private async syncRateLimitTier(userId: string, tier: string): Promise<void> {
+    try {
+      await dynamoClient.send(new UpdateCommand({
+        TableName: RATE_LIMITS_TABLE,
+        Key: { userId },
+        UpdateExpression: 'SET tier = :t',
+        ExpressionAttributeValues: { ':t': tier },
+      }));
+      logger.info('Rate limit tier synced', { userId, tier });
+    } catch (error) {
+      // Non-fatal: log but don't fail the webhook
+      logger.error('Failed to sync rate limit tier', error as Error, { userId, tier });
+    }
   }
 
   /**
@@ -203,6 +227,9 @@ export class StripeService {
       currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       effectiveDate: new Date(),
     });
+
+    // Sync tier to rate-limits table
+    await this.syncRateLimitTier(userId, tier);
   }
 
   /**
@@ -263,6 +290,9 @@ export class StripeService {
       status: 'INACTIVE',
       stripeSubscriptionId: subscription.id,
     });
+
+    // Sync tier to rate-limits table
+    await this.syncRateLimitTier(userId, 'FREE');
   }
 
   /**
