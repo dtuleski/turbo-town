@@ -40,17 +40,17 @@ export default function RateLimitPage() {
     {
       name: 'Light', price: '$2.99', period: 'month', plays: '20 plays/day',
       features: ['Access to all games', 'Up to 3 devices', 'Renews every 24 hours', 'Basic statistics'],
-      tier: 'LIGHT' as const, priceId: 'price_1TKqGiD1222JoXRHktL151cZ',
+      tier: 'LIGHT' as const, priceId: 'price_1Tla6fD1JApM7NxilsPnWDmq',
     },
     {
       name: 'Standard', price: '$5.99', period: 'month', plays: '100 plays/day',
       features: ['Access to all games', 'Up to 3 devices', 'Renews every 24 hours', 'Detailed statistics', 'Priority support'],
-      tier: 'STANDARD' as const, priceId: 'price_1TKqH2D1222JoXRHsRniF5BD', popular: true,
+      tier: 'STANDARD' as const, priceId: 'price_1Tla6gD1JApM7NxiAv5siMlb', popular: true,
     },
     {
       name: 'Premium', price: '$9.99', period: 'month', plays: '1,000 plays/day',
       features: ['Access to all games', 'Up to 5 devices', '1,000 plays/day', 'Advanced analytics', 'Priority support', 'Early access to new games'],
-      tier: 'PREMIUM' as const, priceId: 'price_1TKqHJD1222JoXRHQZBWppLK',
+      tier: 'PREMIUM' as const, priceId: 'price_1Tla6fD1JApM7NxiNhbaOCG8',
     },
   ]
 
