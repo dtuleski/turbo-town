@@ -83,6 +83,11 @@ export class ScoreCalculatorService {
       // Easy: 3 holes, expect 30-90s; Medium: 4 holes, expect 40-120s; Hard: 3 holes, expect 40-150s
       maxTime = difficulty >= 3 ? 60 : difficulty >= 2 ? 50 : 40;
       speedBonusCap = 1.5; // still capped but now much harder to max out
+    } else if (gameThemeId === 'LANGUAGE_LEARNING') {
+      // ~20 questions, target ~4-5s per question
+      // Easy: 60s, Medium: 75s, Hard: 90s
+      // Finishing at maxTime = 1.0x speed, faster = bonus up to 2.0x
+      maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 75 : 60;
     } else if (isPremium) {
       maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 120 : 180;
     } else {
