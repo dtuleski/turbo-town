@@ -236,4 +236,3 @@ function validateEnvironment(): void {
     throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
   }
 }
-// trigger

@@ -51,4 +51,5 @@ export interface AuthContextType {
   logout: () => Promise<void>
   updateProfile: (input: UpdateProfileInput) => Promise<void>
   confirmEmail: (email: string, code: string) => Promise<void>
+  resendCode: (email: string) => Promise<void>
 }

@@ -257,6 +257,9 @@ export class GameHandler {
       case 'updateUserSubscription':
         return this.updateUserSubscription(userId, variables.input, username, email);
 
+      case 'adminDeleteUser':
+        return this.adminDeleteUser(userId, variables.userId, username, email);
+
       // Reviews
       case 'submitGameReview':
         return this.reviewService.submitReview(userId, variables.input);
@@ -763,6 +766,23 @@ export class GameHandler {
       tier: input.tier,
       status: input.status,
     };
+  }
+
+  /**
+   * Mutation: adminDeleteUser (Admin only)
+   * Deletes a FREE-tier user from Cognito
+   */
+  private async adminDeleteUser(callerUserId: string, targetUserId: string, username?: string, email?: string): Promise<any> {
+    const isAdmin = isAdminUser(username, email);
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    if (!targetUserId) {
+      throw new Error('userId is required');
+    }
+
+    return this.adminService.deleteUser(targetUserId);
   }
 
   /**

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession, confirmSignUp, fetchUserAttributes, signInWithRedirect } from 'aws-amplify/auth'
+import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession, confirmSignUp, resendSignUpCode, fetchUserAttributes, signInWithRedirect } from 'aws-amplify/auth'
 import type { User, AuthContextType, LoginInput, RegisterInput, UpdateProfileInput } from '@/types/auth'
 import { storage } from '@/utils/storage'
 import { STORAGE_KEYS } from '@/config/constants'
@@ -221,6 +221,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  const resendCode = async (email: string) => {
+    try {
+      await resendSignUpCode({
+        username: email.toLowerCase().trim(),
+      })
+    } catch (error: any) {
+      console.error('Resend code error:', error)
+      throw new Error(error.message || 'Failed to resend code')
+    }
+  }
+
   const logout = async () => {
     try {
       await signOut()
@@ -263,6 +274,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     updateProfile,
     confirmEmail,
+    resendCode,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

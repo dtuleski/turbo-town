@@ -306,6 +306,15 @@ const UPDATE_USER_SUBSCRIPTION = gql`
   }
 `;
 
+const ADMIN_DELETE_USER = gql`
+  mutation AdminDeleteUser($userId: String!) {
+    adminDeleteUser(userId: $userId) {
+      success
+      userId
+    }
+  }
+`;
+
 export const getAdminAnalytics = async (): Promise<AdminAnalytics> => {
   try {
     console.log('Starting GraphQL query for admin analytics...');
@@ -418,6 +427,15 @@ export const updateUserSubscription = async (input: {
   });
 
   return data.updateUserSubscription;
+};
+
+export const adminDeleteUser = async (userId: string): Promise<{ success: boolean; userId: string }> => {
+  const { data } = await gameClient.mutate({
+    mutation: ADMIN_DELETE_USER,
+    variables: { userId },
+  });
+
+  return data.adminDeleteUser;
 };
 
 export const createLanguageWord = async (input: {

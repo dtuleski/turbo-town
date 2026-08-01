@@ -40,7 +40,16 @@ export class ScoreCalculatorService {
     gameThemeId?: string
   ): ScoreBreakdown {
     const pairs = this.getPairsForDifficulty(difficulty);
-    const minAttempts = pairs * 2;
+    // minAttempts = theoretical perfect (one match per attempt)
+    // For accuracy, we use a "grace zone" — attempts beyond minAttempts get penalized gradually
+    // Formula: accuracy = max(0, 1 - (attempts - minAttempts) / graceAttempts)
+    // Easy (6 pairs): 0% at 24 attempts, 50% at 15 attempts
+    // Medium (8 pairs): 0% at 32 attempts, 50% at 20 attempts
+    // Hard (10 pairs): 0% at 40 attempts, 50% at 25 attempts
+    // Super Hard (15 pairs): 0% at 75 attempts, 50% at 45 attempts
+    // Super Hard gets a bigger grace zone because 30 cards means much more discovery needed
+    const minAttempts = pairs;
+    const graceAttempts = difficulty >= 4 ? pairs * 4 : pairs * 3;
 
     // Premium games get higher base score to reach 8,000 max
     const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
@@ -85,7 +94,7 @@ export class ScoreCalculatorService {
     if (accuracyOverride !== undefined) {
       accuracyRatio = accuracyOverride;
     } else {
-      accuracyRatio = Math.max(0, 1 - (attempts - minAttempts) / minAttempts);
+      accuracyRatio = Math.max(0, 1 - (attempts - minAttempts) / graceAttempts);
     }
     const accuracyBonus = 0.5 + accuracyRatio * 1.0;
 

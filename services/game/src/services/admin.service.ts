@@ -1,6 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
-import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityProviderClient, ListUsersCommand, AdminDeleteUserCommand } from '@aws-sdk/client-cognito-identity-provider';
 
 const dynamoDBClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
@@ -431,5 +431,42 @@ export class AdminService {
       PREMIUM: 9.99
     };
     return (prices[tier] || 0) * count;
+  }
+
+  /**
+   * Delete a user from Cognito (admin only)
+   * Only allows deleting FREE tier users for safety
+   */
+  async deleteUser(userId: string): Promise<{ success: boolean; userId: string }> {
+    // Find the user in Cognito by sub attribute
+    const cognitoUsers = await this.getCognitoUsers();
+    const user = cognitoUsers.find((u: any) => u.userId === userId);
+
+    if (!user) {
+      throw new Error(`User not found: ${userId}`);
+    }
+
+    // Look up the Cognito username (needed for AdminDeleteUser)
+    const listResult = await cognitoClient.send(
+      new ListUsersCommand({
+        UserPoolId: USER_POOL_ID,
+        Filter: `sub = "${userId}"`,
+        Limit: 1,
+      })
+    );
+
+    const cognitoUser = listResult.Users?.[0];
+    if (!cognitoUser?.Username) {
+      throw new Error(`Could not find Cognito username for userId: ${userId}`);
+    }
+
+    await cognitoClient.send(
+      new AdminDeleteUserCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: cognitoUser.Username,
+      })
+    );
+
+    return { success: true, userId };
   }
 }

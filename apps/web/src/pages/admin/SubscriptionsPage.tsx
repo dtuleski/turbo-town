@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listAllUsers, updateUserSubscription, AdminUserInfo } from '@/api/admin';
+import { listAllUsers, updateUserSubscription, adminDeleteUser, AdminUserInfo } from '@/api/admin';
 import { adminSetEmailPrefs, adminGetAllEmailPrefs } from '@/api/game';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import Button from '@/components/common/Button';
@@ -93,6 +93,24 @@ const SubscriptionsPage = () => {
     } catch (err) {
       console.error('Failed to update subscription:', err);
       alert('Failed to update subscription');
+    } finally {
+      setUpdatingUserId(null);
+    }
+  };
+
+  const handleDeleteUser = async (user: AdminUserInfo) => {
+    if (!confirm(`Delete user "${user.username}" (${user.email})? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      setUpdatingUserId(user.userId);
+      await adminDeleteUser(user.userId);
+      setUsers(users.filter(u => u.userId !== user.userId));
+      alert('User deleted successfully');
+    } catch (err) {
+      console.error('Failed to delete user:', err);
+      alert('Failed to delete user');
     } finally {
       setUpdatingUserId(null);
     }
@@ -236,7 +254,7 @@ const SubscriptionsPage = () => {
                       </button>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 items-center">
                         <select
                           value={user.tier}
                           onChange={(e) => handleUpdateSubscription(user.userId, e.target.value, 'ACTIVE')}
@@ -247,6 +265,18 @@ const SubscriptionsPage = () => {
                             <option key={tier} value={tier}>{tier}</option>
                           ))}
                         </select>
+                        {user.tier === 'FREE' && (
+                          <button
+                            onClick={() => handleDeleteUser(user)}
+                            disabled={updatingUserId === user.userId}
+                            className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                            title="Delete user"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

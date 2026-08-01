@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +13,7 @@ import { setEmailPrefs } from '@/api/game'
 
 const RegisterPage = () => {
   const { t } = useTranslation()
-  const { register: registerUser, confirmEmail, loginWithGoogle } = useAuth()
+  const { register: registerUser, confirmEmail, resendCode, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -21,6 +21,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('')
   const [confirmationCode, setConfirmationCode] = useState('')
   const [emailOptIn, setEmailOptIn] = useState(true)
+  const [resendCooldown, setResendCooldown] = useState(0)
 
   const {
     register,
@@ -64,6 +65,23 @@ const RegisterPage = () => {
     }
   }
 
+  const onResendCode = async () => {
+    try {
+      setError('')
+      await resendCode(email)
+      setResendCooldown(60)
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend code')
+    }
+  }
+
+  // Cooldown timer for resend button
+  useEffect(() => {
+    if (resendCooldown <= 0) return
+    const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000)
+    return () => clearTimeout(timer)
+  }, [resendCooldown])
+
   if (needsConfirmation) {
     return (
       <div>
@@ -94,6 +112,16 @@ const RegisterPage = () => {
         </form>
 
         <div className="mt-6 text-center text-sm text-text-secondary">
+          <button
+            onClick={onResendCode}
+            disabled={resendCooldown > 0}
+            className="text-primary-blue hover:underline font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {resendCooldown > 0 ? `Resend code (${resendCooldown}s)` : 'Resend code'}
+          </button>
+        </div>
+
+        <div className="mt-3 text-center text-sm text-text-secondary">
           <button
             onClick={() => setNeedsConfirmation(false)}
             className="text-primary-blue hover:underline font-medium"
