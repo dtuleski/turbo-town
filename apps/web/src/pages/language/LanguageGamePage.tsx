@@ -214,6 +214,7 @@ export default function LanguageGamePage() {
         const finalScore = Math.round(6000 * accuracy * timePenalty);
         
         // Complete game in backend for leaderboard
+        let backendScore = finalScore;
         if (backendGameId) {
           try {
             const result = await completeGame({
@@ -224,14 +225,14 @@ export default function LanguageGamePage() {
               totalQuestions: words.length,
             });
             if (result?.score) {
-              // Score displayed uses frontend calculation with difficulty multiplier
+              backendScore = result.score;
             }
           } catch (err) {
             console.error('Failed to complete backend game:', err);
           }
         }
         
-        setFinalGameState({ ...gameState, score: finalScore, correctAnswers: finalCorrectAnswers });
+        setFinalGameState({ ...gameState, score: backendScore, correctAnswers: finalCorrectAnswers });
         setShowResults(true);
       } else {
         // Next question
