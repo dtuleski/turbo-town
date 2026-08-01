@@ -260,6 +260,9 @@ export class GameHandler {
       case 'adminDeleteUser':
         return this.adminDeleteUser(userId, variables.userId, username, email);
 
+      case 'adminConfirmUser':
+        return this.adminConfirmUser(userId, variables.email, username, email);
+
       // Reviews
       case 'submitGameReview':
         return this.reviewService.submitReview(userId, variables.input);
@@ -783,6 +786,32 @@ export class GameHandler {
     }
 
     return this.adminService.deleteUser(targetUserId);
+  }
+
+  /**
+   * Mutation: adminConfirmUser (Admin only)
+   * Confirms an unconfirmed user's email in Cognito
+   */
+  private async adminConfirmUser(callerUserId: string, targetEmail: string, username?: string, email?: string): Promise<any> {
+    const isAdmin = isAdminUser(username, email);
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    if (!targetEmail) {
+      throw new Error('email is required');
+    }
+
+    const { CognitoIdentityProviderClient, AdminConfirmSignUpCommand } = await import('@aws-sdk/client-cognito-identity-provider');
+    const cognitoClient = new CognitoIdentityProviderClient({});
+    const userPoolId = process.env.COGNITO_USER_POOL_ID;
+
+    await cognitoClient.send(new AdminConfirmSignUpCommand({
+      UserPoolId: userPoolId,
+      Username: targetEmail,
+    }));
+
+    return { success: true, email: targetEmail };
   }
 
   /**

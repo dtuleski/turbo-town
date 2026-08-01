@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listAllUsers, updateUserSubscription, adminDeleteUser, AdminUserInfo } from '@/api/admin';
+import { listAllUsers, updateUserSubscription, adminDeleteUser, adminConfirmUser, AdminUserInfo } from '@/api/admin';
 import { adminSetEmailPrefs, adminGetAllEmailPrefs } from '@/api/game';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import Button from '@/components/common/Button';
@@ -111,6 +111,20 @@ const SubscriptionsPage = () => {
     } catch (err) {
       console.error('Failed to delete user:', err);
       alert('Failed to delete user');
+    } finally {
+      setUpdatingUserId(null);
+    }
+  };
+
+  const handleConfirmUser = async (user: AdminUserInfo) => {
+    try {
+      setUpdatingUserId(user.userId);
+      await adminConfirmUser(user.email);
+      setUsers(users.map(u => u.userId === user.userId ? { ...u, cognitoStatus: 'CONFIRMED' } : u));
+      alert(`User ${user.email} confirmed!`);
+    } catch (err) {
+      console.error('Failed to confirm user:', err);
+      alert('Failed to confirm user');
     } finally {
       setUpdatingUserId(null);
     }
@@ -265,6 +279,18 @@ const SubscriptionsPage = () => {
                             <option key={tier} value={tier}>{tier}</option>
                           ))}
                         </select>
+                        {user.cognitoStatus !== 'CONFIRMED' && user.cognitoStatus !== 'EXTERNAL_PROVIDER' && (
+                          <button
+                            onClick={() => handleConfirmUser(user)}
+                            disabled={updatingUserId === user.userId}
+                            className="p-1.5 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50"
+                            title="Confirm user email"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        )}
                         {user.tier === 'FREE' && (
                           <button
                             onClick={() => handleDeleteUser(user)}

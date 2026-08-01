@@ -319,6 +319,15 @@ const ADMIN_DELETE_USER = gql`
   }
 `;
 
+const ADMIN_CONFIRM_USER = gql`
+  mutation AdminConfirmUser($email: String!) {
+    adminConfirmUser(email: $email) {
+      success
+      email
+    }
+  }
+`;
+
 export const getAdminAnalytics = async (): Promise<AdminAnalytics> => {
   try {
     console.log('Starting GraphQL query for admin analytics...');
@@ -440,6 +449,15 @@ export const adminDeleteUser = async (userId: string): Promise<{ success: boolea
   });
 
   return data.adminDeleteUser;
+};
+
+export const adminConfirmUser = async (email: string): Promise<{ success: boolean; email: string }> => {
+  const { data } = await gameClient.mutate({
+    mutation: ADMIN_CONFIRM_USER,
+    variables: { email },
+  });
+
+  return data.adminConfirmUser;
 };
 
 export const createLanguageWord = async (input: {

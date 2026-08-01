@@ -62,6 +62,10 @@ interface AdminAnalytics {
     gamesPlayed: number;
     lastActive: string;
   }>;
+  gamesByType: Array<{
+    gameType: string;
+    plays: number;
+  }>;
 }
 
 export class AdminService {
