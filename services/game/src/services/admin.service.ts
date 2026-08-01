@@ -138,8 +138,8 @@ export class AdminService {
       : 0;
 
     // Users by tier
-    const tierCounts: Record<string, number> = { FREE: 0, LIGHT: 0, BASIC: 0, STANDARD: 0, PREMIUM: 0 };
-    const tierGames: Record<string, number[]> = { FREE: [], LIGHT: [], BASIC: [], STANDARD: [], PREMIUM: [] };
+    const tierCounts: Record<string, number> = { FREE: 0, LIGHT: 0, STANDARD: 0, PREMIUM: 0 };
+    const tierGames: Record<string, number[]> = { FREE: [], LIGHT: [], STANDARD: [], PREMIUM: [] };
     
     // Map subscriptions
     const userTiers: Record<string, string> = {};
@@ -168,7 +168,7 @@ export class AdminService {
     }));
 
     // Conversion rate (paid users / total users)
-    const paidUsers = tierCounts.BASIC + tierCounts.STANDARD + tierCounts.PREMIUM;
+    const paidUsers = (tierCounts.LIGHT || 0) + (tierCounts.STANDARD || 0) + (tierCounts.PREMIUM || 0);
     const conversionRate = totalUsers > 0 ? (paidUsers / totalUsers) * 100 : 0;
 
     // Recent activity
@@ -195,6 +195,16 @@ export class AdminService {
         };
       });
 
+    // Games by type
+    const gamesByType: Record<string, number> = {};
+    allGames.forEach((game: any) => {
+      const type = game.themeId || 'UNKNOWN';
+      gamesByType[type] = (gamesByType[type] || 0) + 1;
+    });
+    const gamesByTypeSorted = Object.entries(gamesByType)
+      .map(([gameType, plays]) => ({ gameType, plays }))
+      .sort((a, b) => b.plays - a.plays);
+
     return {
       overview: {
         totalUsers,
@@ -209,7 +219,8 @@ export class AdminService {
       },
       usersByTier,
       recentActivity,
-      topUsers
+      topUsers,
+      gamesByType: gamesByTypeSorted
     };
   }
 
@@ -416,9 +427,9 @@ export class AdminService {
   private normalizeTier(tier: string): string {
     const tierMap: Record<string, string> = {
       FREE: 'FREE',
-      LIGHT: 'BASIC',
-      BASIC: 'BASIC',
-      STANDARD: 'PREMIUM',
+      LIGHT: 'LIGHT',
+      BASIC: 'LIGHT',
+      STANDARD: 'STANDARD',
       PREMIUM: 'PREMIUM'
     };
     return tierMap[tier] || 'FREE';
@@ -427,7 +438,8 @@ export class AdminService {
   private calculateTierRevenue(tier: string, count: number): number {
     const prices: Record<string, number> = {
       FREE: 0,
-      BASIC: 1.99,
+      LIGHT: 1.99,
+      STANDARD: 4.99,
       PREMIUM: 9.99
     };
     return (prices[tier] || 0) * count;

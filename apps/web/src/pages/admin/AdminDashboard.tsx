@@ -40,6 +40,30 @@ const fetchAdminAnalyticsDirect = async (): Promise<AdminAnalytics> => {
                 avgGamesPerUser
                 conversionRate
               }
+              usersByTier {
+                tier
+                count
+                percentage
+                avgGamesPerUser
+                totalRevenue
+              }
+              recentActivity {
+                last24Hours { uniqueUsers totalGames avgGamesPerUser }
+                last7Days { uniqueUsers totalGames avgGamesPerUser }
+                last30Days { uniqueUsers totalGames avgGamesPerUser }
+              }
+              topUsers {
+                userId
+                username
+                email
+                tier
+                gamesPlayed
+                lastActive
+              }
+              gamesByType {
+                gameType
+                plays
+              }
             }
           }
         `,
@@ -59,12 +83,13 @@ const fetchAdminAnalyticsDirect = async (): Promise<AdminAnalytics> => {
     }
 
     const overview = result.data?.getAdminAnalytics?.overview;
+    const analyticsData = result.data?.getAdminAnalytics;
     console.log('Overview data received:', overview);
     console.log('Total users:', overview?.totalUsers);
     console.log('DAU:', overview?.dau);
     console.log('Total games played:', overview?.totalGamesPlayed);
 
-    // Return with fallback data for missing fields
+    // Return full data from API
     return {
       overview: overview || {
         totalUsers: 0,
@@ -77,17 +102,19 @@ const fetchAdminAnalyticsDirect = async (): Promise<AdminAnalytics> => {
         avgGamesPerUser: 0,
         conversionRate: 0,
       },
-      usersByTier: [
+      usersByTier: analyticsData?.usersByTier || [
         { tier: 'FREE', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 },
-        { tier: 'BASIC', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 },
-        { tier: 'PREMIUM', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 }
+        { tier: 'LIGHT', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 },
+        { tier: 'STANDARD', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 },
+        { tier: 'PREMIUM', count: 0, percentage: 0, avgGamesPerUser: 0, totalRevenue: 0 },
       ],
-      recentActivity: {
+      recentActivity: analyticsData?.recentActivity || {
         last24Hours: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
         last7Days: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
         last30Days: { uniqueUsers: 0, totalGames: 0, avgGamesPerUser: 0 },
       },
-      topUsers: [],
+      topUsers: analyticsData?.topUsers || [],
+      gamesByType: analyticsData?.gamesByType || [],
     };
   } catch (error) {
     console.error('Direct API call failed:', error);
@@ -557,6 +584,53 @@ const AdminDashboard = () => {
                 </table>
               </div>
             </div>
+
+            {/* Game Popularity - Plays per Game */}
+            {analytics.gamesByType && analytics.gamesByType.length > 0 && (
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold mb-4">🎮 Game Popularity (by plays)</h2>
+                <div className="space-y-3">
+                  {analytics.gamesByType.map((game, index) => {
+                    const GAME_NAMES: Record<string, string> = {
+                      MEMORY_MATCH: 'Memory Match', MATH_CHALLENGE: 'Math Challenge', WORD_PUZZLE: 'Word Puzzle',
+                      LANGUAGE_LEARNING: 'Language Learning', SUDOKU: 'Sudoku', JIGSAW_PUZZLE: 'Jigsaw Puzzle',
+                      BUBBLE_POP: 'Bubble Pop', SEQUENCE_MEMORY: 'Sequence Memory', CODE_A_BOT: 'Code-a-Bot',
+                      GEO_QUIZ: 'Geo Quiz', HISTORY_QUIZ: 'History Quiz', CIVICS_QUIZ: 'Civics Quiz',
+                      COLOR_BY_NUMBER: 'Color by Number', HANGMAN: 'Hangman', TIC_TAC_TOE: 'Tic Tac Toe',
+                      SCRATCH_CODING: 'Scratch Coding', MATH_MAZE: 'Math Maze', PATTERN_RECALL: 'Pattern Recall',
+                      SPACE_ENTRY: 'Space Entry', BOND_AND_BURN: 'Bond & Burn', TRAFFIC_LAB: 'Traffic Lab',
+                      MINI_GOLF: 'Mini Golf',
+                    };
+                    const GAME_ICONS: Record<string, string> = {
+                      MEMORY_MATCH: '🃏', MATH_CHALLENGE: '🧮', WORD_PUZZLE: '🔤',
+                      LANGUAGE_LEARNING: '🌍', SUDOKU: '9️⃣', JIGSAW_PUZZLE: '🧩',
+                      BUBBLE_POP: '🫧', SEQUENCE_MEMORY: '🧠', CODE_A_BOT: '🤖',
+                      GEO_QUIZ: '🌍', HISTORY_QUIZ: '📜', CIVICS_QUIZ: '🇺🇸',
+                      COLOR_BY_NUMBER: '🎨', HANGMAN: '🪢', TIC_TAC_TOE: '❌',
+                      SCRATCH_CODING: '💻', MATH_MAZE: '🔢', PATTERN_RECALL: '🔲',
+                      SPACE_ENTRY: '🚀', BOND_AND_BURN: '🔥', TRAFFIC_LAB: '🚗',
+                      MINI_GOLF: '⛳',
+                    };
+                    const maxPlays = analytics.gamesByType![0]?.plays || 1;
+                    const barWidth = Math.max(5, (game.plays / maxPlays) * 100);
+                    return (
+                      <div key={game.gameType} className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-500 w-6">{index + 1}.</span>
+                        <span className="text-xl w-8">{GAME_ICONS[game.gameType] || '🎮'}</span>
+                        <span className="text-sm font-medium w-36 truncate">{GAME_NAMES[game.gameType] || game.gameType}</span>
+                        <div className="flex-1 bg-gray-100 rounded-full h-6 relative">
+                          <div
+                            className="bg-gradient-to-r from-blue-500 to-blue-600 h-6 rounded-full"
+                            style={{ width: `${barWidth}%` }}
+                          />
+                          <span className="absolute right-2 top-0.5 text-xs font-bold text-gray-700">{game.plays}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Game Ratings */}
             {reviewStats && (
