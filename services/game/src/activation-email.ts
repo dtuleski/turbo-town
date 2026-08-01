@@ -25,7 +25,7 @@ const EMAIL_PREFS_TABLE = process.env.EMAIL_PREFS_TABLE_NAME || 'memory-game-ema
 const GAMES_TABLE = process.env.GAMES_TABLE_NAME || 'memory-game-games-prod';
 const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID || 'us-east-1_FoWLQ5lmI';
 const RESEND_API_KEY_SECRET = process.env.RESEND_API_KEY || '';
-const FROM_EMAIL = 'DashDen <no-reply@dashden.app>';
+const FROM_EMAIL = 'DashDen <admin@dashden.app>';
 const APP_URL = 'https://dashden.app';
 
 interface ActivationEmailResult {

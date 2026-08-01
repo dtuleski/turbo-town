@@ -13,7 +13,7 @@ const EMAIL_PREFS_TABLE = process.env.EMAIL_PREFS_TABLE_NAME || 'memory-game-ema
 const LEADERBOARD_TABLE = process.env.LEADERBOARD_TABLE_NAME || 'memory-game-leaderboard-entries-prod';
 const AGGREGATES_TABLE = process.env.AGGREGATES_TABLE_NAME || 'memory-game-user-aggregates-prod';
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
-const FROM_EMAIL = 'DashDen <no-reply@dashden.app>';
+const FROM_EMAIL = 'DashDen <admin@dashden.app>';
 const APP_URL = 'https://dashden.app';
 
 async function sendViaResend(to: string, subject: string, html: string): Promise<void> {

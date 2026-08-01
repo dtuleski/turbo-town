@@ -6,7 +6,7 @@
 const https = require('https');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL || 'DashDen <no-reply@dashden.app>';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'DashDen <admin@dashden.app>';
 const APP_NAME = 'DashDen';
 
 /**
