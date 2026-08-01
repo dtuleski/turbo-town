@@ -79,7 +79,7 @@ export default function LanguageGamePage() {
       
       // Start game in backend for leaderboard tracking
       try {
-        const difficultyMap: Record<string, number> = { easy: 1, medium: 2, hard: 3 };
+        const difficultyMap: Record<string, number> = { easy: 1, beginner: 1, medium: 2, intermediate: 2, hard: 3, advanced: 3 };
         const game = await startGameAPI({
           themeId: 'LANGUAGE_LEARNING',
           difficulty: difficultyMap[settings.difficulty] || 1,
