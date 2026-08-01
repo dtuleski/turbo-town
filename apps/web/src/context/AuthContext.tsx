@@ -167,8 +167,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (checkError.message?.includes('already taken')) {
           throw checkError
         }
-        // Otherwise log and continue (don't block registration if check fails)
-        console.warn('Username availability check failed, proceeding with registration:', checkError)
+        // Block registration if the availability check fails — prevents duplicate usernames
+        throw new Error('Unable to verify username availability. Please try again.')
       }
       
       // Split username into given name and family name for Cognito
@@ -183,7 +183,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         options: {
           userAttributes: {
             email: normalizedEmail,
-            preferred_username: input.username,
+            preferred_username: input.username.toLowerCase().trim(),
             name: input.username, // Full name
             given_name: givenName,
             family_name: familyName,

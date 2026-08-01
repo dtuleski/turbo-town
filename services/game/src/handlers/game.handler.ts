@@ -816,7 +816,7 @@ export class GameHandler {
 
   /**
    * Query: checkUsernameAvailable (Public - no auth required)
-   * Checks if a preferred_username is already taken in Cognito
+   * Checks if a preferred_username is already taken in Cognito (case-insensitive)
    */
   private async checkUsernameAvailable(username: string): Promise<any> {
     if (!username || username.trim().length === 0) {
@@ -833,22 +833,56 @@ export class GameHandler {
     const normalizedUsername = username.toLowerCase().trim();
 
     try {
-      const command = new ListUsersCommand({
+      // Cognito ListUsers filter is case-sensitive for preferred_username.
+      // Check exact lowercase match first (fast path for new accounts stored in lowercase).
+      const exactCommand = new ListUsersCommand({
         UserPoolId: userPoolId,
         Filter: `preferred_username = "${normalizedUsername}"`,
         Limit: 1,
       });
+      const exactResponse = await cognitoClient.send(exactCommand);
+      if ((exactResponse.Users?.length || 0) > 0) {
+        return { available: false };
+      }
 
-      const response = await cognitoClient.send(command);
-      const isTaken = (response.Users?.length || 0) > 0;
+      // Also check the original casing in case it was stored with mixed case
+      const originalTrimmed = username.trim();
+      if (originalTrimmed !== normalizedUsername) {
+        const originalCommand = new ListUsersCommand({
+          UserPoolId: userPoolId,
+          Filter: `preferred_username = "${originalTrimmed}"`,
+          Limit: 1,
+        });
+        const originalResponse = await cognitoClient.send(originalCommand);
+        if ((originalResponse.Users?.length || 0) > 0) {
+          return { available: false };
+        }
+      }
 
-      return { available: !isTaken };
+      // Broad prefix search to catch ANY case variant (e.g., "DeIgO_hT" vs "deigo_ht")
+      // Use first 3 chars as prefix filter, then compare case-insensitively in memory
+      const prefix = normalizedUsername.substring(0, Math.min(3, normalizedUsername.length));
+      const prefixCommand = new ListUsersCommand({
+        UserPoolId: userPoolId,
+        Filter: `preferred_username ^= "${prefix}"`,
+        Limit: 60,
+      });
+      const prefixResponse = await cognitoClient.send(prefixCommand);
+      const caseInsensitiveMatch = prefixResponse.Users?.some(user => {
+        const prefUsername = user.Attributes?.find(a => a.Name === 'preferred_username')?.Value;
+        return prefUsername && prefUsername.toLowerCase() === normalizedUsername;
+      });
+
+      if (caseInsensitiveMatch) {
+        return { available: false };
+      }
+
+      return { available: true };
     } catch (error) {
       logger.error('Failed to check username availability', error as Error);
       throw new Error('Failed to check username availability');
     }
   }
-
   /**
    * Mutation: getPresignedUploadUrl (Admin only)
    * Generates a presigned S3 PUT URL for uploading images to dashden-assets-prod/language-images/
