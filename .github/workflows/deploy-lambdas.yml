@@ -1,0 +1,130 @@
+name: Deploy Lambdas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/game/src/**'
+      - 'services/leaderboard/src/**'
+      - 'services/email-sender/**'
+      - 'packages/shared/**'
+
+jobs:
+  deploy-game-lambda:
+    name: Deploy Game Service Lambda
+    runs-on: ubuntu-latest
+    if: |
+      contains(toJSON(github.event.commits.*.modified), 'services/game/') ||
+      contains(toJSON(github.event.commits.*.added), 'services/game/') ||
+      contains(toJSON(github.event.commits.*.modified), 'packages/shared/') ||
+      contains(toJSON(github.event.commits.*.added), 'packages/shared/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install shared package
+        run: cd packages/shared && npm ci && npm run build
+
+      - name: Install game service
+        run: cd services/game && npm ci
+
+      - name: Build game service
+        run: cd services/game && npm run build
+
+      - name: Assemble deployment package
+        run: |
+          mkdir -p /tmp/game-deploy
+          cp -r services/game/dist /tmp/game-deploy/
+          cp services/game/package.json /tmp/game-deploy/
+          cp -r services/game/node_modules /tmp/game-deploy/
+          cp -r packages/shared/dist /tmp/game-deploy/node_modules/@memory-game/shared
+
+      - name: Create zip
+        run: cd /tmp/game-deploy && zip -r /tmp/game-lambda.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name MemoryGame-GameService-prod \
+            --zip-file fileb:///tmp/game-lambda.zip \
+            --publish
+
+  deploy-leaderboard-lambda:
+    name: Deploy Leaderboard Lambda
+    runs-on: ubuntu-latest
+    if: |
+      contains(toJSON(github.event.commits.*.modified), 'services/leaderboard/') ||
+      contains(toJSON(github.event.commits.*.added), 'services/leaderboard/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bundle with esbuild
+        run: |
+          cd services/leaderboard
+          npx esbuild src/index.ts --bundle --platform=node --target=node20 \
+            --outfile=/tmp/leaderboard-build/dist/index.js \
+            '--external:@aws-sdk/*'
+
+      - name: Create zip
+        run: cd /tmp/leaderboard-build && zip -r /tmp/leaderboard-lambda.zip dist/
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name MemoryGame-LeaderboardService-prod \
+            --zip-file fileb:///tmp/leaderboard-lambda.zip \
+            --publish
+
+  deploy-email-sender:
+    name: Deploy Email Sender Lambda
+    runs-on: ubuntu-latest
+    if: |
+      contains(toJSON(github.event.commits.*.modified), 'services/email-sender/') ||
+      contains(toJSON(github.event.commits.*.added), 'services/email-sender/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd services/email-sender && npm ci
+
+      - name: Create zip
+        run: cd services/email-sender && zip -r /tmp/email-sender.zip index.js node_modules/
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name DashDen-EmailSender \
+            --zip-file fileb:///tmp/email-sender.zip \
+            --publish
