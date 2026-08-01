@@ -107,6 +107,7 @@ const AdminDashboard = () => {
   const [filterTier, setFilterTier] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('createdAt');
   const [reviewStats, setReviewStats] = useState<{ perGame: ReviewStats[]; overall: ReviewStats } | null>(null);
+  const [monthlySignups, setMonthlySignups] = useState<{ month: string; count: number }[]>([]);
 
   useEffect(() => {
     if (isAdmin === true) {
@@ -144,6 +145,38 @@ const AdminDashboard = () => {
           setReviewStats(reviews);
         } catch (e) {
           console.warn('Failed to load review stats:', e);
+        }
+
+        // Load user signup data for histogram
+        try {
+          const usersData = await listAllUsers({ page: 1, pageSize: 200, sortBy: 'createdAt', sortOrder: 'asc' });
+          const buckets: Record<string, number> = {};
+          for (const user of usersData.users) {
+            if (user.createdAt) {
+              const date = new Date(user.createdAt);
+              const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+              buckets[key] = (buckets[key] || 0) + 1;
+            }
+          }
+          // Fill in missing months between first and current month
+          const keys = Object.keys(buckets).sort();
+          if (keys.length > 0) {
+            const [startYear, startMonth] = keys[0].split('-').map(Number);
+            const now = new Date();
+            const endYear = now.getFullYear();
+            const endMonth = now.getMonth() + 1;
+            const filled: { month: string; count: number }[] = [];
+            let y = startYear, m = startMonth;
+            while (y < endYear || (y === endYear && m <= endMonth)) {
+              const key = `${y}-${String(m).padStart(2, '0')}`;
+              filled.push({ month: key, count: buckets[key] || 0 });
+              m++;
+              if (m > 12) { m = 1; y++; }
+            }
+            setMonthlySignups(filled);
+          }
+        } catch (e) {
+          console.warn('Failed to load signup data:', e);
         }
         
         return;
@@ -430,6 +463,39 @@ const AdminDashboard = () => {
               </div>
             </div>
 
+            {/* New Members Histogram */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-bold mb-4">📈 New Members per Month</h2>
+              {monthlySignups.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <div className="flex items-end gap-2 min-w-[400px] px-2" style={{ height: 220 }}>
+                    {monthlySignups.map((item) => {
+                      const maxCount = Math.max(...monthlySignups.map(s => s.count), 1);
+                      const barHeight = item.count === 0 ? 2 : Math.max(12, (item.count / maxCount) * 180);
+                      const monthLabel = item.month.slice(5); // "07"
+                      const yearLabel = item.month.slice(2, 4); // "25"
+                      const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                      const monthName = monthNames[parseInt(monthLabel) - 1] || monthLabel;
+                      return (
+                        <div key={item.month} className="flex-1 flex flex-col items-center justify-end min-w-[40px]" style={{ height: '100%' }}>
+                          <span className="text-xs font-bold text-gray-700 mb-1">{item.count}</span>
+                          <div
+                            className={`w-full rounded-t-md ${item.count === 0 ? 'bg-gray-200' : 'bg-gradient-to-t from-blue-600 to-blue-400'}`}
+                            style={{ height: barHeight }}
+                          />
+                          <span className="text-[10px] text-gray-600 mt-2 font-medium">
+                            {monthName}'{yearLabel}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-gray-400 text-sm">No signup data available</p>
+              )}
+            </div>
+
             {/* Recent Activity */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
@@ -597,6 +663,8 @@ const AdminDashboard = () => {
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Confirmed</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tier</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Games</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Today</th>
@@ -613,6 +681,28 @@ const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {user.email}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {user.cognitoStatus === 'CONFIRMED' || user.cognitoStatus === 'EXTERNAL_PROVIDER' ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              {user.cognitoStatus === 'EXTERNAL_PROVIDER' ? '✓ Google' : '✓ Confirmed'}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              ✗ Unconfirmed
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {user.gamesPlayed > 0 ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Active
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              Inactive
+                            </span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <TierBadge tier={user.tier} />

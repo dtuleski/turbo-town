@@ -15,6 +15,8 @@ export default function TicTacToeGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { t } = useTranslation()
+  const mode = searchParams.get('mode')
+  const isTwoPlayer = mode === 'two-player'
   const difficulty = searchParams.get('difficulty') || 'easy'
 
   const [gameId, setGameId] = useState('')
@@ -33,7 +35,16 @@ export default function TicTacToeGamePage() {
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  // Two-player mode state
+  const [activePlayer, setActivePlayer] = useState<'X' | 'O'>('X')
+  const [tally, setTally] = useState({ player1Wins: 0, player2Wins: 0, ties: 0 })
+
   useEffect(() => {
+    if (isTwoPlayer) {
+      // Two-player mode: no backend calls needed, game is ready immediately
+      setGamePhase('playing')
+      return
+    }
     const init = async () => {
       try {
         const diffMap: Record<string, number> = { easy: 1, medium: 2, hard: 3 }
@@ -52,8 +63,9 @@ export default function TicTacToeGamePage() {
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [])
 
-  // AI move
+  // AI move (disabled in two-player mode)
   useEffect(() => {
+    if (isTwoPlayer) return
     if (isPlayerTurn || gamePhase !== 'playing' || roundResult) return
     const timeout = setTimeout(() => {
       const move = getAIMove([...board], difficulty)
@@ -64,32 +76,66 @@ export default function TicTacToeGamePage() {
       setIsPlayerTurn(true)
     }, 500) // slight delay for feel
     return () => clearTimeout(timeout)
-  }, [isPlayerTurn, board, gamePhase, roundResult, difficulty]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isTwoPlayer, isPlayerTurn, board, gamePhase, roundResult, difficulty]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkRoundEnd = useCallback((b: Board) => {
     const winner = checkWinner(b)
     const line = getWinningLine(b)
     if (winner) {
       setWinLine(line)
-      if (winner === 'X') {
-        setRoundResult('win')
-        setScore(s => s + 300)
-        setWins(w => w + 1)
+      if (isTwoPlayer) {
+        // Two-player tally updates
+        if (winner === 'X') {
+          setTally(t => ({ ...t, player1Wins: t.player1Wins + 1 }))
+          setRoundResult('win')
+        } else {
+          setTally(t => ({ ...t, player2Wins: t.player2Wins + 1 }))
+          setRoundResult('lose')
+        }
       } else {
-        setRoundResult('lose')
-        setLosses(l => l + 1)
+        // AI mode
+        if (winner === 'X') {
+          setRoundResult('win')
+          setScore(s => s + 300)
+          setWins(w => w + 1)
+        } else {
+          setRoundResult('lose')
+          setLosses(l => l + 1)
+        }
       }
       setGamePhase('round-end')
     } else if (isBoardFull(b)) {
+      if (isTwoPlayer) {
+        setTally(t => ({ ...t, ties: t.ties + 1 }))
+      } else {
+        setScore(s => s + 100)
+        setDraws(d => d + 1)
+      }
       setRoundResult('draw')
-      setScore(s => s + 100)
-      setDraws(d => d + 1)
       setGamePhase('round-end')
     }
-  }, [])
+  }, [isTwoPlayer])
 
   const handleCellClick = useCallback((index: number) => {
-    if (!isPlayerTurn || board[index] || gamePhase !== 'playing' || roundResult) return
+    if (board[index] || gamePhase !== 'playing') return
+
+    if (isTwoPlayer) {
+      // Two-player mode: place activePlayer marker and toggle
+      const newBoard = [...board]
+      newBoard[index] = activePlayer
+      setBoard(newBoard)
+
+      const winner = checkWinner(newBoard)
+      if (winner || isBoardFull(newBoard)) {
+        checkRoundEnd(newBoard)
+      } else {
+        setActivePlayer(activePlayer === 'X' ? 'O' : 'X')
+      }
+      return
+    }
+
+    // AI mode: existing logic
+    if (!isPlayerTurn || roundResult) return
     const newBoard = [...board]
     newBoard[index] = 'X'
     setBoard(newBoard)
@@ -99,9 +145,18 @@ export default function TicTacToeGamePage() {
     } else {
       setIsPlayerTurn(false)
     }
-  }, [isPlayerTurn, board, gamePhase, roundResult, checkRoundEnd])
+  }, [isTwoPlayer, activePlayer, isPlayerTurn, board, gamePhase, roundResult, checkRoundEnd])
 
   const nextRound = () => {
+    if (isTwoPlayer) {
+      // Unlimited rounds — just reset board
+      setBoard([...EMPTY_BOARD])
+      setActivePlayer('X')
+      setRoundResult(null)
+      setWinLine(null)
+      setGamePhase('playing')
+      return
+    }
     if (currentRound + 1 >= ROUNDS_PER_GAME) {
       finishGame()
     } else {
@@ -138,36 +193,60 @@ export default function TicTacToeGamePage() {
           <button onClick={() => navigate(ROUTES.TIC_TAC_TOE_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm">
             <span>⏱️ {formatTime(timer)}</span>
-            <span>{t('game.round')} {currentRound + 1}/{ROUNDS_PER_GAME}</span>
+            {!isTwoPlayer && <span>{t('game.round')} {currentRound + 1}/{ROUNDS_PER_GAME}</span>}
+            {isTwoPlayer && <span>👥 Two Player</span>}
           </div>
         </div>
 
         {/* Scoreboard */}
-        <div className="flex justify-center gap-6 mb-4">
-          <div className="text-center">
-            <div className="text-2xl font-black text-green-400">{wins}</div>
-            <div className="text-xs text-white/60">{t('gameplay.wins')}</div>
+        {isTwoPlayer ? (
+          <div className="flex justify-center gap-6 mb-4">
+            <div className="text-center">
+              <div className="text-2xl font-black text-blue-400">{tally.player1Wins}</div>
+              <div className="text-xs text-white/60">Player 1 (X)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-red-400">{tally.player2Wins}</div>
+              <div className="text-xs text-white/60">Player 2 (O)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-yellow-400">{tally.ties}</div>
+              <div className="text-xs text-white/60">Ties</div>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-black text-yellow-400">{draws}</div>
-            <div className="text-xs text-white/60">{t('gameplay.draws')}</div>
+        ) : (
+          <div className="flex justify-center gap-6 mb-4">
+            <div className="text-center">
+              <div className="text-2xl font-black text-green-400">{wins}</div>
+              <div className="text-xs text-white/60">{t('gameplay.wins')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-yellow-400">{draws}</div>
+              <div className="text-xs text-white/60">{t('gameplay.draws')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-red-400">{losses}</div>
+              <div className="text-xs text-white/60">{t('gameplay.losses')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-white">{score}</div>
+              <div className="text-xs text-white/60">{t('game.score')}</div>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-black text-red-400">{losses}</div>
-            <div className="text-xs text-white/60">{t('gameplay.losses')}</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-black text-white">{score}</div>
-            <div className="text-xs text-white/60">{t('game.score')}</div>
-          </div>
-        </div>
+        )}
 
         {/* Turn indicator */}
         {gamePhase === 'playing' && !roundResult && (
           <div className="text-center mb-4">
-            <span className={`inline-block px-4 py-1 rounded-full text-sm font-bold ${isPlayerTurn ? 'bg-blue-500 text-white' : 'bg-red-500/50 text-white/80'}`}>
-              {isPlayerTurn ? `❌ ${t('gameplay.yourTurn')}` : `⭕ ${t('gameplay.aiThinking')}`}
-            </span>
+            {isTwoPlayer ? (
+              <span className={`inline-block px-4 py-1 rounded-full text-sm font-bold ${activePlayer === 'X' ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'}`}>
+                {activePlayer === 'X' ? '❌ Player 1 (X)' : '⭕ Player 2 (O)'}
+              </span>
+            ) : (
+              <span className={`inline-block px-4 py-1 rounded-full text-sm font-bold ${isPlayerTurn ? 'bg-blue-500 text-white' : 'bg-red-500/50 text-white/80'}`}>
+                {isPlayerTurn ? `❌ ${t('gameplay.yourTurn')}` : `⭕ ${t('gameplay.aiThinking')}`}
+              </span>
+            )}
           </div>
         )}
 
@@ -178,11 +257,11 @@ export default function TicTacToeGamePage() {
               const isWinCell = winLine?.includes(i)
               return (
                 <button key={i} onClick={() => handleCellClick(i)}
-                  disabled={!!cell || gamePhase !== 'playing' || !isPlayerTurn}
+                  disabled={!!cell || gamePhase !== 'playing' || (!isTwoPlayer && !isPlayerTurn)}
                   className={`w-24 h-24 md:w-28 md:h-28 rounded-xl text-5xl md:text-6xl font-black flex items-center justify-center transition-all ${
                     isWinCell ? 'bg-yellow-400/30 ring-2 ring-yellow-400' :
                     cell ? 'bg-white/10' :
-                    gamePhase === 'playing' && isPlayerTurn ? 'bg-white/5 hover:bg-white/20 cursor-pointer' :
+                    gamePhase === 'playing' && (isTwoPlayer || isPlayerTurn) ? 'bg-white/5 hover:bg-white/20 cursor-pointer' :
                     'bg-white/5 cursor-not-allowed'
                   }`}>
                   {cell === 'X' && <span className="text-blue-400 drop-shadow-lg">✕</span>}
@@ -199,11 +278,13 @@ export default function TicTacToeGamePage() {
             <div className={`text-3xl font-black mb-3 ${
               roundResult === 'win' ? 'text-green-400' : roundResult === 'draw' ? 'text-yellow-400' : 'text-red-400'
             }`}>
-              {roundResult === 'win' ? `🎉 ${t('gameplay.youWin')}` : roundResult === 'draw' ? `🤝 ${t('gameplay.draw')}` : `💀 ${t('gameplay.aiWins')}`}
+              {isTwoPlayer
+                ? (roundResult === 'win' ? '🎉 Player 1 wins!' : roundResult === 'lose' ? '🎉 Player 2 wins!' : '🤝 Tie!')
+                : (roundResult === 'win' ? `🎉 ${t('gameplay.youWin')}` : roundResult === 'draw' ? `🤝 ${t('gameplay.draw')}` : `💀 ${t('gameplay.aiWins')}`)}
             </div>
             <button onClick={nextRound}
               className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-lg">
-              {currentRound + 1 >= ROUNDS_PER_GAME ? t('game.seeResults') : t('game.nextRound')}
+              {isTwoPlayer ? 'Play Again' : (currentRound + 1 >= ROUNDS_PER_GAME ? t('game.seeResults') : t('game.nextRound'))}
             </button>
           </div>
         )}

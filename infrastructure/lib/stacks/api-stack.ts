@@ -109,6 +109,13 @@ export class ApiStack extends cdk.Stack {
       authorizer: authorizer,
     });
 
+    // Game Service public routes (no auth - for username availability check)
+    this.httpApi.addRoutes({
+      path: '/game/public',
+      methods: [apigatewayv2.HttpMethod.POST],
+      integration: gameIntegration,
+    });
+
     // Leaderboard Service routes (protected - requires Cognito JWT)
     this.httpApi.addRoutes({
       path: '/leaderboard/graphql',

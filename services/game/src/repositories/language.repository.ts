@@ -75,21 +75,24 @@ export class LanguageRepository {
 
       const command = new ScanCommand({
         TableName: this.wordsTableName,
-        FilterExpression: '#category = :category AND #difficulty = :difficulty AND #languageCode = :languageCode',
+        FilterExpression: '#category = :category AND #languageCode = :languageCode',
         ExpressionAttributeNames: {
           '#category': 'category',
-          '#difficulty': 'difficulty',
           '#languageCode': 'languageCode'
         },
         ExpressionAttributeValues: {
           ':category': category,
-          ':difficulty': difficulty,
           ':languageCode': 'multi' // Look for multi-language entries
         },
       });
 
       const result = await docClient.send(command);
-      const words = (result.Items || []) as any[];
+      const allWords = (result.Items || []) as any[];
+
+      // Prioritize words matching the requested difficulty, then fill from others
+      const matchingDifficulty = allWords.filter(w => w.difficulty === difficulty);
+      const otherDifficulty = allWords.filter(w => w.difficulty !== difficulty);
+      const words = [...matchingDifficulty, ...otherDifficulty];
 
       logger.info('DynamoDB scan result', {
         itemCount: words.length,

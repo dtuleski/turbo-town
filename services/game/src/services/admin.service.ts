@@ -20,6 +20,7 @@ interface AdminUserInfo {
   lastActive?: string;
   createdAt: string;
   todayPlays: number;
+  cognitoStatus: string;
   rateLimit: {
     tier: string;
     limit: number;
@@ -276,6 +277,7 @@ export class AdminService {
         lastActive: lastGame?.startedAt || rateLimit?.updatedAt || user.createdAt,
         createdAt: user.createdAt,
         todayPlays: todayGames.length,
+        cognitoStatus: user.cognitoStatus || 'UNKNOWN',
         rateLimit: {
           tier,
           limit,
@@ -394,7 +396,8 @@ export class AdminService {
       username: user.Attributes?.find((a: any) => a.Name === 'preferred_username')?.Value || 
                 user.Attributes?.find((a: any) => a.Name === 'name')?.Value || 
                 'Unknown',
-      createdAt: user.UserCreateDate?.toISOString() || new Date().toISOString()
+      createdAt: user.UserCreateDate?.toISOString() || new Date().toISOString(),
+      cognitoStatus: user.UserStatus || 'UNKNOWN'
     }));
   }
 

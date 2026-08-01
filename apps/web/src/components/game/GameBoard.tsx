@@ -16,7 +16,9 @@ const GameBoard = ({ gameState, onCardClick }: GameBoardProps) => {
       ? 'grid-cols-3 md:grid-cols-4'
       : cardCount <= 16
       ? 'grid-cols-4 md:grid-cols-4'
-      : 'grid-cols-4 md:grid-cols-5'
+      : cardCount <= 20
+      ? 'grid-cols-4 md:grid-cols-5'
+      : 'grid-cols-5 md:grid-cols-6' // 30 cards (Super Hard: 6×5)
 
   return (
     <motion.div

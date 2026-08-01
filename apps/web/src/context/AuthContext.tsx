@@ -3,6 +3,7 @@ import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession, confirmSignU
 import type { User, AuthContextType, LoginInput, RegisterInput, UpdateProfileInput } from '@/types/auth'
 import { storage } from '@/utils/storage'
 import { STORAGE_KEYS } from '@/config/constants'
+import { canStartGame } from '@/api/game'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -74,6 +75,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             storage.set(STORAGE_KEYS.AUTH_TOKEN, idToken)
             storage.set(STORAGE_KEYS.USER, user)
           }
+
+          // Fetch actual tier from backend
+          try {
+            const result = await canStartGame()
+            if (result?.rateLimit?.tier && result.rateLimit.tier !== 'FREE') {
+              const updatedUser = { ...user, tier: result.rateLimit.tier }
+              setUser(updatedUser)
+              storage.set(STORAGE_KEYS.USER, updatedUser)
+            }
+          } catch (tierErr) {
+            console.log('Could not fetch tier:', tierErr)
+          }
         }
       } catch (error) {
         console.log('No authenticated user:', error)
@@ -131,6 +144,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (input: RegisterInput) => {
     try {
       const normalizedEmail = input.email.toLowerCase().trim()
+      
+      // Check username availability before signing up
+      const gameEndpoint = import.meta.env.VITE_GAME_ENDPOINT || 'https://l8ra6nktb6.execute-api.us-east-1.amazonaws.com/game/graphql'
+      const publicEndpoint = gameEndpoint.replace('/game/graphql', '/game/public')
+      try {
+        const checkResponse = await fetch(publicEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: `query CheckUsernameAvailable($username: String!) { checkUsernameAvailable(username: $username) { available } }`,
+            variables: { username: input.username },
+            operationName: 'CheckUsernameAvailable',
+          }),
+        })
+        const checkResult = await checkResponse.json()
+        if (checkResult.data?.checkUsernameAvailable?.available === false) {
+          throw new Error('Username is already taken. Please choose a different one.')
+        }
+      } catch (checkError: any) {
+        // If the error is our own "username taken" error, re-throw it
+        if (checkError.message?.includes('already taken')) {
+          throw checkError
+        }
+        // Otherwise log and continue (don't block registration if check fails)
+        console.warn('Username availability check failed, proceeding with registration:', checkError)
+      }
+      
       // Split username into given name and family name for Cognito
       // If username doesn't have a space, use it as given name and set family name to username
       const nameParts = input.username.trim().split(' ')

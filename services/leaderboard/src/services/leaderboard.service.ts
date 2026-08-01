@@ -165,6 +165,13 @@ export class LeaderboardService {
       GameType.COLOR_BY_NUMBER,
       GameType.HANGMAN,
       GameType.TIC_TAC_TOE,
+      GameType.MATH_MAZE,
+      GameType.PATTERN_RECALL,
+      GameType.SPACE_ENTRY,
+      GameType.SCRATCH_CODING,
+      GameType.BOND_AND_BURN,
+      GameType.TRAFFIC_LAB,
+      GameType.MINI_GOLF,
     ];
     
     // Fetch entries for all game types in parallel

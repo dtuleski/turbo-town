@@ -25,7 +25,6 @@ const LANGUAGES: Language[] = [
 export default function LanguageSelectionPage() {
   const navigate = useNavigate();
   const [languages, setLanguages] = useState<Language[]>(LANGUAGES);
-  const [userCountry, setUserCountry] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,27 +34,8 @@ export default function LanguageSelectionPage() {
 
   const detectUserCountryAndRestrictLanguages = async () => {
     try {
-      // Get user's country from IP geolocation
-      const country = await getUserCountry();
-      setUserCountry(country);
-
-      // Define country-language restrictions
-      const restrictions: Record<string, string[]> = {
-        'US': ['en'], 'GB': ['en'], 'CA': ['en', 'fr'], 'AU': ['en'],
-        'ES': ['es'], 'MX': ['es'], 'AR': ['es'], 'CO': ['es'],
-        'FR': ['fr'], 'BE': ['fr'], 'CH': ['fr', 'de'],
-        'IT': ['it'], 'SM': ['it'], 'VA': ['it'],
-        'DE': ['de'], 'AT': ['de'],
-        'BR': ['pt'], 'PT': ['pt'], 'AO': ['pt'],
-        'GR': ['el'], 'CY': ['el'],
-      };
-
-      const restrictedLanguages = restrictions[country] || [];
-      
-      setLanguages(prev => prev.map(lang => ({
-        ...lang,
-        isRestricted: restrictedLanguages.includes(lang.code)
-      })));
+      await getUserCountry();
+      // No restrictions — all languages available to everyone
     } catch (error) {
       console.error('Failed to detect country:', error);
     } finally {
@@ -124,12 +104,7 @@ export default function LanguageSelectionPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Learn vocabulary by matching words with images. 
-            {userCountry && (
-              <span className="block mt-2 text-sm text-indigo-600">
-                Note: Languages from your country ({userCountry}) are not available to encourage learning new languages!
-              </span>
-            )}
+            Learn vocabulary by matching words with images.
           </motion.p>
         </div>
 

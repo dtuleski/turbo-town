@@ -735,6 +735,12 @@ export default function ScratchCodingGamePage() {
     if (animStep >= executionSteps.length - 1) {
       // Animation complete — determine outcome
       const lastStep = executionSteps[executionSteps.length - 1]
+      if (!lastStep) {
+        setFailMessage(t('scratchCoding.game.didntReachGoal', "Astronaut didn't reach the airlock 🤔"))
+        setPhase('fail')
+        setHighlightedLineIndex(null)
+        return
+      }
       if (lastStep.reachedGoal) {
         setPhase('success')
       } else if (!lastStep.alive) {
@@ -995,6 +1001,11 @@ export default function ScratchCodingGamePage() {
     if (program.length === 0 || phase !== 'building') return
     setTotalAttempts((prev) => prev + 1)
     const steps = executeProgramV2(level, program)
+    if (!steps || steps.length === 0) {
+      setFailMessage(t('scratchCoding.game.didntReachGoal', "Astronaut didn't reach the airlock 🤔"))
+      setPhase('fail')
+      return
+    }
     setExecutionSteps(steps)
     setAnimStep(-1)
     setCharacterPos(level.start)
@@ -1041,6 +1052,7 @@ export default function ScratchCodingGamePage() {
       }
       setPhase('submitting')
       try {
+        if (!gameId) throw new Error('No game ID')
         const efficiency = levelResultsRef.current.length > 0
           ? computeLineEfficiency(levelResultsRef.current)
           : 1.0
@@ -1057,6 +1069,17 @@ export default function ScratchCodingGamePage() {
         setLeaderboardRank(result.leaderboardRank)
         setPhase('completed')
       } catch {
+        // Even if backend fails, show completion with a basic score
+        setScoreBreakdown({
+          baseScore: 1000,
+          difficultyMultiplier: difficulty === 'easy' ? 1.0 : difficulty === 'medium' ? 1.5 : 2.0,
+          speedBonus: Math.max(0.1, 1 + (90 - Math.min(timer, 90)) / 90),
+          accuracyBonus: 1.5,
+          finalScore: 0, // Will be shown as "Score unavailable"
+          difficulty: difficulty === 'easy' ? 'Easy' : difficulty === 'medium' ? 'Medium' : 'Hard',
+          completionTime: timer,
+          accuracy: 1.0,
+        })
         setPhase('completed')
       }
     },

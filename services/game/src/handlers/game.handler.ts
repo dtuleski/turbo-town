@@ -16,6 +16,10 @@ import { EventPublisherService } from '../services/event-publisher.service';
 import { ReviewService } from '../services/review.service';
 import { EmailPrefsService } from '../services/email-prefs.service';
 import { ContactService } from '../services/contact.service';
+import { SubscriptionTier } from '@memory-game/shared';
+import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import {
   validateStartGameInput,
   validateCompleteGameInput,
@@ -205,6 +209,12 @@ export class GameHandler {
       case 'createPortalSession':
         return this.createPortalSession(userId);
 
+      case 'changePlan':
+        return this.changePlan(userId, variables.input);
+
+      case 'verifyCheckoutSession':
+        return this.verifyCheckoutSession(userId, variables.sessionId);
+
       // Language learning queries and mutations
       case 'getLanguageWords':
         return this.languageHandler.getLanguageWords({}, {
@@ -280,6 +290,14 @@ export class GameHandler {
       // Contact form
       case 'submitContactForm':
         return this.contactService.submitContactForm(userId, username || 'Unknown', email || '', variables.input);
+
+      // Admin - S3 Upload
+      case 'getPresignedUploadUrl':
+        return this.getPresignedUploadUrl(userId, variables.input, username, email);
+
+      // Public queries (no auth required)
+      case 'checkUsernameAvailable':
+        return this.checkUsernameAvailable(variables.username);
 
       default:
         throw new Error(`Unknown operation: ${operation}`);
@@ -555,6 +573,86 @@ export class GameHandler {
   }
 
   /**
+   * Mutation: changePlan (Stripe subscription update with proration)
+   */
+  private async changePlan(userId: string, input: any): Promise<any> {
+    logger.info('Changing plan', { userId, tier: input.tier });
+
+    const TIER_PRICE_MAP: Record<string, string> = {
+      LIGHT: process.env.STRIPE_PRICE_LIGHT || 'price_1Tla6fD1JApM7NxilsPnWDmq',
+      STANDARD: process.env.STRIPE_PRICE_STANDARD || 'price_1Tla6gD1JApM7NxiAv5siMlb',
+      PREMIUM: process.env.STRIPE_PRICE_PREMIUM || 'price_1Tla6fD1JApM7NxiNhbaOCG8',
+    };
+
+    const priceId = TIER_PRICE_MAP[input.tier];
+    if (!priceId) {
+      throw new Error(`Invalid tier: ${input.tier}`);
+    }
+
+    const result = await this.stripeService.changePlan(userId, input.tier, priceId);
+    return result;
+  }
+
+  /**
+   * Mutation: verifyCheckoutSession
+   * Called from the success page to ensure subscription is updated even if webhook is delayed
+   */
+  private async verifyCheckoutSession(userId: string, sessionId: string): Promise<any> {
+    logger.info('Verifying checkout session', { userId, sessionId });
+
+    if (!sessionId) {
+      throw new Error('Session ID is required');
+    }
+
+    try {
+      const stripe = await this.stripeService.getStripeClientPublic();
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+      // Verify this session belongs to this user
+      const sessionUserId = session.metadata?.userId || session.client_reference_id;
+      if (sessionUserId !== userId) {
+        throw new Error('Session does not belong to this user');
+      }
+
+      if (session.payment_status !== 'paid') {
+        return { success: false, tier: null, message: 'Payment not completed' };
+      }
+
+      const tier = session.metadata?.tier as string;
+      if (!tier) {
+        return { success: false, tier: null, message: 'No tier in session' };
+      }
+
+      // Map tier string to enum
+      const tierMap: Record<string, SubscriptionTier> = {
+        LIGHT: SubscriptionTier.Light,
+        STANDARD: SubscriptionTier.Standard,
+        PREMIUM: SubscriptionTier.Premium,
+      };
+      const subscriptionTier = tierMap[tier] || SubscriptionTier.Free;
+
+      // Update subscription in DynamoDB
+      await this.subscriptionRepository.updateSubscription({
+        userId,
+        tier: subscriptionTier,
+        stripeCustomerId: session.customer as string,
+        stripeSubscriptionId: session.subscription as string,
+        status: 'ACTIVE',
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        effectiveDate: new Date(),
+      });
+
+      logger.info('Checkout session verified and subscription updated', { userId, tier });
+
+      return { success: true, tier };
+    } catch (error: any) {
+      logger.error('Failed to verify checkout session', error, { userId, sessionId });
+      throw new Error('Failed to verify checkout session');
+    }
+  }
+
+  /**
    * Query: getAllLanguageWords (Admin only)
    */
   private async getAllLanguageWords(userId: string, username?: string, email?: string): Promise<any> {
@@ -665,6 +763,78 @@ export class GameHandler {
       tier: input.tier,
       status: input.status,
     };
+  }
+
+  /**
+   * Query: checkUsernameAvailable (Public - no auth required)
+   * Checks if a preferred_username is already taken in Cognito
+   */
+  private async checkUsernameAvailable(username: string): Promise<any> {
+    if (!username || username.trim().length === 0) {
+      throw new Error('Username is required');
+    }
+
+    const userPoolId = process.env.COGNITO_USER_POOL_ID;
+    if (!userPoolId) {
+      logger.error('COGNITO_USER_POOL_ID not set', new Error('Missing env var'));
+      throw new Error('Server configuration error');
+    }
+
+    const cognitoClient = new CognitoIdentityProviderClient({});
+    const normalizedUsername = username.toLowerCase().trim();
+
+    try {
+      const command = new ListUsersCommand({
+        UserPoolId: userPoolId,
+        Filter: `preferred_username = "${normalizedUsername}"`,
+        Limit: 1,
+      });
+
+      const response = await cognitoClient.send(command);
+      const isTaken = (response.Users?.length || 0) > 0;
+
+      return { available: !isTaken };
+    } catch (error) {
+      logger.error('Failed to check username availability', error as Error);
+      throw new Error('Failed to check username availability');
+    }
+  }
+
+  /**
+   * Mutation: getPresignedUploadUrl (Admin only)
+   * Generates a presigned S3 PUT URL for uploading images to dashden-assets-prod/language-images/
+   */
+  private async getPresignedUploadUrl(userId: string, input: any, username?: string, email?: string): Promise<any> {
+    const isAdmin = isAdminUser(username, email);
+    if (!isAdmin) {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    const { filename, contentType } = input;
+    if (!filename || !contentType) {
+      throw new Error('filename and contentType are required');
+    }
+
+    // Sanitize filename: remove path separators and special chars, keep extension
+    const sanitized = filename.replace(/[^a-zA-Z0-9._-]/g, '_');
+    // Add timestamp prefix for uniqueness
+    const key = `language-images/${Date.now()}-${sanitized}`;
+    const bucket = process.env.S3_ASSETS_BUCKET || 'dashden-assets-prod';
+    const region = process.env.AWS_REGION || 'us-east-1';
+
+    const s3Client = new S3Client({ region });
+    const command = new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      ContentType: contentType,
+    });
+
+    const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 }); // 5 min expiry
+    const publicUrl = `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+
+    logger.info('Generated presigned upload URL', { userId, key, contentType });
+
+    return { uploadUrl, publicUrl, key };
   }
 
   /**

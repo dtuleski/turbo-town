@@ -80,6 +80,10 @@ export class ScoringService {
       case GameType.MATH_MAZE:
       case GameType.PATTERN_RECALL:
       case GameType.SPACE_ENTRY:
+      case GameType.SCRATCH_CODING:
+      case GameType.BOND_AND_BURN:
+      case GameType.TRAFFIC_LAB:
+      case GameType.MINI_GOLF:
         // These games use the standard scoring formula from the game service
         // The leaderboard just needs to accept the score passed via the event
         breakdown = this.calculateMathChallengeScore(difficulty, completionTime, performanceMetrics);
@@ -623,6 +627,10 @@ export class ScoringService {
       case GameType.MATH_MAZE:
       case GameType.PATTERN_RECALL:
       case GameType.SPACE_ENTRY:
+      case GameType.SCRATCH_CODING:
+      case GameType.BOND_AND_BURN:
+      case GameType.TRAFFIC_LAB:
+      case GameType.MINI_GOLF:
         // Use math challenge config for validation (standard scoring games)
         config = this.config.mathChallenge;
         break;

@@ -10,6 +10,7 @@ export interface AdminUserInfo {
   lastActive?: string;
   createdAt: string;
   todayPlays: number;
+  cognitoStatus: string;
   rateLimit: {
     tier: string;
     limit: number;
@@ -134,6 +135,7 @@ const LIST_ALL_USERS = gql`
         lastActive
         createdAt
         todayPlays
+        cognitoStatus
         rateLimit {
           tier
           limit
@@ -280,6 +282,16 @@ const DELETE_LANGUAGE_WORD = gql`
     deleteLanguageWord(wordId: $wordId) {
       success
       wordId
+    }
+  }
+`;
+
+const GET_PRESIGNED_UPLOAD_URL = gql`
+  mutation GetPresignedUploadUrl($input: PresignedUploadInput!) {
+    getPresignedUploadUrl(input: $input) {
+      uploadUrl
+      publicUrl
+      key
     }
   }
 `;
@@ -431,4 +443,16 @@ export const deleteLanguageWord = async (wordId: string): Promise<{ success: boo
   });
 
   return data.deleteLanguageWord;
+};
+
+export const getPresignedUploadUrl = async (input: {
+  filename: string;
+  contentType: string;
+}): Promise<{ uploadUrl: string; publicUrl: string; key: string }> => {
+  const { data } = await gameClient.mutate({
+    mutation: GET_PRESIGNED_UPLOAD_URL,
+    variables: { input },
+  });
+
+  return data.getPresignedUploadUrl;
 };

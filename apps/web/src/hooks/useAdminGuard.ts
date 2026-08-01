@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
-const ADMIN_EMAILS = ['diegotuleski@gmail.com', 'benjamintuleski@gmail.com'];
+const ADMIN_EMAILS = ['diegotuleski@gmail.com', 'benjamintuleski@gmail.com', 'kotziasmarina@gmail.com'];
 
 export function useAdminGuard() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);

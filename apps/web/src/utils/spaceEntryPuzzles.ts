@@ -32,13 +32,11 @@ function randInt(min: number, max: number): number {
 /* ------------------------------------------------------------------ */
 
 export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPuzzle {
-  // Import the reference angle so the correct answer = perfect landing
-  const refAngles: Record<SpaceEntryDifficulty, number> = { easy: 8, medium: 7, hard: 7 }
-  const idealAnswer = refAngles[difficulty]
+  // Randomize the ideal answer each game so it's not always the same
+  const idealAnswer = difficulty === 'easy' ? randInt(5, 12) : difficulty === 'medium' ? randInt(3, 15) : parseFloat((randInt(20, 80) / 10).toFixed(1));
 
   switch (difficulty) {
     case 'easy': {
-      // Variant pool for easy — all triangle-angle problems
       const variant = randInt(0, 2)
       if (variant === 0) {
         const a = randInt(70, 95)
@@ -46,7 +44,7 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
         return {
           type: 'angle',
           question: `A triangle has angles of ${a}° and ${b}°. What is the third angle?`,
-          visual: '📐 △  A° + B° + ?° = 180°',
+          visual: `📐 △  ${a}° + ${b}° + ?° = 180°`,
           correctAnswer: idealAnswer,
           unit: '°',
           label: 'Entry Angle',
@@ -59,7 +57,7 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
         return {
           type: 'angle',
           question: `Two angles of a triangle are ${a}° and ${b}°. Find the missing angle.`,
-          visual: '📐 △  A° + B° + ?° = 180°',
+          visual: `📐 △  ${a}° + ${b}° + ?° = 180°`,
           correctAnswer: idealAnswer,
           unit: '°',
           label: 'Entry Angle',
@@ -67,12 +65,12 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
         }
       }
       // variant 2
-      const total = randInt(30, 60)
+      const total = idealAnswer + randInt(10, 40)
       const other = total - idealAnswer
       return {
         type: 'angle',
         question: `Two angles add up to ${total}°. One is ${other}°. What is the other?`,
-        visual: '📐 A° + ?° = total',
+        visual: `📐 ${other}° + ?° = ${total}°`,
         correctAnswer: idealAnswer,
         unit: '°',
         label: 'Entry Angle',
@@ -81,7 +79,7 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
     }
 
     case 'medium': {
-      // Variant pool for medium
+      // Medium uses integers but varied answers
       const variant = randInt(0, 2)
       if (variant === 0) {
         const y = randInt(1, 4)
@@ -89,7 +87,7 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
         return {
           type: 'angle',
           question: `Two supplementary angles add to 180°. One is ${x}°. The entry angle is 180° − ${x}° − ${y}°. What is it?`,
-          visual: '📐 180° − X° − Y° = ?°',
+          visual: `📐 180° − ${x}° − ${y}° = ?°`,
           correctAnswer: idealAnswer,
           unit: '°',
           label: 'Entry Angle',
@@ -194,17 +192,17 @@ export function generateAnglePuzzle(difficulty: SpaceEntryDifficulty): MissionPu
 
 export function generateThrusterPuzzle(difficulty: SpaceEntryDifficulty): MissionPuzzle {
   // Correct answer = optimal thruster power for the difficulty
-  const optimalPowers: Record<SpaceEntryDifficulty, number> = { easy: 60, medium: 65, hard: 70 }
-  const answer = optimalPowers[difficulty]
+  // Randomize the thruster answer each game
+  const answer = difficulty === 'medium' ? randInt(50, 80) : parseFloat((randInt(400, 850) / 10).toFixed(1));
 
   switch (difficulty) {
     case 'medium': {
-      const tank = randInt(2, 5) * 100
-      const needed = Math.round((answer / 100) * tank)
+      const perPercent = randInt(20, 60)
+      const requiredFuel = answer * perPercent
       return {
         type: 'thruster',
-        question: `Fuel tank: ${tank} liters. Mission needs ${needed} liters. What percentage of fuel should you use?`,
-        visual: '🛢️ → 🚀  (needed / total) × 100',
+        question: `Required thrust: ${requiredFuel} N. Each 1% power gives ${perPercent} N. What power level (%) do you need?`,
+        visual: `🚀 ${requiredFuel} ÷ ${perPercent} = ?%`,
         correctAnswer: answer,
         unit: '%',
         label: 'Thruster Power',
@@ -213,12 +211,13 @@ export function generateThrusterPuzzle(difficulty: SpaceEntryDifficulty): Missio
     }
 
     case 'hard': {
+      // Hard uses one decimal place
       const perPercent = randInt(5, 10) * 10
-      const requiredThrust = answer * perPercent
+      const requiredThrust = parseFloat((answer * perPercent).toFixed(0))
       return {
         type: 'thruster',
         question: `Required thrust: ${requiredThrust} N. Each 1% power gives ${perPercent} N. What power level (%) do you need?`,
-        visual: '🚀 thrust ÷ N-per-% = ?%',
+        visual: `🚀 ${requiredThrust} ÷ ${perPercent} = ?%`,
         correctAnswer: answer,
         unit: '%',
         label: 'Thruster Power',
@@ -239,17 +238,21 @@ export function generateLateralPuzzle(
   _difficulty: SpaceEntryDifficulty,
   _targetLng: number,
 ): MissionPuzzle {
-  // The correct answer for a perfect landing is 0° lateral correction.
-  // The puzzle is framed as a math problem that equals 0.
-  const variant = randInt(0, 4)
+  // Randomize the lateral correction answer (not always 0)
+  const answer = _difficulty === 'hard' 
+    ? parseFloat((randInt(-30, 30) / 10).toFixed(1)) 
+    : randInt(-5, 5);
+  
+  const variant = randInt(0, 3)
 
   if (variant === 0) {
     const a = randInt(3, 15)
+    const b = a + answer
     return {
       type: 'lateral',
-      question: `Wind pushes your spacecraft ${a}° east, then ${a}° west. What is the net lateral correction needed?`,
-      visual: '↔️ +X° then −X° = ?°',
-      correctAnswer: 0,
+      question: `Wind pushes ${a}° east, compensator corrects ${b}° west. Net lateral correction: ${a} − ${b} = ?`,
+      visual: `↔️ ${a} − ${b} = ?°`,
+      correctAnswer: a - b,
       unit: '°',
       label: 'Lateral Correction',
       icon: '↔️',
@@ -257,12 +260,14 @@ export function generateLateralPuzzle(
   }
 
   if (variant === 1) {
-    const a = randInt(3, 15)
+    const a = randInt(2, 8)
+    const b = randInt(2, 8)
+    const c = a * b - answer
     return {
       type: 'lateral',
-      question: `East atmospheric drift: +${a}°. West atmospheric drift: −${a}°. What total lateral correction do you need?`,
-      visual: '↔️ (+X) + (−X) = ?°',
-      correctAnswer: 0,
+      question: `${a} × ${b} − ${c} = ? What lateral correction is needed?`,
+      visual: `↔️ Solve: ${a} × ${b} − ${c} = ?°`,
+      correctAnswer: answer,
       unit: '°',
       label: 'Lateral Correction',
       icon: '↔️',
@@ -270,41 +275,28 @@ export function generateLateralPuzzle(
   }
 
   if (variant === 2) {
-    const a = randInt(5, 20)
-    const b = randInt(5, 20)
+    const divisor = randInt(2, 6)
+    const product = answer * divisor
+    const offset = randInt(5, 20)
     return {
       type: 'lateral',
-      question: `Drift of +${a}° then −${b}° then −${a - b}°. What's the total correction?`,
-      visual: '↔️ A + B + C = ?°',
-      correctAnswer: 0,
+      question: `Sensor reads ${product + offset}°. Subtract ${offset}°, divide by ${divisor}. What correction?`,
+      visual: `↔️ (${product + offset} − ${offset}) ÷ ${divisor} = ?°`,
+      correctAnswer: answer,
       unit: '°',
       label: 'Lateral Correction',
       icon: '↔️',
     }
   }
 
-  if (variant === 3) {
-    const a = randInt(2, 8)
-    const b = randInt(2, 8)
-    return {
-      type: 'lateral',
-      question: `${a} × ${b} − ${a * b} = ? What lateral correction is needed?`,
-      visual: '↔️ Solve: A × B − C = ?°',
-      correctAnswer: 0,
-      unit: '°',
-      label: 'Lateral Correction',
-      icon: '↔️',
-    }
-  }
-
-  // variant 4
+  // variant 3
   const a = randInt(10, 30)
-  const half = a / 2
+  const b = a - answer
   return {
     type: 'lateral',
-    question: `Left thruster fires ${half}°, right thruster fires ${half}°. They cancel out. Net correction?`,
-    visual: '↔️ left + right = ?°',
-    correctAnswer: 0,
+    question: `Left drift: ${a}°. Right compensation: ${b}°. Net correction: ${a} − ${b} = ?`,
+    visual: `↔️ ${a} − ${b} = ?°`,
+    correctAnswer: answer,
     unit: '°',
     label: 'Lateral Correction',
     icon: '↔️',

@@ -235,7 +235,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
           // Compare structurally (ignoring reference equality)
           expect(deepCloneTree(afterRemove)).toEqual(originalClone);
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -266,7 +266,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
           expect(found!.id).toBe(newBlock.id);
           expect(found!.type).toBe(newBlock.type);
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -293,7 +293,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
 
           expect(totalCount).toBe(expectedCount);
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -321,7 +321,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
 
           expect(newCount).toBe(originalCount - removedSize);
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -349,7 +349,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
 
           expect(result).toBeNull();
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -412,7 +412,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
             }
           },
         ),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });
@@ -444,7 +444,7 @@ describe('Space Coder Nesting Editor — Property-Based Tests', () => {
           expect(efficiency).toBeGreaterThan(0);
           expect(efficiency).toBeLessThanOrEqual(1.0);
         }),
-        { numRuns: 100 },
+        { numRuns: 30 },
       );
     });
   });

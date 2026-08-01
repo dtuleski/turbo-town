@@ -2,11 +2,11 @@ import type { Card, GameTheme, DifficultyLevel } from '@/types/game'
 
 // Card values for each theme
 const THEME_VALUES: Record<GameTheme, string[]> = {
-  ANIMALS: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'],
-  FRUITS: ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒', '🍑'],
-  VEHICLES: ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐'],
-  SPACE: ['🚀', '🛸', '🌎', '🌙', '⭐', '☄️', '🪐', '🌟', '✨', '🌠'],
-  OCEAN: ['🐠', '🐟', '🐡', '🦈', '🐙', '🦑', '🦀', '🦞', '🐚', '🐬'],
+  ANIMALS: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'],
+  FRUITS: ['🍎', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒', '🍑', '🥝', '🍍', '🥭', '🍐', '🥥'],
+  VEHICLES: ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑', '🚒', '🚐', '🛻', '🚚', '🚜', '🏍️', '🚲'],
+  SPACE: ['🚀', '🛸', '🌎', '🌙', '⭐', '☄️', '🪐', '🌟', '✨', '🌠', '🔭', '🛰️', '👨‍🚀', '🌌', '🌕'],
+  OCEAN: ['🐠', '🐟', '🐡', '🦈', '🐙', '🦑', '🦀', '🦞', '🐚', '🐬', '🐳', '🦭', '🪸', '🐢', '🦐'],
   FORMULA1: [], // Special handling - see F1_DRIVER_PAIRS
 }
 
@@ -36,14 +36,16 @@ F1_DRIVER_PAIRS.forEach(([driver1, driver2]) => {
 const DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
   EASY: 6,
   MEDIUM: 8,
-  HARD: 10,  // Standard themes have 10 values max
+  HARD: 10,
+  SUPER_HARD: 15, // 6×5 grid = 30 cards
 }
 
-// F1-specific difficulty (11 teams)
+// F1-specific difficulty (11 teams max)
 const F1_DIFFICULTY_PAIRS: Record<DifficultyLevel, number> = {
   EASY: 6,
   MEDIUM: 8,
   HARD: 11,  // All 11 F1 teams for 2025 season
+  SUPER_HARD: 11, // F1 maxes out at 11 teams — not available for Super Hard
 }
 
 export const generateCards = (theme: GameTheme, difficulty: DifficultyLevel): Card[] => {

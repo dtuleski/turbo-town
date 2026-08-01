@@ -43,7 +43,7 @@ async function getJwks(userPoolId: string, region: string): Promise<any[]> {
   if (!response.ok) {
     throw new AuthenticationError('Failed to fetch JWKS keys');
   }
-  const data = await response.json();
+  const data: any = await response.json();
   jwksCache = { keys: data.keys, fetchedAt: now };
   return data.keys;
 }

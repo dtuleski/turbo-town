@@ -52,6 +52,12 @@ import PatternRecallSetupPage from './pages/pattern-recall/PatternRecallSetupPag
 import PatternRecallGamePage from './pages/pattern-recall/PatternRecallGamePage'
 import SpaceEntrySetupPage from './pages/space-entry/SpaceEntrySetupPage'
 import SpaceEntryGamePage from './pages/space-entry/SpaceEntryGamePage'
+import BondAndBurnSetupPage from './pages/bond-and-burn/BondAndBurnSetupPage'
+import BondAndBurnGamePage from './pages/bond-and-burn/BondAndBurnGamePage'
+import TrafficLabSetupPage from './pages/traffic-lab/TrafficLabSetupPage'
+import TrafficLabGamePage from './pages/traffic-lab/TrafficLabGamePage'
+import MiniGolfSetupPage from './pages/mini-golf/MiniGolfSetupPage'
+import MiniGolfGamePage from './pages/mini-golf/MiniGolfGamePage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -125,6 +131,12 @@ function App() {
           <Route path={ROUTES.PATTERN_RECALL_GAME} element={<PatternRecallGamePage />} />
           <Route path={ROUTES.SPACE_ENTRY_SETUP} element={<SpaceEntrySetupPage />} />
           <Route path={ROUTES.SPACE_ENTRY_GAME} element={<SpaceEntryGamePage />} />
+          <Route path={ROUTES.BOND_AND_BURN_SETUP} element={<BondAndBurnSetupPage />} />
+          <Route path={ROUTES.BOND_AND_BURN_GAME} element={<BondAndBurnGamePage />} />
+          <Route path={ROUTES.TRAFFIC_LAB_SETUP} element={<TrafficLabSetupPage />} />
+          <Route path={ROUTES.TRAFFIC_LAB_GAME} element={<TrafficLabGamePage />} />
+          <Route path={ROUTES.MINI_GOLF_SETUP} element={<MiniGolfSetupPage />} />
+          <Route path={ROUTES.MINI_GOLF_GAME} element={<MiniGolfGamePage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />

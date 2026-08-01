@@ -68,7 +68,7 @@ Replace hardcoded `IF_OBSTACLE` and `WHILE_NOT_GOAL` with generic `IF` and `WHIL
     - Keep `else`, `end-if`, `end-while` matchers as-is
     - _Requirements: 10.9, 10.10, 8.4_
 
-  - [ ]* 2.4 Write property tests for serialization round-trip and line count invariant
+  - [x] 2.4 Write property tests for serialization round-trip and line count invariant
     - Create `apps/web/src/utils/__tests__/scratchCodingGenericConditionsPBT.test.ts`
     - Build a `commandTreeArb` generator that produces random program trees with all 11 command types, random conditions (sensor or comparison), random varValues
     - **Property 1: Serialization round-trip** — `textToProgram(programToText(program))` produces structurally equivalent tree (ignoring IDs)
@@ -103,7 +103,7 @@ Replace hardcoded `IF_OBSTACLE` and `WHILE_NOT_GOAL` with generic `IF` and `WHIL
     - Ensure clicking opening/else/closing line of IF or WHILE removes entire structure
     - _Requirements: 12.4, 12.5_
 
-  - [ ]* 3.5 Write property tests for insertion line count deltas
+  - [x] 3.5 Write property tests for insertion line count deltas
     - **Property 11: Simple command insertion increases line count by 1** — Insert `VAR_NUM_DECL`/`VAR_CHAR_DECL`/`VAR_NUM_INC`/`VAR_NUM_DEC` at valid cursor, assert `countAllLines` delta is 1
     - **Validates: Requirements 12.1**
     - **Property 12: IF insertion increases line count by 3** — Insert `IF`, assert delta is 3 and cursor `parentId` equals new command ID with `branch === 'body'`
@@ -134,19 +134,19 @@ Replace hardcoded `IF_OBSTACLE` and `WHILE_NOT_GOAL` with generic `IF` and `WHIL
     - Existing `MAX_STEPS = 500` safeguard applies to generic WHILE
     - _Requirements: 1.3, 1.4, 1.5, 2.3, 2.4, 2.5, 2.6, 5.4, 5.5, 6.4, 6.5, 7.3, 7.4, 7.5, 13.1, 13.2, 13.3_
 
-  - [ ]* 5.3 Write property tests for condition evaluation
+  - [x] 5.3 Write property tests for condition evaluation
     - **Property 3: Sensor condition evaluation correctness** — For random sensor types, character states, and levels, `evaluateCondition` matches direct game-state check
     - **Validates: Requirements 3.1, 3.2, 3.3**
     - **Property 4: Comparison condition evaluation correctness** — For random variable types, operators, current values, and target values, `evaluateCondition` matches native JS comparison
     - **Validates: Requirements 4.2, 4.3, 4.4, 4.5, 4.6, 4.7**
 
-  - [ ]* 5.4 Write property tests for backward compatibility
+  - [x] 5.4 Write property tests for backward compatibility
     - **Property 5: Sensor-based IF matches old IF_OBSTACLE behavior** — Generic IF with `obstacle-ahead` sensor selects same branch as old IF_OBSTACLE logic
     - **Validates: Requirements 8.3**
     - **Property 6: Sensor-based WHILE matches old WHILE_NOT_GOAL behavior** — Generic WHILE with `not-at-goal` sensor produces same step sequence as old WHILE_NOT_GOAL
     - **Validates: Requirements 8.3**
 
-  - [ ]* 5.5 Write property tests for variable execution
+  - [x] 5.5 Write property tests for variable execution
     - **Property 7: Counting loop produces correct iteration count** — `var-num = start; while(var-num < target) { forward(); var-num++ }` on straight-line level produces exactly `(target - start)` forward steps
     - **Validates: Requirements 2.3, 7.3, 5.4**
     - **Property 8: Undefined variable produces error** — Programs using inc/dec/comparison without prior declaration produce `errorType: 'undefined-variable'`
@@ -222,7 +222,7 @@ Replace hardcoded `IF_OBSTACLE` and `WHILE_NOT_GOAL` with generic `IF` and `WHIL
     - Verify all existing tests still pass
     - _Requirements: 8.3_
 
-  - [ ]* 10.3 Write unit tests for new functionality
+  - [x] 10.3 Write unit tests for new functionality
     - Create `apps/web/src/utils/__tests__/scratchCodingGenericConditions.test.ts`
     - Test `createCommand('IF')`, `createCommand('WHILE')`, `createCommand('VAR_NUM_DECL')`, `createCommand('VAR_CHAR_DECL')`
     - Test `getCommandsForDifficulty('hard')` includes new types, excludes old types

@@ -1,4 +1,26 @@
 {
+  "games": {
+    "memory-match": { "title": "Jogo da Memória", "description": "Vire cartas e encontre os pares!", "category": "Quebra-cabeças & Lógica" },
+    "math-challenge": { "title": "Desafio de Matemática", "description": "Resolva problemas de matemática o mais rápido possível!", "category": "Ciência & Matemática" },
+    "word-puzzle": { "title": "Caça-Palavras", "description": "Encontre palavras escondidas na grade!", "category": "Quebra-cabeças & Lógica" },
+    "language-learning": { "title": "Aprendizado de Idiomas", "description": "Aprenda novos idiomas com jogos divertidos!", "category": "Geografia & Idiomas" },
+    "sudoku": { "title": "Sudoku", "description": "Preencha a grade com números — sem repetir!", "category": "Quebra-cabeças & Lógica" },
+    "jigsaw-puzzle": { "title": "Quebra-Cabeça", "description": "Monte as peças para completar a imagem!", "category": "Quebra-cabeças & Lógica" },
+    "bubble-pop": { "title": "Estoura Bolha", "description": "Estoure bolhas resolvendo desafios rápidos!", "category": "Quebra-cabeças & Lógica" },
+    "sequence-memory": { "title": "Memória Sequencial", "description": "Memorize e repita sequências crescentes!", "category": "Quebra-cabeças & Lógica" },
+    "code-a-bot": { "title": "Programe o Robô", "description": "Programe um robô para alcançar o objetivo!", "category": "Quebra-cabeças & Lógica" },
+    "geo-quiz": { "title": "Quiz de Geografia", "description": "Teste seu conhecimento de geografia mundial!", "category": "Geografia & Idiomas" },
+    "history-quiz": { "title": "Quiz de História", "description": "Viaje no tempo com perguntas de história!", "category": "História & Civismo" },
+    "civics-quiz": { "title": "Quiz de Civismo", "description": "Aprenda sobre governo e cidadania!", "category": "História & Civismo" },
+    "color-by-number": { "title": "Colorir por Números", "description": "Pinte lindas imagens número por número!", "category": "Quebra-cabeças & Lógica" },
+    "hangman": { "title": "Forca", "description": "Adivinhe a palavra letra por letra!", "category": "Quebra-cabeças & Lógica" },
+    "tic-tac-toe": { "title": "Jogo da Velha", "description": "Clássico jogo de estratégia X e O!", "category": "Quebra-cabeças & Lógica" },
+    "scratch-coding": { "title": "Space Coder", "description": "Programe seu astronauta até a câmara de ar com menos blocos!", "category": "Quebra-cabeças & Lógica" },
+    "math-maze": { "title": "Labirinto Matemático", "description": "Navegue por um labirinto resolvendo equações nos portões!", "category": "Ciência & Matemática" },
+    "pattern-recall": { "title": "Memória de Padrões", "description": "Memorize e repita padrões neste jogo estilo Simon Says!", "category": "Quebra-cabeças & Lógica" },
+    "space-entry": { "title": "Entrada Espacial", "description": "Calcule seu ângulo de reentrada e aterrisse com segurança na Terra!", "category": "Ciência & Matemática" },
+    "bond-and-burn": { "title": "Bond & Burn", "description": "Leia a fórmula, encontre elementos na tabela periódica e monte compostos antes que o lab superaqueça!", "category": "Ciência & Matemática" }
+  },
   "nav": {
     "dashboard": "Painel",
     "leaderboard": "Classificação",
@@ -140,83 +162,6 @@
     "no": "Não",
     "tryAgain": "Tentar Novamente",
     "player": "Jogador"
-  },
-  "games": {
-    "memory-match": {
-      "title": "Jogo da Memória",
-      "description": "Encontre os pares! Teste sua memória.",
-      "category": "Memória"
-    },
-    "math-challenge": {
-      "title": "Desafio Matemático",
-      "description": "Resolva problemas de matemática o mais rápido possível!",
-      "category": "Matemática"
-    },
-    "word-puzzle": {
-      "title": "Caça-Palavras",
-      "description": "Encontre palavras escondidas na grade!",
-      "category": "Palavras"
-    },
-    "language-learning": {
-      "title": "Aprender Idiomas",
-      "description": "Aprenda idiomas com jogos de vocabulário!",
-      "category": "Idiomas"
-    },
-    "sudoku": {
-      "title": "Sudoku",
-      "description": "Preencha a grade com números. Clássico quebra-cabeça!",
-      "category": "Lógica"
-    },
-    "jigsaw-puzzle": {
-      "title": "Quebra-Cabeça",
-      "description": "Junte as peças para completar a imagem!",
-      "category": "Puzzle"
-    },
-    "bubble-pop": {
-      "title": "Estoura Bolhas",
-      "description": "Estoure bolhas para soletrar palavras!",
-      "category": "Palavras"
-    },
-    "sequence-memory": {
-      "title": "Memória de Sequência",
-      "description": "Lembre e repita a sequência!",
-      "category": "Memória"
-    },
-    "code-a-bot": {
-      "title": "Programe um Robô",
-      "description": "Programe um robô para chegar ao objetivo!",
-      "category": "Programação"
-    },
-    "geo-quiz": {
-      "title": "Quiz de Geografia",
-      "description": "Teste seus conhecimentos de geografia!",
-      "category": "Geografia"
-    },
-    "history-quiz": {
-      "title": "Quiz de História",
-      "description": "Frases famosas, eventos e personagens históricos.",
-      "category": "História"
-    },
-    "civics-quiz": {
-      "title": "Quiz de Civismo",
-      "description": "Domine o teste de cidadania dos EUA!",
-      "category": "Civismo"
-    },
-    "hangman": {
-      "title": "Forca",
-      "description": "Adivinhe a palavra antes que a forca se complete!",
-      "category": "Palavras"
-    },
-    "tic-tac-toe": {
-      "title": "Jogo da Velha",
-      "description": "Desafie a IA — Melhor de 5 rodadas!",
-      "category": "Estratégia"
-    },
-    "color-by-number": {
-      "title": "Colorir por Números",
-      "description": "Pinte obras de arte pixel por número!",
-      "category": "Arte"
-    }
   },
   "setup": {
     "mathChallenge": {
@@ -646,5 +591,115 @@
     "timerLabel": "Tempo",
     "scoreLabel": "Pontuação",
     "collected": "{{collected}} / {{total}}"
+  },
+  "subscription": {
+    "title": "Escolha seu Plano",
+    "subtitle": "Faça upgrade para desbloquear mais jogadas e recursos!",
+    "rateLimitTitle": "Limite Diário Atingido!",
+    "rateLimitSubtitle": "Faça upgrade para continuar jogando!",
+    "premiumTitle": "Jogo Premium",
+    "premiumSubtitle": "Este jogo requer uma assinatura Premium!",
+    "currentPlan": "Plano Atual",
+    "upgradeTo": "Upgrade para {{plan}}",
+    "downgradeTo": "Downgrade para {{plan}}",
+    "downgradeToFree": "Downgrade para Grátis",
+    "popular": "POPULAR",
+    "playsPerDay": "{{count}} jogadas/dia",
+    "perMonth": "mês",
+    "forever": "sempre",
+    "footer": "Jogadas gratuitas são renovadas a cada 24 horas. Você pode mudar de plano a qualquer momento.",
+    "footerPayment": "Se o pagamento não for aprovado, você será rebaixado para o plano Grátis.",
+    "plans": {
+      "free": {
+        "name": "Grátis",
+        "features": [
+          "Acesso a todos os jogos",
+          "Dispositivo único",
+          "Renova a cada 24 horas"
+        ]
+      },
+      "light": {
+        "name": "Light",
+        "features": [
+          "Acesso a todos os jogos",
+          "Até 3 dispositivos",
+          "Renova a cada 24 horas",
+          "Estatísticas básicas"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "features": [
+          "Acesso a todos os jogos",
+          "Até 3 dispositivos",
+          "Renova a cada 24 horas",
+          "Estatísticas detalhadas",
+          "Suporte prioritário"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "features": [
+          "Acesso a todos os jogos",
+          "Até 5 dispositivos",
+          "1.000 jogadas/dia",
+          "Análises avançadas",
+          "Suporte prioritário",
+          "Acesso antecipado a novos jogos"
+        ]
+      }
+    }
+  },
+  "bondAndBurn": {
+    "title": "Bond & Burn",
+    "subtitle": "O Laboratório de Reações",
+    "description": "Leia a fórmula, encontre os elementos na tabela periódica e monte compostos antes que o laboratório superaqueça!",
+    "chooseDifficulty": "Escolha o Nível do Lab",
+    "startMission": "Iniciar Missão",
+    "selectDifficulty": "Selecione um nível",
+    "howToPlay": "Como Jogar",
+    "step1": "Leia a fórmula do composto e encontre os elementos certos",
+    "step2": "Toque nos elementos da tabela periódica para adicioná-los ao béquer",
+    "step3": "Complete reações antes que o medidor de calor chegue a 100%",
+    "step4": "Escolhas erradas adicionam calor — seja preciso!",
+    "easyDesc": "Moléculas simples, calor sobe devagar",
+    "mediumDesc": "Compostos mais complexos, calor mais rápido",
+    "hardDesc": "Reações complexas, alta pressão, calor rigoroso!",
+    "makeCompound": "Faça: {{name}}",
+    "pickElements": "Escolha elementos da tabela periódica",
+    "labComplete": "Missão no Lab Completa!",
+    "meltdown": "FUSÃO!",
+    "preparingLab": "Preparando o laboratório...",
+    "make": "Faça:",
+    "round": "Rodada",
+    "recipes": {
+      "water": { "name": "Água", "hint": "Pegue 2 Hidrogênio e 1 Oxigênio", "funFact": "A água cobre 71% da superfície da Terra! Todo ser vivo precisa dela." },
+      "salt": { "name": "Sal de Cozinha", "hint": "Pegue 1 Sódio e 1 Cloro", "funFact": "O sal era tão valioso na Roma Antiga que soldados eram pagos com ele!" },
+      "co2": { "name": "Dióxido de Carbono", "hint": "Pegue 1 Carbono e 2 Oxigênio", "funFact": "As plantas respiram CO₂ e exalam oxigênio — o oposto de nós!" },
+      "methane": { "name": "Metano", "hint": "Pegue 1 Carbono e 4 Hidrogênio", "funFact": "O metano é o principal ingrediente do gás natural usado para cozinhar!" },
+      "ammonia": { "name": "Amônia", "hint": "Pegue 1 Nitrogênio e 3 Hidrogênio", "funFact": "A amônia é usada para fazer fertilizante que ajuda a alimentar bilhões!" },
+      "ethane": { "name": "Etano", "hint": "Pegue 2 Carbono e 6 Hidrogênio", "funFact": "O etano é encontrado no gás natural e na superfície da lua Titã de Saturno!" },
+      "hydrogen-peroxide": { "name": "Água Oxigenada", "hint": "Pegue 2 Hidrogênio e 2 Oxigênio", "funFact": "A água oxigenada é usada para limpar feridas e até descolorir cabelo!" },
+      "hydrochloric-acid": { "name": "Ácido Clorídrico", "hint": "Pegue 1 Hidrogênio e 1 Cloro", "funFact": "Seu estômago produz ácido clorídrico para digerir alimentos!" },
+      "sodium-hydroxide": { "name": "Hidróxido de Sódio", "hint": "Pegue 1 Sódio, 1 Oxigênio e 1 Hidrogênio", "funFact": "O hidróxido de sódio (soda cáustica) é usado para fazer sabão e desentupir ralos!" },
+      "nitrous-oxide": { "name": "Gás Hilariante", "hint": "Pegue 2 Nitrogênio e 1 Oxigênio", "funFact": "Dentistas usam gás hilariante (N₂O) para ajudar pacientes a relaxar!" }
+    }
+  },
+  "miniGolf": {
+    "title": "Mini Golf",
+    "subtitle": "Física de Tacadas",
+    "description": "Mire, ajuste a força e acerte a bola nos obstáculos para afundá-la no menor número de tacadas!",
+    "chooseCourse": "Escolha Seu Percurso",
+    "teeOff": "Começar",
+    "selectCourse": "Selecione um percurso",
+    "howToPlay": "Como Jogar",
+    "step1": "Arraste a partir da bola para mirar",
+    "step2": "Puxe mais para trás para mais força",
+    "step3": "Solte para tacada — ricocheteie nas paredes!",
+    "step4": "Acerte o buraco com menos tacadas",
+    "easyDesc": "Campos abertos, ângulos simples",
+    "mediumDesc": "Obstáculos, areia e água",
+    "hardDesc": "Moinhos, labirintos, caos!",
+    "loading": "Preparando o campo..."
   }
 }

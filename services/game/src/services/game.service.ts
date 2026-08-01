@@ -47,10 +47,15 @@ export class GameService {
     // Get user's subscription tier
     const tier = await this.subscriptionRepository.getTier(userId);
 
-    // Check if game requires premium tier
-    const PREMIUM_GAMES = ['SPACE_ENTRY'];
-    if (PREMIUM_GAMES.includes(input.themeId) && tier !== SubscriptionTier.Premium) {
-      throw new AuthorizationError('This game requires a Premium subscription. Upgrade to play!');
+    // Check if game requires a paid subscription (any tier above FREE)
+    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
+    if (PAID_GAMES.includes(input.themeId) && tier === SubscriptionTier.Free) {
+      throw new AuthorizationError('This game requires a paid subscription. Upgrade to play!');
+    }
+
+    // Super Hard difficulty (4) requires paid subscription on any game
+    if (input.difficulty >= 4 && tier === SubscriptionTier.Free) {
+      throw new AuthorizationError('Super Hard difficulty requires a paid subscription. Upgrade to play!');
     }
 
     // Check rate limit
@@ -129,7 +134,7 @@ export class GameService {
     }
 
     // Validate attempts (only for Memory Match which uses pairs-based logic)
-    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY'].includes(game.themeId)) {
+    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
       const attemptsValidation = validateAttempts(input.attempts, game.difficulty);
       if (!attemptsValidation.valid) {
         throw new AuthorizationError(attemptsValidation.reason!);
@@ -138,7 +143,7 @@ export class GameService {
 
     // Calculate accuracy for non-Memory-Match games BEFORE score calculation
     let preAccuracy: number | undefined
-    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY'].includes(game.themeId)) {
+    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
       if (game.themeId === 'WORD_PUZZLE') {
         const wordsFound = input.wordsFound || 0;
         const totalWords = input.totalWords || 1;
@@ -155,9 +160,30 @@ export class GameService {
       game.difficulty,
       input.completionTime,
       input.attempts,
-      preAccuracy
+      preAccuracy,
+      game.themeId
     );
-    const score = scoreBreakdownForEvent.finalScore;
+
+    // Apply score cap based on game type and difficulty
+    const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
+    let scoreCap: number;
+    if (game.themeId === 'MINI_GOLF') {
+      // Mini Golf: no hard cap — let speed differentiate top players
+      scoreCap = 99999; // effectively uncapped
+    } else if (game.difficulty >= 4) {
+      // Super Hard difficulty on any game caps at 8000
+      scoreCap = 8000;
+    } else if (PREMIUM_GAME_THEMES.includes(game.themeId)) {
+      scoreCap = 8000;
+    } else {
+      scoreCap = 6000;
+    }
+    const score = Math.min(scoreBreakdownForEvent.finalScore, scoreCap);
+    
+    // Update breakdown to reflect capped score
+    if (scoreBreakdownForEvent.finalScore > scoreCap) {
+      scoreBreakdownForEvent.finalScore = scoreCap;
+    }
 
     // Update game record
     const completedGame = await this.gameRepository.update(input.gameId, {
@@ -291,6 +317,30 @@ export class GameService {
       avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
     } else if (game.themeId === 'SPACE_ENTRY') {
       gameType = 'SPACE_ENTRY';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'SCRATCH_CODING') {
+      gameType = 'SCRATCH_CODING';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'BOND_AND_BURN') {
+      gameType = 'BOND_AND_BURN';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'TRAFFIC_LAB') {
+      gameType = 'TRAFFIC_LAB';
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / (totalQuestions || 1)));
+    } else if (game.themeId === 'MINI_GOLF') {
+      gameType = 'MINI_GOLF';
       const correctAnswers = input.correctAnswers || 0;
       const totalQuestions = input.totalQuestions || 1;
       accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;

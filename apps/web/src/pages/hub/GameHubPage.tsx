@@ -27,6 +27,8 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'math-maze': 'Science & Math',
   'pattern-recall': 'Puzzles & Logic',
   'space-entry': 'Science & Math',
+  'bond-and-burn': 'Science & Math',
+  'traffic-lab': 'Puzzles & Logic',
 }
 
 const FILTER_CHIPS = [

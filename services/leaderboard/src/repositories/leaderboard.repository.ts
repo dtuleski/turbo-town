@@ -86,8 +86,11 @@ export class LeaderboardRepository {
 
     switch (timeframe) {
       case Timeframe.DAILY: {
-        const today = new Date().toISOString().split('T')[0];
-        queryInput = {
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        // Query both today and yesterday (UTC), then filter to last 24h in service layer
+        const todayQuery: QueryCommandInput = {
           TableName: this.tableName,
           IndexName: 'DailyLeaderboardIndex',
           KeyConditionExpression: '#gameTypeDate = :gameTypeDate',
@@ -97,10 +100,39 @@ export class LeaderboardRepository {
           ExpressionAttributeValues: marshall({
             ':gameTypeDate': `${gameType}#${today}`,
           }),
-          ScanIndexForward: false, // Descending order (highest scores first)
+          ScanIndexForward: false,
           Limit: limit,
         };
-        break;
+        const yesterdayQuery: QueryCommandInput = {
+          TableName: this.tableName,
+          IndexName: 'DailyLeaderboardIndex',
+          KeyConditionExpression: '#gameTypeDate = :gameTypeDate',
+          ExpressionAttributeNames: {
+            '#gameTypeDate': 'gameTypeDate',
+          },
+          ExpressionAttributeValues: marshall({
+            ':gameTypeDate': `${gameType}#${yesterday}`,
+          }),
+          ScanIndexForward: false,
+          Limit: limit,
+        };
+
+        const [todayResult, yesterdayResult] = await Promise.all([
+          this.client.send(new QueryCommand(todayQuery)),
+          this.client.send(new QueryCommand(yesterdayQuery)),
+        ]);
+
+        const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+        const allItems = [
+          ...(todayResult.Items || []),
+          ...(yesterdayResult.Items || []),
+        ];
+
+        return allItems
+          .map(item => unmarshall(item) as LeaderboardEntry)
+          .filter(entry => entry.timestamp >= cutoff)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, limit);
       }
 
       case Timeframe.WEEKLY: {

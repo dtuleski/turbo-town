@@ -1,5 +1,5 @@
 export type GameTheme = 'ANIMALS' | 'FRUITS' | 'VEHICLES' | 'SPACE' | 'OCEAN' | 'FORMULA1'
-export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD'
+export type DifficultyLevel = 'EASY' | 'MEDIUM' | 'HARD' | 'SUPER_HARD'
 export type GameStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED' | 'PAUSED'
 
 export interface Card {

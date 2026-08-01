@@ -16,3 +16,21 @@ export const CREATE_PORTAL_SESSION = gql`
     }
   }
 `;
+
+export const VERIFY_CHECKOUT_SESSION = gql`
+  mutation VerifyCheckoutSession($sessionId: String!) {
+    verifyCheckoutSession(sessionId: $sessionId) {
+      success
+      tier
+    }
+  }
+`;
+
+export const CHANGE_PLAN = gql`
+  mutation ChangePlan($input: ChangePlanInput!) {
+    changePlan(input: $input) {
+      success
+      tier
+    }
+  }
+`;

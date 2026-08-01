@@ -48,7 +48,6 @@ export default function LanguageGamePage() {
   const [showResults, setShowResults] = useState(false);
   const [finalGameState, setFinalGameState] = useState<GameState | null>(null);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
-  const [backendScore, setBackendScore] = useState<number | null>(null);
 
   useEffect(() => {
     if (!settings || !languageCode) {
@@ -107,7 +106,7 @@ export default function LanguageGamePage() {
 
   // Show results page when game is finished (AFTER all hooks)
   if (showResults && finalGameState) {
-    const finalScore = backendScore ?? finalGameState.score;
+    const finalScore = finalGameState.score;
     const accuracy = finalGameState.correctAnswers / Math.max(1, words.length);
     const completionTime = Math.floor((Date.now() - finalGameState.timeStarted) / 1000);
     const diffLabel = settings.difficulty === 'advanced' ? 'Hard' : settings.difficulty === 'intermediate' ? 'Medium' : 'Easy';
@@ -185,7 +184,8 @@ export default function LanguageGamePage() {
     const timeBonus = Math.max(0, 50 - Math.floor(timeSpent / 1000) * 5);
     const streakBonus = gameState.streak * 10;
     const basePoints = 100;
-    const totalPoints = correct ? basePoints + timeBonus + streakBonus : 0;
+    const difficultyMultiplier = (settings.difficulty === 'advanced' || settings.difficulty === 'hard') ? 2 : (settings.difficulty === 'intermediate' || settings.difficulty === 'medium') ? 1.5 : 1;
+    const totalPoints = correct ? Math.round((basePoints + timeBonus + streakBonus) * difficultyMultiplier) : 0;
 
     setGameState(prev => ({
       ...prev,
@@ -204,8 +204,14 @@ export default function LanguageGamePage() {
     setTimeout(async () => {
       if (gameState.currentWordIndex + 1 >= words.length) {
         const finalCorrectAnswers = gameState.correctAnswers + (correct ? 1 : 0);
-        const finalScore = gameState.score + totalPoints;
         const completionTime = Math.floor((Date.now() - gameState.timeStarted) / 1000);
+        
+        // Scoring: 6000 max, penalized by accuracy and time
+        // Target times: beginner=30s, intermediate=45s, advanced=60s
+        const targetTime = settings.difficulty === 'advanced' ? 60 : settings.difficulty === 'intermediate' ? 45 : 30;
+        const accuracy = finalCorrectAnswers / words.length;
+        const timePenalty = completionTime <= targetTime ? 1 : Math.max(0.3, 1 - (completionTime - targetTime) / (targetTime * 2));
+        const finalScore = Math.round(6000 * accuracy * timePenalty);
         
         // Complete game in backend for leaderboard
         if (backendGameId) {
@@ -218,7 +224,7 @@ export default function LanguageGamePage() {
               totalQuestions: words.length,
             });
             if (result?.score) {
-              setBackendScore(result.score);
+              // Score displayed uses frontend calculation with difficulty multiplier
             }
           } catch (err) {
             console.error('Failed to complete backend game:', err);
@@ -272,10 +278,6 @@ export default function LanguageGamePage() {
               </svg>
               Back
             </button>
-            <div className="text-right">
-              <div className="text-sm text-gray-600">Score</div>
-              <div className="text-2xl font-bold text-indigo-600">{gameState.score}</div>
-            </div>
           </div>
           
           {/* Progress Bar */}

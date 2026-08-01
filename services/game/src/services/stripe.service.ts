@@ -10,8 +10,6 @@ const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION
 const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const RATE_LIMITS_TABLE = process.env.RATE_LIMITS_TABLE_NAME!;
 
-const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
-
 // Cache for secrets (Lambda container reuse)
 let cachedStripeKey: string | null = null;
 let cachedWebhookSecret: string | null = null;
@@ -71,6 +69,13 @@ export class StripeService {
   }
 
   /**
+   * Get the Stripe client instance (for session retrieval etc.)
+   */
+  async getStripeClientPublic(): Promise<Stripe> {
+    return getStripeClient();
+  }
+
+  /**
    * Sync tier to rate-limits table (keeps both tables consistent)
    */
   private async syncRateLimitTier(userId: string, tier: string): Promise<void> {
@@ -89,14 +94,20 @@ export class StripeService {
   }
 
   /**
-   * Create Stripe Checkout session for subscription purchase
+   * Create Stripe Checkout session for NEW subscription (user has no active subscription)
    */
   async createCheckoutSession(input: CreateCheckoutSessionInput): Promise<{ sessionId: string; url: string }> {
     try {
       logger.info('Creating Stripe Checkout session', { userId: input.userId, tier: input.tier });
 
       const stripe = await getStripeClient();
-      const session = await stripe.checkout.sessions.create({
+
+      // Check if user already has a Stripe customer ID (avoid duplicate customers)
+      const existing = await this.subscriptionRepo.getByUserId(input.userId);
+      const existingCustomerId = existing?.stripeCustomerId;
+
+      // Build checkout session params
+      const sessionParams: any = {
         mode: 'subscription',
         payment_method_types: ['card'],
         line_items: [
@@ -105,7 +116,6 @@ export class StripeService {
             quantity: 1,
           },
         ],
-        customer_email: input.email,
         client_reference_id: input.userId,
         metadata: {
           userId: input.userId,
@@ -113,7 +123,16 @@ export class StripeService {
         },
         success_url: `${process.env.FRONTEND_URL}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.FRONTEND_URL}/subscription`,
-      });
+      };
+
+      // Reuse existing Stripe customer if available, otherwise use email
+      if (existingCustomerId) {
+        sessionParams.customer = existingCustomerId;
+      } else {
+        sessionParams.customer_email = input.email;
+      }
+
+      const session = await stripe.checkout.sessions.create(sessionParams);
 
       logger.info('Checkout session created', { sessionId: session.id, userId: input.userId });
 
@@ -124,6 +143,93 @@ export class StripeService {
     } catch (error) {
       logger.error('Failed to create checkout session', error as Error, { userId: input.userId });
       throw new Error('Failed to create checkout session');
+    }
+  }
+
+  /**
+   * Change subscription plan with proration (upgrade or downgrade)
+   * Uses Stripe subscription.update() — no new checkout needed
+   */
+  async changePlan(userId: string, newTier: string, newPriceId: string): Promise<{ success: boolean; tier: string }> {
+    try {
+      logger.info('Changing subscription plan', { userId, newTier });
+
+      const stripe = await getStripeClient();
+      const existing = await this.subscriptionRepo.getByUserId(userId);
+
+      if (!existing?.stripeSubscriptionId || existing?.status !== 'ACTIVE') {
+        throw new Error('No active subscription found. Please subscribe first.');
+      }
+
+      // Verify the subscription is actually active in Stripe (not just in our DB)
+      let subscription: any;
+      try {
+        subscription = await stripe.subscriptions.retrieve(existing.stripeSubscriptionId);
+      } catch (retrieveErr) {
+        throw new Error('Subscription not found in Stripe. Please subscribe again.');
+      }
+
+      if (subscription.status !== 'active') {
+        // Subscription is cancelled/expired in Stripe — need to resubscribe via checkout
+        throw new Error('SUBSCRIPTION_NOT_ACTIVE');
+      }
+
+      const currentItem = subscription.items.data[0];
+
+      if (!currentItem) {
+        throw new Error('No subscription item found');
+      }
+
+      // Update the subscription with the new price
+      // Upgrades: charge prorated difference immediately (prevents gaming the system)
+      // Downgrades: no proration — just apply the lower price at next renewal
+      const tierRank: Record<string, number> = { LIGHT: 1, STANDARD: 2, PREMIUM: 3 };
+      const currentTierName = existing.tier?.toUpperCase() || 'LIGHT';
+      const isUpgrade = (tierRank[newTier] || 0) > (tierRank[currentTierName] || 0);
+
+      const updated = await stripe.subscriptions.update(existing.stripeSubscriptionId, {
+        items: [{
+          id: currentItem.id,
+          price: newPriceId,
+        }],
+        proration_behavior: isUpgrade ? 'always_invoice' : 'none',
+        payment_behavior: 'error_if_incomplete',
+        metadata: {
+          userId,
+          tier: newTier,
+        },
+      });
+
+      logger.info('Subscription plan changed', {
+        userId,
+        newTier,
+        subscriptionId: updated.id,
+        status: updated.status,
+      });
+
+      // Map tier to enum
+      const tierMap: Record<string, SubscriptionTier> = {
+        LIGHT: SubscriptionTier.Light,
+        STANDARD: SubscriptionTier.Standard,
+        PREMIUM: SubscriptionTier.Premium,
+      };
+      const subscriptionTier = tierMap[newTier] || SubscriptionTier.Free;
+
+      // Update DynamoDB immediately
+      await this.subscriptionRepo.updateSubscription({
+        userId,
+        tier: subscriptionTier,
+        status: 'ACTIVE',
+        stripeSubscriptionId: updated.id,
+      });
+
+      // Sync rate limits
+      await this.syncRateLimitTier(userId, newTier);
+
+      return { success: true, tier: newTier };
+    } catch (error) {
+      logger.error('Failed to change plan', error as Error, { userId, newTier });
+      throw error;
     }
   }
 
@@ -207,6 +313,28 @@ export class StripeService {
     }
 
     logger.info('Checkout completed', { userId, tier, customerId: session.customer });
+
+    // Cancel old subscription if exists (handles upgrade via checkout)
+    const existing = await this.subscriptionRepo.getByUserId(userId);
+    if (existing?.stripeSubscriptionId && existing.stripeSubscriptionId !== session.subscription) {
+      try {
+        const stripe = await getStripeClient();
+        await stripe.subscriptions.cancel(existing.stripeSubscriptionId, {
+          prorate: false, // Don't prorate — Stripe Checkout already handled pricing
+        });
+        logger.info('Cancelled old subscription on upgrade', {
+          userId,
+          oldSubscriptionId: existing.stripeSubscriptionId,
+          newSubscriptionId: session.subscription,
+        });
+      } catch (cancelErr) {
+        // Log but don't fail — old sub may already be cancelled
+        logger.error('Failed to cancel old subscription', cancelErr as Error, {
+          userId,
+          oldSubscriptionId: existing.stripeSubscriptionId,
+        });
+      }
+    }
 
     // Map tier to SubscriptionTier enum
     const tierMap: Record<string, SubscriptionTier> = {

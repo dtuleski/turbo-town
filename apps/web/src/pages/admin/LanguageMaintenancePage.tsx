@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getAllLanguageWords, updateLanguageWord, createLanguageWord, deleteLanguageWord, LanguageWordAdmin } from '@/api/admin';
+import { useState, useEffect, useRef } from 'react';
+import { getAllLanguageWords, updateLanguageWord, createLanguageWord, deleteLanguageWord, getPresignedUploadUrl, LanguageWordAdmin } from '@/api/admin';
 import Button from '@/components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
@@ -475,6 +475,150 @@ const WordCard = ({
   );
 };
 
+// Image Upload Component
+const ImageUploader = ({
+  currentUrl,
+  onUrlChange,
+  label,
+}: {
+  currentUrl: string;
+  onUrlChange: (url: string) => void;
+  label: string;
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+
+  const handleUpload = async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Only image files are allowed');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('File must be under 5MB');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      setUploadError(null);
+
+      // Get presigned URL from backend
+      const { uploadUrl, publicUrl } = await getPresignedUploadUrl({
+        filename: file.name,
+        contentType: file.type,
+      });
+
+      // Upload directly to S3
+      const uploadResponse = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.status}`);
+      }
+
+      // Set the public URL
+      onUrlChange(publicUrl);
+    } catch (err: any) {
+      setUploadError(err.message || 'Upload failed');
+      console.error('Image upload failed:', err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleUpload(file);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleUpload(file);
+    // Reset so same file can be re-selected
+    e.target.value = '';
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      
+      {/* Drop zone */}
+      <div
+        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+        className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${
+          dragOver
+            ? 'border-primary-blue bg-blue-50'
+            : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+        } ${uploading ? 'pointer-events-none opacity-60' : ''}`}
+      >
+        {uploading ? (
+          <div className="flex items-center justify-center gap-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-blue"></div>
+            <span className="text-sm text-gray-600">Uploading...</span>
+          </div>
+        ) : (
+          <div>
+            <span className="text-2xl">📤</span>
+            <p className="text-sm text-gray-600 mt-1">
+              Drag & drop an image or <span className="text-primary-blue font-medium">click to browse</span>
+            </p>
+            <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP up to 5MB</p>
+          </div>
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+      </div>
+
+      {uploadError && (
+        <p className="text-sm text-red-600">❌ {uploadError}</p>
+      )}
+
+      {/* Current URL display */}
+      {currentUrl && (
+        <div className="flex items-start gap-3 mt-2">
+          <img
+            src={currentUrl}
+            alt="Preview"
+            className="w-16 h-16 object-cover rounded border flex-shrink-0"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+          <input
+            type="url"
+            value={currentUrl}
+            onChange={(e) => onUrlChange(e.target.value)}
+            className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-blue"
+            placeholder="Or paste URL directly"
+          />
+        </div>
+      )}
+      {!currentUrl && (
+        <input
+          type="url"
+          value={currentUrl}
+          onChange={(e) => onUrlChange(e.target.value)}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-blue"
+          placeholder="Or paste URL directly"
+        />
+      )}
+    </div>
+  );
+};
+
 // Edit Modal Component
 const EditWordModal = ({
   word,
@@ -542,56 +686,24 @@ const EditWordModal = ({
               </div>
             </div>
 
-            {/* Main Image */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Main Image URL</label>
-              <input
-                type="url"
-                value={word.imageUrl}
-                onChange={(e) => onImageUrlChange(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                placeholder="https://images.unsplash.com/..."
-              />
-              {word.imageUrl && (
-                <div className="mt-2">
-                  <img
-                    src={word.imageUrl}
-                    alt="Preview"
-                    className="w-32 h-32 object-cover rounded border"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {/* Main Image - Upload */}
+            <ImageUploader
+              currentUrl={word.imageUrl}
+              onUrlChange={onImageUrlChange}
+              label="Main Image"
+            />
 
-            {/* Distractor Images */}
+            {/* Distractor Images - Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Distractor Images</label>
-              <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700 mb-3">Distractor Images</label>
+              <div className="space-y-4">
                 {word.distractorImages.map((url, index) => (
-                  <div key={index} className="flex gap-3 items-start">
-                    <div className="flex-1">
-                      <input
-                        type="url"
-                        value={url}
-                        onChange={(e) => onDistractorImageChange(index, e.target.value)}
-                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                        placeholder={`Distractor image ${index + 1} URL`}
-                      />
-                    </div>
-                    {url && (
-                      <img
-                        src={url}
-                        alt={`Distractor ${index + 1}`}
-                        className="w-16 h-16 object-cover rounded border"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    )}
-                  </div>
+                  <ImageUploader
+                    key={index}
+                    currentUrl={url}
+                    onUrlChange={(newUrl) => onDistractorImageChange(index, newUrl)}
+                    label={`Distractor ${index + 1}`}
+                  />
                 ))}
               </div>
             </div>

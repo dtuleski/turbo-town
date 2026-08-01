@@ -25,6 +25,10 @@ const gameTypes = [
   { value: GameType.MATH_MAZE, label: 'Math Maze', icon: '🧮' },
   { value: GameType.PATTERN_RECALL, label: 'Pattern Recall', icon: '🧩' },
   { value: GameType.SPACE_ENTRY, label: 'Space Entry', icon: '🚀' },
+  { value: GameType.SCRATCH_CODING, label: 'Space Coder', icon: '👨‍🚀' },
+  { value: GameType.BOND_AND_BURN, label: 'Bond & Burn', icon: '🧪' },
+  { value: GameType.TRAFFIC_LAB, label: 'Traffic Lab', icon: '🚦' },
+  { value: GameType.MINI_GOLF, label: 'Mini Golf', icon: '⛳' },
 ]
 
 const GameTypeFilter = ({ selected, onChange }: GameTypeFilterProps) => {

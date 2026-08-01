@@ -22,6 +22,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
   const [gameId, setGameId] = useState<string | null>(null)
   const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
+  const [gameGeneration, setGameGeneration] = useState(0)
 
   // Timer effect
   useEffect(() => {
@@ -96,11 +97,12 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
   // Start game
   const startGame = useCallback(async () => {
     try {
-      // Map difficulty to 1-3 scale
+      // Map difficulty to 1-4 scale
       const difficultyMap: Record<DifficultyLevel, number> = {
         EASY: 1,
         MEDIUM: 2,
         HARD: 3,
+        SUPER_HARD: 4,
       }
 
       console.log('Starting game...', {
@@ -162,6 +164,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
 
   // Restart game
   const restartGame = useCallback(() => {
+    setGameGeneration(prev => prev + 1)
     setGameState({
       theme,
       difficulty,
@@ -206,64 +209,69 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
       // If this is the second card, check for match
       if (flippedCards.length === 1) {
         setIsChecking(true)
+        const currentGeneration = gameGeneration
 
         setTimeout(() => {
-          const [firstCard] = flippedCards
-          const isMatch = checkMatch(firstCard, card)
+          // Bail out if game was restarted while we were waiting
+          setGameGeneration(gen => {
+            if (gen !== currentGeneration) return gen
+            
+            const [firstCard] = flippedCards
+            const isMatch = checkMatch(firstCard, card)
 
-          if (isMatch) {
-            // Match found! Mark both cards as matched by ID
-            const matchedCards = newCards.map(c =>
-              c.id === firstCard.id || c.id === card.id ? { ...c, isMatched: true } : c
-            )
+            if (isMatch) {
+              const matchedCards = newCards.map(c =>
+                c.id === firstCard.id || c.id === card.id ? { ...c, isMatched: true } : c
+              )
 
-            setGameState(prev => {
-              const newMatches = prev.matches + 1
-              const newAttempts = prev.attempts + 1
-              const allMatched = isGameComplete(matchedCards)
+              setGameState(prev => {
+                if (prev.status !== 'IN_PROGRESS') return prev
+                const newMatches = prev.matches + 1
+                const newAttempts = prev.attempts + 1
+                const allMatched = isGameComplete(matchedCards)
 
-              if (allMatched) {
-                const endTime = Date.now()
-                // Don't calculate score on frontend - backend will provide it
-                // Keep status as IN_PROGRESS until backend responds with score
+                if (allMatched) {
+                  const endTime = Date.now()
+                  return {
+                    ...prev,
+                    cards: matchedCards,
+                    matches: newMatches,
+                    attempts: newAttempts,
+                    score: 0,
+                    status: 'IN_PROGRESS',
+                    endTime,
+                  }
+                }
 
                 return {
                   ...prev,
                   cards: matchedCards,
                   matches: newMatches,
                   attempts: newAttempts,
-                  score: 0, // Will be updated from backend
-                  status: 'IN_PROGRESS', // Keep as IN_PROGRESS until backend responds
-                  endTime,
                 }
-              }
+              })
+            } else {
+              setGameState(prev => {
+                if (prev.status !== 'IN_PROGRESS') return prev
+                const unflippedCards = prev.cards.map(c =>
+                  c.id === firstCard.id || c.id === card.id ? { ...c, isFlipped: false } : c
+                )
+                return {
+                  ...prev,
+                  cards: unflippedCards,
+                  attempts: prev.attempts + 1,
+                }
+              })
+            }
 
-              return {
-                ...prev,
-                cards: matchedCards,
-                matches: newMatches,
-                attempts: newAttempts,
-              }
-            })
-          } else {
-            // No match - flip cards back
-            const unflippedCards = newCards.map(c =>
-              c.id === firstCard.id || c.id === card.id ? { ...c, isFlipped: false } : c
-            )
-
-            setGameState(prev => ({
-              ...prev,
-              cards: unflippedCards,
-              attempts: prev.attempts + 1,
-            }))
-          }
-
-          setFlippedCards([])
-          setIsChecking(false)
+            setFlippedCards([])
+            setIsChecking(false)
+            return gen
+          })
         }, 1000)
       }
     },
-    [gameState, flippedCards, isChecking, difficulty]
+    [gameState, flippedCards, isChecking, difficulty, gameGeneration]
   )
 
   return {

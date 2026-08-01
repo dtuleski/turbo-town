@@ -2,7 +2,7 @@ import { GameCatalogItem, ReviewStats } from '../../api/game'
 import { useTranslation } from 'react-i18next'
 
 /** Games that require Premium subscription */
-export const PREMIUM_GAMES = new Set(['space-entry'])
+export const PREMIUM_GAMES = new Set(['space-entry', 'scratch-coding', 'bond-and-burn'])
 
 interface GameTileProps {
   game: GameCatalogItem
@@ -16,7 +16,7 @@ export default function GameTile({ game, onClick, rating, userTier = 'FREE' }: G
   const isActive = game.status === 'ACTIVE'
   const isComingSoon = game.status === 'COMING_SOON'
   const isPremiumGame = PREMIUM_GAMES.has(game.gameId)
-  const isLocked = isPremiumGame && userTier !== 'PREMIUM'
+  const isLocked = isPremiumGame && userTier === 'FREE'
 
   // Use translated title/description/category if available, fallback to server data
   const title = t(`games.${game.gameId}.title`, { defaultValue: game.title })
@@ -43,7 +43,7 @@ export default function GameTile({ game, onClick, rating, userTier = 'FREE' }: G
 
       {isPremiumGame && (
         <div className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-          👑 Premium
+          ⭐ Paid
         </div>
       )}
 

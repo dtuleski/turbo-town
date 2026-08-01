@@ -1,9 +1,31 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useMutation } from '@apollo/client'
+import { useEffect, useState } from 'react'
 import { ROUTES } from '@/config/constants'
+import { VERIFY_CHECKOUT_SESSION } from '@/api/stripe'
+import { gameClient } from '@/api/client'
 import Button from '@/components/common/Button'
 
 const SubscriptionSuccessPage = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const [verified, setVerified] = useState(false)
+  const [verifyCheckout] = useMutation(VERIFY_CHECKOUT_SESSION, { client: gameClient })
+
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id')
+    if (sessionId && !verified) {
+      verifyCheckout({ variables: { sessionId } })
+        .then(({ data }) => {
+          if (data?.verifyCheckoutSession?.success) {
+            setVerified(true)
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to verify checkout session:', err)
+        })
+    }
+  }, [searchParams, verified, verifyCheckout])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 via-emerald-400 to-teal-400 flex items-center justify-center px-4">

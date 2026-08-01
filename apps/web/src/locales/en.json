@@ -1,4 +1,26 @@
 {
+  "games": {
+    "memory-match": { "title": "Memory Match", "description": "Flip cards and find matching pairs!", "category": "Puzzles & Logic" },
+    "math-challenge": { "title": "Math Challenge", "description": "Solve math problems as fast as you can!", "category": "Science & Math" },
+    "word-puzzle": { "title": "Word Puzzle", "description": "Find hidden words in the grid!", "category": "Puzzles & Logic" },
+    "language-learning": { "title": "Language Learning", "description": "Learn new languages with fun matching games!", "category": "Geography & Language" },
+    "sudoku": { "title": "Sudoku", "description": "Fill the grid with numbers — no repeats!", "category": "Puzzles & Logic" },
+    "jigsaw-puzzle": { "title": "Jigsaw Puzzle", "description": "Put the pieces together to complete the picture!", "category": "Puzzles & Logic" },
+    "bubble-pop": { "title": "Bubble Pop", "description": "Pop bubbles by solving quick challenges!", "category": "Puzzles & Logic" },
+    "sequence-memory": { "title": "Sequence Memory", "description": "Remember and repeat growing sequences!", "category": "Puzzles & Logic" },
+    "code-a-bot": { "title": "Code-a-Bot", "description": "Program a robot to reach the goal!", "category": "Puzzles & Logic" },
+    "geo-quiz": { "title": "Geography Quiz", "description": "Test your world geography knowledge!", "category": "Geography & Language" },
+    "history-quiz": { "title": "History Quiz", "description": "Journey through time with history questions!", "category": "History & Civics" },
+    "civics-quiz": { "title": "Civics Quiz", "description": "Learn about government and citizenship!", "category": "History & Civics" },
+    "color-by-number": { "title": "Color by Number", "description": "Paint beautiful pictures number by number!", "category": "Puzzles & Logic" },
+    "hangman": { "title": "Hangman", "description": "Guess the word letter by letter!", "category": "Puzzles & Logic" },
+    "tic-tac-toe": { "title": "Tic Tac Toe", "description": "Classic X and O strategy game!", "category": "Puzzles & Logic" },
+    "scratch-coding": { "title": "Space Coder", "description": "Program your astronaut to the airlock with the fewest blocks!", "category": "Puzzles & Logic" },
+    "math-maze": { "title": "Math Maze", "description": "Navigate a maze by solving math equations at gates!", "category": "Science & Math" },
+    "pattern-recall": { "title": "Pattern Recall", "description": "Memorize and repeat patterns in this Simon Says-style memory game!", "category": "Puzzles & Logic" },
+    "space-entry": { "title": "Space Entry", "description": "Calculate your reentry angle and land safely on Earth!", "category": "Science & Math" },
+    "bond-and-burn": { "title": "Bond & Burn", "description": "Read the formula, find elements on the periodic table, and build compounds before the lab overheats!", "category": "Science & Math" }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "leaderboard": "Leaderboard",
@@ -44,6 +66,7 @@
     "easy": "Easy",
     "medium": "Medium",
     "hard": "Hard",
+    "superHard": "Super Hard",
     "correct": "Correct!",
     "wrong": "Wrong!",
     "score": "Score",
@@ -141,83 +164,6 @@
     "tryAgain": "Try Again",
     "player": "Player"
   },
-  "games": {
-    "memory-match": {
-      "title": "Memory Match",
-      "description": "Find matching pairs! Test your memory with fun themes.",
-      "category": "Memory"
-    },
-    "math-challenge": {
-      "title": "Math Challenge",
-      "description": "Solve fun math problems as fast as you can!",
-      "category": "Math"
-    },
-    "word-puzzle": {
-      "title": "Word Puzzle",
-      "description": "Find hidden words in the grid! Test your vocabulary.",
-      "category": "Words"
-    },
-    "language-learning": {
-      "title": "Language Learning",
-      "description": "Learn new languages with fun vocabulary games!",
-      "category": "Language"
-    },
-    "sudoku": {
-      "title": "Sudoku",
-      "description": "Fill the grid with numbers. Classic brain teaser!",
-      "category": "Logic"
-    },
-    "jigsaw-puzzle": {
-      "title": "Jigsaw Puzzle",
-      "description": "Put the pieces together to complete the picture!",
-      "category": "Puzzle"
-    },
-    "bubble-pop": {
-      "title": "Bubble Pop",
-      "description": "Pop bubbles to spell words!",
-      "category": "Words"
-    },
-    "sequence-memory": {
-      "title": "Sequence Memory",
-      "description": "Remember and repeat the sequence!",
-      "category": "Memory"
-    },
-    "code-a-bot": {
-      "title": "Code-a-Bot",
-      "description": "Program a robot to reach the goal!",
-      "category": "Coding"
-    },
-    "geo-quiz": {
-      "title": "Geo Quiz",
-      "description": "Test your geography knowledge! Capitals, flags, states & more.",
-      "category": "Geography"
-    },
-    "history-quiz": {
-      "title": "History Quiz",
-      "description": "Famous quotes, events & people through the ages.",
-      "category": "History"
-    },
-    "civics-quiz": {
-      "title": "Civics Quiz",
-      "description": "Master the official US Citizenship Test!",
-      "category": "Civics"
-    },
-    "hangman": {
-      "title": "Hangman",
-      "description": "Guess the word before the hangman is complete!",
-      "category": "Words"
-    },
-    "tic-tac-toe": {
-      "title": "Tic Tac Toe",
-      "description": "Challenge the AI — Best of 5 rounds!",
-      "category": "Strategy"
-    },
-    "color-by-number": {
-      "title": "Color by Number",
-      "description": "Paint pixel art masterpieces by number!",
-      "category": "Art"
-    }
-  },
   "setup": {
     "mathChallenge": {
       "title": "Math Challenge",
@@ -259,6 +205,7 @@
       "easyDesc": "6 pairs - Perfect for beginners",
       "mediumDesc": "8 pairs - A good challenge",
       "hardDesc": "10 pairs - For memory masters",
+      "superHardDesc": "15 pairs (6×5) - Paid members only!",
       "readyToPlay": "Ready to Play?",
       "matchPairs": "Match all the pairs as fast as you can!",
       "theme": "Theme",
@@ -646,5 +593,115 @@
     "timerLabel": "Time",
     "scoreLabel": "Score",
     "collected": "{{collected}} / {{total}}"
+  },
+  "subscription": {
+    "title": "Choose Your Plan",
+    "subtitle": "Upgrade to unlock more plays and features!",
+    "rateLimitTitle": "Daily Limit Reached!",
+    "rateLimitSubtitle": "Upgrade to keep playing!",
+    "premiumTitle": "Premium Game",
+    "premiumSubtitle": "This game requires a Premium subscription!",
+    "currentPlan": "Current Plan",
+    "upgradeTo": "Upgrade to {{plan}}",
+    "downgradeTo": "Downgrade to {{plan}}",
+    "downgradeToFree": "Downgrade to Free",
+    "popular": "POPULAR",
+    "playsPerDay": "{{count}} plays/day",
+    "perMonth": "month",
+    "forever": "forever",
+    "footer": "Free plays reset every 24 hours. You can change plans at any time.",
+    "footerPayment": "If payment doesn't clear, you'll be downgraded to the Free plan.",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "features": [
+          "Access to all games",
+          "Single device",
+          "Renews every 24 hours"
+        ]
+      },
+      "light": {
+        "name": "Light",
+        "features": [
+          "Access to all games",
+          "Up to 3 devices",
+          "Renews every 24 hours",
+          "Basic statistics"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "features": [
+          "Access to all games",
+          "Up to 3 devices",
+          "Renews every 24 hours",
+          "Detailed statistics",
+          "Priority support"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "features": [
+          "Access to all games",
+          "Up to 5 devices",
+          "1,000 plays/day",
+          "Advanced analytics",
+          "Priority support",
+          "Early access to new games"
+        ]
+      }
+    }
+  },
+  "bondAndBurn": {
+    "title": "Bond & Burn",
+    "subtitle": "The Reaction Lab",
+    "description": "Read the formula, find the elements on the periodic table, and build compounds before the lab overheats!",
+    "chooseDifficulty": "Choose Your Lab Level",
+    "startMission": "Start Mission",
+    "selectDifficulty": "Select a lab level",
+    "howToPlay": "How to Play",
+    "step1": "Read the compound formula and find the right elements",
+    "step2": "Tap elements on the periodic table to add them to the beaker",
+    "step3": "Complete reactions before the heat gauge reaches 100%",
+    "step4": "Wrong picks add heat — be precise!",
+    "easyDesc": "Simple molecules, slow heat rise",
+    "mediumDesc": "More complex compounds, faster heat",
+    "hardDesc": "Complex reactions, high pressure, strict heat!",
+    "makeCompound": "Make: {{name}}",
+    "pickElements": "Pick elements from the periodic table",
+    "labComplete": "Lab Mission Complete!",
+    "meltdown": "MELTDOWN!",
+    "preparingLab": "Setting up the lab...",
+    "make": "Make:",
+    "round": "Round",
+    "recipes": {
+      "water": { "name": "Water", "hint": "Grab 2 Hydrogen and 1 Oxygen", "funFact": "Water covers 71% of Earth's surface! Every living thing needs it." },
+      "salt": { "name": "Table Salt", "hint": "Grab 1 Sodium and 1 Chlorine", "funFact": "Salt was so valuable in ancient Rome that soldiers were paid with it!" },
+      "co2": { "name": "Carbon Dioxide", "hint": "Grab 1 Carbon and 2 Oxygen", "funFact": "Plants breathe in CO₂ and breathe out oxygen — the opposite of us!" },
+      "methane": { "name": "Methane", "hint": "Grab 1 Carbon and 4 Hydrogen", "funFact": "Methane is the main ingredient in natural gas used for cooking!" },
+      "ammonia": { "name": "Ammonia", "hint": "Grab 1 Nitrogen and 3 Hydrogen", "funFact": "Ammonia is used to make fertilizer that helps grow food for billions!" },
+      "ethane": { "name": "Ethane", "hint": "Grab 2 Carbon and 6 Hydrogen", "funFact": "Ethane is found in natural gas and on the surface of Saturn's moon Titan!" },
+      "hydrogen-peroxide": { "name": "Hydrogen Peroxide", "hint": "Grab 2 Hydrogen and 2 Oxygen", "funFact": "Hydrogen peroxide is used to clean wounds and even bleach hair!" },
+      "hydrochloric-acid": { "name": "Hydrochloric Acid", "hint": "Grab 1 Hydrogen and 1 Chlorine", "funFact": "Your stomach makes hydrochloric acid to digest food!" },
+      "sodium-hydroxide": { "name": "Sodium Hydroxide", "hint": "Grab 1 Sodium, 1 Oxygen, and 1 Hydrogen", "funFact": "Sodium hydroxide (lye) is used to make soap and unclog drains!" },
+      "nitrous-oxide": { "name": "Laughing Gas", "hint": "Grab 2 Nitrogen and 1 Oxygen", "funFact": "Dentists use laughing gas (N₂O) to help patients relax during procedures!" }
+    }
+  },
+  "miniGolf": {
+    "title": "Mini Golf",
+    "subtitle": "Physics Putting",
+    "description": "Aim, set your power, and putt through obstacles to sink the ball in as few strokes as possible!",
+    "chooseCourse": "Choose Your Course",
+    "teeOff": "Tee Off",
+    "selectCourse": "Select a course",
+    "howToPlay": "How to Play",
+    "step1": "Drag from the ball to aim your shot",
+    "step2": "Pull back farther for more power",
+    "step3": "Release to putt — angle off walls!",
+    "step4": "Sink it in the fewest strokes",
+    "easyDesc": "Open greens, simple angles",
+    "mediumDesc": "Bumpers, sand traps, water hazards",
+    "hardDesc": "Windmills, tight mazes, chaos!",
+    "loading": "Setting up the course..."
   }
 }

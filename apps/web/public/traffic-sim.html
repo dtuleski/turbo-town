@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traffic Engineering Simulator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { margin: 0; overflow: hidden; font-family: 'Inter', system-ui, sans-serif; }
+  #modal-overlay { display: none; }
+  #modal-overlay.active { display: flex; }
+  .stat-value { font-variant-numeric: tabular-nums; }
+  canvas { cursor: crosshair; }
+  .speed-btn.active { background: #6366f1; color: white; }
+</style>
+</head>
+<body class="bg-gray-950 text-gray-100">
+<div class="flex h-screen w-screen">
+  <!-- Sidebar -->
+  <aside class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col p-4 gap-4 shrink-0 overflow-y-auto">
+    <h1 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
+      <span>🚦</span> Traffic Sim
+    </h1>
+
+    <!-- Difficulty -->
+    <div>
+      <label class="text-xs uppercase tracking-wider text-gray-500 mb-1 block">Difficulty</label>
+      <div class="grid grid-cols-3 gap-1">
+        <button onclick="setDifficulty('easy')" id="btn-easy" class="px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition">Easy</button>
+        <button onclick="setDifficulty('medium')" id="btn-medium" class="px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition">Medium</button>
+        <button onclick="setDifficulty('hard')" id="btn-hard" class="px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition">Hard</button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div>
+      <label class="text-xs uppercase tracking-wider text-gray-500 mb-1 block">Controls</label>
+      <div class="flex gap-1">
+        <button onclick="togglePause()" id="btn-pause" class="flex-1 px-2 py-1.5 rounded text-xs font-medium bg-green-700 hover:bg-green-600 transition">▶ Play</button>
+        <button onclick="setSpeed(1)" class="speed-btn px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition" data-speed="1">1x</button>
+        <button onclick="setSpeed(2)" class="speed-btn px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition" data-speed="2">2x</button>
+        <button onclick="setSpeed(4)" class="speed-btn px-2 py-1.5 rounded text-xs font-medium bg-gray-800 hover:bg-gray-700 transition" data-speed="4">4x</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="bg-gray-800/50 rounded-lg p-3 space-y-2">
+      <label class="text-xs uppercase tracking-wider text-gray-500 block">Live Statistics</label>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="bg-gray-800 rounded p-2">
+          <div class="text-[10px] text-gray-500 uppercase">Score</div>
+          <div class="text-lg font-bold stat-value text-indigo-400" id="stat-score">0</div>
+        </div>
+        <div class="bg-gray-800 rounded p-2">
+          <div class="text-[10px] text-gray-500 uppercase">Efficiency</div>
+          <div class="text-lg font-bold stat-value text-emerald-400" id="stat-efficiency">100%</div>
+        </div>
+        <div class="bg-gray-800 rounded p-2">
+          <div class="text-[10px] text-gray-500 uppercase">Cars</div>
+          <div class="text-lg font-bold stat-value text-amber-400" id="stat-cars">0</div>
+        </div>
+        <div class="bg-gray-800 rounded p-2">
+          <div class="text-[10px] text-gray-500 uppercase">Avg Wait</div>
+          <div class="text-lg font-bold stat-value text-rose-400" id="stat-wait">0.0s</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="bg-gray-800/50 rounded-lg p-3 text-xs text-gray-400 space-y-1 mt-auto">
+      <p class="font-medium text-gray-300">How to Play:</p>
+      <p>• Click intersections to toggle traffic lights</p>
+      <p>• Right-click to adjust light timing</p>
+      <p>• Keep efficiency above 30% to survive</p>
+      <p>• Cars: 🟢 moving 🟡 slowing 🔴 stopped</p>
+    </div>
+
+    <!-- Game Over -->
+    <div id="game-over" class="hidden bg-red-900/80 rounded-lg p-4 text-center">
+      <div class="text-2xl font-bold text-red-300">GRIDLOCK!</div>
+      <div class="text-sm text-red-400 mt-1">Efficiency dropped too low</div>
+      <button onclick="resetGame()" class="mt-2 px-4 py-1.5 bg-red-700 hover:bg-red-600 rounded text-sm font-medium transition">Restart</button>
+    </div>
+  </aside>
+
+  <!-- Canvas -->
+  <main class="flex-1 relative">
+    <canvas id="canvas"></canvas>
+  </main>
+</div>
+
+<!-- Timing Modal -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/60 items-center justify-center z-50">
+  <div class="bg-gray-900 border border-gray-700 rounded-xl p-5 w-80 shadow-2xl">
+    <h3 class="text-sm font-bold text-gray-200 mb-3">⚙️ Traffic Light Timing</h3>
+    <div class="space-y-3">
+      <div>
+        <label class="text-xs text-gray-400">North-South Green (seconds)</label>
+        <input id="modal-ns" type="range" min="3" max="30" value="10" class="w-full accent-indigo-500">
+        <div class="text-xs text-indigo-400 text-right" id="modal-ns-val">10s</div>
+      </div>
+      <div>
+        <label class="text-xs text-gray-400">East-West Green (seconds)</label>
+        <input id="modal-ew" type="range" min="3" max="30" value="10" class="w-full accent-emerald-500">
+        <div class="text-xs text-emerald-400 text-right" id="modal-ew-val">10s</div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="applyTiming()" class="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded text-sm font-medium transition">Apply</button>
+      <button onclick="closeModal()" class="flex-1 py-1.5 bg-gray-700 hover:bg-gray-600 rounded text-sm font-medium transition">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ GAME STATE ============
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+let difficulty = 'easy';
+let paused = true;
+let speed = 1;
+let gameOver = false;
+let score = 0;
+let efficiency = 100;
+let simTime = 0;
+let lastFrame = 0;
+
+let roads = [];       // {x1,y1,x2,y2,dir}
+let intersections = []; // {x,y,hasLight,lightOn,nsGreen,ewGreen,timer,phase}
+let cars = [];        // {x,y,dx,dy,speed,maxSpeed,wait,road,progress,color}
+let spawnPoints = []; // {x,y,dx,dy}
+
+const ROAD_W = 24;
+const CAR_W = 10;
+const CAR_H = 6;
+const SPAWN_RATE = { easy: 2500, medium: 1500, hard: 800 };
+let spawnTimer = 0;
+let selectedIntersection = null;
+
+// ============ RESIZE ============
+function resize() {
+  const main = canvas.parentElement;
+  W = main.clientWidth;
+  H = main.clientHeight;
+  canvas.width = W;
+  canvas.height = H;
+}
+window.addEventListener('resize', resize);
+
+// ============ MAP GENERATION ============
+function generateMap() {
+  roads = [];
+  intersections = [];
+  cars = [];
+  spawnPoints = [];
+
+  const margin = 80;
+  let cols, rows;
+
+  if (difficulty === 'easy') { cols = 2; rows = 1; }
+  else if (difficulty === 'medium') { cols = 3; rows = 3; }
+  else { cols = 5; rows = 5; }
+
+  const spacingX = (W - margin * 2) / (cols + 1);
+  const spacingY = (H - margin * 2) / (rows + 1);
+
+  // Create intersection points
+  for (let r = 0; r <= rows; r++) {
+    for (let c = 0; c <= cols; c++) {
+      const x = margin + spacingX * (c + 0.5);
+      const y = margin + spacingY * (r + 0.5);
+      intersections.push({
+        x, y,
+        hasLight: true,
+        lightOn: true,
+        nsGreen: 10,
+        ewGreen: 10,
+        timer: Math.random() * 10,
+        phase: 'ns' // 'ns' = north-south green, 'ew' = east-west green
+      });
+    }
+  }
+
+  // Create horizontal roads
+  for (let r = 0; r <= rows; r++) {
+    const y = intersections[r * (cols + 1)].y;
+    roads.push({ x1: 0, y1: y, x2: W, y2: y, dir: 'h' });
+    // Spawn points at edges
+    spawnPoints.push({ x: 0, y, dx: 1, dy: 0 });
+    spawnPoints.push({ x: W, y, dx: -1, dy: 0 });
+  }
+
+  // Create vertical roads
+  for (let c = 0; c <= cols; c++) {
+    const x = intersections[c].x;
+    roads.push({ x1: x, y1: 0, x2: x, y2: H, dir: 'v' });
+    spawnPoints.push({ x, y: 0, dx: 0, dy: 1 });
+    spawnPoints.push({ x, y: H, dx: 0, dy: -1 });
+  }
+}
+
+// ============ CAR SPAWNING ============
+function spawnCar() {
+  if (cars.length > 150) return;
+  const sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+  const maxSpeed = 1.5 + Math.random() * 1;
+
+  // Check no car too close to spawn
+  const tooClose = cars.some(c => Math.hypot(c.x - sp.x, c.y - sp.y) < 30);
+  if (tooClose) return;
+
+  cars.push({
+    x: sp.x, y: sp.y,
+    dx: sp.dx, dy: sp.dy,
+    speed: maxSpeed,
+    maxSpeed,
+    wait: 0,
+    stopped: false
+  });
+}
+
+// ============ TRAFFIC LIGHT LOGIC ============
+function updateLights(dt) {
+  for (const int of intersections) {
+    if (!int.lightOn) continue;
+    int.timer += dt;
+    const cycleDuration = int.phase === 'ns' ? int.nsGreen : int.ewGreen;
+    if (int.timer >= cycleDuration) {
+      int.timer = 0;
+      int.phase = int.phase === 'ns' ? 'ew' : 'ns';
+    }
+  }
+}
+
+function getLightState(intersection, carDir) {
+  if (!intersection.lightOn) return 'green'; // No light = free flow
+  // carDir: 'h' or 'v'
+  if (carDir === 'v' && intersection.phase === 'ns') return 'green';
+  if (carDir === 'h' && intersection.phase === 'ew') return 'green';
+  // Yellow in last 2 seconds of phase
+  const cycleDuration = intersection.phase === 'ns' ? intersection.nsGreen : intersection.ewGreen;
+  if (intersection.timer >= cycleDuration - 2) return 'yellow';
+  return 'red';
+}
+
+// ============ CAR UPDATE ============
+function updateCars(dt) {
+  for (let i = cars.length - 1; i >= 0; i--) {
+    const car = cars[i];
+    const carDir = car.dx !== 0 ? 'h' : 'v';
+    let shouldStop = false;
+
+    // Check traffic lights
+    for (const int of intersections) {
+      const dist = Math.hypot(car.x - int.x, car.y - int.y);
+      if (dist < 40 && dist > 5) {
+        // Only stop if approaching the intersection
+        const approaching = (car.dx > 0 && car.x < int.x) ||
+                           (car.dx < 0 && car.x > int.x) ||
+                           (car.dy > 0 && car.y < int.y) ||
+                           (car.dy < 0 && car.y > int.y);
+        if (approaching) {
+          const state = getLightState(int, carDir);
+          if (state === 'red') shouldStop = true;
+          else if (state === 'yellow' && dist > 20) shouldStop = true;
+        }
+      }
+    }
+
+    // Check car ahead (collision avoidance)
+    for (let j = 0; j < cars.length; j++) {
+      if (i === j) continue;
+      const other = cars[j];
+      // Only check cars going same direction on same road
+      if (car.dx === other.dx && car.dy === other.dy) {
+        const dx = other.x - car.x;
+        const dy = other.y - car.y;
+        const dist = Math.abs(dx * car.dx + dy * car.dy);
+        const lateral = Math.abs(dx * car.dy - dy * car.dx);
+        if (dist > 0 && dist < 25 && lateral < ROAD_W * 0.6) {
+          // Car ahead in our lane
+          const ahead = (car.dx > 0 && dx > 0) || (car.dx < 0 && dx < 0) ||
+                       (car.dy > 0 && dy > 0) || (car.dy < 0 && dy < 0);
+          if (ahead) shouldStop = true;
+        }
+      }
+    }
+
+    // Update speed
+    if (shouldStop) {
+      car.speed = Math.max(0, car.speed - 4 * dt);
+      if (car.speed < 0.1) {
+        car.speed = 0;
+        car.stopped = true;
+        car.wait += dt;
+      }
+    } else {
+      car.stopped = false;
+      car.speed = Math.min(car.maxSpeed, car.speed + 3 * dt);
+    }
+
+    // Move
+    car.x += car.dx * car.speed * 60 * dt;
+    car.y += car.dy * car.speed * 60 * dt;
+
+    // Remove if off screen
+    if (car.x < -50 || car.x > W + 50 || car.y < -50 || car.y > H + 50) {
+      score += 10;
+      cars.splice(i, 1);
+    }
+  }
+}
+
+// ============ SCORING ============
+function updateScoring(dt) {
+  const stoppedCars = cars.filter(c => c.stopped).length;
+  const totalCars = cars.length;
+  const avgWait = totalCars > 0 ? cars.reduce((s, c) => s + c.wait, 0) / totalCars : 0;
+
+  // Efficiency drops based on stopped cars ratio and wait times
+  const stoppedRatio = totalCars > 0 ? stoppedCars / totalCars : 0;
+  const targetEfficiency = Math.max(0, 100 - stoppedRatio * 80 - avgWait * 5);
+  efficiency += (targetEfficiency - efficiency) * dt * 0.5;
+  efficiency = Math.max(0, Math.min(100, efficiency));
+
+  // Score ticks up when efficiency is good
+  if (efficiency > 50) score += dt * efficiency * 0.1;
+
+  // Game over
+  if (efficiency < 10 && totalCars > 10) {
+    gameOver = true;
+    paused = true;
+    document.getElementById('game-over').classList.remove('hidden');
+  }
+
+  // Update UI
+  document.getElementById('stat-score').textContent = Math.floor(score);
+  document.getElementById('stat-efficiency').textContent = Math.floor(efficiency) + '%';
+  document.getElementById('stat-efficiency').className = `text-lg font-bold stat-value ${efficiency > 60 ? 'text-emerald-400' : efficiency > 30 ? 'text-amber-400' : 'text-red-400'}`;
+  document.getElementById('stat-cars').textContent = totalCars;
+  document.getElementById('stat-wait').textContent = avgWait.toFixed(1) + 's';
+}
+
+// ============ RENDERING ============
+function draw() {
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw roads
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = ROAD_W;
+  ctx.lineCap = 'round';
+  for (const road of roads) {
+    ctx.beginPath();
+    ctx.moveTo(road.x1, road.y1);
+    ctx.lineTo(road.x2, road.y2);
+    ctx.strokeStyle = '#1a2332';
+    ctx.stroke();
+    // Road markings
+    ctx.setLineDash([8, 12]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#334155';
+    ctx.beginPath();
+    ctx.moveTo(road.x1, road.y1);
+    ctx.lineTo(road.x2, road.y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.lineWidth = ROAD_W;
+  }
+
+  // Draw intersections
+  for (const int of intersections) {
+    // Intersection pad
+    ctx.fillStyle = '#1a2332';
+    ctx.fillRect(int.x - ROAD_W / 2, int.y - ROAD_W / 2, ROAD_W, ROAD_W);
+
+    if (int.hasLight && int.lightOn) {
+      // NS light
+      const nsColor = int.phase === 'ns' ? '#22c55e' : (int.timer >= (int.phase === 'ew' ? int.ewGreen : int.nsGreen) - 2 ? '#eab308' : '#ef4444');
+      // EW light
+      const ewColor = int.phase === 'ew' ? '#22c55e' : (int.timer >= (int.phase === 'ns' ? int.nsGreen : int.ewGreen) - 2 ? '#eab308' : '#ef4444');
+
+      // Draw light indicators
+      ctx.fillStyle = nsColor;
+      ctx.beginPath();
+      ctx.arc(int.x, int.y - 16, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(int.x, int.y + 16, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = ewColor;
+      ctx.beginPath();
+      ctx.arc(int.x - 16, int.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(int.x + 16, int.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (int.hasLight && !int.lightOn) {
+      ctx.fillStyle = '#374151';
+      ctx.beginPath();
+      ctx.arc(int.x, int.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Draw cars
+  for (const car of cars) {
+    // Color based on state
+    if (car.stopped) ctx.fillStyle = '#ef4444';
+    else if (car.speed < car.maxSpeed * 0.5) ctx.fillStyle = '#eab308';
+    else ctx.fillStyle = '#22c55e';
+
+    ctx.save();
+    ctx.translate(car.x, car.y);
+    if (car.dy !== 0) ctx.rotate(Math.PI / 2);
+    if (car.dx < 0 || car.dy < 0) ctx.scale(-1, 1);
+    ctx.fillRect(-CAR_W / 2, -CAR_H / 2, CAR_W, CAR_H);
+    // Headlights
+    ctx.fillStyle = 'rgba(255,255,200,0.6)';
+    ctx.fillRect(CAR_W / 2 - 1, -2, 2, 1.5);
+    ctx.fillRect(CAR_W / 2 - 1, 0.5, 2, 1.5);
+    ctx.restore();
+  }
+
+  // Highlight selected intersection
+  if (selectedIntersection) {
+    ctx.strokeStyle = '#6366f1';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.arc(selectedIntersection.x, selectedIntersection.y, 30, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+// ============ GAME LOOP ============
+function gameLoop(timestamp) {
+  if (!lastFrame) lastFrame = timestamp;
+  const rawDt = (timestamp - lastFrame) / 1000;
+  lastFrame = timestamp;
+
+  if (!paused && !gameOver) {
+    const dt = Math.min(rawDt, 0.05) * speed;
+    simTime += dt;
+
+    // Spawn cars
+    spawnTimer += dt * 1000;
+    if (spawnTimer >= SPAWN_RATE[difficulty]) {
+      spawnCar();
+      spawnTimer = 0;
+    }
+
+    updateLights(dt);
+    updateCars(dt);
+    updateScoring(dt);
+  }
+
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+// ============ CONTROLS ============
+function setDifficulty(d) {
+  difficulty = d;
+  document.querySelectorAll('[id^="btn-"]').forEach(b => b.classList.remove('bg-indigo-600'));
+  document.getElementById('btn-' + d).classList.add('bg-indigo-600');
+  resetGame();
+}
+
+function togglePause() {
+  if (gameOver) return;
+  paused = !paused;
+  const btn = document.getElementById('btn-pause');
+  btn.textContent = paused ? '▶ Play' : '⏸ Pause';
+  btn.className = btn.className.replace(/bg-\w+-\d+/g, '') + (paused ? ' bg-green-700 hover:bg-green-600' : ' bg-amber-700 hover:bg-amber-600');
+}
+
+function setSpeed(s) {
+  speed = s;
+  document.querySelectorAll('.speed-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.speed) === s);
+  });
+}
+
+function resetGame() {
+  cars = [];
+  score = 0;
+  efficiency = 100;
+  simTime = 0;
+  spawnTimer = 0;
+  gameOver = false;
+  paused = true;
+  document.getElementById('game-over').classList.add('hidden');
+  document.getElementById('btn-pause').textContent = '▶ Play';
+  resize();
+  generateMap();
+}
+
+// ============ CLICK HANDLING ============
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // Find closest intersection
+  let closest = null;
+  let closestDist = Infinity;
+  for (const int of intersections) {
+    const d = Math.hypot(x - int.x, y - int.y);
+    if (d < 35 && d < closestDist) {
+      closest = int;
+      closestDist = d;
+    }
+  }
+
+  if (closest) {
+    closest.lightOn = !closest.lightOn;
+    selectedIntersection = closest;
+    setTimeout(() => { if (selectedIntersection === closest) selectedIntersection = null; }, 1500);
+  }
+});
+
+canvas.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  let closest = null;
+  let closestDist = Infinity;
+  for (const int of intersections) {
+    const d = Math.hypot(x - int.x, y - int.y);
+    if (d < 35 && d < closestDist) {
+      closest = int;
+      closestDist = d;
+    }
+  }
+
+  if (closest) {
+    selectedIntersection = closest;
+    openModal(closest);
+  }
+});
+
+// ============ MODAL ============
+let modalTarget = null;
+
+function openModal(int) {
+  modalTarget = int;
+  document.getElementById('modal-ns').value = int.nsGreen;
+  document.getElementById('modal-ew').value = int.ewGreen;
+  document.getElementById('modal-ns-val').textContent = int.nsGreen + 's';
+  document.getElementById('modal-ew-val').textContent = int.ewGreen + 's';
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+  modalTarget = null;
+  selectedIntersection = null;
+}
+
+function applyTiming() {
+  if (modalTarget) {
+    modalTarget.nsGreen = parseInt(document.getElementById('modal-ns').value);
+    modalTarget.ewGreen = parseInt(document.getElementById('modal-ew').value);
+  }
+  closeModal();
+}
+
+document.getElementById('modal-ns').addEventListener('input', (e) => {
+  document.getElementById('modal-ns-val').textContent = e.target.value + 's';
+});
+document.getElementById('modal-ew').addEventListener('input', (e) => {
+  document.getElementById('modal-ew-val').textContent = e.target.value + 's';
+});
+
+// ============ INIT ============
+resize();
+setDifficulty('easy');
+setSpeed(1);
+requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>

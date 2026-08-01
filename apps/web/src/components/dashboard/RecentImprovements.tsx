@@ -31,6 +31,10 @@ const gameTypeInfo: Record<GameType, { icon: string; name: string }> = {
   [GameType.MATH_MAZE]: { icon: '🧮', name: 'Math Maze' },
   [GameType.PATTERN_RECALL]: { icon: '🧩', name: 'Pattern Recall' },
   [GameType.SPACE_ENTRY]: { icon: '🚀', name: 'Space Entry' },
+  [GameType.SCRATCH_CODING]: { icon: '👨‍🚀', name: 'Space Coder' },
+  [GameType.BOND_AND_BURN]: { icon: '🧪', name: 'Bond & Burn' },
+  [GameType.TRAFFIC_LAB]: { icon: '🚦', name: 'Traffic Lab' },
+  [GameType.MINI_GOLF]: { icon: '⛳', name: 'Mini Golf' },
   [GameType.OVERALL]: { icon: '🏆', name: 'Overall' },
 }
 

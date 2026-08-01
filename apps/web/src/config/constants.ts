@@ -47,6 +47,12 @@ export const ROUTES = {
   PATTERN_RECALL_GAME: '/pattern-recall/game',
   SPACE_ENTRY_SETUP: '/space-entry/setup',
   SPACE_ENTRY_GAME: '/space-entry/game',
+  BOND_AND_BURN_SETUP: '/bond-and-burn/setup',
+  BOND_AND_BURN_GAME: '/bond-and-burn/game',
+  TRAFFIC_LAB_SETUP: '/traffic-lab/setup',
+  TRAFFIC_LAB_GAME: '/traffic-lab/game',
+  MINI_GOLF_SETUP: '/mini-golf/setup',
+  MINI_GOLF_GAME: '/mini-golf/game',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',
@@ -60,18 +66,19 @@ export const ROUTES = {
 } as const
 
 export const GAME_THEMES = [
-  { id: 'ANIMALS', name: 'Animals', emoji: '🐶' },
-  { id: 'FRUITS', name: 'Fruits', emoji: '🍎' },
-  { id: 'VEHICLES', name: 'Vehicles', emoji: '🚗' },
-  { id: 'SPACE', name: 'Space', emoji: '🚀' },
-  { id: 'OCEAN', name: 'Ocean', emoji: '🐠' },
-  { id: 'FORMULA1', name: 'Formula 1', emoji: '🏎️' },
+  { id: 'ANIMALS', name: 'Animals', emoji: '🐶', maxPairs: 15 },
+  { id: 'FRUITS', name: 'Fruits', emoji: '🍎', maxPairs: 15 },
+  { id: 'VEHICLES', name: 'Vehicles', emoji: '🚗', maxPairs: 15 },
+  { id: 'SPACE', name: 'Space', emoji: '🚀', maxPairs: 15 },
+  { id: 'OCEAN', name: 'Ocean', emoji: '🐠', maxPairs: 15 },
+  { id: 'FORMULA1', name: 'Formula 1', emoji: '🏎️', maxPairs: 11 },
 ] as const
 
 export const DIFFICULTY_LEVELS = [
   { id: 'EASY', name: 'Easy', pairs: 6, description: '6 pairs - Perfect for beginners' },
   { id: 'MEDIUM', name: 'Medium', pairs: 8, description: '8 pairs - A good challenge' },
   { id: 'HARD', name: 'Hard', pairs: 10, description: '10 pairs - For memory masters' },
+  { id: 'SUPER_HARD', name: 'Super Hard', pairs: 15, description: '15 pairs (6×5) - Paid members only!' },
 ] as const
 
 export const STORAGE_KEYS = {
