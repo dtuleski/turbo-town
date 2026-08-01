@@ -35,8 +35,10 @@ jobs:
           cp -r services/game/dist /tmp/game-deploy/
           cp services/game/package.json /tmp/game-deploy/
           cd services/game && cp -r node_modules /tmp/game-deploy/
-          mkdir -p /tmp/game-deploy/node_modules/@memory-game
-          cp -r ../../packages/shared /tmp/game-deploy/node_modules/@memory-game/shared
+          rm -rf /tmp/game-deploy/node_modules/@memory-game/shared
+          mkdir -p /tmp/game-deploy/node_modules/@memory-game/shared
+          cp -r ../../packages/shared/dist /tmp/game-deploy/node_modules/@memory-game/shared/
+          cp ../../packages/shared/package.json /tmp/game-deploy/node_modules/@memory-game/shared/
 
       - name: Create zip
         run: cd /tmp/game-deploy && zip -r /tmp/game-lambda.zip .
