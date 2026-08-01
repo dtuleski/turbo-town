@@ -13,11 +13,6 @@ jobs:
   deploy-game-lambda:
     name: Deploy Game Service Lambda
     runs-on: ubuntu-latest
-    if: |
-      contains(toJSON(github.event.commits.*.modified), 'services/game/') ||
-      contains(toJSON(github.event.commits.*.added), 'services/game/') ||
-      contains(toJSON(github.event.commits.*.modified), 'packages/shared/') ||
-      contains(toJSON(github.event.commits.*.added), 'packages/shared/')
     steps:
       - uses: actions/checkout@v4
 
@@ -62,9 +57,6 @@ jobs:
   deploy-leaderboard-lambda:
     name: Deploy Leaderboard Lambda
     runs-on: ubuntu-latest
-    if: |
-      contains(toJSON(github.event.commits.*.modified), 'services/leaderboard/') ||
-      contains(toJSON(github.event.commits.*.added), 'services/leaderboard/')
     steps:
       - uses: actions/checkout@v4
 
@@ -99,9 +91,6 @@ jobs:
   deploy-email-sender:
     name: Deploy Email Sender Lambda
     runs-on: ubuntu-latest
-    if: |
-      contains(toJSON(github.event.commits.*.modified), 'services/email-sender/') ||
-      contains(toJSON(github.event.commits.*.added), 'services/email-sender/')
     steps:
       - uses: actions/checkout@v4
 
