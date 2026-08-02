@@ -59,7 +59,7 @@ export class LeaderboardService {
         const bestGameEntries = await this.leaderboardRepo.queryUserHistory(agg.userId, agg.gameType === 'OVERALL' ? undefined : agg.gameType, 100);
         
         // Find the entry with the best score - sort by score descending and take first
-        const sortedEntries = bestGameEntries.sort((a, b) => b.score - a.score);
+        const sortedEntries = bestGameEntries.sort((a, b) => b.score - a.score || a.completionTime - b.completionTime);
         const bestGame = sortedEntries[0];
         
         // If no game found, create a minimal entry (shouldn't happen but defensive)
@@ -122,7 +122,7 @@ export class LeaderboardService {
       
       // Convert back to array, sort by score, and limit
       entries = Array.from(userBestScores.values())
-        .sort((a, b) => b.score - a.score)
+        .sort((a, b) => b.score - a.score || a.completionTime - b.completionTime)
         .slice(0, limit);
     }
 
@@ -230,7 +230,7 @@ export class LeaderboardService {
     }));
     
     // Sort by total score descending and limit
-    return entries.sort((a, b) => b.score - a.score).slice(0, limit);
+    return entries.sort((a, b) => b.score - a.score || a.completionTime - b.completionTime).slice(0, limit);
   }
 
   /**
@@ -335,17 +335,19 @@ export class LeaderboardService {
     currentUserId?: string
   ): LeaderboardEntryWithRank[] {
     // Sort by score descending (highest first)
-    const sorted = [...entries].sort((a, b) => b.score - a.score);
+    const sorted = [...entries].sort((a, b) => b.score - a.score || a.completionTime - b.completionTime);
 
     let currentRank = 1;
     let previousScore: number | null = null;
+    let previousTime: number | null = null;
 
     return sorted.map((entry, index) => {
-      // If score is different from previous, update rank
-      if (previousScore !== null && entry.score < previousScore) {
+      // If score or completion time differs from previous, update rank
+      if (previousScore !== null && (entry.score < previousScore || entry.completionTime !== previousTime)) {
         currentRank = index + 1;
       }
       previousScore = entry.score;
+      previousTime = entry.completionTime;
 
       return {
         ...entry,
