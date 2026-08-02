@@ -57,6 +57,9 @@ export class ScoreCalculatorService {
     let baseScore: number;
     if (gameThemeId === 'MINI_GOLF') {
       baseScore = 1800; // Produces Easy ~4000, Medium ~6000, Hard ~8000 for perfect games
+    } else if (gameThemeId === 'SCRATCH_CODING') {
+      // 5 levels of block programming — expect 1-4 min easy, 2-5 min medium, 3-6 min hard
+      maxTime = difficulty >= 3 ? 240 : difficulty >= 2 ? 180 : 120;
     } else if (isPremium) {
       baseScore = 1700;
     } else if (difficulty >= 4) {
@@ -88,6 +91,9 @@ export class ScoreCalculatorService {
       // Easy: 60s, Medium: 75s, Hard: 90s
       // Finishing at maxTime = 1.0x speed, faster = bonus up to 2.0x
       maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 75 : 60;
+    } else if (gameThemeId === 'SCRATCH_CODING') {
+      // 5 levels of block programming — expect 1-4 min easy, 2-5 min medium, 3-6 min hard
+      maxTime = difficulty >= 3 ? 240 : difficulty >= 2 ? 180 : 120;
     } else if (isPremium) {
       maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 120 : 180;
     } else {
