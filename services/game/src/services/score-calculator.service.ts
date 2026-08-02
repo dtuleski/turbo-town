@@ -113,7 +113,9 @@ export class ScoreCalculatorService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
+    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
+    const maxScoreByDifficulty = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
+    finalScore = Math.min(maxScoreByDifficulty, Math.max(0, Math.round(finalScore)));
 
     const diffLabel = difficulty <= 1 ? 'Easy' : difficulty <= 2 ? 'Medium' : 'Hard';
 
