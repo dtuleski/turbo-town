@@ -130,7 +130,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -176,7 +176,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -221,7 +221,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -267,7 +267,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -306,7 +306,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -336,7 +336,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -364,7 +364,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -391,7 +391,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -418,7 +418,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -445,7 +445,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -472,7 +472,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -495,7 +495,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -517,7 +517,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -539,7 +539,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -561,7 +561,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    finalScore = Math.max(0, Math.round(finalScore));
+    finalScore = Math.min(8000, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
