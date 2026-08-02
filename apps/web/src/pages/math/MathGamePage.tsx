@@ -291,8 +291,9 @@ export default function MathGamePage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <input
                   ref={inputRef}
-                  type="number"
-                  step="any"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="-?[0-9]*"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   placeholder={t('setup.mathChallenge.yourAnswer')}
