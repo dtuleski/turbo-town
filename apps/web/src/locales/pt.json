@@ -1,25 +1,105 @@
 {
   "games": {
-    "memory-match": { "title": "Jogo da Memória", "description": "Vire cartas e encontre os pares!", "category": "Quebra-cabeças & Lógica" },
-    "math-challenge": { "title": "Desafio de Matemática", "description": "Resolva problemas de matemática o mais rápido possível!", "category": "Ciência & Matemática" },
-    "word-puzzle": { "title": "Caça-Palavras", "description": "Encontre palavras escondidas na grade!", "category": "Quebra-cabeças & Lógica" },
-    "language-learning": { "title": "Aprendizado de Idiomas", "description": "Aprenda novos idiomas com jogos divertidos!", "category": "Geografia & Idiomas" },
-    "sudoku": { "title": "Sudoku", "description": "Preencha a grade com números — sem repetir!", "category": "Quebra-cabeças & Lógica" },
-    "jigsaw-puzzle": { "title": "Quebra-Cabeça", "description": "Monte as peças para completar a imagem!", "category": "Quebra-cabeças & Lógica" },
-    "bubble-pop": { "title": "Estoura Bolha", "description": "Estoure bolhas resolvendo desafios rápidos!", "category": "Quebra-cabeças & Lógica" },
-    "sequence-memory": { "title": "Memória Sequencial", "description": "Memorize e repita sequências crescentes!", "category": "Quebra-cabeças & Lógica" },
-    "code-a-bot": { "title": "Programe o Robô", "description": "Programe um robô para alcançar o objetivo!", "category": "Quebra-cabeças & Lógica" },
-    "geo-quiz": { "title": "Quiz de Geografia", "description": "Teste seu conhecimento de geografia mundial!", "category": "Geografia & Idiomas" },
-    "history-quiz": { "title": "Quiz de História", "description": "Viaje no tempo com perguntas de história!", "category": "História & Civismo" },
-    "civics-quiz": { "title": "Quiz de Civismo", "description": "Aprenda sobre governo e cidadania!", "category": "História & Civismo" },
-    "color-by-number": { "title": "Colorir por Números", "description": "Pinte lindas imagens número por número!", "category": "Quebra-cabeças & Lógica" },
-    "hangman": { "title": "Forca", "description": "Adivinhe a palavra letra por letra!", "category": "Quebra-cabeças & Lógica" },
-    "tic-tac-toe": { "title": "Jogo da Velha", "description": "Clássico jogo de estratégia X e O!", "category": "Quebra-cabeças & Lógica" },
-    "scratch-coding": { "title": "Space Coder", "description": "Programe seu astronauta até a câmara de ar com menos blocos!", "category": "Quebra-cabeças & Lógica" },
-    "math-maze": { "title": "Labirinto Matemático", "description": "Navegue por um labirinto resolvendo equações nos portões!", "category": "Ciência & Matemática" },
-    "pattern-recall": { "title": "Memória de Padrões", "description": "Memorize e repita padrões neste jogo estilo Simon Says!", "category": "Quebra-cabeças & Lógica" },
-    "space-entry": { "title": "Entrada Espacial", "description": "Calcule seu ângulo de reentrada e aterrisse com segurança na Terra!", "category": "Ciência & Matemática" },
-    "bond-and-burn": { "title": "Bond & Burn", "description": "Leia a fórmula, encontre elementos na tabela periódica e monte compostos antes que o lab superaqueça!", "category": "Ciência & Matemática" }
+    "memory-match": {
+      "title": "Jogo da Memória",
+      "description": "Vire cartas e encontre os pares!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "math-challenge": {
+      "title": "Desafio de Matemática",
+      "description": "Resolva problemas de matemática o mais rápido possível!",
+      "category": "Ciência & Matemática"
+    },
+    "word-puzzle": {
+      "title": "Caça-Palavras",
+      "description": "Encontre palavras escondidas na grade!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "language-learning": {
+      "title": "Aprendizado de Idiomas",
+      "description": "Aprenda novos idiomas com jogos divertidos!",
+      "category": "Geografia & Idiomas"
+    },
+    "sudoku": {
+      "title": "Sudoku",
+      "description": "Preencha a grade com números — sem repetir!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "jigsaw-puzzle": {
+      "title": "Quebra-Cabeça",
+      "description": "Monte as peças para completar a imagem!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "bubble-pop": {
+      "title": "Estoura Bolha",
+      "description": "Estoure bolhas resolvendo desafios rápidos!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "sequence-memory": {
+      "title": "Memória Sequencial",
+      "description": "Memorize e repita sequências crescentes!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "code-a-bot": {
+      "title": "Programe o Robô",
+      "description": "Programe um robô para alcançar o objetivo!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "geo-quiz": {
+      "title": "Quiz de Geografia",
+      "description": "Teste seu conhecimento de geografia mundial!",
+      "category": "Geografia & Idiomas"
+    },
+    "history-quiz": {
+      "title": "Quiz de História",
+      "description": "Viaje no tempo com perguntas de história!",
+      "category": "História & Civismo"
+    },
+    "civics-quiz": {
+      "title": "Quiz de Civismo",
+      "description": "Aprenda sobre governo e cidadania!",
+      "category": "História & Civismo"
+    },
+    "color-by-number": {
+      "title": "Colorir por Números",
+      "description": "Pinte lindas imagens número por número!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "hangman": {
+      "title": "Forca",
+      "description": "Adivinhe a palavra letra por letra!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "tic-tac-toe": {
+      "title": "Jogo da Velha",
+      "description": "Clássico jogo de estratégia X e O!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "scratch-coding": {
+      "title": "Space Coder",
+      "description": "Programe seu astronauta até a câmara de ar com menos blocos!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "math-maze": {
+      "title": "Labirinto Matemático",
+      "description": "Navegue por um labirinto resolvendo equações nos portões!",
+      "category": "Ciência & Matemática"
+    },
+    "pattern-recall": {
+      "title": "Memória de Padrões",
+      "description": "Memorize e repita padrões neste jogo estilo Simon Says!",
+      "category": "Quebra-cabeças & Lógica"
+    },
+    "space-entry": {
+      "title": "Entrada Espacial",
+      "description": "Calcule seu ângulo de reentrada e aterrisse com segurança na Terra!",
+      "category": "Ciência & Matemática"
+    },
+    "bond-and-burn": {
+      "title": "Bond & Burn",
+      "description": "Leia a fórmula, encontre elementos na tabela periódica e monte compostos antes que o lab superaqueça!",
+      "category": "Ciência & Matemática"
+    }
   },
   "nav": {
     "dashboard": "Painel",
@@ -673,16 +753,56 @@
     "make": "Faça:",
     "round": "Rodada",
     "recipes": {
-      "water": { "name": "Água", "hint": "Pegue 2 Hidrogênio e 1 Oxigênio", "funFact": "A água cobre 71% da superfície da Terra! Todo ser vivo precisa dela." },
-      "salt": { "name": "Sal de Cozinha", "hint": "Pegue 1 Sódio e 1 Cloro", "funFact": "O sal era tão valioso na Roma Antiga que soldados eram pagos com ele!" },
-      "co2": { "name": "Dióxido de Carbono", "hint": "Pegue 1 Carbono e 2 Oxigênio", "funFact": "As plantas respiram CO₂ e exalam oxigênio — o oposto de nós!" },
-      "methane": { "name": "Metano", "hint": "Pegue 1 Carbono e 4 Hidrogênio", "funFact": "O metano é o principal ingrediente do gás natural usado para cozinhar!" },
-      "ammonia": { "name": "Amônia", "hint": "Pegue 1 Nitrogênio e 3 Hidrogênio", "funFact": "A amônia é usada para fazer fertilizante que ajuda a alimentar bilhões!" },
-      "ethane": { "name": "Etano", "hint": "Pegue 2 Carbono e 6 Hidrogênio", "funFact": "O etano é encontrado no gás natural e na superfície da lua Titã de Saturno!" },
-      "hydrogen-peroxide": { "name": "Água Oxigenada", "hint": "Pegue 2 Hidrogênio e 2 Oxigênio", "funFact": "A água oxigenada é usada para limpar feridas e até descolorir cabelo!" },
-      "hydrochloric-acid": { "name": "Ácido Clorídrico", "hint": "Pegue 1 Hidrogênio e 1 Cloro", "funFact": "Seu estômago produz ácido clorídrico para digerir alimentos!" },
-      "sodium-hydroxide": { "name": "Hidróxido de Sódio", "hint": "Pegue 1 Sódio, 1 Oxigênio e 1 Hidrogênio", "funFact": "O hidróxido de sódio (soda cáustica) é usado para fazer sabão e desentupir ralos!" },
-      "nitrous-oxide": { "name": "Gás Hilariante", "hint": "Pegue 2 Nitrogênio e 1 Oxigênio", "funFact": "Dentistas usam gás hilariante (N₂O) para ajudar pacientes a relaxar!" }
+      "water": {
+        "name": "Água",
+        "hint": "Pegue 2 Hidrogênio e 1 Oxigênio",
+        "funFact": "A água cobre 71% da superfície da Terra! Todo ser vivo precisa dela."
+      },
+      "salt": {
+        "name": "Sal de Cozinha",
+        "hint": "Pegue 1 Sódio e 1 Cloro",
+        "funFact": "O sal era tão valioso na Roma Antiga que soldados eram pagos com ele!"
+      },
+      "co2": {
+        "name": "Dióxido de Carbono",
+        "hint": "Pegue 1 Carbono e 2 Oxigênio",
+        "funFact": "As plantas respiram CO₂ e exalam oxigênio — o oposto de nós!"
+      },
+      "methane": {
+        "name": "Metano",
+        "hint": "Pegue 1 Carbono e 4 Hidrogênio",
+        "funFact": "O metano é o principal ingrediente do gás natural usado para cozinhar!"
+      },
+      "ammonia": {
+        "name": "Amônia",
+        "hint": "Pegue 1 Nitrogênio e 3 Hidrogênio",
+        "funFact": "A amônia é usada para fazer fertilizante que ajuda a alimentar bilhões!"
+      },
+      "ethane": {
+        "name": "Etano",
+        "hint": "Pegue 2 Carbono e 6 Hidrogênio",
+        "funFact": "O etano é encontrado no gás natural e na superfície da lua Titã de Saturno!"
+      },
+      "hydrogen-peroxide": {
+        "name": "Água Oxigenada",
+        "hint": "Pegue 2 Hidrogênio e 2 Oxigênio",
+        "funFact": "A água oxigenada é usada para limpar feridas e até descolorir cabelo!"
+      },
+      "hydrochloric-acid": {
+        "name": "Ácido Clorídrico",
+        "hint": "Pegue 1 Hidrogênio e 1 Cloro",
+        "funFact": "Seu estômago produz ácido clorídrico para digerir alimentos!"
+      },
+      "sodium-hydroxide": {
+        "name": "Hidróxido de Sódio",
+        "hint": "Pegue 1 Sódio, 1 Oxigênio e 1 Hidrogênio",
+        "funFact": "O hidróxido de sódio (soda cáustica) é usado para fazer sabão e desentupir ralos!"
+      },
+      "nitrous-oxide": {
+        "name": "Gás Hilariante",
+        "hint": "Pegue 2 Nitrogênio e 1 Oxigênio",
+        "funFact": "Dentistas usam gás hilariante (N₂O) para ajudar pacientes a relaxar!"
+      }
     }
   },
   "miniGolf": {
@@ -701,5 +821,28 @@
     "mediumDesc": "Obstáculos, areia e água",
     "hardDesc": "Moinhos, labirintos, caos!",
     "loading": "Preparando o campo..."
+  },
+  "wordPuzzle": {
+    "title": "Caça Palavras",
+    "subtitle": "Encontre todas as palavras escondidas na grade!",
+    "howToPlay": "Como Jogar",
+    "selectLetters": "Selecione Letras",
+    "selectLettersDesc": "Clique e arraste para selecionar letras na grade",
+    "findWords": "Encontre Palavras",
+    "findWordsDesc": "As palavras podem ser horizontais, verticais ou diagonais",
+    "beatTheClock": "Bata o Relógio",
+    "beatTheClockDesc": "Encontre todas as palavras antes que o tempo acabe!",
+    "easy": "Fácil",
+    "easyDesc": "Perfeito para iniciantes",
+    "medium": "Médio",
+    "mediumDesc": "Um bom desafio",
+    "hard": "Difícil",
+    "hardDesc": "Para mestres de palavras",
+    "gridSize": "Tamanho",
+    "words": "Palavras",
+    "timeLimit": "Tempo",
+    "minutes": "minutos",
+    "start": "Iniciar",
+    "backToGames": "← Voltar aos Jogos"
   }
 }

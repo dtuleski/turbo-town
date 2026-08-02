@@ -1,25 +1,105 @@
 {
   "games": {
-    "memory-match": { "title": "Memoria", "description": "¡Voltea cartas y encuentra los pares!", "category": "Rompecabezas & Lógica" },
-    "math-challenge": { "title": "Desafío Matemático", "description": "¡Resuelve problemas de matemáticas lo más rápido posible!", "category": "Ciencia & Matemáticas" },
-    "word-puzzle": { "title": "Sopa de Letras", "description": "¡Encuentra palabras ocultas en la cuadrícula!", "category": "Rompecabezas & Lógica" },
-    "language-learning": { "title": "Aprendizaje de Idiomas", "description": "¡Aprende idiomas con juegos divertidos!", "category": "Geografía & Idiomas" },
-    "sudoku": { "title": "Sudoku", "description": "¡Llena la cuadrícula con números — sin repetir!", "category": "Rompecabezas & Lógica" },
-    "jigsaw-puzzle": { "title": "Rompecabezas", "description": "¡Arma las piezas para completar la imagen!", "category": "Rompecabezas & Lógica" },
-    "bubble-pop": { "title": "Revienta Burbujas", "description": "¡Revienta burbujas resolviendo desafíos rápidos!", "category": "Rompecabezas & Lógica" },
-    "sequence-memory": { "title": "Memoria de Secuencias", "description": "¡Memoriza y repite secuencias crecientes!", "category": "Rompecabezas & Lógica" },
-    "code-a-bot": { "title": "Programa el Robot", "description": "¡Programa un robot para alcanzar la meta!", "category": "Rompecabezas & Lógica" },
-    "geo-quiz": { "title": "Quiz de Geografía", "description": "¡Pon a prueba tu conocimiento de geografía mundial!", "category": "Geografía & Idiomas" },
-    "history-quiz": { "title": "Quiz de Historia", "description": "¡Viaja en el tiempo con preguntas de historia!", "category": "Historia & Civismo" },
-    "civics-quiz": { "title": "Quiz de Civismo", "description": "¡Aprende sobre gobierno y ciudadanía!", "category": "Historia & Civismo" },
-    "color-by-number": { "title": "Colorear por Números", "description": "¡Pinta hermosas imágenes número por número!", "category": "Rompecabezas & Lógica" },
-    "hangman": { "title": "Ahorcado", "description": "¡Adivina la palabra letra por letra!", "category": "Rompecabezas & Lógica" },
-    "tic-tac-toe": { "title": "Tres en Raya", "description": "¡Clásico juego de estrategia X y O!", "category": "Rompecabezas & Lógica" },
-    "scratch-coding": { "title": "Space Coder", "description": "¡Programa tu astronauta hasta la esclusa con los menos bloques!", "category": "Rompecabezas & Lógica" },
-    "math-maze": { "title": "Laberinto Matemático", "description": "¡Navega por un laberinto resolviendo ecuaciones en las puertas!", "category": "Ciencia & Matemáticas" },
-    "pattern-recall": { "title": "Memoria de Patrones", "description": "¡Memoriza y repite patrones en este juego estilo Simon Says!", "category": "Rompecabezas & Lógica" },
-    "space-entry": { "title": "Entrada Espacial", "description": "¡Calcula tu ángulo de reentrada y aterriza en la Tierra!", "category": "Ciencia & Matemáticas" },
-    "bond-and-burn": { "title": "Bond & Burn", "description": "¡Lee la fórmula, encuentra elementos en la tabla periódica y crea compuestos antes de que el lab se sobrecaliente!", "category": "Ciencia & Matemáticas" }
+    "memory-match": {
+      "title": "Memoria",
+      "description": "¡Voltea cartas y encuentra los pares!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "math-challenge": {
+      "title": "Desafío Matemático",
+      "description": "¡Resuelve problemas de matemáticas lo más rápido posible!",
+      "category": "Ciencia & Matemáticas"
+    },
+    "word-puzzle": {
+      "title": "Sopa de Letras",
+      "description": "¡Encuentra palabras ocultas en la cuadrícula!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "language-learning": {
+      "title": "Aprendizaje de Idiomas",
+      "description": "¡Aprende idiomas con juegos divertidos!",
+      "category": "Geografía & Idiomas"
+    },
+    "sudoku": {
+      "title": "Sudoku",
+      "description": "¡Llena la cuadrícula con números — sin repetir!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "jigsaw-puzzle": {
+      "title": "Rompecabezas",
+      "description": "¡Arma las piezas para completar la imagen!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "bubble-pop": {
+      "title": "Revienta Burbujas",
+      "description": "¡Revienta burbujas resolviendo desafíos rápidos!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "sequence-memory": {
+      "title": "Memoria de Secuencias",
+      "description": "¡Memoriza y repite secuencias crecientes!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "code-a-bot": {
+      "title": "Programa el Robot",
+      "description": "¡Programa un robot para alcanzar la meta!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "geo-quiz": {
+      "title": "Quiz de Geografía",
+      "description": "¡Pon a prueba tu conocimiento de geografía mundial!",
+      "category": "Geografía & Idiomas"
+    },
+    "history-quiz": {
+      "title": "Quiz de Historia",
+      "description": "¡Viaja en el tiempo con preguntas de historia!",
+      "category": "Historia & Civismo"
+    },
+    "civics-quiz": {
+      "title": "Quiz de Civismo",
+      "description": "¡Aprende sobre gobierno y ciudadanía!",
+      "category": "Historia & Civismo"
+    },
+    "color-by-number": {
+      "title": "Colorear por Números",
+      "description": "¡Pinta hermosas imágenes número por número!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "hangman": {
+      "title": "Ahorcado",
+      "description": "¡Adivina la palabra letra por letra!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "tic-tac-toe": {
+      "title": "Tres en Raya",
+      "description": "¡Clásico juego de estrategia X y O!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "scratch-coding": {
+      "title": "Space Coder",
+      "description": "¡Programa tu astronauta hasta la esclusa con los menos bloques!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "math-maze": {
+      "title": "Laberinto Matemático",
+      "description": "¡Navega por un laberinto resolviendo ecuaciones en las puertas!",
+      "category": "Ciencia & Matemáticas"
+    },
+    "pattern-recall": {
+      "title": "Memoria de Patrones",
+      "description": "¡Memoriza y repite patrones en este juego estilo Simon Says!",
+      "category": "Rompecabezas & Lógica"
+    },
+    "space-entry": {
+      "title": "Entrada Espacial",
+      "description": "¡Calcula tu ángulo de reentrada y aterriza en la Tierra!",
+      "category": "Ciencia & Matemáticas"
+    },
+    "bond-and-burn": {
+      "title": "Bond & Burn",
+      "description": "¡Lee la fórmula, encuentra elementos en la tabla periódica y crea compuestos antes de que el lab se sobrecaliente!",
+      "category": "Ciencia & Matemáticas"
+    }
   },
   "nav": {
     "dashboard": "Panel",
@@ -673,16 +753,56 @@
     "make": "Crea:",
     "round": "Ronda",
     "recipes": {
-      "water": { "name": "Agua", "hint": "Toma 2 Hidrógeno y 1 Oxígeno", "funFact": "¡El agua cubre el 71% de la superficie de la Tierra! Todo ser vivo la necesita." },
-      "salt": { "name": "Sal de Mesa", "hint": "Toma 1 Sodio y 1 Cloro", "funFact": "¡La sal era tan valiosa en la Roma Antigua que los soldados cobraban con ella!" },
-      "co2": { "name": "Dióxido de Carbono", "hint": "Toma 1 Carbono y 2 Oxígeno", "funFact": "¡Las plantas respiran CO₂ y exhalan oxígeno — lo opuesto a nosotros!" },
-      "methane": { "name": "Metano", "hint": "Toma 1 Carbono y 4 Hidrógeno", "funFact": "¡El metano es el ingrediente principal del gas natural para cocinar!" },
-      "ammonia": { "name": "Amoníaco", "hint": "Toma 1 Nitrógeno y 3 Hidrógeno", "funFact": "¡El amoníaco se usa para hacer fertilizante que alimenta a miles de millones!" },
-      "ethane": { "name": "Etano", "hint": "Toma 2 Carbono y 6 Hidrógeno", "funFact": "¡El etano se encuentra en el gas natural y en la superficie de la luna Titán de Saturno!" },
-      "hydrogen-peroxide": { "name": "Peróxido de Hidrógeno", "hint": "Toma 2 Hidrógeno y 2 Oxígeno", "funFact": "¡El agua oxigenada se usa para limpiar heridas y hasta decolorar el cabello!" },
-      "hydrochloric-acid": { "name": "Ácido Clorhídrico", "hint": "Toma 1 Hidrógeno y 1 Cloro", "funFact": "¡Tu estómago produce ácido clorhídrico para digerir los alimentos!" },
-      "sodium-hydroxide": { "name": "Hidróxido de Sodio", "hint": "Toma 1 Sodio, 1 Oxígeno y 1 Hidrógeno", "funFact": "¡El hidróxido de sodio (lejía) se usa para hacer jabón y desatascar tuberías!" },
-      "nitrous-oxide": { "name": "Gas de la Risa", "hint": "Toma 2 Nitrógeno y 1 Oxígeno", "funFact": "¡Los dentistas usan gas de la risa (N₂O) para ayudar a los pacientes a relajarse!" }
+      "water": {
+        "name": "Agua",
+        "hint": "Toma 2 Hidrógeno y 1 Oxígeno",
+        "funFact": "¡El agua cubre el 71% de la superficie de la Tierra! Todo ser vivo la necesita."
+      },
+      "salt": {
+        "name": "Sal de Mesa",
+        "hint": "Toma 1 Sodio y 1 Cloro",
+        "funFact": "¡La sal era tan valiosa en la Roma Antigua que los soldados cobraban con ella!"
+      },
+      "co2": {
+        "name": "Dióxido de Carbono",
+        "hint": "Toma 1 Carbono y 2 Oxígeno",
+        "funFact": "¡Las plantas respiran CO₂ y exhalan oxígeno — lo opuesto a nosotros!"
+      },
+      "methane": {
+        "name": "Metano",
+        "hint": "Toma 1 Carbono y 4 Hidrógeno",
+        "funFact": "¡El metano es el ingrediente principal del gas natural para cocinar!"
+      },
+      "ammonia": {
+        "name": "Amoníaco",
+        "hint": "Toma 1 Nitrógeno y 3 Hidrógeno",
+        "funFact": "¡El amoníaco se usa para hacer fertilizante que alimenta a miles de millones!"
+      },
+      "ethane": {
+        "name": "Etano",
+        "hint": "Toma 2 Carbono y 6 Hidrógeno",
+        "funFact": "¡El etano se encuentra en el gas natural y en la superficie de la luna Titán de Saturno!"
+      },
+      "hydrogen-peroxide": {
+        "name": "Peróxido de Hidrógeno",
+        "hint": "Toma 2 Hidrógeno y 2 Oxígeno",
+        "funFact": "¡El agua oxigenada se usa para limpiar heridas y hasta decolorar el cabello!"
+      },
+      "hydrochloric-acid": {
+        "name": "Ácido Clorhídrico",
+        "hint": "Toma 1 Hidrógeno y 1 Cloro",
+        "funFact": "¡Tu estómago produce ácido clorhídrico para digerir los alimentos!"
+      },
+      "sodium-hydroxide": {
+        "name": "Hidróxido de Sodio",
+        "hint": "Toma 1 Sodio, 1 Oxígeno y 1 Hidrógeno",
+        "funFact": "¡El hidróxido de sodio (lejía) se usa para hacer jabón y desatascar tuberías!"
+      },
+      "nitrous-oxide": {
+        "name": "Gas de la Risa",
+        "hint": "Toma 2 Nitrógeno y 1 Oxígeno",
+        "funFact": "¡Los dentistas usan gas de la risa (N₂O) para ayudar a los pacientes a relajarse!"
+      }
     }
   },
   "miniGolf": {
@@ -701,5 +821,28 @@
     "mediumDesc": "Obstáculos, arena y agua",
     "hardDesc": "¡Molinos, laberintos, caos!",
     "loading": "Preparando el campo..."
+  },
+  "wordPuzzle": {
+    "title": "Sopa de Letras",
+    "subtitle": "¡Encuentra todas las palabras ocultas en la cuadrícula!",
+    "howToPlay": "Cómo Jugar",
+    "selectLetters": "Selecciona Letras",
+    "selectLettersDesc": "Haz clic y arrastra para seleccionar letras en la cuadrícula",
+    "findWords": "Encuentra Palabras",
+    "findWordsDesc": "Las palabras pueden ser horizontales, verticales o diagonales",
+    "beatTheClock": "Gana al Reloj",
+    "beatTheClockDesc": "¡Encuentra todas las palabras antes de que se acabe el tiempo!",
+    "easy": "Fácil",
+    "easyDesc": "Perfecto para principiantes",
+    "medium": "Medio",
+    "mediumDesc": "Un buen desafío",
+    "hard": "Difícil",
+    "hardDesc": "Para maestros de palabras",
+    "gridSize": "Tamaño",
+    "words": "Palabras",
+    "timeLimit": "Tiempo",
+    "minutes": "minutos",
+    "start": "Iniciar",
+    "backToGames": "← Volver a Juegos"
   }
 }
