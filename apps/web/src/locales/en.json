@@ -845,6 +845,10 @@
     "timeLimit": "Time Limit",
     "minutes": "minutes",
     "start": "Start",
-    "backToGames": "← Back to Games"
+    "backToGames": "← Back to Games",
+    "wordsFound": "Words Found",
+    "time": "Time",
+    "difficulty": "Difficulty",
+    "wordsToFind": "Words to Find"
   }
 }

@@ -843,6 +843,10 @@
     "timeLimit": "Tempo",
     "minutes": "minutos",
     "start": "Iniciar",
-    "backToGames": "← Voltar aos Jogos"
+    "backToGames": "← Voltar aos Jogos",
+    "wordsFound": "Palavras",
+    "time": "Tempo",
+    "difficulty": "Dificuldade",
+    "wordsToFind": "Palavras para Encontrar"
   }
 }

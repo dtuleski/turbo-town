@@ -30,7 +30,7 @@ interface Cell {
 }
 
 export default function WordPuzzleGamePage() {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const difficulty = (searchParams.get('difficulty') || 'easy') as keyof typeof DIFFICULTY_CONFIG
@@ -368,23 +368,23 @@ export default function WordPuzzleGamePage() {
         {/* Header Stats */}
         <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Words Found</div>
+            <div className="text-sm text-gray-600">{t('wordPuzzle.wordsFound')}</div>
             <div className="text-2xl font-bold text-green-600">
               {foundWords.size} / {puzzle.words.length}
             </div>
           </div>
           
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Time</div>
+            <div className="text-sm text-gray-600">{t('wordPuzzle.time')}</div>
             <div className={`text-2xl font-bold ${timeRemaining < 60 ? 'text-red-500' : 'text-gray-800'}`}>
               {formatTime(timeRemaining)}
             </div>
           </div>
           
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
-            <div className="text-sm text-gray-600">Difficulty</div>
+            <div className="text-sm text-gray-600">{t('wordPuzzle.difficulty')}</div>
             <div className="text-2xl font-bold text-gray-800">
-              {config.emoji} {config.name}
+              {config.emoji} {t(`wordPuzzle.${difficulty}`)}
             </div>
           </div>
         </div>
@@ -438,7 +438,7 @@ export default function WordPuzzleGamePage() {
           {/* Word List */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-3xl shadow-2xl p-6">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Words to Find</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">{t('wordPuzzle.wordsToFind')}</h3>
               <div className="space-y-2">
                 {puzzle.words.map((word) => (
                   <div
