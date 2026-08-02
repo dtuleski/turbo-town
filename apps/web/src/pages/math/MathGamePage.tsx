@@ -134,6 +134,8 @@ export default function MathGamePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    // Keep keyboard open on iOS by maintaining focus during user gesture
+    if (inputRef.current) inputRef.current.focus()
     
     if (!currentQuestion || !userAnswer.trim()) return
 
@@ -153,6 +155,8 @@ export default function MathGamePage() {
     // Move to next question or end game
     setTimeout(() => {
       setFeedback({ show: false, correct: false, message: '' })
+      // Re-focus input after feedback (keyboard stays open on iOS since submit was user gesture)
+      if (inputRef.current) inputRef.current.focus()
       setUserAnswer('')
       
       if (questionNumber >= config.questions) {
@@ -291,6 +295,7 @@ export default function MathGamePage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <input
                   ref={inputRef}
+                  autoFocus
                   type="text"
                   inputMode="numeric"
                   pattern="-?[0-9]*"
