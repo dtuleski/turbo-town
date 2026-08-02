@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
@@ -29,12 +30,13 @@ interface Cell {
 }
 
 export default function WordPuzzleGamePage() {
+  const { i18n } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const difficulty = (searchParams.get('difficulty') || 'easy') as keyof typeof DIFFICULTY_CONFIG
 
   const [gameId, setGameId] = useState<string>('')
-  const [puzzle] = useState(generateWordPuzzle(difficulty))
+  const [puzzle] = useState(generateWordPuzzle(difficulty, i18n.language))
   const [selectedCells, setSelectedCells] = useState<Cell[]>([])
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set())
   const [isSelecting, setIsSelecting] = useState(false)

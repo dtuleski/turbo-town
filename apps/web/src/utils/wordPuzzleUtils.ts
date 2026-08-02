@@ -17,26 +17,61 @@ export interface WordPosition {
   direction: 'horizontal' | 'vertical' | 'diagonal'
 }
 
-// Word lists by difficulty
-const WORD_LISTS = {
-  easy: [
-    'CAT', 'DOG', 'SUN', 'MOON', 'STAR', 'TREE', 'FISH', 'BIRD',
-    'BOOK', 'CAKE', 'BALL', 'RAIN', 'SNOW', 'WIND', 'FIRE', 'WATER'
-  ],
-  medium: [
-    'APPLE', 'BEACH', 'CLOUD', 'DANCE', 'EAGLE', 'FLAME', 'GRAPE', 'HEART',
-    'ISLAND', 'JUNGLE', 'KNIGHT', 'LEMON', 'MAGIC', 'NIGHT', 'OCEAN', 'PIANO'
-  ],
-  hard: [
-    'ADVENTURE', 'BUTTERFLY', 'CHAMPION', 'DIAMOND', 'ELEPHANT', 'FOUNTAIN',
-    'GALAXY', 'HARMONY', 'INFINITY', 'JOURNEY', 'KINGDOM', 'LIGHTNING'
-  ]
+// Word lists by difficulty and language
+const WORD_LISTS_BY_LOCALE: Record<string, Record<string, string[]>> = {
+  en: {
+    easy: [
+      'CAT', 'DOG', 'SUN', 'MOON', 'STAR', 'TREE', 'FISH', 'BIRD',
+      'BOOK', 'CAKE', 'BALL', 'RAIN', 'SNOW', 'WIND', 'FIRE', 'WATER'
+    ],
+    medium: [
+      'APPLE', 'BEACH', 'CLOUD', 'DANCE', 'EAGLE', 'FLAME', 'GRAPE', 'HEART',
+      'ISLAND', 'JUNGLE', 'KNIGHT', 'LEMON', 'MAGIC', 'NIGHT', 'OCEAN', 'PIANO'
+    ],
+    hard: [
+      'ADVENTURE', 'BUTTERFLY', 'CHAMPION', 'DIAMOND', 'ELEPHANT', 'FOUNTAIN',
+      'GALAXY', 'HARMONY', 'INFINITY', 'JOURNEY', 'KINGDOM', 'LIGHTNING'
+    ]
+  },
+  es: {
+    easy: [
+      'SOL', 'MAR', 'LUZ', 'PAN', 'REY', 'OJO', 'RIO', 'OSO',
+      'FLOR', 'LUNA', 'MESA', 'GATO', 'PATO', 'NUBE', 'ROJO', 'AZUL'
+    ],
+    medium: [
+      'PLAYA', 'NOCHE', 'FUEGO', 'TIGRE', 'VERDE', 'CIELO', 'MUNDO', 'PIANO',
+      'ARENA', 'BOSQUE', 'CAMPO', 'DULCE', 'HIELO', 'JARDIN', 'LLUVIA', 'MUSICA'
+    ],
+    hard: [
+      'AVENTURA', 'MARIPOSA', 'ELEFANTE', 'DIAMANTE', 'CAMPEON', 'GALAXIA',
+      'ARMONIA', 'INFINITO', 'MONTAÑA', 'ESTRELLA', 'CASCADA', 'MISTERIO'
+    ]
+  },
+  pt: {
+    easy: [
+      'SOL', 'MAR', 'LUA', 'COR', 'REI', 'PAZ', 'RIO', 'CHA',
+      'FLOR', 'GATO', 'PATO', 'BOLA', 'NEVE', 'FOGO', 'AGUA', 'AZUL'
+    ],
+    medium: [
+      'PRAIA', 'NOITE', 'NUVEM', 'TIGRE', 'VERDE', 'MUNDO', 'PIANO', 'SONHO',
+      'AREIA', 'CAMPO', 'DOCE', 'GELO', 'JARDIM', 'CHUVA', 'MUSICA', 'OCEANO'
+    ],
+    hard: [
+      'AVENTURA', 'BORBOLETA', 'ELEFANTE', 'DIAMANTE', 'CAMPEAO', 'GALAXIA',
+      'HARMONIA', 'INFINITO', 'MONTANHA', 'ESTRELA', 'CASCATA', 'MISTERIO'
+    ]
+  }
+}
+
+function getWordLists(locale?: string): Record<string, string[]> {
+  const lang = (locale || 'en').substring(0, 2)
+  return WORD_LISTS_BY_LOCALE[lang] || WORD_LISTS_BY_LOCALE['en']
 }
 
 /**
  * Generate a word search puzzle
  */
-export function generateWordPuzzle(difficulty: 'easy' | 'medium' | 'hard'): WordPuzzle {
+export function generateWordPuzzle(difficulty: 'easy' | 'medium' | 'hard', locale?: string): WordPuzzle {
   const config = {
     easy: { gridSize: 10, wordCount: 6 },
     medium: { gridSize: 12, wordCount: 8 },
@@ -44,7 +79,7 @@ export function generateWordPuzzle(difficulty: 'easy' | 'medium' | 'hard'): Word
   }
 
   const { gridSize, wordCount } = config[difficulty]
-  const wordList = WORD_LISTS[difficulty]
+  const wordList = getWordLists(locale)[difficulty]
   
   // Select random words
   const selectedWords = selectRandomWords(wordList, wordCount)
