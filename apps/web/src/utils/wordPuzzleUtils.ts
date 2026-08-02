@@ -22,43 +22,79 @@ const WORD_LISTS_BY_LOCALE: Record<string, Record<string, string[]>> = {
   en: {
     easy: [
       'CAT', 'DOG', 'SUN', 'MOON', 'STAR', 'TREE', 'FISH', 'BIRD',
-      'BOOK', 'CAKE', 'BALL', 'RAIN', 'SNOW', 'WIND', 'FIRE', 'WATER'
+      'BOOK', 'CAKE', 'BALL', 'RAIN', 'SNOW', 'WIND', 'FIRE', 'WATER',
+      'BEAR', 'FROG', 'DUCK', 'WOLF', 'SEED', 'LEAF', 'ROCK', 'HILL',
+      'LAMP', 'SHIP', 'COIN', 'DRUM', 'BELL', 'KITE', 'NEST', 'ROPE',
+      'RING', 'GATE', 'PATH', 'LAKE', 'CAVE', 'DEER', 'CORN', 'BEAN',
+      'CRAB', 'WORM', 'TOAD', 'GOAT', 'MILK', 'SOUP', 'RICE', 'PLUM'
     ],
     medium: [
       'APPLE', 'BEACH', 'CLOUD', 'DANCE', 'EAGLE', 'FLAME', 'GRAPE', 'HEART',
-      'ISLAND', 'JUNGLE', 'KNIGHT', 'LEMON', 'MAGIC', 'NIGHT', 'OCEAN', 'PIANO'
+      'ISLAND', 'JUNGLE', 'KNIGHT', 'LEMON', 'MAGIC', 'NIGHT', 'OCEAN', 'PIANO',
+      'QUEEN', 'RIVER', 'STORM', 'TIGER', 'URBAN', 'VOICE', 'WHALE', 'YOUTH',
+      'BRAVE', 'CREAM', 'DRIFT', 'FROST', 'GLOBE', 'HONEY', 'IVORY', 'JEWEL',
+      'MAPLE', 'NOBLE', 'OLIVE', 'PEARL', 'QUILT', 'ROBIN', 'SPINE', 'TORCH',
+      'VAPOR', 'WAGON', 'CORAL', 'DELTA', 'EMBER', 'FLUTE', 'GRAIN', 'HIKER'
     ],
     hard: [
       'ADVENTURE', 'BUTTERFLY', 'CHAMPION', 'DIAMOND', 'ELEPHANT', 'FOUNTAIN',
-      'GALAXY', 'HARMONY', 'INFINITY', 'JOURNEY', 'KINGDOM', 'LIGHTNING'
+      'GALAXY', 'HARMONY', 'INFINITY', 'JOURNEY', 'KINGDOM', 'LIGHTNING',
+      'MOUNTAIN', 'NOTEBOOK', 'ORCHESTRA', 'PARADISE', 'TREASURE', 'UMBRELLA',
+      'VACATION', 'WATERFALL', 'ALPHABET', 'BLIZZARD', 'CALENDAR', 'DINOSAUR',
+      'FIREWORK', 'GARDENER', 'HOSPITAL', 'KANGAROO', 'LAVENDER', 'MUSHROOM',
+      'NIGHTFALL', 'PAINTING', 'SANDWICH', 'TRIANGLE', 'UNIVERSE', 'WINDMILL'
     ]
   },
   es: {
     easy: [
       'SOL', 'MAR', 'LUZ', 'PAN', 'REY', 'OJO', 'RIO', 'OSO',
-      'FLOR', 'LUNA', 'MESA', 'GATO', 'PATO', 'NUBE', 'ROJO', 'AZUL'
+      'FLOR', 'LUNA', 'MESA', 'GATO', 'PATO', 'NUBE', 'ROJO', 'AZUL',
+      'PEZ', 'AVE', 'TIO', 'SAL', 'MIS', 'DOS', 'TEN', 'VER',
+      'LOBO', 'RANA', 'PERA', 'HOJA', 'ROCA', 'LAGO', 'PELO', 'MANO',
+      'SOPA', 'DADO', 'LEON', 'VINO', 'ROSA', 'ISLA', 'CAJA', 'TUBO',
+      'PISO', 'MIEL', 'NAVE', 'TORO', 'CODO', 'SEDA', 'NUEZ', 'LIMA'
     ],
     medium: [
       'PLAYA', 'NOCHE', 'FUEGO', 'TIGRE', 'VERDE', 'CIELO', 'MUNDO', 'PIANO',
-      'ARENA', 'BOSQUE', 'CAMPO', 'DULCE', 'HIELO', 'JARDIN', 'LLUVIA', 'MUSICA'
+      'ARENA', 'BOSQUE', 'CAMPO', 'DULCE', 'HIELO', 'JARDIN', 'LLUVIA', 'MUSICA',
+      'REINA', 'NIEVE', 'SILLA', 'PLUMA', 'GLOBO', 'CORTE', 'TORRE', 'GRUPO',
+      'BARCO', 'FRUTA', 'JUEGO', 'GRITO', 'HUEVO', 'LIBRO', 'MANGO', 'PERRO',
+      'PIEDRA', 'QUESO', 'RELOJ', 'SOMBRA', 'TRIGO', 'UNICO', 'VALLE', 'ZORRO',
+      'ABEJA', 'BRISA', 'CANTO', 'DANZA', 'ESPADA', 'FERIA', 'GLOBO', 'HORNO'
     ],
     hard: [
       'AVENTURA', 'MARIPOSA', 'ELEFANTE', 'DIAMANTE', 'CAMPEON', 'GALAXIA',
-      'ARMONIA', 'INFINITO', 'MONTAÑA', 'ESTRELLA', 'CASCADA', 'MISTERIO'
+      'ARMONIA', 'INFINITO', 'ESTRELLA', 'CASCADA', 'MISTERIO', 'UNIVERSO',
+      'ACUARELA', 'BANDERA', 'CAPITULO', 'DESCANSO', 'ESCALERA', 'FANTASIA',
+      'GIRASOL', 'HOSPITAL', 'INVIERNO', 'JABALINA', 'LABERINTO', 'MANTEQUILLA',
+      'NARANJA', 'ORQUESTA', 'PARAGUAS', 'ROMPECABEZAS', 'SERPIENTE', 'TORMENTA',
+      'UNIVERSO', 'VENTISCA', 'ZAPATILLA', 'CABALLERO', 'DINOSAURIO', 'ESPERANZA'
     ]
   },
   pt: {
     easy: [
       'SOL', 'MAR', 'LUA', 'COR', 'REI', 'PAZ', 'RIO', 'CHA',
-      'FLOR', 'GATO', 'PATO', 'BOLA', 'NEVE', 'FOGO', 'AGUA', 'AZUL'
+      'FLOR', 'GATO', 'PATO', 'BOLA', 'NEVE', 'FOGO', 'AGUA', 'AZUL',
+      'PEZ', 'AVE', 'TIO', 'SAL', 'MEL', 'DOI', 'TEM', 'VER',
+      'LOBO', 'SAPO', 'PERA', 'FOLHA', 'ROCHA', 'LAGO', 'PELO', 'MANO',
+      'SOPA', 'DADO', 'LEAO', 'VINHO', 'ROSA', 'ILHA', 'CAIXA', 'TUBO',
+      'PISO', 'NAVE', 'TOURO', 'SEDA', 'NOZE', 'LIMA', 'REDE', 'URSO'
     ],
     medium: [
       'PRAIA', 'NOITE', 'NUVEM', 'TIGRE', 'VERDE', 'MUNDO', 'PIANO', 'SONHO',
-      'AREIA', 'CAMPO', 'DOCE', 'GELO', 'JARDIM', 'CHUVA', 'MUSICA', 'OCEANO'
+      'AREIA', 'CAMPO', 'DOCE', 'GELO', 'JARDIM', 'CHUVA', 'MUSICA', 'OCEANO',
+      'RAINHA', 'NEVE', 'CADEIRA', 'PLUMA', 'GLOBO', 'CORTE', 'TORRE', 'GRUPO',
+      'BARCO', 'FRUTA', 'JOGO', 'GRITO', 'LIVRO', 'MANGA', 'PEDRA', 'QUEIJO',
+      'BRISA', 'CANTO', 'DANCA', 'ESPADA', 'FESTA', 'FORNO', 'GRUTA', 'HEROI',
+      'LEITE', 'MILHO', 'NOBRE', 'OLIVA', 'PEROLA', 'QUEDA', 'SOPRO', 'TOCHA'
     ],
     hard: [
       'AVENTURA', 'BORBOLETA', 'ELEFANTE', 'DIAMANTE', 'CAMPEAO', 'GALAXIA',
-      'HARMONIA', 'INFINITO', 'MONTANHA', 'ESTRELA', 'CASCATA', 'MISTERIO'
+      'HARMONIA', 'INFINITO', 'MONTANHA', 'ESTRELA', 'CASCATA', 'MISTERIO',
+      'AQUARELA', 'BANDEIRA', 'CAPITULO', 'DESCANSO', 'ESCADARIA', 'FANTASIA',
+      'GIRASSOL', 'HOSPITAL', 'INVERNO', 'LABIRINTO', 'MANTEIGA', 'LARANJA',
+      'ORQUESTRA', 'PARAGUAS', 'SERPENTE', 'TEMPESTADE', 'UNIVERSO', 'VENTANIA',
+      'SAPATILHA', 'CAVALEIRO', 'DINOSSAURO', 'ESPERANCA', 'FOGUEIRA', 'GRANDEZA'
     ]
   }
 }
