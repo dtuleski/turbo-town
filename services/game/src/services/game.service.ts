@@ -194,15 +194,20 @@ export class GameService {
       score,
     }, userId);
 
-    // Track achievements (synchronous)
-    const achievements = await this.achievementTracker.trackCompletion(
-      userId,
-      input.gameId,
-      game.difficulty,
-      input.completionTime,
-      input.attempts,
-      game.themeId
-    );
+    // Track achievements (non-blocking — don't let failures prevent leaderboard recording)
+    let achievements: any[] = [];
+    try {
+      achievements = await this.achievementTracker.trackCompletion(
+        userId,
+        input.gameId,
+        game.difficulty,
+        input.completionTime,
+        input.attempts,
+        game.themeId
+      );
+    } catch (achievementError) {
+      logger.error('Achievement tracking failed', achievementError as Error, { userId, gameId: input.gameId });
+    }
 
     // Get user tier for metrics
     const tier = await this.subscriptionRepository.getTier(userId);
