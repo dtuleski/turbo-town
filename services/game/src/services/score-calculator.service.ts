@@ -54,19 +54,6 @@ export class ScoreCalculatorService {
     // Premium games get higher base score to reach 8,000 max
     const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
     const isPremium = gameThemeId ? PREMIUM_GAME_THEMES.includes(gameThemeId) : false;
-    let baseScore: number;
-    if (gameThemeId === 'MINI_GOLF') {
-      baseScore = 1800; // Produces Easy ~4000, Medium ~6000, Hard ~8000 for perfect games
-    } else if (gameThemeId === 'SCRATCH_CODING') {
-      // 5 levels of block programming — expect 1-4 min easy, 2-5 min medium, 3-6 min hard
-      maxTime = difficulty >= 3 ? 240 : difficulty >= 2 ? 180 : 120;
-    } else if (isPremium) {
-      baseScore = 1700;
-    } else if (difficulty >= 4) {
-      baseScore = 1100; // Super Hard Memory Match: 1100 × 2.5 × 2.0 × 1.5 = 8,250 → capped to 8,000
-    } else {
-      baseScore = this.BASE_SCORE;
-    }
     const difficultyMultiplier = this.getDifficultyMultiplier(difficulty);
     
     // Time targets vary by game type
@@ -98,6 +85,20 @@ export class ScoreCalculatorService {
       maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 120 : 180;
     } else {
       maxTime = this.MAX_TIME;
+    }
+
+    // Base score varies by game type
+    let baseScore: number;
+    if (gameThemeId === 'MINI_GOLF') {
+      baseScore = 1800; // Produces Easy ~4000, Medium ~6000, Hard ~8000 for perfect games
+    } else if (gameThemeId === 'SCRATCH_CODING') {
+      baseScore = 1700; // Block programming game
+    } else if (isPremium) {
+      baseScore = 1700;
+    } else if (difficulty >= 4) {
+      baseScore = 1100; // Super Hard Memory Match: 1100 × 2.5 × 2.0 × 1.5 = 8,250 → capped to 8,000
+    } else {
+      baseScore = this.BASE_SCORE;
     }
     const speedBonus = Math.min(speedBonusCap, Math.max(this.MIN_SPEED_BONUS, 1 + (maxTime - completionTime) / maxTime));
 
