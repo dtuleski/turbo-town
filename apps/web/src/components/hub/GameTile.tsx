@@ -1,7 +1,7 @@
 import { GameCatalogItem, ReviewStats } from '../../api/game'
 import { useTranslation } from 'react-i18next'
 
-/** Games that require Premium subscription */
+/** Games that require a paid subscription (any tier above FREE) */
 export const PREMIUM_GAMES = new Set(['space-entry', 'scratch-coding', 'bond-and-burn'])
 
 interface GameTileProps {
