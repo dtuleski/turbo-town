@@ -81,8 +81,8 @@ export default function GameHubPage() {
 
   const handleGameClick = (game: GameCatalogItem) => {
     if (game.status === 'ACTIVE') {
-      // If premium game and user is not premium, redirect to subscription page
-      if (PREMIUM_GAMES.has(game.gameId) && userTier !== 'PREMIUM') {
+      // If premium game and user is on free tier, redirect to subscription page
+      if (PREMIUM_GAMES.has(game.gameId) && userTier === 'FREE') {
         navigate(ROUTES.SUBSCRIPTION, { state: { premiumRequired: true } })
         return
       }
