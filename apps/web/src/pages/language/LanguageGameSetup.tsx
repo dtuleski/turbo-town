@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { canStartGame } from '../../api/game';
+import { isSpeechRecognitionSupported, LOW_ACCURACY_LANGUAGES } from '../../utils/pronunciationScoring';
 
 interface GameSettings {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   category: string;
   wordCount: number;
+  mode: 'image-match' | 'pronunciation';
 }
 
 const DIFFICULTIES = [
@@ -63,8 +66,29 @@ export default function LanguageGameSetup() {
   const [settings, setSettings] = useState<GameSettings>({
     difficulty: 'beginner',
     category: 'animals',
-    wordCount: 10
+    wordCount: 10,
+    mode: 'image-match',
   });
+  const [isPaidUser, setIsPaidUser] = useState(false);
+  const [tierLoading, setTierLoading] = useState(true);
+
+  const speechSupported = isSpeechRecognitionSupported();
+
+  // Check subscription tier on mount
+  useEffect(() => {
+    const checkTier = async () => {
+      try {
+        const result = await canStartGame();
+        const tier = result?.rateLimit?.tier;
+        setIsPaidUser(!!tier && tier !== 'FREE');
+      } catch {
+        setIsPaidUser(false);
+      } finally {
+        setTierLoading(false);
+      }
+    };
+    checkTier();
+  }, []);
 
   const language = languageCode ? LANGUAGE_INFO[languageCode as keyof typeof LANGUAGE_INFO] : null;
 
@@ -94,9 +118,15 @@ export default function LanguageGameSetup() {
   };
 
   const handleStartGame = () => {
-    navigate(`/language/game/${languageCode}`, { 
-      state: { settings } 
-    });
+    if (settings.mode === 'pronunciation') {
+      navigate(`/language/pronunciation/${languageCode}`, { 
+        state: { settings } 
+      });
+    } else {
+      navigate(`/language/game/${languageCode}`, { 
+        state: { settings } 
+      });
+    }
   };
 
   return (
@@ -121,6 +151,82 @@ export default function LanguageGameSetup() {
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
+          {/* Mode Selection */}
+          {speechSupported && (
+            <motion.div 
+              className="bg-white rounded-xl shadow-lg p-8 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+            >
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <span>🎯</span>
+                Choose Mode
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Image Match Mode */}
+                <div
+                  data-testid="language-setup-mode-image-match"
+                  className={`
+                    border-2 rounded-lg p-6 cursor-pointer transition-all duration-300
+                    ${settings.mode === 'image-match'
+                      ? 'border-indigo-500 bg-indigo-50 shadow-md'
+                      : 'border-gray-200 hover:border-indigo-300 hover:shadow-sm'
+                    }
+                  `}
+                  onClick={() => setSettings(prev => ({ ...prev, mode: 'image-match' }))}
+                >
+                  <div className="text-center">
+                    <div className="text-3xl mb-3">🖼️</div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Image Match</h3>
+                    <p className="text-gray-600 text-sm">See the word, pick the correct image</p>
+                  </div>
+                </div>
+
+                {/* Pronunciation Mode */}
+                <div
+                  data-testid="language-setup-mode-pronunciation"
+                  className={`
+                    relative border-2 rounded-lg p-6 transition-all duration-300
+                    ${!isPaidUser && !tierLoading
+                      ? 'border-gray-200 opacity-75 cursor-pointer'
+                      : settings.mode === 'pronunciation'
+                        ? 'border-indigo-500 bg-indigo-50 shadow-md cursor-pointer'
+                        : 'border-gray-200 hover:border-indigo-300 hover:shadow-sm cursor-pointer'
+                    }
+                  `}
+                  onClick={() => {
+                    if (!isPaidUser && !tierLoading) {
+                      navigate('/subscription', { state: { premiumRequired: true } });
+                    } else {
+                      setSettings(prev => ({ ...prev, mode: 'pronunciation' }));
+                    }
+                  }}
+                >
+                  {/* Premium badge */}
+                  {!isPaidUser && !tierLoading && (
+                    <div className="absolute top-2 right-2 bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                      <span>👑</span> Premium
+                    </div>
+                  )}
+                  <div className="text-center">
+                    <div className="text-3xl mb-3">🎤</div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Pronunciation</h3>
+                    <p className="text-gray-600 text-sm">See an image, speak the word correctly</p>
+                    {!isPaidUser && !tierLoading && (
+                      <p className="text-xs text-amber-600 mt-2 font-medium">Upgrade to unlock</p>
+                    )}
+                    {languageCode && LOW_ACCURACY_LANGUAGES.has(languageCode) && isPaidUser && (
+                      <p className="text-xs text-gray-400 mt-2 flex items-center justify-center gap-1">
+                        <span>ℹ️</span> Recognition accuracy may vary for this language
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Difficulty Selection */}
           <motion.div 
             className="bg-white rounded-xl shadow-lg p-8 mb-8"
