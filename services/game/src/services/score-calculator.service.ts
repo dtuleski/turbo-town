@@ -52,7 +52,7 @@ export class ScoreCalculatorService {
     const graceAttempts = difficulty >= 4 ? pairs * 4 : pairs * 3;
 
     // Premium games get higher base score to reach 8,000 max
-    const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
+    const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION'];
     const isPremium = gameThemeId ? PREMIUM_GAME_THEMES.includes(gameThemeId) : false;
     const difficultyMultiplier = this.getDifficultyMultiplier(difficulty);
     
@@ -78,6 +78,10 @@ export class ScoreCalculatorService {
       // Easy: 60s, Medium: 75s, Hard: 90s
       // Finishing at maxTime = 1.0x speed, faster = bonus up to 2.0x
       maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 75 : 60;
+    } else if (gameThemeId === 'LANGUAGE_PRONUNCIATION') {
+      // Pronunciation mode: fewer words (5/8/12), longer per word due to speaking + retries
+      // Easy: 45s, Medium: 60s, Hard: 90s
+      maxTime = difficulty >= 3 ? 90 : difficulty >= 2 ? 60 : 45;
     } else if (gameThemeId === 'SCRATCH_CODING') {
       // 5 levels of block programming — expect 1-4 min easy, 2-5 min medium, 3-6 min hard
       maxTime = difficulty >= 3 ? 240 : difficulty >= 2 ? 180 : 120;

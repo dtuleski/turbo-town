@@ -48,7 +48,7 @@ export class GameService {
     const tier = await this.subscriptionRepository.getTier(userId);
 
     // Check if game requires a paid subscription (any tier above FREE)
-    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
+    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION'];
     if (PAID_GAMES.includes(input.themeId) && tier === SubscriptionTier.Free) {
       throw new AuthorizationError('This game requires a paid subscription. Upgrade to play!');
     }
@@ -134,7 +134,7 @@ export class GameService {
     }
 
     // Validate attempts (only for Memory Match which uses pairs-based logic)
-    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
+    if (!['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'LANGUAGE_PRONUNCIATION', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
       const attemptsValidation = validateAttempts(input.attempts, game.difficulty);
       if (!attemptsValidation.valid) {
         throw new AuthorizationError(attemptsValidation.reason!);
@@ -143,7 +143,7 @@ export class GameService {
 
     // Calculate accuracy for non-Memory-Match games BEFORE score calculation
     let preAccuracy: number | undefined
-    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
+    if (['MATH_CHALLENGE', 'WORD_PUZZLE', 'LANGUAGE_LEARNING', 'LANGUAGE_PRONUNCIATION', 'SUDOKU', 'JIGSAW_PUZZLE', 'BUBBLE_POP', 'SEQUENCE_MEMORY', 'CODE_A_BOT', 'GEO_QUIZ', 'HISTORY_QUIZ', 'CIVICS_QUIZ', 'COLOR_BY_NUMBER', 'HANGMAN', 'TIC_TAC_TOE', 'MATH_MAZE', 'PATTERN_RECALL', 'SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'].includes(game.themeId)) {
       if (game.themeId === 'WORD_PUZZLE') {
         const wordsFound = input.wordsFound || 0;
         const totalWords = input.totalWords || 1;
@@ -165,7 +165,7 @@ export class GameService {
     );
 
     // Apply score cap based on game type and difficulty
-    const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF'];
+    const PREMIUM_GAME_THEMES = ['SCRATCH_CODING', 'SPACE_ENTRY', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION'];
     let scoreCap: number;
     if (game.themeId === 'MINI_GOLF') {
       // Mini Golf: no hard cap — let speed differentiate top players
@@ -238,6 +238,13 @@ export class GameService {
     } else if (game.themeId === 'LANGUAGE_LEARNING') {
       gameType = 'LANGUAGE_LEARNING';
       // For Language Learning: accuracy = correctAnswers / totalQuestions
+      const correctAnswers = input.correctAnswers || 0;
+      const totalQuestions = input.totalQuestions || 1;
+      accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+      avgResponseTimeSeconds = Math.max(1, Math.round(input.completionTime / totalQuestions));
+    } else if (game.themeId === 'LANGUAGE_PRONUNCIATION') {
+      gameType = 'LANGUAGE_PRONUNCIATION';
+      // For Language Pronunciation: accuracy = correctAnswers (words scored >= 71) / totalQuestions
       const correctAnswers = input.correctAnswers || 0;
       const totalQuestions = input.totalQuestions || 1;
       accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;

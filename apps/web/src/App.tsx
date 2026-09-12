@@ -21,6 +21,7 @@ import WordPuzzleGamePage from './pages/word-puzzle/WordPuzzleGamePage'
 import LanguageSelectionPage from './pages/language/LanguageSelectionPage'
 import LanguageGameSetup from './pages/language/LanguageGameSetup'
 import LanguageGamePage from './pages/language/LanguageGamePage'
+import PronunciationGamePage from './pages/language/PronunciationGamePage'
 import LanguageGameResults from './pages/language/LanguageGameResults'
 import SudokuSetupPage from './pages/sudoku/SudokuSetupPage'
 import SudokuGamePage from './pages/sudoku/SudokuGamePage'
@@ -100,6 +101,7 @@ function App() {
           <Route path={ROUTES.LANGUAGE} element={<LanguageSelectionPage />} />
           <Route path="/language/setup/:languageCode" element={<LanguageGameSetup />} />
           <Route path="/language/game/:languageCode" element={<LanguageGamePage />} />
+          <Route path="/language/pronunciation/:languageCode" element={<PronunciationGamePage />} />
           <Route path="/language/results/:languageCode" element={<LanguageGameResults />} />
           <Route path={ROUTES.SUDOKU_SETUP} element={<SudokuSetupPage />} />
           <Route path={ROUTES.SUDOKU_GAME} element={<SudokuGamePage />} />
