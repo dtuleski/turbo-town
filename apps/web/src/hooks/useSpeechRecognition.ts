@@ -158,6 +158,22 @@ export function useSpeechRecognition({
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const maxDurationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const safetyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Live refs mirroring state/result so async Speech API callbacks read current
+  // values instead of stale closure values (critical for reliable transitions,
+  // especially on mobile where onend can fire before onresult commits).
+  const stateRef = useRef<RecognitionState>('idle');
+  const resultRef = useRef<RecognitionResult | null>(null);
+
+  const setStateTracked = useCallback((s: RecognitionState) => {
+    stateRef.current = s;
+    setState(s);
+  }, []);
+  const setResultTracked = useCallback((r: RecognitionResult | null) => {
+    resultRef.current = r;
+    setResult(r);
+  }, []);
 
   const isSupported = !!(
     (window as any).SpeechRecognition ||
@@ -179,6 +195,10 @@ export function useSpeechRecognition({
     if (maxDurationRef.current) {
       clearTimeout(maxDurationRef.current);
       maxDurationRef.current = null;
+    }
+    if (safetyTimeoutRef.current) {
+      clearTimeout(safetyTimeoutRef.current);
+      safetyTimeoutRef.current = null;
     }
     if (recognitionRef.current) {
       try {
@@ -206,14 +226,14 @@ export function useSpeechRecognition({
         message: 'Speech recognition not supported',
         userFriendlyMessage: 'Your browser does not support speech recognition. Please use Chrome, Edge, or Safari.',
       });
-      setState('error');
+      setStateTracked('error');
       return;
     }
 
     // Reset previous state
     setError(null);
-    setResult(null);
-    setState('listening');
+    setResultTracked(null);
+    setStateTracked('listening');
 
     try {
       // Request microphone access for waveform visualization
@@ -240,73 +260,90 @@ export function useSpeechRecognition({
       recognition.maxAlternatives = 1;
       recognition.lang = SPEECH_RECOGNITION_LOCALES[languageCode] || 'en-US';
 
+      // Finalize: transition to 'done' if we captured any transcript, else 'error'.
+      // Idempotent — safe to call from multiple event paths (onresult/onend/timeout).
+      const finalize = () => {
+        if (stateRef.current === 'done' || stateRef.current === 'error' || stateRef.current === 'idle') {
+          return; // already resolved
+        }
+        if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
+        if (maxDurationRef.current) { clearTimeout(maxDurationRef.current); maxDurationRef.current = null; }
+        if (safetyTimeoutRef.current) { clearTimeout(safetyTimeoutRef.current); safetyTimeoutRef.current = null; }
+
+        // Stop mic + audio graph
+        if (mediaStreamRef.current) {
+          mediaStreamRef.current.getTracks().forEach(track => track.stop());
+          mediaStreamRef.current = null;
+        }
+
+        if (resultRef.current && resultRef.current.transcript.trim().length > 0) {
+          setStateTracked('done');
+        } else {
+          setError(getErrorMessage('no-speech'));
+          setStateTracked('error');
+        }
+      };
+
       recognition.onresult = (event: SpeechRecognitionEvent) => {
         const lastResult = event.results[event.results.length - 1];
         const alternative = lastResult[0];
 
-        setResult({
+        setResultTracked({
           transcript: alternative.transcript,
           confidence: alternative.confidence,
           isFinal: lastResult.isFinal,
         });
 
         if (lastResult.isFinal) {
-          setState('processing');
-          // Brief delay for visual processing state
-          setTimeout(() => {
-            setState('done');
-          }, 300);
+          setStateTracked('processing');
+          // Some mobile browsers never fire onend after a final result — stop
+          // explicitly and finalize shortly after so we never hang.
+          try { recognition.stop(); } catch { /* ignore */ }
+          setTimeout(finalize, 300);
+          return;
         }
 
-        // Reset silence timeout on speech
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
+        // Reset silence timeout on interim speech
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
-          if (recognitionRef.current) {
-            recognitionRef.current.stop();
-          }
+          try { recognitionRef.current?.stop(); } catch { /* ignore */ }
         }, silenceTimeout);
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        // "aborted" errors happen on normal stop — don't treat as error if we have a result
-        if (event.error === 'aborted' && result?.isFinal) {
+        // "aborted"/"no-speech" after we already captured a transcript: finalize as done
+        if ((event.error === 'aborted' || event.error === 'no-speech') && resultRef.current?.transcript) {
+          finalize();
           return;
         }
+        if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
+        if (maxDurationRef.current) { clearTimeout(maxDurationRef.current); maxDurationRef.current = null; }
+        if (safetyTimeoutRef.current) { clearTimeout(safetyTimeoutRef.current); safetyTimeoutRef.current = null; }
         const speechError = getErrorMessage(event.error);
         setError(speechError);
-        setState('error');
+        setStateTracked('error');
         cleanup();
       };
 
       recognition.onend = () => {
-        // Only set done if we haven't already handled it
-        if (state === 'listening') {
-          // No result received — no speech detected
-          if (!result) {
-            setError(getErrorMessage('no-speech'));
-            setState('error');
-          } else {
-            setState('done');
-          }
-        }
-        // Stop media stream
-        if (mediaStreamRef.current) {
-          mediaStreamRef.current.getTracks().forEach(track => track.stop());
-          mediaStreamRef.current = null;
-        }
+        // Recognition ended — resolve based on whatever we captured.
+        finalize();
       };
 
       recognitionRef.current = recognition;
       recognition.start();
 
-      // Set max duration timeout
+      // Max duration: stop recognition (its onend/onerror will finalize)
       maxDurationRef.current = setTimeout(() => {
-        if (recognitionRef.current) {
-          recognitionRef.current.stop();
-        }
+        try { recognitionRef.current?.stop(); } catch { /* ignore */ }
       }, maxDuration);
+
+      // Hard safety net: if no event resolves the session (some mobile browsers
+      // go silent), force a finalize so the UI can never hang on "Listening...".
+      safetyTimeoutRef.current = setTimeout(() => {
+        try { recognitionRef.current?.abort(); } catch { /* ignore */ }
+        finalize();
+      }, maxDuration + 2000);
 
     } catch (err: any) {
       // MediaDevices errors (permission denied, etc.)
@@ -321,15 +358,14 @@ export function useSpeechRecognition({
           userFriendlyMessage: 'Something went wrong. Please try again!',
         });
       }
-      setState('error');
+      setStateTracked('error');
       cleanup();
     }
-  }, [isSupported, languageCode, silenceTimeout, maxDuration, cleanup]);
+  }, [isSupported, languageCode, silenceTimeout, maxDuration, cleanup, setStateTracked, setResultTracked]);
 
   const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
+    // User tapped "Stop": stop recognition; its onend will finalize to done/error.
+    try { recognitionRef.current?.stop(); } catch { /* ignore */ }
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -342,10 +378,10 @@ export function useSpeechRecognition({
 
   const reset = useCallback(() => {
     cleanup();
-    setState('idle');
-    setResult(null);
+    setStateTracked('idle');
+    setResultTracked(null);
     setError(null);
-  }, [cleanup]);
+  }, [cleanup, setStateTracked, setResultTracked]);
 
   return {
     state,

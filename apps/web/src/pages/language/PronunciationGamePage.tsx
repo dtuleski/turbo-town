@@ -67,6 +67,7 @@ export default function PronunciationGamePage() {
   const [showResults, setShowResults] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [finalScore, setFinalScore] = useState(0);
 
   // Speech recognition
   const {
@@ -131,9 +132,12 @@ export default function PronunciationGamePage() {
     }
   };
 
-  // Process recognition result when done
+  // Process recognition result when done.
+  // Note: we do NOT require isFinal — on some mobile browsers the final result
+  // event never fires and we finalize on an interim transcript. As long as we
+  // have a transcript, score it.
   useEffect(() => {
-    if (recognitionState === 'done' && recognitionResult?.isFinal && currentWord) {
+    if (recognitionState === 'done' && recognitionResult?.transcript && currentWord) {
       const score = calculatePronunciationScore(
         currentWord.word,
         recognitionResult.transcript,
@@ -211,23 +215,35 @@ export default function PronunciationGamePage() {
 
   const finishGame = async (results: WordResult[]) => {
     const completionTime = Math.floor((Date.now() - gameStartTime) / 1000);
+    const avgScore = results.reduce((sum, r) => sum + r.bestScore, 0) / results.length;
 
-    // The backend computes the authoritative game score from these params
-    // (average pronunciation accuracy is reflected via correctAnswers/totalQuestions).
+    // Local fallback score (0-6000) based on average pronunciation accuracy and time,
+    // mirroring the image-match mode formula. Used if the backend score is unavailable.
+    const targetTime = settings.difficulty === 'advanced' ? 90 : settings.difficulty === 'intermediate' ? 60 : 45;
+    const timePenalty = completionTime <= targetTime ? 1 : Math.max(0.3, 1 - (completionTime - targetTime) / (targetTime * 2));
+    let gameScore = Math.round(6000 * (avgScore / 100) * timePenalty);
+
+    // The backend computes the authoritative game score. Pass average accuracy as a
+    // 0-100 "correctAnswers out of 100" ratio so continuous pronunciation accuracy is
+    // preserved rather than discretized.
     if (backendGameId) {
       try {
-        await completeGame({
+        const result = await completeGame({
           gameId: backendGameId,
           completionTime,
           attempts: results.reduce((sum, r) => sum + r.attemptsUsed, 0),
-          correctAnswers: results.filter(r => r.bestScore >= 71).length,
-          totalQuestions: results.length,
+          correctAnswers: Math.round(avgScore),
+          totalQuestions: 100,
         });
+        if (result?.score) {
+          gameScore = result.score;
+        }
       } catch (err) {
         console.error('Failed to complete backend game:', err);
       }
     }
 
+    setFinalScore(gameScore);
     setShowResults(true);
   };
 
@@ -255,10 +271,14 @@ export default function PronunciationGamePage() {
 
           {/* Overall Score */}
           <div className="text-center mb-6">
-            <div className={`text-5xl font-black mb-1 ${FEEDBACK_CONFIG[getFeedback(Math.round(avgScore))].color}`}>
+            <div className="text-5xl font-black text-indigo-600 mb-1" data-testid="pronunciation-results-score">
+              {finalScore.toLocaleString()}
+            </div>
+            <div className="text-sm text-gray-500 mb-3">Total Score</div>
+            <div className={`text-2xl font-bold ${FEEDBACK_CONFIG[getFeedback(Math.round(avgScore))].color}`}>
               {Math.round(avgScore)}%
             </div>
-            <div className="text-sm text-gray-500">Average Accuracy</div>
+            <div className="text-xs text-gray-400">Average Accuracy</div>
           </div>
 
           {/* Stats Grid */}
