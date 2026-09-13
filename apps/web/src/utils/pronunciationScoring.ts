@@ -395,18 +395,36 @@ export function getFeedback(score: number): PronunciationFeedback {
   return 'try-again';
 }
 
+export type Strictness = 'normal' | 'strict';
+
 /**
  * Calculate pronunciation score by comparing recognized speech to expected word.
- * 
+ *
+ * Scoring philosophy (client-side Web Speech API):
+ * - Word match (phonetic + string similarity) determines whether the RIGHT word
+ *   was said. This is a prerequisite, not the whole score.
+ * - The API's `confidence` reflects how cleanly/native-like the utterance was
+ *   recognized. We treat it as a first-class multiplier so that saying the right
+ *   word sloppily / with a heavy accent scores lower than a clean utterance.
+ * - There is no "exact text = 100" shortcut: a perfect score requires BOTH a
+ *   correct word AND high recognition confidence.
+ *
+ * NOTE: The Web Speech API cannot truly grade accent at the phoneme level, so
+ * this is an approximation. It is meaningfully stricter than a pure text match,
+ * but genuine accent assessment requires a cloud speech-assessment service.
+ *
  * @param expectedWord - The word the player should have said
  * @param recognizedText - The text recognized by Web Speech API
- * @param confidence - Optional confidence value from Speech API (0-1)
+ * @param confidence - Confidence value from Speech API (0-1). Undefined is
+ *   treated as low confidence, since a missing signal shouldn't earn a top score.
+ * @param strictness - 'normal' (default) or 'strict' for harder grading
  * @returns PronunciationScore with score 0-100, components, and feedback
  */
 export function calculatePronunciationScore(
   expectedWord: string,
   recognizedText: string,
-  confidence?: number
+  confidence?: number,
+  strictness: Strictness = 'normal'
 ): PronunciationScore {
   if (!recognizedText || recognizedText.trim().length === 0) {
     return {
@@ -421,53 +439,49 @@ export function calculatePronunciationScore(
   const expected = expectedWord.toLowerCase().trim();
   const spoken = recognizedText.toLowerCase().trim();
 
-  // Handle multi-word recognition (pick the word closest to expected)
-  const spokenWords = spoken.split(/\s+/);
-  let bestString = 0;
-  let bestPhonetic = 0;
-  let bestWord = spoken;
+  // Similarity is measured against the FULL recognized transcript, not the single
+  // best-matching word. Extra/incorrect words the recognizer heard should drag the
+  // score down rather than being filtered out.
+  const stringScore = stringSimilarity(expected, spoken);
+  const phoneticScore = phoneticSimilarity(expected, spoken);
 
-  for (const word of spokenWords) {
-    const s = stringSimilarity(expected, word);
-    const p = phoneticSimilarity(expected, word);
-    const combined = p * 0.6 + s * 0.4;
-    const currentBest = bestPhonetic * 0.6 + bestString * 0.4;
-    if (combined > currentBest) {
-      bestString = s;
-      bestPhonetic = p;
-      bestWord = word;
-    }
+  // Word-match component: did they say (approximately) the right word?
+  // Weight phonetic slightly higher than raw spelling.
+  const wordMatch = phoneticScore * 0.6 + stringScore * 0.4; // 0..1
+
+  // Confidence component: how cleanly was it recognized? Missing confidence is
+  // treated as a mediocre 0.5 rather than a free pass.
+  const conf = confidence !== undefined && confidence > 0 ? confidence : 0.5;
+
+  // Combine. Word match is the base; confidence modulates it strongly so a
+  // correct-but-accented attempt cannot reach the top band on recognition alone.
+  // normal: 65% word match, 35% confidence
+  // strict: 55% word match, 45% confidence, plus an extra power curve
+  const wordWeight = strictness === 'strict' ? 0.55 : 0.65;
+  const confWeight = 1 - wordWeight;
+
+  let combined = wordMatch * wordWeight + conf * confWeight; // 0..1
+
+  // Apply a curve so mediocre attempts don't cluster near the top.
+  // In strict mode the curve is steeper, making high scores harder to earn.
+  const exponent = strictness === 'strict' ? 1.6 : 1.25;
+  combined = Math.pow(combined, exponent);
+
+  // If the right word clearly wasn't said, cap the score hard regardless of
+  // confidence (prevents "confident gibberish" from scoring well).
+  if (wordMatch < 0.5) {
+    combined = Math.min(combined, wordMatch); // e.g. 0.3 word match -> max 0.30
   }
 
-  // Also check the full recognized text as-is (for single-word matches)
-  const fullString = stringSimilarity(expected, spoken);
-  const fullPhonetic = phoneticSimilarity(expected, spoken);
-  if (fullPhonetic * 0.6 + fullString * 0.4 > bestPhonetic * 0.6 + bestString * 0.4) {
-    bestString = fullString;
-    bestPhonetic = fullPhonetic;
-    bestWord = spoken;
-  }
-
-  // Combine scores: 60% phonetic, 40% string
-  let rawScore = (bestPhonetic * 0.6 + bestString * 0.4) * 100;
-
-  // Apply confidence boost if available (slight bonus for high-confidence results)
-  if (confidence !== undefined && confidence > 0) {
-    rawScore = rawScore * (0.85 + confidence * 0.15);
-  }
-
-  // Exact match bonus
-  if (expected === bestWord) {
-    rawScore = 100;
-  }
+  let rawScore = combined * 100;
 
   const score = Math.round(Math.max(0, Math.min(100, rawScore)));
 
   return {
     score,
-    phoneticScore: bestPhonetic,
-    stringScore: bestString,
-    recognizedText: bestWord,
+    phoneticScore,
+    stringScore,
+    recognizedText: spoken,
     feedback: getFeedback(score),
   };
 }

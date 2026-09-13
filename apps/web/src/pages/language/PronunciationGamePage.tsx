@@ -138,10 +138,13 @@ export default function PronunciationGamePage() {
   // have a transcript, score it.
   useEffect(() => {
     if (recognitionState === 'done' && recognitionResult?.transcript && currentWord) {
+      // Advanced difficulty grades strictly (confidence weighted heavier + steeper curve).
+      const strictness = settings.difficulty === 'advanced' ? 'strict' : 'normal';
       const score = calculatePronunciationScore(
         currentWord.word,
         recognitionResult.transcript,
-        recognitionResult.confidence
+        recognitionResult.confidence,
+        strictness
       );
       setLastScore(score);
       setShowScore(true);
