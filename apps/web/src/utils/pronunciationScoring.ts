@@ -476,22 +476,34 @@ export function calculatePronunciationScore(
   // Weight phonetic slightly higher than raw spelling.
   const wordMatch = phoneticScore * 0.6 + stringScore * 0.4; // 0..1
 
-  // Confidence component: how cleanly was it recognized? Missing confidence is
-  // treated as a mediocre 0.5 rather than a free pass.
-  const conf = confidence !== undefined && confidence > 0 ? confidence : 0.5;
+  // The Web Speech API's `confidence` is only meaningful on some browsers/
+  // languages. For many (notably Greek and other non-English locales) it comes
+  // back as 0 or a low CONSTANT regardless of how well the word was spoken —
+  // which would pin every correct answer to the same score (e.g. always 67%).
+  // Only fold confidence into the score when it looks informative.
+  const confUsable =
+    confidence !== undefined && confidence > 0.3;
 
-  // Combine. Word match is the base; confidence modulates it strongly so a
-  // correct-but-accented attempt cannot reach the top band on recognition alone.
-  // normal: 65% word match, 35% confidence
-  // strict: 55% word match, 45% confidence, plus an extra power curve
-  const wordWeight = strictness === 'strict' ? 0.55 : 0.65;
-  const confWeight = 1 - wordWeight;
+  let combined: number;
+  let exponent: number;
 
-  let combined = wordMatch * wordWeight + conf * confWeight; // 0..1
+  if (confUsable) {
+    // Confidence is trustworthy: use it as a strictness modulator so a
+    // correct-but-accented attempt can't reach the top band on words alone.
+    // normal: 65% word / 35% confidence; strict: 55% / 45%.
+    const wordWeight = strictness === 'strict' ? 0.55 : 0.65;
+    const confWeight = 1 - wordWeight;
+    combined = wordMatch * wordWeight + confidence! * confWeight;
+    exponent = strictness === 'strict' ? 1.6 : 1.25;
+  } else {
+    // Confidence is missing/unreliable: score on word match alone so a correct
+    // answer is rewarded properly instead of being capped at a constant value.
+    // A gentle curve keeps near-misses from topping out.
+    combined = wordMatch;
+    exponent = strictness === 'strict' ? 1.3 : 1.1;
+  }
 
   // Apply a curve so mediocre attempts don't cluster near the top.
-  // In strict mode the curve is steeper, making high scores harder to earn.
-  const exponent = strictness === 'strict' ? 1.6 : 1.25;
   combined = Math.pow(combined, exponent);
 
   // If the right word clearly wasn't said, cap the score hard regardless of
