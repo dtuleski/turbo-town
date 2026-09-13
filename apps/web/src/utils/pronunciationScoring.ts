@@ -315,11 +315,38 @@ export function stringSimilarity(a: string, b: string): number {
  * Calculate phonetic similarity between two words using Double Metaphone.
  * Returns a value from 0 to 1.
  */
+/**
+ * Whether a word is written in the Latin alphabet (A-Z, plus common accented
+ * Latin letters). Double Metaphone only understands Latin script; for other
+ * scripts (Greek, Cyrillic, etc.) it produces empty/garbage codes.
+ */
+export function isLatinScript(word: string): boolean {
+  // Strip combining accents, then check every letter is basic Latin A-Z.
+  const stripped = word
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // combining diacritics
+    .toLowerCase();
+  // Consider it Latin if at least one A-Z letter and no non-Latin letters.
+  const hasLatin = /[a-z]/.test(stripped);
+  const hasNonLatinLetter = /[^\x00-\x7f]/.test(stripped.replace(/[^\p{L}]/gu, ''));
+  return hasLatin && !hasNonLatinLetter;
+}
+
 export function phoneticSimilarity(expected: string, spoken: string): number {
+  // Double Metaphone is Latin-only. For non-Latin scripts (e.g. Greek), fall
+  // back to direct string similarity so a correct transcript isn't zeroed out.
+  if (!isLatinScript(expected) || !isLatinScript(spoken)) {
+    return stringSimilarity(expected, spoken);
+  }
+
   const [expectedPrimary, expectedAlt] = doubleMetaphone(expected);
   const [spokenPrimary, spokenAlt] = doubleMetaphone(spoken);
 
-  if (!expectedPrimary || !spokenPrimary) return 0;
+  // If metaphone couldn't encode either side, fall back to string similarity
+  // rather than returning 0 (which would wrongly tank a correct answer).
+  if (!expectedPrimary || !spokenPrimary) {
+    return stringSimilarity(expected, spoken);
+  }
 
   // Check all combinations for best match
   const similarities = [
