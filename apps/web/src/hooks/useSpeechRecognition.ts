@@ -236,6 +236,16 @@ export function useSpeechRecognition({
     setStateTracked('listening');
 
     try {
+      // Defensively tear down any leftover audio graph from a previous attempt.
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach(track => track.stop());
+        mediaStreamRef.current = null;
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        try { await audioContextRef.current.close(); } catch { /* ignore */ }
+        audioContextRef.current = null;
+      }
+
       // Request microphone access for waveform visualization
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaStreamRef.current = stream;
@@ -243,6 +253,14 @@ export function useSpeechRecognition({
       // Set up AudioContext for waveform
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       audioContextRef.current = audioContext;
+
+      // A freshly created AudioContext often starts 'suspended' (browser autoplay
+      // policy), especially on repeat use after a prior context was closed. If it
+      // stays suspended the analyser emits all-zero data — the waveform freezes and
+      // the mic appears dead. Resume it within this user-gesture-initiated call.
+      if (audioContext.state === 'suspended') {
+        try { await audioContext.resume(); } catch { /* ignore */ }
+      }
 
       const source = audioContext.createMediaStreamSource(stream);
       const analyser = audioContext.createAnalyser();
@@ -270,11 +288,16 @@ export function useSpeechRecognition({
         if (maxDurationRef.current) { clearTimeout(maxDurationRef.current); maxDurationRef.current = null; }
         if (safetyTimeoutRef.current) { clearTimeout(safetyTimeoutRef.current); safetyTimeoutRef.current = null; }
 
-        // Stop mic + audio graph
+        // Fully release the audio graph so the next word starts from a clean slate.
         if (mediaStreamRef.current) {
           mediaStreamRef.current.getTracks().forEach(track => track.stop());
           mediaStreamRef.current = null;
         }
+        if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+          try { audioContextRef.current.close(); } catch { /* ignore */ }
+          audioContextRef.current = null;
+        }
+        setAnalyserNode(null);
 
         if (resultRef.current && resultRef.current.transcript.trim().length > 0) {
           setStateTracked('done');
