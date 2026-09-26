@@ -1,0 +1,29 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+*.iml
+.idea/
+
+# Generated platform folders (run `flutter create .` on the Mac to regenerate)
+# We commit lib/ and pubspec.yaml; platform folders are generated locally.
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+/android/.gradle/
+/android/local.properties
+/android/key.properties
+**/GeneratedPluginRegistrant.*
+
+# Env / secrets
+*.env
+.env.local
+
+# macOS
+.DS_Store
