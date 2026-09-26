@@ -124,7 +124,18 @@ echo -e "${GREEN}  ✓ Package assembled${NC}"
 echo -e "${YELLOW}[5/7]${NC} Creating zip..."
 rm -f "${ZIP_PATH}"
 cd "${BUILD_DIR}"
-zip -q -r "${ZIP_PATH}" .
+if command -v zip >/dev/null 2>&1; then
+  # Preferred: InfoZip (macOS / Linux / Git Bash with zip installed)
+  zip -q -r "${ZIP_PATH}" .
+else
+  # Fallback for Windows without `zip`: use PowerShell Compress-Archive.
+  # Produces a valid ZIP that Lambda accepts. Convert POSIX paths to Windows.
+  echo -e "${YELLOW}  ⚠ 'zip' not found — using PowerShell Compress-Archive fallback${NC}"
+  WIN_BUILD_DIR=$(cygpath -w "${BUILD_DIR}")
+  WIN_ZIP_PATH=$(cygpath -w "${ZIP_PATH}")
+  powershell.exe -NoProfile -NonInteractive -Command \
+    "Compress-Archive -Path '${WIN_BUILD_DIR}\\*' -DestinationPath '${WIN_ZIP_PATH}' -Force"
+fi
 ZIP_SIZE=$(du -h "${ZIP_PATH}" | cut -f1)
 echo -e "${GREEN}  ✓ Zip created: ${ZIP_PATH} (${ZIP_SIZE})${NC}"
 
