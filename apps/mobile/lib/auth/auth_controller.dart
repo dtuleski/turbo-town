@@ -11,6 +11,9 @@ final cognitoServiceProvider = Provider<CognitoService>((ref) {
 /// Authentication status.
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
+/// Outcome of a sign-up attempt (drives the register screen's next step).
+enum SignUpOutcome { needsConfirmation, confirmed, failed }
+
 class AuthState {
   const AuthState({
     this.status = AuthStatus.unknown,
@@ -102,8 +105,12 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  /// Returns true if the account needs email confirmation.
-  Future<bool> signUp({
+  /// Attempt to register a new account.
+  ///
+  /// Returns a [SignUpOutcome] describing what the UI should do next, rather
+  /// than throwing — so the caller never has to guess from a swallowed
+  /// exception. On error, [AuthState.error] is also set for display.
+  Future<SignUpOutcome> signUp({
     required String email,
     required String password,
     required String username,
@@ -120,21 +127,32 @@ class AuthController extends StateNotifier<AuthState> {
         familyName: familyName,
       );
       state = state.copyWith(isBusy: false);
-      return needsConfirmation;
+      return needsConfirmation
+          ? SignUpOutcome.needsConfirmation
+          : SignUpOutcome.confirmed;
     } on AuthException catch (e) {
+      // An already-registered-but-unconfirmed account should route the user
+      // to the confirmation step, not a dead end.
+      if (e.code == 'UsernameExistsException') {
+        state = state.copyWith(isBusy: false, clearError: true);
+        return SignUpOutcome.needsConfirmation;
+      }
       state = state.copyWith(error: e.message, isBusy: false);
-      rethrow;
+      return SignUpOutcome.failed;
     }
   }
 
-  Future<void> confirmSignUp(String email, String code) async {
+  /// Confirm a new account with the emailed code. Returns true on success;
+  /// on failure sets [AuthState.error] and returns false (no throw).
+  Future<bool> confirmSignUp(String email, String code) async {
     state = state.copyWith(isBusy: true, clearError: true);
     try {
       await _cognito.confirmSignUp(email, code);
       state = state.copyWith(isBusy: false);
+      return true;
     } on AuthException catch (e) {
       state = state.copyWith(error: e.message, isBusy: false);
-      rethrow;
+      return false;
     }
   }
 
