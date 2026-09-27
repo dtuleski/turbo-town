@@ -1,5 +1,6 @@
 /// App-wide constants for the Memory Match MVP.
 /// Mirrors apps/web `src/config/constants.ts` (GAME_THEMES / DIFFICULTY_LEVELS).
+library;
 
 /// Secure-storage keys.
 class StorageKeys {

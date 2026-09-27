@@ -31,6 +31,59 @@ flutter pub get
 cd ios && pod install && cd ..
 ```
 
+## Platform config for Google Sign-In (required after `flutter create`)
+
+Google (Cognito Hosted UI) sign-in uses an OAuth redirect back to the app via a
+custom URL scheme: **`dashdenmobile://callback`**. Because the platform folders
+are regenerated locally (not committed), you MUST re-apply the following native
+config after running `flutter create .`, or Google sign-in will fail to return
+to the app.
+
+The scheme/redirect are defined in `lib/config/env.dart`
+(`oauthRedirectScheme = 'dashdenmobile'`) and are already registered on the prod
+Cognito app client's callback/logout URLs.
+
+### iOS — `ios/Runner/Info.plist`
+
+Add a `CFBundleURLTypes` entry inside the top-level `<dict>`:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLName</key>
+    <string>app.dashden.oauth</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>dashdenmobile</string>
+    </array>
+  </dict>
+</array>
+```
+
+### Android — `android/app/src/main/AndroidManifest.xml` (needed for the Android build)
+
+`flutter_web_auth_2` needs an activity with an intent-filter for the callback
+scheme. Add inside `<application>`:
+
+```xml
+<activity
+    android:name="com.linusu.flutter_web_auth_2.CallbackActivity"
+    android:exported="true">
+  <intent-filter android:label="flutter_web_auth_2">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="dashdenmobile" />
+  </intent-filter>
+</activity>
+```
+
+No Cognito change is needed for Android — the `dashdenmobile://callback` URL is
+already allow-listed on the app client and is scheme-based (platform-agnostic).
+
 ## Run
 
 ```bash
