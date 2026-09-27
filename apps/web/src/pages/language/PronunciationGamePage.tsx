@@ -64,6 +64,9 @@ export default function PronunciationGamePage() {
   const [animatedScore, setAnimatedScore] = useState(0);
   const [gameStartTime] = useState(Date.now());
   const [backendGameId, setBackendGameId] = useState<string>('');
+  // Whether this session yields real accuracy grades (true) or is recognition-only
+  // (false) — depends on whether the browser gives usable confidence for the language.
+  const [isGraded, setIsGraded] = useState(true);
   const [showResults, setShowResults] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -148,6 +151,7 @@ export default function PronunciationGamePage() {
       );
       setLastScore(score);
       setShowScore(true);
+      setIsGraded(score.graded);
 
       // Update best score
       if (score.score > currentBestScore) {
@@ -258,6 +262,8 @@ export default function PronunciationGamePage() {
     const completionTime = Math.floor((Date.now() - gameStartTime) / 1000);
     const perfectWords = wordResults.filter(r => r.bestScore >= 91).length;
     const greatWords = wordResults.filter(r => r.bestScore >= 71).length;
+    // Recognition-only sessions store 100 (recognized) or 0 per word.
+    const recognizedWords = wordResults.filter(r => r.bestScore >= 50).length;
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center p-4">
@@ -278,22 +284,42 @@ export default function PronunciationGamePage() {
               {finalScore.toLocaleString()}
             </div>
             <div className="text-sm text-gray-500 mb-3">Total Score</div>
-            <div className={`text-2xl font-bold ${FEEDBACK_CONFIG[getFeedback(Math.round(avgScore))].color}`}>
-              {Math.round(avgScore)}%
-            </div>
-            <div className="text-xs text-gray-400">Average Accuracy</div>
+            {isGraded ? (
+              <>
+                <div className={`text-2xl font-bold ${FEEDBACK_CONFIG[getFeedback(Math.round(avgScore))].color}`}>
+                  {Math.round(avgScore)}%
+                </div>
+                <div className="text-xs text-gray-400">Average Accuracy</div>
+              </>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-green-600">
+                  {recognizedWords}/{wordResults.length}
+                </div>
+                <div className="text-xs text-gray-400">Words Recognized</div>
+              </>
+            )}
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-3 gap-4 mb-6 text-center">
-            <div>
-              <div className="text-lg font-bold text-gray-800">{perfectWords}/{wordResults.length}</div>
-              <div className="text-xs text-gray-500">Perfect</div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-gray-800">{greatWords}/{wordResults.length}</div>
-              <div className="text-xs text-gray-500">Great+</div>
-            </div>
+            {isGraded ? (
+              <>
+                <div>
+                  <div className="text-lg font-bold text-gray-800">{perfectWords}/{wordResults.length}</div>
+                  <div className="text-xs text-gray-500">Perfect</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-800">{greatWords}/{wordResults.length}</div>
+                  <div className="text-xs text-gray-500">Great+</div>
+                </div>
+              </>
+            ) : (
+              <div className="col-span-2">
+                <div className="text-lg font-bold text-gray-800">{recognizedWords}/{wordResults.length}</div>
+                <div className="text-xs text-gray-500">Recognized</div>
+              </div>
+            )}
             <div>
               <div className="text-lg font-bold text-gray-800">{completionTime}s</div>
               <div className="text-xs text-gray-500">Time</div>
@@ -306,14 +332,21 @@ export default function PronunciationGamePage() {
             <div className="space-y-2">
               {wordResults.map((r, i) => {
                 const config = FEEDBACK_CONFIG[r.feedback];
+                const recognized = r.bestScore >= 50;
                 return (
                   <div key={i} className="flex items-center justify-between text-sm">
                     <span className="font-medium text-gray-700">{r.word}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-400">{r.attemptsUsed} tries</span>
-                      <span className={`font-bold ${config.color}`}>
-                        {r.bestScore}% {config.emoji}
-                      </span>
+                      {isGraded ? (
+                        <span className={`font-bold ${config.color}`}>
+                          {r.bestScore}% {config.emoji}
+                        </span>
+                      ) : (
+                        <span className={`font-bold ${recognized ? 'text-green-600' : 'text-red-600'}`}>
+                          {recognized ? '✓' : '✗'}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
@@ -491,7 +524,7 @@ export default function PronunciationGamePage() {
 
           {/* Score Display */}
           <AnimatePresence>
-            {showScore && lastScore && (
+            {showScore && lastScore && lastScore.graded && (
               <motion.div
                 className={`text-center p-4 rounded-xl mb-4 ${FEEDBACK_CONFIG[lastScore.feedback].bgColor}`}
                 initial={{ scale: 0.8, opacity: 0 }}
@@ -504,6 +537,31 @@ export default function PronunciationGamePage() {
                 </div>
                 <div className="text-lg mt-1">
                   {FEEDBACK_CONFIG[lastScore.feedback].emoji} {FEEDBACK_CONFIG[lastScore.feedback].label}
+                </div>
+                {lastScore.recognizedText && (
+                  <div className="text-xs text-gray-400 mt-2">
+                    Heard: "{lastScore.recognizedText}"
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Recognition-only result (languages without reliable accent scoring) */}
+            {showScore && lastScore && !lastScore.graded && (
+              <motion.div
+                className={`text-center p-4 rounded-xl mb-4 ${lastScore.recognized ? 'bg-green-50' : 'bg-red-50'}`}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <div className={`text-3xl font-black ${lastScore.recognized ? 'text-green-600' : 'text-red-600'}`}>
+                  {lastScore.recognized ? '✓ Recognized' : '✗ Not recognized'}
+                </div>
+                <div className="text-sm text-gray-500 mt-2">
+                  {lastScore.recognized
+                    ? 'Nice! We heard the right word.'
+                    : "We didn't catch the right word. Try again!"}
                 </div>
                 {lastScore.recognizedText && (
                   <div className="text-xs text-gray-400 mt-2">
@@ -587,7 +645,7 @@ export default function PronunciationGamePage() {
         </div>
 
         {/* Best Score for Current Word */}
-        {currentBestScore > 0 && (
+        {isGraded && currentBestScore > 0 && (
           <div className="text-center text-sm text-gray-500">
             Best score this word: <span className="font-bold text-indigo-600">{currentBestScore}%</span>
           </div>
