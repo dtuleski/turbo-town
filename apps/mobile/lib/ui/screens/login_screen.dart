@@ -100,6 +100,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             )
                           : const Text('Sign in'),
                     ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Expanded(child: Divider()),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text('or',
+                              style: Theme.of(context).textTheme.bodySmall),
+                        ),
+                        const Expanded(child: Divider()),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    OutlinedButton.icon(
+                      onPressed: auth.isBusy
+                          ? null
+                          : () => ref
+                              .read(authControllerProvider.notifier)
+                              .signInWithGoogle(),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(52),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      icon: const Text('G',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w800)),
+                      label: const Text('Continue with Google'),
+                    ),
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () => context.push('/register'),

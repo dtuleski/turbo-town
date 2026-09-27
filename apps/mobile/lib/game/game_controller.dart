@@ -234,12 +234,15 @@ class GameController extends StateNotifier<GameSessionState> {
         leaderboardRank: result.leaderboardRank,
         isBusy: false,
       );
-    } on GameApiException {
-      // Even if submission fails, the round is done.
+    } catch (e) {
+      // The round is done regardless. Catch ALL errors (not just
+      // GameApiException) so a response-parsing hiccup can't leave the UI
+      // stuck on isBusy=true — the server score is authoritative anyway.
       state = state.copyWith(
         status: GameStatus.completed,
-        score: 0,
+        score: state.score ?? 0,
         isBusy: false,
+        error: 'Your game was recorded, but the score display had a hiccup.',
       );
     }
   }

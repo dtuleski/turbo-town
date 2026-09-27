@@ -44,5 +44,32 @@ class Env {
         'https://7pwns5lkof.execute-api.us-east-1.amazonaws.com/leaderboard/graphql',
   );
 
+  // ── Hosted UI OAuth (Google federated sign-in) ──────────────────────────
+  /// Cognito Hosted UI domain prefix. Full host is
+  /// `<prefix>.auth.<region>.amazoncognito.com`.
+  static const String cognitoDomainPrefix = String.fromEnvironment(
+    'COGNITO_DOMAIN_PREFIX',
+    defaultValue: 'dashden-prod',
+  );
+
+  /// Base URL of the Cognito Hosted UI / OAuth endpoints.
+  static String get hostedUiBaseUrl =>
+      'https://$cognitoDomainPrefix.auth.$cognitoRegion.amazoncognito.com';
+
+  /// Custom URL scheme + redirect used for the mobile OAuth callback.
+  /// Must match a CallbackURL configured on the Cognito app client and the
+  /// CFBundleURLSchemes entry in ios/Runner/Info.plist.
+  static const String oauthRedirectScheme = 'dashdenmobile';
+  static const String oauthRedirectUri = 'dashdenmobile://callback';
+  static const String oauthSignOutUri = 'dashdenmobile://signout';
+
+  /// OAuth scopes requested for the Hosted UI flow (match the app client).
+  static const List<String> oauthScopes = [
+    'openid',
+    'email',
+    'profile',
+    'aws.cognito.signin.user.admin',
+  ];
+
   static const String appName = 'DashDen';
 }

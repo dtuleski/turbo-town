@@ -16,6 +16,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _email = TextEditingController();
   final _username = TextEditingController();
   final _password = TextEditingController();
+  final _givenName = TextEditingController();
+  final _familyName = TextEditingController();
   final _code = TextEditingController();
 
   bool _awaitingConfirmation = false;
@@ -25,6 +27,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _email.dispose();
     _username.dispose();
     _password.dispose();
+    _givenName.dispose();
+    _familyName.dispose();
     _code.dispose();
     super.dispose();
   }
@@ -36,6 +40,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             email: _email.text.trim(),
             password: _password.text,
             username: _username.text.trim(),
+            givenName: _givenName.text.trim(),
+            familyName: _familyName.text.trim(),
           );
       if (!mounted) return;
       if (needsConfirm) {
@@ -102,6 +108,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               prefixIcon: Icon(Icons.email_outlined),
             ),
             validator: (v) => (v != null && v.contains('@')) ? null : 'Enter a valid email',
+          ),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: _givenName,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(
+              labelText: 'First name',
+              prefixIcon: Icon(Icons.badge_outlined),
+            ),
+            validator: (v) =>
+                (v != null && v.trim().isNotEmpty) ? null : 'Required',
+          ),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: _familyName,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(
+              labelText: 'Last name',
+              prefixIcon: Icon(Icons.badge_outlined),
+            ),
+            validator: (v) =>
+                (v != null && v.trim().isNotEmpty) ? null : 'Required',
           ),
           const SizedBox(height: 12),
           TextFormField(

@@ -16,7 +16,7 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Env.appName),
+        title: const Text(Env.appName),
         actions: [
           IconButton(
             tooltip: 'Sign out',

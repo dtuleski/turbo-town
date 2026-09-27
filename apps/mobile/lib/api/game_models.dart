@@ -1,4 +1,5 @@
 /// Dart models mirroring the game service GraphQL types.
+library;
 
 class RateLimitInfo {
   const RateLimitInfo({

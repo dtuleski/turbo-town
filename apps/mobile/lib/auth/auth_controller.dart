@@ -81,11 +81,34 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Sign in with Google via the Cognito Hosted UI (OAuth + PKCE).
+  Future<void> signInWithGoogle() async {
+    state = state.copyWith(isBusy: true, clearError: true);
+    try {
+      await _cognito.signInWithGoogle();
+      state = state.copyWith(
+        status: AuthStatus.authenticated,
+        email: await _storage.email,
+        username: await _storage.username,
+        isBusy: false,
+      );
+    } on AuthException catch (e) {
+      // A user-cancelled flow shouldn't surface as a scary error.
+      if (e.code == 'OAUTH_CANCELLED') {
+        state = state.copyWith(isBusy: false);
+      } else {
+        state = state.copyWith(error: e.message, isBusy: false);
+      }
+    }
+  }
+
   /// Returns true if the account needs email confirmation.
   Future<bool> signUp({
     required String email,
     required String password,
     required String username,
+    required String givenName,
+    required String familyName,
   }) async {
     state = state.copyWith(isBusy: true, clearError: true);
     try {
@@ -93,6 +116,8 @@ class AuthController extends StateNotifier<AuthState> {
         email: email,
         password: password,
         username: username,
+        givenName: givenName,
+        familyName: familyName,
       );
       state = state.copyWith(isBusy: false);
       return needsConfirmation;
