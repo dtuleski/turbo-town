@@ -65,6 +65,24 @@ export class CognitoStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // ⚠️  DRIFT WARNING — READ BEFORE `cdk deploy` (prod pool us-east-1_FoWLQ5lmI)
+    // ───────────────────────────────────────────────────────────────────────
+    // The LIVE prod Cognito resources managed by this stack were hand-edited
+    // via console/CLI and diverged from this source. This file has been
+    // reconciled to match live (real dashden.app callback URLs incl. the
+    // mobile `dashdenmobile://` redirect, and a Google IdP block below), BUT:
+    //
+    //   • The Google IdP block is left COMMENTED OUT — enabling it requires a
+    //     Secrets Manager secret that does not exist yet (see its note).
+    //   • Some Cognito UserPool properties are REPLACEMENT-FORCING. A careless
+    //     deploy can create a NEW empty pool and orphan the current one,
+    //     locking out ALL production users.
+    //
+    // Before deploying: run `cdk diff`, confirm the change is IN-PLACE (no
+    // "requires replacement"), ideally rehearse on a non-prod pool.
+    // ═══════════════════════════════════════════════════════════════════════
+
     // Create User Pool Client
     this.userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool: this.userPool,
@@ -84,13 +102,32 @@ export class CognitoStack extends cdk.Stack {
           cognito.OAuthScope.OPENID,
           cognito.OAuthScope.PROFILE,
         ],
+        // NOTE: These URLs reconcile the CDK with the LIVE prod app client
+        // (which was hand-edited via console/CLI). See the DRIFT WARNING at the
+        // top of the oAuth config comment. Do NOT deploy without a verified,
+        // non-replacing `cdk diff`.
         callbackUrls: [
-          `https://${props.environment === 'prod' ? 'app' : `app-${props.environment}`}.memorygame.com/callback`,
-          'http://localhost:3000/callback', // For local development
+          'http://localhost:3000',
+          'http://localhost:3000/callback',
+          'http://localhost:5173',
+          'http://localhost:5173/callback',
+          'https://dashden.app',
+          'https://dashden.app/',
+          'https://dashden.app/callback',
+          'https://dev.dashden.app',
+          'https://dev.dashden.app/callback',
+          'https://www.dashden.app',
+          'https://www.dashden.app/',
+          'https://www.dashden.app/callback',
+          'dashdenmobile://callback', // mobile (Flutter) OAuth redirect
         ],
         logoutUrls: [
-          `https://${props.environment === 'prod' ? 'app' : `app-${props.environment}`}.memorygame.com/logout`,
-          'http://localhost:3000/logout',
+          'http://localhost:3000',
+          'http://localhost:5173',
+          'https://dashden.app',
+          'https://dev.dashden.app',
+          'https://www.dashden.app',
+          'dashdenmobile://signout', // mobile (Flutter) OAuth sign-out
         ],
       },
       preventUserExistenceErrors: true,
@@ -100,36 +137,35 @@ export class CognitoStack extends cdk.Stack {
       refreshTokenValidity: cdk.Duration.days(30),
     });
 
-    // Add Google OAuth provider
-    // COMMENTED OUT: OAuth not configured yet - need to set up Google/Facebook apps first
+    // ── Google OAuth provider (reconciled with LIVE prod) ───────────────────
+    //
+    // ⚠️ This is present in prod (configured manually via console/CLI), NOT
+    // previously in this stack. It is added here to reduce drift, but:
+    //
+    //   1. The Google client secret is NOT in Secrets Manager yet. Before any
+    //      deploy, create it, e.g.:
+    //        aws secretsmanager create-secret --name dashden/google-oauth-client-secret \
+    //          --secret-string '<google-oauth-client-secret>' --profile dashden-new
+    //   2. Live Google client_id:
+    //        491352743210-onqjcrtpm8mvp82t3t919qgmecv22a59.apps.googleusercontent.com
+    //   3. Live scopes: "openid email profile"; mapping: email/given_name/family_name/name.
+    //
+    // Only enable this block after a `cdk diff` confirms an in-place (NON-
+    // replacing) update. See the DRIFT WARNING comment above.
     /*
     const googleProvider = new cognito.UserPoolIdentityProviderGoogle(this, 'GoogleProvider', {
       userPool: this.userPool,
-      clientId: cdk.Fn.sub('${GoogleClientId}'), // From SSM Parameter or Secrets Manager
-      clientSecretValue: cdk.SecretValue.secretsManager('google-oauth-secret'),
-      scopes: ['profile', 'email', 'openid'],
+      clientId: '491352743210-onqjcrtpm8mvp82t3t919qgmecv22a59.apps.googleusercontent.com',
+      clientSecretValue: cdk.SecretValue.secretsManager('dashden/google-oauth-client-secret'),
+      scopes: ['openid', 'email', 'profile'],
       attributeMapping: {
         email: cognito.ProviderAttribute.GOOGLE_EMAIL,
         givenName: cognito.ProviderAttribute.GOOGLE_GIVEN_NAME,
         familyName: cognito.ProviderAttribute.GOOGLE_FAMILY_NAME,
+        custom: { name: cognito.ProviderAttribute.other('name') },
       },
     });
-
-    // Add Facebook OAuth provider
-    const facebookProvider = new cognito.UserPoolIdentityProviderFacebook(this, 'FacebookProvider', {
-      userPool: this.userPool,
-      clientId: cdk.Fn.sub('${FacebookAppId}'),
-      clientSecret: cdk.Fn.sub('${FacebookAppSecret}'),
-      scopes: ['public_profile', 'email'],
-      attributeMapping: {
-        email: cognito.ProviderAttribute.FACEBOOK_EMAIL,
-        givenName: cognito.ProviderAttribute.FACEBOOK_NAME,
-      },
-    });
-
-    // User Pool Client depends on providers
     this.userPoolClient.node.addDependency(googleProvider);
-    this.userPoolClient.node.addDependency(facebookProvider);
     */
 
     // Add User Pool Domain
