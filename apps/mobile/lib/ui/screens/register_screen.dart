@@ -35,40 +35,38 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
-    try {
-      final needsConfirm = await ref.read(authControllerProvider.notifier).signUp(
-            email: _email.text.trim(),
-            password: _password.text,
-            username: _username.text.trim(),
-            givenName: _givenName.text.trim(),
-            familyName: _familyName.text.trim(),
-          );
-      if (!mounted) return;
-      if (needsConfirm) {
+    final outcome = await ref.read(authControllerProvider.notifier).signUp(
+          email: _email.text.trim(),
+          password: _password.text,
+          username: _username.text.trim(),
+          givenName: _givenName.text.trim(),
+          familyName: _familyName.text.trim(),
+        );
+    if (!mounted) return;
+    switch (outcome) {
+      case SignUpOutcome.needsConfirmation:
         setState(() => _awaitingConfirmation = true);
-      } else {
+      case SignUpOutcome.confirmed:
         // Auto-confirmed — sign in directly.
         await ref
             .read(authControllerProvider.notifier)
             .signIn(_email.text.trim(), _password.text);
-      }
-    } catch (_) {
-      // Error surfaced via auth state.
+      case SignUpOutcome.failed:
+        // Error is shown via auth state; stay on the form.
+        break;
     }
   }
 
   Future<void> _confirm() async {
     if (_code.text.trim().isEmpty) return;
-    try {
-      await ref
-          .read(authControllerProvider.notifier)
-          .confirmSignUp(_email.text.trim(), _code.text.trim());
-      if (!mounted) return;
-      // After confirmation, sign in.
-      await ref
-          .read(authControllerProvider.notifier)
-          .signIn(_email.text.trim(), _password.text);
-    } catch (_) {}
+    final ok = await ref
+        .read(authControllerProvider.notifier)
+        .confirmSignUp(_email.text.trim(), _code.text.trim());
+    if (!mounted || !ok) return;
+    // After confirmation, sign in.
+    await ref
+        .read(authControllerProvider.notifier)
+        .signIn(_email.text.trim(), _password.text);
   }
 
   @override
@@ -167,6 +165,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 : const Text('Create account'),
           ),
           TextButton(
+            onPressed: () {
+              // Escape hatch: if an account was already created (e.g. a prior
+              // attempt), let the user jump straight to entering their code.
+              if (_email.text.trim().contains('@')) {
+                setState(() => _awaitingConfirmation = true);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Enter your email above first, then tap this.'),
+                  ),
+                );
+              }
+            },
+            child: const Text('Already have a code? Enter it'),
+          ),
+          TextButton(
             onPressed: () => context.pop(),
             child: const Text('Back to sign in'),
           ),
@@ -204,6 +218,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   height: 22, width: 22,
                   child: CircularProgressIndicator(strokeWidth: 2))
               : const Text('Confirm & sign in'),
+        ),
+        TextButton(
+          onPressed: auth.isBusy
+              ? null
+              : () {
+                  ref.read(authControllerProvider.notifier).clearError();
+                  setState(() => _awaitingConfirmation = false);
+                },
+          child: const Text('Back'),
         ),
       ],
     );
