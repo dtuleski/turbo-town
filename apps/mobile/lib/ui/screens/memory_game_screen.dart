@@ -250,6 +250,25 @@ class _ResultView extends StatelessWidget {
             if (state.leaderboardRank != null)
               _ResultRow(
                   label: 'Leaderboard rank', value: '#${state.leaderboardRank}'),
+            if (state.error != null) ...[
+              const SizedBox(height: 16),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.info_outline,
+                      size: 18, color: Theme.of(context).colorScheme.error),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      state.error!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 24),
             FilledButton(onPressed: onPlayAgain, child: const Text('Play again')),
             const SizedBox(height: 8),

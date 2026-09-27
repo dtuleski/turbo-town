@@ -47,7 +47,7 @@ class StartGameResult {
 
   factory StartGameResult.fromJson(Map<String, dynamic> json) {
     return StartGameResult(
-      id: json['id'] as String,
+      id: json['id'] as String? ?? '',
       themeId: json['themeId'] as String? ?? '',
       difficulty: (json['difficulty'] as num?)?.toInt() ?? 1,
       status: json['status'] as String? ?? 'IN_PROGRESS',
@@ -108,7 +108,11 @@ class CompleteGameResult {
 
   factory CompleteGameResult.fromJson(Map<String, dynamic> json) {
     return CompleteGameResult(
-      id: json['id'] as String,
+      // The backend returns `id: null` on completeGame (the game record is
+      // keyed by `gameId`, and the update path doesn't remap it). The mobile
+      // app doesn't use this id — it already holds the gameId locally — so we
+      // tolerate a null/missing value instead of throwing on the cast.
+      id: json['id'] as String? ?? '',
       status: json['status'] as String? ?? 'COMPLETED',
       score: (json['score'] as num?)?.toInt() ?? 0,
       completionTime: (json['completionTime'] as num?)?.toInt(),

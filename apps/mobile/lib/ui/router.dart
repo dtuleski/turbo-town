@@ -26,7 +26,10 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       final loggedIn = status == AuthStatus.authenticated;
       if (!loggedIn && !loggingIn) return '/login';
-      if (loggedIn && loggingIn) return '/';
+      // An authenticated user landing on /login is bounced home, but /register
+      // is left reachable: a signed-in user may still need to finish confirming
+      // a just-created account (the confirm step lives on the register screen).
+      if (loggedIn && state.matchedLocation == '/login') return '/';
       return null;
     },
     routes: [
