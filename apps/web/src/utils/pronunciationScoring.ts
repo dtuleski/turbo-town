@@ -366,6 +366,16 @@ export function phoneticSimilarity(expected: string, spoken: string): number {
 export interface PronunciationScore {
   /** Final score 0-100 */
   score: number;
+  /**
+   * Whether this score reflects a real accuracy measurement. True when the
+   * browser provided usable recognition confidence (accent-graded). False when
+   * confidence was unavailable/unreliable for this language — in that case the
+   * result is recognition-only (right word = pass), NOT an accuracy grade, and
+   * the UI should present it as recognized/not-recognized rather than a % .
+   */
+  graded: boolean;
+  /** Whether the recognizer heard (approximately) the correct word */
+  recognized: boolean;
   /** Phonetic similarity component (0-1) */
   phoneticScore: number;
   /** String similarity component (0-1) */
@@ -456,6 +466,8 @@ export function calculatePronunciationScore(
   if (!recognizedText || recognizedText.trim().length === 0) {
     return {
       score: 0,
+      graded: false,
+      recognized: false,
       phoneticScore: 0,
       stringScore: 0,
       recognizedText: '',
@@ -512,12 +524,25 @@ export function calculatePronunciationScore(
     combined = Math.min(combined, wordMatch); // e.g. 0.3 word match -> max 0.30
   }
 
-  let rawScore = combined * 100;
+  // Was the correct word recognized? (threshold matches the hard-cap above)
+  const recognized = wordMatch >= 0.5;
 
-  const score = Math.round(Math.max(0, Math.min(100, rawScore)));
+  let score: number;
+  if (confUsable) {
+    // Real accuracy grade.
+    score = Math.round(Math.max(0, Math.min(100, combined * 100)));
+  } else {
+    // Recognition-only: we can't measure accent for this language, so this is a
+    // pass/fail. Per product decision (Option A), a recognized word earns full
+    // credit; an unrecognized one earns none. The UI presents this as
+    // recognized/not-recognized rather than a misleading accuracy %.
+    score = recognized ? 100 : 0;
+  }
 
   return {
     score,
+    graded: confUsable,
+    recognized,
     phoneticScore,
     stringScore,
     recognizedText: spoken,
