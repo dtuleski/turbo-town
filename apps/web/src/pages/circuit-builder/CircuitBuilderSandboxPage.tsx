@@ -14,7 +14,7 @@ export default function CircuitBuilderSandboxPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-3 py-4">
+    <div className="mx-auto w-full max-w-6xl rounded-2xl bg-slate-950 px-3 py-4">
       <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="inline-block rounded-full border border-cyan-400/60 px-3 py-1 text-sm font-semibold text-cyan-100">

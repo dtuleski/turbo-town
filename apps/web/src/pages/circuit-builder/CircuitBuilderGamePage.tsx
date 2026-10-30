@@ -58,7 +58,7 @@ function GuidedGame({ level }: { level: LevelDefinition }) {
 
   if (state.phase === 'idle' || state.phase === 'starting' || state.phase === 'startFailed') {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center p-6">
+      <div className="mx-auto flex min-h-[50vh] w-full max-w-6xl items-center justify-center rounded-2xl bg-slate-950 p-6">
         <p role="status" className="text-slate-200">
           {t('circuitBuilder.game.loading')}
         </p>
@@ -75,7 +75,8 @@ function GuidedGame({ level }: { level: LevelDefinition }) {
       : { ...result.scoreBreakdown, difficulty: String(result.scoreBreakdown.difficulty) }
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-3 py-4">
+    // Dark surface: the header and status copy use light text and must not sit on the light app shell.
+    <div className="mx-auto w-full max-w-6xl rounded-2xl bg-slate-950 px-3 py-4">
       <header className="mb-3 flex flex-col gap-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h1 className="text-2xl font-black text-white">{t(levelCopyKey(level.id, 'title'))}</h1>
