@@ -74,6 +74,7 @@ import AchievementsPage from './pages/dashboard/AchievementsPage'
 import LeaderboardPage from './pages/leaderboard/LeaderboardPage'
 import ProfilePage from './pages/profile/ProfilePage'
 import ContactPage from './pages/contact/ContactPage'
+import ShirtPage from './pages/shirt/ShirtPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 // Components
@@ -83,6 +84,9 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
+        {/* Public standalone route (reached via QR code on t-shirts) */}
+        <Route path="/shirt" element={<ShirtPage />} />
+
         {/* Public routes with auth layout */}
         <Route element={<AuthLayout />}>
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
