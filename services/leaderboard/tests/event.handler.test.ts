@@ -79,6 +79,9 @@ describe('EventHandler', () => {
         username: 'player1',
         gameType: GameType.MEMORY_MATCH,
         difficulty: Difficulty.EASY,
+        // The Game Service is the single source of truth for the score; the handler
+        // forwards this value rather than recalculating it.
+        score: 1800,
         completionTime: 30,
         accuracy: 0.9,
         performanceMetrics: {
@@ -126,16 +129,8 @@ describe('EventHandler', () => {
       // Execute
       await eventHandler.handleGameCompletedEvent(event);
 
-      // Verify score calculation
-      expect(mockScoringService.calculateScore).toHaveBeenCalledWith({
-        gameType: GameType.MEMORY_MATCH,
-        difficulty: Difficulty.EASY,
-        completionTime: 30,
-        performanceMetrics: {
-          attempts: 10,
-          pairs: 6,
-        },
-      });
+      // The handler forwards the score from the event instead of recalculating it
+      expect(mockScoringService.calculateScore).not.toHaveBeenCalled();
 
       // Verify score validation
       expect(mockScoringService.validateScore).toHaveBeenCalledWith(
@@ -434,15 +429,17 @@ describe('EventHandler', () => {
 
         await eventHandler.handleGameCompletedEvent(event);
 
-        expect(mockScoringService.calculateScore).toHaveBeenCalledWith({
-          gameType: GameType.MATH_CHALLENGE,
-          difficulty: Difficulty.MEDIUM,
-          completionTime: 30,
-          performanceMetrics: {
-            correctAnswers: 8,
-            totalQuestions: 10,
-          },
-        });
+        expect(mockLeaderboardService.createLeaderboardEntry).toHaveBeenCalledWith(
+          expect.objectContaining({
+            gameType: GameType.MATH_CHALLENGE,
+            difficulty: Difficulty.MEDIUM,
+            score: 1800,
+            metadata: {
+              correctAnswers: 8,
+              totalQuestions: 10,
+            },
+          })
+        );
       });
 
       it('should process Word Puzzle event', async () => {
@@ -485,15 +482,17 @@ describe('EventHandler', () => {
 
         await eventHandler.handleGameCompletedEvent(event);
 
-        expect(mockScoringService.calculateScore).toHaveBeenCalledWith({
-          gameType: GameType.WORD_PUZZLE,
-          difficulty: Difficulty.HARD,
-          completionTime: 30,
-          performanceMetrics: {
-            wordsFound: 15,
-            totalWords: 20,
-          },
-        });
+        expect(mockLeaderboardService.createLeaderboardEntry).toHaveBeenCalledWith(
+          expect.objectContaining({
+            gameType: GameType.WORD_PUZZLE,
+            difficulty: Difficulty.HARD,
+            score: 1800,
+            metadata: {
+              wordsFound: 15,
+              totalWords: 20,
+            },
+          })
+        );
       });
 
       it('should process Language Learning event', async () => {
@@ -536,15 +535,17 @@ describe('EventHandler', () => {
 
         await eventHandler.handleGameCompletedEvent(event);
 
-        expect(mockScoringService.calculateScore).toHaveBeenCalledWith({
-          gameType: GameType.LANGUAGE_LEARNING,
-          difficulty: Difficulty.INTERMEDIATE,
-          completionTime: 30,
-          performanceMetrics: {
-            correctMatches: 9,
-            totalAttempts: 10,
-          },
-        });
+        expect(mockLeaderboardService.createLeaderboardEntry).toHaveBeenCalledWith(
+          expect.objectContaining({
+            gameType: GameType.LANGUAGE_LEARNING,
+            difficulty: Difficulty.INTERMEDIATE,
+            score: 1800,
+            metadata: {
+              correctMatches: 9,
+              totalAttempts: 10,
+            },
+          })
+        );
       });
     });
 

@@ -25,6 +25,7 @@ export enum GameType {
   BOND_AND_BURN = 'BOND_AND_BURN',
   TRAFFIC_LAB = 'TRAFFIC_LAB',
   MINI_GOLF = 'MINI_GOLF',
+  CIRCUIT_BUILDER = 'CIRCUIT_BUILDER',
   OVERALL = 'OVERALL',
 }
 
@@ -87,6 +88,7 @@ export interface ScoringConfig {
   colorByNumber: GameScoringConfig;
   hangman: GameScoringConfig;
   ticTacToe: GameScoringConfig;
+  circuitBuilder: GameScoringConfig;
 }
 
 export interface GameScoringConfig {

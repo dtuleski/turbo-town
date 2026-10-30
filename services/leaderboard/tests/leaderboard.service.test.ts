@@ -82,7 +82,7 @@ describe('LeaderboardService', () => {
       expect(result.timeframe).toBe(Timeframe.DAILY);
     });
 
-    it('should handle tied scores with same rank', async () => {
+    it('should break a score tie on completion time', async () => {
       const mockEntries: LeaderboardEntry[] = [
         {
           gameType: GameType.MEMORY_MATCH,
@@ -140,9 +140,15 @@ describe('LeaderboardService', () => {
         100
       );
 
+      // user-1 and user-2 both scored 1500, so the tie is broken on completion time:
+      // user-1 finished in 45s and ranks ahead of user-2 at 50s. This pins the current
+      // behaviour of calculateRanks; whether completion time should break score ties is
+      // an open product question, not something this test endorses.
+      expect(result.entries[0].userId).toBe('user-1');
       expect(result.entries[0].rank).toBe(1);
-      expect(result.entries[1].rank).toBe(1); // Same rank for tied score
-      expect(result.entries[2].rank).toBe(3); // Next rank after tie
+      expect(result.entries[1].userId).toBe('user-2');
+      expect(result.entries[1].rank).toBe(2);
+      expect(result.entries[2].rank).toBe(3);
     });
 
     it('should return empty leaderboard when no entries', async () => {

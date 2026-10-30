@@ -342,6 +342,7 @@ export class AnomalyService {
       case GameType.MEMORY_MATCH:
       case GameType.MATH_CHALLENGE:
       case GameType.WORD_PUZZLE:
+      case GameType.CIRCUIT_BUILDER: // latent: updateGameStatistics has no caller
         return [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD];
       case GameType.LANGUAGE_LEARNING:
         return [Difficulty.BEGINNER, Difficulty.INTERMEDIATE, Difficulty.ADVANCED];
