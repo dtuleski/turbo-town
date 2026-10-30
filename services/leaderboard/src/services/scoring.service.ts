@@ -16,6 +16,26 @@ import {
   PerformanceMetrics,
 } from '../types';
 
+/**
+ * Upper bound applied to every calculated score.
+ *
+ * This service receives `difficulty` as a label ('EASY' | 'MEDIUM' | 'HARD' |
+ * 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED'), because the Game Service converts its
+ * internal numeric difficulty (1-5) to a label before publishing the GameCompleted
+ * event (see services/game/src/services/game.service.ts).
+ *
+ * Each formula below previously tried to pick a tiered cap with
+ * `difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000`, which was copied from the
+ * Game Service where difficulty really is numeric. Comparing a label against a number
+ * is always false in JavaScript, so every difficulty has in fact been capped at 8000
+ * since that code was written. The constant preserves that behaviour exactly; applying
+ * the tiered caps instead would lower existing games' maximum scores, which is a
+ * product decision rather than a type fix.
+ *
+ * See aidlc-docs/construction/prerequisite-enablement/functional-design/functional-design.md
+ */
+const MAX_SCORE_CAP = 8000;
+
 export class ScoringService {
   private config: ScoringConfig;
 
@@ -84,6 +104,7 @@ export class ScoringService {
       case GameType.BOND_AND_BURN:
       case GameType.TRAFFIC_LAB:
       case GameType.MINI_GOLF:
+      case GameType.CIRCUIT_BUILDER:
         // These games use the standard scoring formula from the game service
         // The leaderboard just needs to accept the score passed via the event
         breakdown = this.calculateMathChallengeScore(difficulty, completionTime, performanceMetrics);
@@ -130,9 +151,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -178,9 +197,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -225,9 +242,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -273,9 +288,7 @@ export class ScoringService {
     if (isNaN(finalScore) || !isFinite(finalScore)) {
       finalScore = 0;
     }
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return {
       baseScore,
@@ -314,9 +327,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -346,9 +357,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -376,9 +385,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -405,9 +412,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -434,9 +439,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -463,9 +466,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -492,9 +493,7 @@ export class ScoringService {
 
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
 
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
@@ -517,9 +516,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -541,9 +538,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -565,9 +560,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -589,9 +582,7 @@ export class ScoringService {
     const accuracyBonus = 1 + accuracy * 0.5;
     let finalScore = baseScore * difficultyMultiplier * speedBonus * accuracyBonus;
     if (isNaN(finalScore) || !isFinite(finalScore)) finalScore = 0;
-    // Cap by difficulty: Easy 5000, Medium 6500, Hard+ 8000
-    const maxScoreByDiff = difficulty <= 1 ? 5000 : difficulty <= 2 ? 6500 : 8000;
-    finalScore = Math.min(maxScoreByDiff, Math.max(0, Math.round(finalScore)));
+    finalScore = Math.min(MAX_SCORE_CAP, Math.max(0, Math.round(finalScore)));
     return { baseScore, difficultyMultiplier, speedBonus, accuracyBonus, finalScore, difficulty, completionTime, accuracy };
   }
 
@@ -653,6 +644,10 @@ export class ScoringService {
         break;
       case GameType.TIC_TAC_TOE:
         config = this.config.ticTacToe;
+        break;
+      case GameType.CIRCUIT_BUILDER:
+        // Own validation window (not mathChallenge's 10..600 s): see circuitBuilder in loadConfiguration
+        config = this.config.circuitBuilder;
         break;
       case GameType.MATH_MAZE:
       case GameType.PATTERN_RECALL:
@@ -952,6 +947,19 @@ export class ScoringService {
         speedBonusParams: { maxTime: 300, formula: 'max(0.1, 1 + (maxTime - completionTime) / maxTime)' },
         accuracyBonusParams: { formula: '1 + (wins / totalRounds) * 0.5' },
         validationRules: { minCompletionTime: 5, maxCompletionTime: 600, minScore: 0, maxScore: 8000 },
+      },
+      // Circuit Builder. Bounds mirror what the Game Service can emit, so no legitimate game is
+      // rejected (a rejected event silently produces no leaderboard entry):
+      //  - completion time 1..3600 s = CB_MAX_COMPLETION_TIME in services/game/src/utils/circuit-builder.ts
+      //  - score 0..8000 = CB_SCORE_CAP; theoretical max is 1700*2.5*1.15*1.5 = 7331;
+      //    canonical level scores 2210 (protected) and 2040 (unprotected)
+      // mathChallenge (10..600 s) is deliberately NOT reused: it would reject games over 10 minutes.
+      circuitBuilder: {
+        baseScore: 1700,
+        difficultyMultipliers: { [Difficulty.EASY]: 1.0, [Difficulty.MEDIUM]: 1.5, [Difficulty.HARD]: 2.0 },
+        speedBonusParams: { maxTime: 180, formula: 'Server-computed by Game Service (CB_TARGET_TIME_BY_DIFFICULTY)' },
+        accuracyBonusParams: { formula: '0.5 + qualityRatio (server-computed)' },
+        validationRules: { minCompletionTime: 1, maxCompletionTime: 3600, minScore: 0, maxScore: 8000 },
       },
     };
   }

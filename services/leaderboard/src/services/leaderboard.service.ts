@@ -172,6 +172,7 @@ export class LeaderboardService {
       GameType.BOND_AND_BURN,
       GameType.TRAFFIC_LAB,
       GameType.MINI_GOLF,
+      GameType.CIRCUIT_BUILDER,
     ];
     
     // Fetch entries for all game types in parallel
@@ -327,8 +328,17 @@ export class LeaderboardService {
   }
 
   /**
-   * Calculate ranks for leaderboard entries
-   * Entries with the same score get the same rank
+   * Calculate ranks for leaderboard entries.
+   *
+   * Entries are ordered by score descending, and a score tie is broken by the faster
+   * completion time. Two entries therefore share a rank only when both their score and
+   * their completion time match; equal scores with different times receive different
+   * ranks, with the faster entry ranked better.
+   *
+   * Note: this comment previously claimed that any entries with the same score share a
+   * rank, which has never matched the implementation below. Whether completion time
+   * should break score ties at all is an open product question, recorded in
+   * aidlc-docs/construction/prerequisite-enablement/code/implementation-summary.md.
    */
   private calculateRanks(
     entries: LeaderboardEntry[],
