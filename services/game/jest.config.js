@@ -17,7 +17,11 @@ module.exports = {
     },
   },
   moduleNameMapper: {
-    '^@memory-game/shared$': '<rootDir>/../shared/src',
+    // The shared package lives at <repo>/packages/shared, not <repo>/services/shared. The
+    // previous target resolved to a directory that has never existed, so any suite importing
+    // @memory-game/shared failed to run. Mapping to src (not dist) means tests exercise the
+    // shared source with no build step.
+    '^@memory-game/shared$': '<rootDir>/../../packages/shared/src',
   },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
 };
