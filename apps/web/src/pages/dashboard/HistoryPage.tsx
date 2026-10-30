@@ -17,6 +17,7 @@ const GAME_INFO: Record<string, { icon: string; name: string; color: string }> =
   COLOR_BY_NUMBER:  { icon: '🎨', name: 'Color by Number',  color: '#ec4899' },
   HANGMAN:          { icon: '🪢', name: 'Hangman',          color: '#475569' },
   TIC_TAC_TOE:      { icon: '❌', name: 'Tic Tac Toe',      color: '#7c3aed' },
+  CIRCUIT_BUILDER:  { icon: '⚡', name: 'Circuit Builder',  color: '#f59e0b' },
 }
 
 const DIFFICULTIES = ['ALL', 'easy', 'medium', 'hard'] as const

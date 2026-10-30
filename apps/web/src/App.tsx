@@ -59,6 +59,9 @@ import TrafficLabSetupPage from './pages/traffic-lab/TrafficLabSetupPage'
 import TrafficLabGamePage from './pages/traffic-lab/TrafficLabGamePage'
 import MiniGolfSetupPage from './pages/mini-golf/MiniGolfSetupPage'
 import MiniGolfGamePage from './pages/mini-golf/MiniGolfGamePage'
+import CircuitBuilderSetupPage from './pages/circuit-builder/CircuitBuilderSetupPage'
+import CircuitBuilderGamePage from './pages/circuit-builder/CircuitBuilderGamePage'
+import CircuitBuilderSandboxPage from './pages/circuit-builder/CircuitBuilderSandboxPage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -139,6 +142,9 @@ function App() {
           <Route path={ROUTES.TRAFFIC_LAB_GAME} element={<TrafficLabGamePage />} />
           <Route path={ROUTES.MINI_GOLF_SETUP} element={<MiniGolfSetupPage />} />
           <Route path={ROUTES.MINI_GOLF_GAME} element={<MiniGolfGamePage />} />
+          <Route path={ROUTES.CIRCUIT_BUILDER_SETUP} element={<CircuitBuilderSetupPage />} />
+          <Route path={ROUTES.CIRCUIT_BUILDER_GAME} element={<CircuitBuilderGamePage />} />
+          <Route path={ROUTES.CIRCUIT_BUILDER_SANDBOX} element={<CircuitBuilderSandboxPage />} />
           <Route path={ROUTES.RATE_LIMIT} element={<RateLimitPage />} />
           <Route path={ROUTES.SUBSCRIPTION} element={<RateLimitPage />} />
           <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />

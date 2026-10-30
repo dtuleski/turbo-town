@@ -35,6 +35,7 @@ const gameTypeInfo: Record<GameType, { icon: string; name: string }> = {
   [GameType.BOND_AND_BURN]: { icon: '🧪', name: 'Bond & Burn' },
   [GameType.TRAFFIC_LAB]: { icon: '🚦', name: 'Traffic Lab' },
   [GameType.MINI_GOLF]: { icon: '⛳', name: 'Mini Golf' },
+  [GameType.CIRCUIT_BUILDER]: { icon: '⚡', name: 'Circuit Builder' },
   [GameType.OVERALL]: { icon: '🏆', name: 'Overall' },
 }
 

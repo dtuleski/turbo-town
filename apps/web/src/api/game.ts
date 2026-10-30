@@ -132,6 +132,73 @@ export interface CompleteGameInput {
   totalWords?: number // For Word Puzzle
   hintsUsed?: number // Optional for all games
   pauseCount?: number // Optional for all games
+  // Circuit Builder only. The server re-evaluates this layout; it never trusts a client score.
+  circuitSubmission?: CircuitSubmissionInput
+}
+
+/**
+ * Exactly the keys the server accepts inside `circuitSubmission` (strict schema). The completion
+ * time is NOT part of it: it travels as the top-level `completionTime`.
+ */
+export interface CircuitSubmissionInput {
+  levelId: string
+  layout: {
+    elements: readonly {
+      id: string
+      kind: string
+      terminals: readonly [string, string]
+      position: { col: number; row: number; rotation: number }
+      params?: Readonly<Record<string, number>>
+    }[]
+    connections: readonly { id: string; from: string; to: string }[]
+    gridSize: { cols: number; rows: number }
+  }
+  switches: Readonly<Record<string, 'open' | 'closed'>>
+  environment: { sourceVoltage: number; lightLevel: number }
+  faultCount: number
+}
+
+// Result shapes, derived from the selection sets of START_GAME and COMPLETE_GAME above.
+export interface RateLimitInfo {
+  tier: string
+  limit: number
+  used: number
+  remaining: number
+  resetAt: string
+}
+
+export interface StartGameResult {
+  id: string
+  userId: string
+  themeId: string
+  difficulty: number
+  status: string
+  startedAt: string
+  canPlay: boolean
+  rateLimit: RateLimitInfo | null
+}
+
+export interface ScoreBreakdownResult {
+  baseScore: number
+  difficultyMultiplier: number
+  speedBonus: number
+  accuracyBonus: number
+  finalScore: number
+  difficulty: number
+  completionTime: number
+  accuracy: number
+}
+
+export interface CompleteGameResult {
+  id: string
+  status: string
+  completedAt: string
+  completionTime: number
+  attempts: number
+  score: number
+  scoreBreakdown: ScoreBreakdownResult | null
+  leaderboardRank: number | null
+  achievements: { type: string; unlocked: boolean; progress: number; completedAt: string | null }[]
 }
 
 export interface GameHistoryInput {

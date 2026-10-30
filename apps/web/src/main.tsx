@@ -17,21 +17,25 @@ configureAmplify()
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
-  { hasError: boolean; error: string }
+  { hasError: boolean }
 > {
-  state = { hasError: false, error: '' }
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error: error.message + '\n' + error.stack }
+  state = { hasError: false }
+  static getDerivedStateFromError() {
+    // Only a flag is kept in state: no message and no stack, so neither can reach the DOM.
+    return { hasError: true }
   }
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    console.error('BOUNDARY:', error.message, info.componentStack)
+  componentDidCatch(error: Error) {
+    // Minimal diagnostic breadcrumb. The component stack and the full stack trace are
+    // deliberately not logged, and nothing from the error is rendered to the user.
+    console.error('Unhandled UI error:', error.name)
   }
   render() {
     if (this.state.hasError) {
-      return React.createElement('div', { style: { padding: 40, fontFamily: 'monospace' } },
-        React.createElement('h2', { style: { color: 'red' } }, 'Something went wrong'),
-        React.createElement('pre', { style: { whiteSpace: 'pre-wrap', fontSize: 12 } }, this.state.error),
-        React.createElement('button', { onClick: () => window.location.href = '/hub' }, 'Go to Hub')
+      return React.createElement('div', { style: { padding: 40, fontFamily: 'system-ui, sans-serif' } },
+        React.createElement('h2', null, 'Something went wrong'),
+        React.createElement('p', null, 'Sorry, this page could not be displayed. Please try again.'),
+        React.createElement('button', { onClick: () => window.location.reload(), style: { marginRight: 12 } }, 'Reload page'),
+        React.createElement('button', { onClick: () => { window.location.href = '/hub' } }, 'Go to Hub')
       )
     }
     return this.props.children
