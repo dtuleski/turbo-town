@@ -15,3 +15,6 @@ export * from './utils/calculations';
 
 // Constants
 export * from './constants';
+
+// Circuit Builder engine
+export * from './circuit';
