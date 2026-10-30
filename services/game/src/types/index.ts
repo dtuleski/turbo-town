@@ -20,6 +20,9 @@ export interface CompleteGameInput {
   totalWords?: number; // For Word Puzzle
   hintsUsed?: number; // Optional for all games
   pauseCount?: number; // Optional for all games
+  // Circuit Builder submission. Typed `unknown` on purpose: it is validated and narrowed by
+  // validateCircuitSubmission (E1) before anything reads it.
+  circuitSubmission?: unknown;
 }
 
 export interface GameHistoryInput {

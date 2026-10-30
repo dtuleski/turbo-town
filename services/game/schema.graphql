@@ -65,6 +65,12 @@ input CompleteGameInput {
   gameId: ID!
   completionTime: Int! # seconds
   attempts: Int!
+  # Circuit Builder also sends an optional `circuitSubmission` object carrying
+  # { levelId, layout, switches, environment, faultCount }. It is not declared as a field here
+  # because this file declares no JSON scalar and is documentation only: the runtime handler
+  # routes requests with regular expressions and validates them with zod, not with this SDL.
+  # The authoritative contract is in
+  # aidlc-docs/construction/backend-integration/functional-design/functional-design.md.
 }
 
 input GameHistoryInput {
