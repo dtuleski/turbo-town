@@ -1,3 +1,20 @@
+import type { LevelDefinition } from '@memory-game/shared';
+import {
+  CB_BASE_SCORE,
+  CB_DEFAULT_TARGET_TIME,
+  CB_MAX_FAULT_PENALTY,
+  CB_MAX_HISTORICAL_FAULT_PENALTY,
+  CB_MIN_USEFUL_ELEMENTS,
+  CB_PER_FAULT_PENALTY,
+  CB_PER_UNRESOLVED_FAULT_PENALTY,
+  CB_SCORE_CAP,
+  CB_SPEED_BONUS_MAX,
+  CB_SPEED_BONUS_MIN,
+  CB_TARGET_TIME_BY_DIFFICULTY,
+  CB_TIME_WEIGHT,
+} from '../utils/circuit-builder';
+import type { VerifiedCircuitMetrics } from './circuit-reevaluation.service';
+
 export interface ScoreBreakdown {
   baseScore: number;
   difficultyMultiplier: number;
@@ -137,6 +154,102 @@ export class ScoreCalculatorService {
   }
 
   /**
+   * Calculate the score breakdown for a Circuit Builder submission (E3).
+   *
+   * Three verified factors, in order of leverage:
+   *   - component efficiency: fewer components out of the level's budget scores higher
+   *   - fault avoidance: two separately-capped penalties, one per fault signal, summed after
+   *     netting and capped overall at CB_MAX_FAULT_PENALTY - see below
+   *   - completion time: weighted MODESTLY at CB_TIME_WEIGHT (FR-CB-25), so an elegant
+   *     fault-free circuit out-scores a faster careless one
+   *
+   * Only server-verified metrics are read. `totalCurrent` and `totalResistance` from the
+   * engine result are deliberately NOT used: the engine documents them as describing the
+   * dominant source only, so they understate a multi-source circuit.
+   *
+   * Returns the unchanged ScoreBreakdown shape, so apps/web's ScoreBreakdownModal needs no
+   * change. For this game `accuracy` carries the verified circuit-quality ratio, which that
+   * modal renders under the label "Accuracy"; relabelling the UI is frontend scope and the
+   * shape is fixed by contract.
+   */
+  calculateCircuitBuilderBreakdown(
+    metrics: VerifiedCircuitMetrics,
+    level: LevelDefinition,
+    difficulty: number
+  ): ScoreBreakdown {
+    const targetTime = CB_TARGET_TIME_BY_DIFFICULTY[difficulty] ?? CB_DEFAULT_TARGET_TIME;
+    const speedBonus = clampRange(
+      1 + (CB_TIME_WEIGHT * (targetTime - metrics.completionTime)) / targetTime,
+      CB_SPEED_BONUS_MIN,
+      CB_SPEED_BONUS_MAX
+    );
+
+    // Budget is the level's own component allowance, plus whatever the level pre-placed. A
+    // pre-placed element arrives back in the submitted layout and E2 grants it allowance, so
+    // counting it here keeps the two halves of the level contract consistent. Both authored
+    // levels pre-place nothing, so this is 7 on cb-01-closed-circuit either way. The
+    // denominator subtracts the irreducible minimum (one source, one load) so using exactly
+    // the minimum scores 1.0.
+    const budget =
+      Object.values(level.availableComponents).reduce((total, count) => total + (count ?? 0), 0) +
+      level.prePlaced.length;
+    const denominator = Math.max(1, budget - CB_MIN_USEFUL_ELEMENTS);
+    const efficiencyRatio = clampRange((budget - metrics.componentCount) / denominator, 0, 1);
+
+    // Two fault signals, priced separately and then SUMMED after netting:
+    //
+    //   - historical: the client's own count of faults it hit during play, clamped by E2.
+    //     Unverifiable in the under-reporting direction, so weighted gently.
+    //   - verified: what the ENGINE still finds in the submitted final layout. Fully
+    //     server-computed, so weighted hard - this is what stops an unprotected LED from
+    //     out-scoring the canonical protected solve (FR-CB-2, CB-3.6).
+    //
+    // A fault still present at submission necessarily also occurred during the attempt, so
+    // it is already inside whatever the client reported. Netting it out of the cleared count
+    // before pricing means no fault is charged twice and reporting a fault honestly costs
+    // exactly what hiding it costs.
+    //
+    // The two terms then ADD rather than one replacing the other. Taking their maximum made
+    // the verified penalty merely substitute for the historical one, so the MARGINAL cost of
+    // leaving a fault in the submitted layout shrank as the reported count rose and reached
+    // zero at a reported count of 6 - which reopened the exploit for exactly the player who
+    // experiments most. Summing keeps that marginal cost flat at 0.25.
+    //
+    // Each term is capped on its own, not only in total, so a saturated historical penalty
+    // can never consume the room the verified penalty needs under CB_MAX_FAULT_PENALTY.
+    const clearedFaultCount = Math.max(0, metrics.faultCount - metrics.unresolvedFaultCount);
+    const historicalPenalty = Math.min(
+      CB_MAX_HISTORICAL_FAULT_PENALTY,
+      clearedFaultCount * CB_PER_FAULT_PENALTY
+    );
+    const verifiedPenalty = metrics.unresolvedFaultCount * CB_PER_UNRESOLVED_FAULT_PENALTY;
+    const faultPenalty = Math.min(CB_MAX_FAULT_PENALTY, historicalPenalty + verifiedPenalty);
+    const qualityRatio = clampRange(efficiencyRatio - faultPenalty, 0, 1);
+
+    const difficultyMultiplier = this.getDifficultyMultiplier(difficulty);
+    const accuracyBonus = 0.5 + qualityRatio;
+
+    let finalScore = CB_BASE_SCORE * difficultyMultiplier * speedBonus * accuracyBonus;
+    if (isNaN(finalScore) || !isFinite(finalScore)) {
+      finalScore = 0;
+    }
+    finalScore = Math.min(CB_SCORE_CAP, Math.max(0, Math.round(finalScore)));
+
+    const diffLabel = difficulty <= 1 ? 'Easy' : difficulty <= 2 ? 'Medium' : 'Hard';
+
+    return {
+      baseScore: CB_BASE_SCORE,
+      difficultyMultiplier,
+      speedBonus,
+      accuracyBonus,
+      finalScore,
+      difficulty: diffLabel,
+      completionTime: metrics.completionTime,
+      accuracy: qualityRatio,
+    };
+  }
+
+  /**
    * Get difficulty multiplier
    * Maps: 1 = EASY (1.0x), 2 = MEDIUM (1.5x), 3 = HARD (2.0x), 4 = SUPER_HARD (2.5x)
    */
@@ -170,4 +283,12 @@ export class ScoreCalculatorService {
         return 8;
     }
   }
+}
+
+/** Confine a value to [low, high]. A non-finite input resolves to `low`. */
+function clampRange(value: number, low: number, high: number): number {
+  if (!isFinite(value)) {
+    return low;
+  }
+  return Math.min(high, Math.max(low, value));
 }

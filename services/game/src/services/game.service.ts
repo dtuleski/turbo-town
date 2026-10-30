@@ -1,4 +1,4 @@
-import { Game, GameStatus, SubscriptionTier, AuthorizationError, NotFoundError } from '@memory-game/shared';
+import { Game, GameStatus, SubscriptionTier, AuthorizationError, NotFoundError, ValidationError } from '@memory-game/shared';
 import { GameRepository } from '../repositories/game.repository';
 import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
@@ -21,6 +21,12 @@ import { ErrorMessages, ErrorCodes } from '../utils/error-mapper';
 import { logger } from '../utils/logger';
 import { metricsPublisher } from '../utils/metrics';
 import { statisticsCache } from '../utils/cache';
+import {
+  CIRCUIT_BUILDER_THEME_ID,
+  CIRCUIT_SUBMISSION_REJECTED_MESSAGE,
+} from '../utils/circuit-builder';
+import { validateCircuitSubmission } from '../utils/circuit-validation';
+import { reevaluateCircuitSubmission } from './circuit-reevaluation.service';
 
 /**
  * Game Service
@@ -48,7 +54,7 @@ export class GameService {
     const tier = await this.subscriptionRepository.getTier(userId);
 
     // Check if game requires a paid subscription (any tier above FREE)
-    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION'];
+    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION', CIRCUIT_BUILDER_THEME_ID];
     if (PAID_GAMES.includes(input.themeId) && tier === SubscriptionTier.Free) {
       throw new AuthorizationError('This game requires a paid subscription. Upgrade to play!');
     }
@@ -125,6 +131,13 @@ export class GameService {
     // Verify game status
     if (game.status !== GameStatus.InProgress) {
       throw new AuthorizationError(ErrorMessages.GAME_ALREADY_COMPLETED);
+    }
+
+    // Circuit Builder is scored from a server-re-evaluated layout, not from client-reported
+    // attempts/accuracy, so it takes its own path. Every other game is untouched: this branch
+    // returns before any of the generic logic below runs.
+    if (game.themeId === CIRCUIT_BUILDER_THEME_ID) {
+      return this.completeCircuitBuilderGame(userId, input, username, game);
     }
 
     // Validate completion time
@@ -411,6 +424,149 @@ export class GameService {
     logger.info('Game completed successfully', {
       userId,
       gameId: completedGame.id,
+      score,
+      achievementsUnlocked: achievements.length,
+    });
+
+    return {
+      game: completedGame,
+      achievements,
+      scoreBreakdown,
+    };
+  }
+
+  /**
+   * Complete a Circuit Builder game (S3).
+   *
+   * Authoritative path: the submitted layout is bounded (E1), re-evaluated by the shared
+   * engine and checked against the level's success predicate (E2), and only then scored from
+   * server-verified metrics (E3). The client's own claim of success or score is never read.
+   *
+   * Fails closed at every step (SECURITY-11, SECURITY-15): each rejection below happens
+   * BEFORE the game record is updated, so a refused submission writes no score, publishes no
+   * leaderboard event, emits no metric, and leaves the game IN_PROGRESS for another attempt.
+   * Every cause throws the identical generic message, so a probing client gets no oracle
+   * telling it which bound it hit.
+   *
+   * Nothing from the submitted layout is ever logged - no layout, no serialized payload, no
+   * token, no PII (NFR-CB-20, SECURITY-03). Only whitelisted scalars travel to CloudWatch.
+   */
+  private async completeCircuitBuilderGame(
+    userId: string,
+    input: CompleteGameInput,
+    username: string,
+    game: Game
+  ): Promise<CompleteGameResponse> {
+    // E1: bounded validation before any processing.
+    const validated = validateCircuitSubmission(input.circuitSubmission, input.completionTime);
+    if (!validated.ok) {
+      logger.warn('Circuit submission rejected', {
+        userId,
+        gameId: input.gameId,
+        stage: 'validation',
+      });
+      throw new ValidationError(CIRCUIT_SUBMISSION_REJECTED_MESSAGE);
+    }
+    const submission = validated.value;
+
+    // Reuse the existing per-difficulty completion-time floor, but surface the same generic
+    // message rather than the helper's descriptive reason.
+    const timeValidation = validateCompletionTime(submission.completionTime, game.difficulty);
+    if (!timeValidation.valid) {
+      logger.warn('Circuit submission rejected', {
+        userId,
+        gameId: input.gameId,
+        levelId: submission.levelId,
+        stage: 'completionTime',
+      });
+      throw new ValidationError(CIRCUIT_SUBMISSION_REJECTED_MESSAGE);
+    }
+
+    // E2: authoritative re-evaluation against the claimed level.
+    const reevaluation = reevaluateCircuitSubmission(submission, game.difficulty);
+    if (!reevaluation.ok) {
+      logger.warn('Circuit submission rejected', {
+        userId,
+        gameId: input.gameId,
+        levelId: submission.levelId,
+        stage: 'reevaluation',
+        reason: reevaluation.reason,
+        errorCode: reevaluation.errorCode,
+        elementCount: submission.layout.elements.length,
+      });
+      throw new ValidationError(CIRCUIT_SUBMISSION_REJECTED_MESSAGE);
+    }
+
+    // E3: score from server-verified metrics only.
+    const scoreBreakdown = this.scoreCalculator.calculateCircuitBuilderBreakdown(
+      reevaluation.verifiedMetrics,
+      reevaluation.level,
+      game.difficulty
+    );
+    const score = scoreBreakdown.finalScore;
+
+    // `attempts` is stored as 1: the schema requires the field, and Circuit Builder has no
+    // attempt concept. It is deliberately not overloaded with the component count, which the
+    // leaderboard's anomaly service would read as an attempt count.
+    const completedGame = await this.gameRepository.update(input.gameId, {
+      status: GameStatus.Completed,
+      completedAt: new Date(),
+      completionTime: submission.completionTime,
+      attempts: 1,
+      score,
+    }, userId);
+
+    // Track achievements (non-blocking — same contract as the generic path)
+    let achievements: any[] = [];
+    try {
+      achievements = await this.achievementTracker.trackCompletion(
+        userId,
+        input.gameId,
+        game.difficulty,
+        submission.completionTime,
+        1,
+        game.themeId
+      );
+    } catch (achievementError) {
+      logger.error('Achievement tracking failed', achievementError as Error, { userId, gameId: input.gameId });
+    }
+
+    const tier = await this.subscriptionRepository.getTier(userId);
+    await metricsPublisher.publishGameCompleted(game.difficulty, tier, score);
+
+    const completionTimeSeconds = Math.max(1, completedGame.completionTime!);
+
+    await this.eventPublisher.publishGameCompleted({
+      gameId: input.gameId,
+      userId: completedGame.userId,
+      username: username,
+      gameType: CIRCUIT_BUILDER_THEME_ID,
+      difficulty: game.difficulty <= 1 ? 'EASY' : game.difficulty <= 2 ? 'MEDIUM' : 'HARD',
+      score,
+      completionTime: completionTimeSeconds,
+      accuracy: scoreBreakdown.accuracy,
+      performanceMetrics: {
+        // hintsUsed and pauseCount are fixed at 0 rather than echoed from the client: Circuit
+        // Builder has no hint or pause mechanism, and the leaderboard's anomaly service reads
+        // these fields, so feeding it unverified numbers would be worse than feeding it none.
+        // averageResponseTime is the completion time, this game having one submission.
+        attempts: 1,
+        hintsUsed: 0,
+        pauseCount: 0,
+        averageResponseTime: completionTimeSeconds,
+      },
+      timestamp: new Date().toISOString(),
+    });
+
+    statisticsCache.delete(userId);
+
+    logger.info('Circuit Builder game completed', {
+      userId,
+      gameId: completedGame.id,
+      levelId: submission.levelId,
+      componentCount: reevaluation.verifiedMetrics.componentCount,
+      faultCount: reevaluation.verifiedMetrics.faultCount,
+      unresolvedFaultCount: reevaluation.verifiedMetrics.unresolvedFaultCount,
       score,
       achievementsUnlocked: achievements.length,
     });

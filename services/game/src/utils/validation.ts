@@ -21,6 +21,9 @@ export const completeGameInputSchema = z.object({
   totalWords: z.number().int().positive().optional(),
   hintsUsed: z.number().int().nonnegative().optional(),
   pauseCount: z.number().int().nonnegative().optional(),
+  // Circuit Builder layout submission. Passed through as `unknown` because z.object strips
+  // keys it does not declare; the bounded validation lives in utils/circuit-validation.ts.
+  circuitSubmission: z.unknown().optional(),
 });
 
 export const gameHistoryInputSchema = z.object({
