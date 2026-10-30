@@ -99,6 +99,11 @@
       "title": "Bond & Burn",
       "description": "¡Lee la fórmula, encuentra elementos en la tabla periódica y crea compuestos antes de que el lab se sobrecaliente!",
       "category": "Ciencia & Matemáticas"
+    },
+    "circuit-builder": {
+      "title": "Constructor de Circuitos",
+      "description": "¡Conecta pilas, bombillas e interruptores, observa cómo fluye la corriente y repara las averías!",
+      "category": "Ciencia & Matemáticas"
     }
   },
   "nav": {
@@ -803,6 +808,243 @@
         "hint": "Toma 2 Nitrógeno y 1 Oxígeno",
         "funFact": "¡Los dentistas usan gas de la risa (N₂O) para ayudar a los pacientes a relajarse!"
       }
+    }
+  },
+  "circuitBuilder": {
+    "canvasLabel": "Cuadrícula para montar circuitos",
+    "canvasHint": "Arrastra un componente desde la bandeja, o toca un componente y luego una casilla. Las flechas mueven el cursor, Enter coloca o activa, C empieza una conexión, Enter la termina en el primer terminal y Shift+Enter en el segundo, Supr borra.",
+    "component": {
+      "battery": { "name": "Pila", "abbr": "PIL" },
+      "solar": { "name": "Panel solar", "abbr": "SOL" },
+      "wire": { "name": "Cable", "abbr": "CAB" },
+      "switch": { "name": "Interruptor", "abbr": "INT" },
+      "resistor": { "name": "Resistencia", "abbr": "RES" },
+      "led": { "name": "Bombilla LED", "abbr": "LED" },
+      "motor": { "name": "Motor", "abbr": "MOT" },
+      "buzzer": { "name": "Zumbador", "abbr": "ZUM" }
+    },
+    "tray": {
+      "title": "Componentes",
+      "remaining": "Quedan {{count}}",
+      "exhausted": "No quedan",
+      "armed": "Seleccionado — toca una casilla para colocarlo"
+    },
+    "status": {
+      "energized": "La corriente está pasando",
+      "deEnergized": "No pasa corriente",
+      "fuseBlown": "El fusible se ha fundido",
+      "resetFuse": "Reponer el fusible",
+      "voltage": "Tensión de alimentación",
+      "lightLevel": "Nivel de luz"
+    },
+    "fault": {
+      "SHORT_CIRCUIT": "Cortocircuito",
+      "OVERCURRENT": "Demasiada corriente",
+      "REVERSED_POLARITY": "Componente al revés",
+      "SINGULAR_SYSTEM": "Este circuito no puede funcionar"
+    },
+    "faultHelp": {
+      "SHORT_CIRCUIT": "La corriente encontró un camino directo de un polo de la pila al otro, sin nada que la frenara, así que pasó de golpe y fundió el fusible. Pon un receptor en ese camino, como una bombilla LED con una resistencia, o un motor.",
+      "OVERCURRENT": "Por este camino pasa más corriente de la que los componentes aguantan sin dañarse. Aumenta la resistencia añadiendo una resistencia, o baja la tensión de alimentación.",
+      "REVERSED_POLARITY": "Un componente está conectado al revés, así que corta la corriente en vez de aprovecharla. Cambia sus dos extremos de sitio y vuelve a intentarlo.",
+      "SINGULAR_SYSTEM": "Este circuito no tiene una solución única que el simulador pueda calcular, casi siempre porque un componente está unido consigo mismo. Quita la conexión que junta los dos terminales de un mismo componente."
+    },
+    "rejection": {
+      "OUT_OF_BOUNDS": "Ese sitio está fuera de la cuadrícula",
+      "CELL_OCCUPIED": "Ahí ya hay algo",
+      "OVER_BUDGET": "No quedan más de esos",
+      "ELEMENT_LIMIT": "La cuadrícula está llena",
+      "CONNECTION_LIMIT": "No se pueden añadir más conexiones",
+      "UNKNOWN_ELEMENT": "Ese componente ya no está ahí",
+      "UNKNOWN_CONNECTION": "Esa conexión ya no está ahí",
+      "ELEMENT_LOCKED": "Ese componente no se puede mover",
+      "NOT_A_SWITCH": "Solo un interruptor se puede abrir y cerrar",
+      "SELF_CONNECTION": "Un terminal no puede conectarse consigo mismo",
+      "DUPLICATE_CONNECTION": "Esos terminales ya están conectados",
+      "INVALID_VOLTAGE": "Esa tensión no se puede usar",
+      "INVALID_LIGHT_LEVEL": "Ese nivel de luz no se puede usar"
+    },
+    "layout": {
+      "enterFullScreen": "Pantalla completa",
+      "exitFullScreen": "Salir de pantalla completa"
+    },
+    "audio": {
+      "soundOn": "Sonido activado",
+      "soundOff": "Sonido desactivado"
+    },
+    "error": {
+      "evaluationUnavailable": "La simulación no está disponible ahora mismo. Prueba a cambiar tu circuito.",
+      "levelUnavailable": "No se ha podido abrir este taller de circuitos. Inténtalo de nuevo."
+    },
+    "setup": {
+      "title": "Constructor de Circuitos",
+      "subtitle": "Monta circuitos y da vida al róver",
+      "description": "Conecta pilas, interruptores y bombillas para poner en marcha un róver de Marte. Cada nivel te enseña una idea sobre la electricidad.",
+      "howToPlay": "Cómo Jugar",
+      "step1": "Elige un componente y colócalo en la cuadrícula",
+      "step2": "Une los terminales con cables",
+      "step3": "Mira el róver: sus partes se encienden cuando pasa corriente",
+      "step4": "Cumple el objetivo para enviar tu circuito y ganar puntos",
+      "chooseDifficulty": "Elige una dificultad",
+      "chooseLevel": "Elige un nivel",
+      "levelNumber": "Nivel {{n}}",
+      "concept": "Objetivo",
+      "startLevel": "Empezar nivel",
+      "selectDifficulty": "Selecciona una dificultad",
+      "sandboxTitle": "Zona de pruebas",
+      "sandboxDescription": "Juego libre con todos los componentes. Sin objetivo, sin puntos y sin gastar una partida diaria.",
+      "sandboxStart": "Abrir la zona de pruebas",
+      "startFailed": "No se ha podido empezar la partida. Inténtalo de nuevo.",
+      "noLevels": "Ahora mismo no hay niveles disponibles.",
+      "gateChecking": "Comprobando tu acceso..."
+    },
+    "difficulty": {
+      "1": {
+        "name": "Fácil",
+        "summary": "Aprende lo básico: circuitos cerrados e interruptores. El róver te muestra qué está encendido y qué no.",
+        "disclosure": "Sin números: solo partes encendidas o apagadas.",
+        "levels": "{{count}} niveles"
+      },
+      "2": {
+        "name": "Medio",
+        "summary": "Compara el montaje en serie y en paralelo.",
+        "disclosure": "Barras de brillo que comparan las partes, sin unidades.",
+        "levels": "{{count}} niveles"
+      },
+      "3": {
+        "name": "Difícil",
+        "summary": "Da energía a todo el róver y repara un cortocircuito.",
+        "disclosure": "Valores de tensión y resistencia.",
+        "levels": "{{count}} niveles"
+      },
+      "4": {
+        "name": "Muy difícil",
+        "summary": "Controla la corriente con resistencias y cambia la tensión de la fuente.",
+        "disclosure": "Todo: voltios, ohmios, amperios y totales.",
+        "levels": "{{count}} niveles"
+      }
+    },
+    "level": {
+      "cb-01-closed-circuit": {
+        "title": "Cierra el circuito",
+        "goal": "Enciende el faro del róver.",
+        "hint": "Une la pila, la resistencia y la bombilla LED formando un anillo y vuelve con un cable hasta la pila. Si la bombilla sigue apagada, revisa en qué sentido está conectada.",
+        "learn": "La corriente solo circula por un circuito cerrado. La resistencia protege la bombilla LED de un exceso de corriente."
+      },
+      "cb-02-switch-control": {
+        "title": "Enciende con el interruptor",
+        "goal": "Enciende el faro con el interruptor cerrado y luego apágalo y enciéndelo de nuevo.",
+        "hint": "El interruptor ya está en el tablero. Colócalo en el circuito junto con la pila, la resistencia y la bombilla LED, y selecciónalo para abrirlo o cerrarlo.",
+        "learn": "Un interruptor abre o cierra el circuito. Cuando está abierto, el circuito queda cortado, no pasa corriente y la luz se apaga."
+      },
+      "cb-03-series-loop": {
+        "title": "Un circuito para dos",
+        "goal": "Enciende el faro y haz sonar el zumbador en el mismo circuito.",
+        "hint": "Pon la bombilla LED y el zumbador uno detrás de otro en el mismo circuito, con la resistencia y el interruptor. Luego abre el interruptor y observa qué pasa con los dos.",
+        "learn": "En un circuito en serie la misma corriente pasa por todas las partes, una detrás de otra. Si abres el interruptor, todo se detiene."
+      },
+      "cb-04-parallel-branches": {
+        "title": "Dos caminos",
+        "goal": "Da un camino al faro y otro al zumbador, cada uno con su propio interruptor.",
+        "hint": "Conecta los dos caminos a los mismos terminales de la pila. Cada camino lleva su propio interruptor. Abre uno y mira qué hace el otro.",
+        "learn": "En un circuito en paralelo cada camino forma su propio circuito. Apagar uno deja el otro funcionando."
+      },
+      "cb-05-series-vs-parallel": {
+        "title": "Dale energía a todo el róver",
+        "goal": "Pon en marcha los motores, el faro y el zumbador al mismo tiempo.",
+        "hint": "Conecta las partes una al lado de la otra, cada una directa a la pila, con la resistencia delante de la bombilla LED. Si pones los motores en un solo circuito en serie, giran muy despacio.",
+        "learn": "Las partes colocadas una al lado de la otra reciben toda la tensión de la pila. En serie se la reparten, así que unos motores en serie reciben menos y giran más despacio."
+      },
+      "cb-06-short-circuit-recovery": {
+        "title": "Vence al cortocircuito",
+        "goal": "Enciende el faro aunque un cortocircuito funda antes el fusible.",
+        "hint": "Un cable puesto directamente sobre la pila funde el fusible. Repón el fusible, quita ese cable y vuelve a poner el receptor en el circuito.",
+        "learn": "Un camino casi sin resistencia deja pasar una corriente enorme. Mantén siempre un receptor en el circuito y repón el fusible cuando arregles el fallo."
+      },
+      "cb-07-resistance-limits-current": {
+        "title": "Domina la corriente",
+        "goal": "Enciende el LED con una corriente segura usando la pila y el LED que ya están en el tablero.",
+        "hint": "Pon una resistencia en serie con el LED. Dos resistencias en serie se suman. Dos en paralelo dan menos resistencia que una sola, así que pasa más corriente.",
+        "learn": "La corriente es la tensión dividida entre la resistencia. Más resistencia significa menos corriente, y las resistencias en paralelo reducen la resistencia total."
+      },
+      "cb-08-variable-voltage": {
+        "title": "Encuentra la tensión adecuada",
+        "goal": "Alimenta el motor, el zumbador y el faro con una sola pila y descubre qué tensiones de la fuente funcionan.",
+        "hint": "Cierra el interruptor general y el del faro. Cambia la tensión de la fuente con el control deslizante: el motor necesita tensión suficiente para girar, y el LED puede recibir demasiada corriente si es alta.",
+        "learn": "La tensión empuja la corriente a través de la resistencia. Si es muy baja, el motor no gira. Si es muy alta, el LED soporta más corriente de la que aguanta."
+      }
+    },
+    "rover": {
+      "title": "Róver de Marte",
+      "alt": "Dibujo de un róver de Marte. Sus ruedas, el faro, el zumbador y el panel solar muestran qué partes reciben energía.",
+      "on": "Encendido",
+      "off": "Apagado",
+      "unused": "No se usa en este nivel",
+      "allPowered": "¡Todo el róver tiene energía!"
+    },
+    "machine": {
+      "marsRover": {
+        "driveMotor": "Motores de tracción",
+        "headlight": "Faro",
+        "buzzerAlert": "Alarma del zumbador",
+        "solarCharging": "Carga solar"
+      }
+    },
+    "readout": {
+      "title": "Lectura del circuito",
+      "supply": "Fuente",
+      "voltage": "Tensión",
+      "resistance": "Resistencia",
+      "current": "Corriente",
+      "totalResistance": "Resistencia total",
+      "totalCurrent": "Corriente total",
+      "relative": "Brillo",
+      "noPath": "Todavía no hay un circuito cerrado",
+      "state": {
+        "lit": "Funciona",
+        "dim": "Tenue",
+        "dark": "Apagado",
+        "spark": "Fallo"
+      },
+      "brightness": {
+        "off": "Apagado",
+        "dim": "Tenue",
+        "medium": "Medio",
+        "bright": "Intenso"
+      },
+      "noneHint": "Mira el róver: cada parte está encendida o apagada.",
+      "qualitativeHint": "Las barras comparan cuánto brilla cada parte, sin unidades."
+    },
+    "game": {
+      "loading": "Empezando tu partida...",
+      "level": "Nivel",
+      "goal": "Objetivo",
+      "showHint": "Ver pista",
+      "hideHint": "Ocultar pista",
+      "solved": "¡El róver funciona! Comprobando tu circuito...",
+      "solvedTitle": "Circuito completado",
+      "submitting": "El servidor está comprobando tu circuito...",
+      "submitFailed": "No hemos podido enviar tu circuito. Tu trabajo está a salvo. Inténtalo de nuevo.",
+      "rejected": "El servidor no ha podido verificar ese circuito. Cámbialo e inténtalo de nuevo.",
+      "retry": "Reintentar",
+      "nextLevel": "Siguiente nivel",
+      "backToSetup": "Volver a los niveles",
+      "quit": "Salir",
+      "noLevel": "No se ha encontrado ese nivel.",
+      "learnTitle": "Lo que has aprendido"
+    },
+    "faultOverlay": {
+      "label": "Fallo del circuito",
+      "dismiss": "Cerrar"
+    },
+    "sandbox": {
+      "badge": "Zona de pruebas: nada de aquí puntúa",
+      "note": "Juego libre con todos los componentes. No hay puntos ni se gasta una partida diaria.",
+      "back": "Volver a los niveles"
+    },
+    "result": {
+      "serverScoreNote": "El servidor ha comprobado esta puntuación.",
+      "rankLabel": "Puesto en la clasificación"
     }
   },
   "miniGolf": {

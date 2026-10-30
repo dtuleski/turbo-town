@@ -99,6 +99,11 @@
       "title": "Bond & Burn",
       "description": "Leia a fórmula, encontre elementos na tabela periódica e monte compostos antes que o lab superaqueça!",
       "category": "Ciência & Matemática"
+    },
+    "circuit-builder": {
+      "title": "Construtor de Circuitos",
+      "description": "Ligue pilhas, lâmpadas e interruptores, veja a corrente fluir e conserte os defeitos!",
+      "category": "Ciência & Matemática"
     }
   },
   "nav": {
@@ -803,6 +808,243 @@
         "hint": "Pegue 2 Nitrogênio e 1 Oxigênio",
         "funFact": "Dentistas usam gás hilariante (N₂O) para ajudar pacientes a relaxar!"
       }
+    }
+  },
+  "circuitBuilder": {
+    "canvasLabel": "Grade para montar circuitos",
+    "canvasHint": "Arraste um componente da bandeja, ou toque em um componente e depois em uma célula. As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter termina a ligação no primeiro terminal e Shift+Enter no segundo, Delete apaga.",
+    "component": {
+      "battery": { "name": "Pilha", "abbr": "PIL" },
+      "solar": { "name": "Painel solar", "abbr": "SOL" },
+      "wire": { "name": "Fio", "abbr": "FIO" },
+      "switch": { "name": "Interruptor", "abbr": "INT" },
+      "resistor": { "name": "Resistor", "abbr": "RES" },
+      "led": { "name": "Lâmpada LED", "abbr": "LED" },
+      "motor": { "name": "Motor", "abbr": "MOT" },
+      "buzzer": { "name": "Campainha", "abbr": "CAM" }
+    },
+    "tray": {
+      "title": "Componentes",
+      "remaining": "Restam {{count}}",
+      "exhausted": "Não resta nenhum",
+      "armed": "Selecionado — toque em uma célula para colocar"
+    },
+    "status": {
+      "energized": "A corrente está passando",
+      "deEnergized": "Não passa corrente",
+      "fuseBlown": "O fusível queimou",
+      "resetFuse": "Religar o fusível",
+      "voltage": "Tensão da fonte",
+      "lightLevel": "Nível de luz"
+    },
+    "fault": {
+      "SHORT_CIRCUIT": "Curto-circuito",
+      "OVERCURRENT": "Corrente demais",
+      "REVERSED_POLARITY": "Componente invertido",
+      "SINGULAR_SYSTEM": "Este circuito não pode funcionar"
+    },
+    "faultHelp": {
+      "SHORT_CIRCUIT": "A corrente achou um caminho direto de um polo da pilha até o outro, sem nada para segurá-la, então passou de uma vez e queimou o fusível. Coloque uma carga nesse caminho, como uma lâmpada LED com um resistor, ou um motor.",
+      "OVERCURRENT": "Passa mais corrente por esse caminho do que as peças aguentam com segurança. Aumente a resistência colocando um resistor, ou diminua a tensão da fonte.",
+      "REVERSED_POLARITY": "Um componente está ligado ao contrário, por isso ele barra a corrente em vez de usá-la. Troque as duas pontas dele de lugar e tente de novo.",
+      "SINGULAR_SYSTEM": "Este circuito não tem uma resposta única que o simulador consiga calcular, quase sempre porque uma peça está ligada nela mesma. Tire a ligação que junta os dois terminais de um mesmo componente."
+    },
+    "rejection": {
+      "OUT_OF_BOUNDS": "Esse lugar está fora da grade",
+      "CELL_OCCUPIED": "Já tem algo aí",
+      "OVER_BUDGET": "Não há mais desses disponíveis",
+      "ELEMENT_LIMIT": "A grade está cheia",
+      "CONNECTION_LIMIT": "Não é possível adicionar mais ligações",
+      "UNKNOWN_ELEMENT": "Esse componente não está mais aí",
+      "UNKNOWN_CONNECTION": "Essa ligação não está mais aí",
+      "ELEMENT_LOCKED": "Esse componente não pode ser movido",
+      "NOT_A_SWITCH": "Só um interruptor pode ser aberto e fechado",
+      "SELF_CONNECTION": "Um terminal não pode se ligar a si mesmo",
+      "DUPLICATE_CONNECTION": "Esses terminais já estão ligados",
+      "INVALID_VOLTAGE": "Essa tensão não pode ser usada",
+      "INVALID_LIGHT_LEVEL": "Esse nível de luz não pode ser usado"
+    },
+    "layout": {
+      "enterFullScreen": "Tela cheia",
+      "exitFullScreen": "Sair da tela cheia"
+    },
+    "audio": {
+      "soundOn": "Som ligado",
+      "soundOff": "Som desligado"
+    },
+    "error": {
+      "evaluationUnavailable": "A simulação não está disponível agora. Tente mudar o seu circuito.",
+      "levelUnavailable": "Não foi possível abrir esta bancada de circuitos. Tente novamente."
+    },
+    "setup": {
+      "title": "Construtor de Circuitos",
+      "subtitle": "Monte circuitos e dê vida ao rover",
+      "description": "Ligue pilhas, interruptores e lâmpadas para fazer um rover de Marte funcionar. Cada nível ensina uma ideia sobre eletricidade.",
+      "howToPlay": "Como Jogar",
+      "step1": "Escolha um componente e coloque-o na grade",
+      "step2": "Ligue os terminais com fios",
+      "step3": "Olhe o rover: as peças acendem quando passa corrente",
+      "step4": "Cumpra o objetivo para enviar seu circuito e ganhar pontos",
+      "chooseDifficulty": "Escolha uma dificuldade",
+      "chooseLevel": "Escolha um nível",
+      "levelNumber": "Nível {{n}}",
+      "concept": "Objetivo",
+      "startLevel": "Começar nível",
+      "selectDifficulty": "Selecione uma dificuldade",
+      "sandboxTitle": "Área de testes",
+      "sandboxDescription": "Jogo livre com todos os componentes. Sem objetivo, sem pontos e sem gastar uma partida diária.",
+      "sandboxStart": "Abrir a área de testes",
+      "startFailed": "Não foi possível começar a partida. Tente novamente.",
+      "noLevels": "Não há níveis disponíveis agora.",
+      "gateChecking": "Verificando seu acesso..."
+    },
+    "difficulty": {
+      "1": {
+        "name": "Fácil",
+        "summary": "Aprenda o básico: circuitos fechados e interruptores. O rover mostra o que está ligado e o que está desligado.",
+        "disclosure": "Sem números: só peças acesas ou apagadas.",
+        "levels": "{{count}} níveis"
+      },
+      "2": {
+        "name": "Médio",
+        "summary": "Compare as ligações em série e em paralelo.",
+        "disclosure": "Barras de brilho que comparam as peças, sem unidades.",
+        "levels": "{{count}} níveis"
+      },
+      "3": {
+        "name": "Difícil",
+        "summary": "Alimente o rover inteiro e conserte um curto-circuito.",
+        "disclosure": "Valores de tensão e resistência.",
+        "levels": "{{count}} níveis"
+      },
+      "4": {
+        "name": "Super Difícil",
+        "summary": "Controle a corrente com resistores e mude a tensão da fonte.",
+        "disclosure": "Tudo: volts, ohms, ampères e totais.",
+        "levels": "{{count}} níveis"
+      }
+    },
+    "level": {
+      "cb-01-closed-circuit": {
+        "title": "Feche o circuito",
+        "goal": "Acenda o farol do rover.",
+        "hint": "Ligue a pilha, o resistor e a lâmpada LED formando um anel e volte com um fio até a pilha. Se a lâmpada continuar apagada, confira em qual sentido ela está ligada.",
+        "learn": "A corrente só circula em um circuito fechado. O resistor protege a lâmpada LED do excesso de corrente."
+      },
+      "cb-02-switch-control": {
+        "title": "Ligue com o interruptor",
+        "goal": "Acenda o farol com o interruptor fechado e depois apague e acenda de novo.",
+        "hint": "O interruptor já está na bancada. Coloque-o no circuito junto com a pilha, o resistor e a lâmpada LED, e selecione-o para abrir ou fechar.",
+        "learn": "Um interruptor abre ou fecha o circuito. Quando está aberto, o circuito fica cortado, não passa corrente e a luz apaga."
+      },
+      "cb-03-series-loop": {
+        "title": "Um circuito para dois",
+        "goal": "Acenda o farol e faça a campainha tocar no mesmo circuito.",
+        "hint": "Coloque a lâmpada LED e a campainha uma depois da outra no mesmo circuito, com o resistor e o interruptor. Depois abra o interruptor e veja o que acontece com as duas.",
+        "learn": "Em um circuito em série a mesma corrente passa por todas as peças, uma depois da outra. Se você abrir o interruptor, tudo para."
+      },
+      "cb-04-parallel-branches": {
+        "title": "Dois caminhos",
+        "goal": "Dê um caminho ao farol e outro à campainha, cada um com o seu próprio interruptor.",
+        "hint": "Ligue os dois caminhos aos mesmos terminais da pilha. Cada caminho tem o seu próprio interruptor. Abra um e veja o que o outro faz.",
+        "learn": "Em um circuito em paralelo cada caminho forma o seu próprio circuito. Desligar um deixa o outro funcionando."
+      },
+      "cb-05-series-vs-parallel": {
+        "title": "Dê energia a todo o rover",
+        "goal": "Faça os motores, o farol e a campainha funcionarem ao mesmo tempo.",
+        "hint": "Ligue as peças lado a lado, cada uma direto na pilha, com o resistor na frente da lâmpada LED. Se você puser os motores em um só circuito em série, eles giram bem devagar.",
+        "learn": "As peças ligadas lado a lado recebem toda a tensão da pilha. Em série elas dividem essa tensão, então motores em série recebem menos e giram mais devagar."
+      },
+      "cb-06-short-circuit-recovery": {
+        "title": "Vença o curto-circuito",
+        "goal": "Acenda o farol mesmo que um curto-circuito queime o fusível antes.",
+        "hint": "Um fio ligado direto na pilha queima o fusível. Religue o fusível, tire esse fio e coloque a carga de volta no circuito.",
+        "learn": "Um caminho quase sem resistência deixa passar uma corrente enorme. Mantenha sempre uma carga no circuito e religue o fusível depois de consertar a falha."
+      },
+      "cb-07-resistance-limits-current": {
+        "title": "Controle a corrente",
+        "goal": "Acenda o LED com uma corrente segura, usando a pilha e o LED que já estão na bancada.",
+        "hint": "Coloque um resistor em série com o LED. Dois resistores em série se somam. Dois em paralelo dão menos resistência que um só, e por isso passa mais corrente.",
+        "learn": "A corrente é a tensão dividida pela resistência. Mais resistência significa menos corrente, e resistores em paralelo diminuem a resistência total."
+      },
+      "cb-08-variable-voltage": {
+        "title": "Descubra a tensão certa",
+        "goal": "Alimente o motor, a campainha e o farol com uma só pilha e descubra quais tensões da fonte funcionam.",
+        "hint": "Feche o interruptor geral e o do farol. Mude a tensão da fonte com o controle deslizante: o motor precisa de tensão suficiente para girar, e o LED pode receber corrente demais se ela for alta.",
+        "learn": "A tensão empurra a corrente pela resistência. Se for baixa demais, o motor não gira. Se for alta demais, o LED recebe mais corrente do que aguenta."
+      }
+    },
+    "rover": {
+      "title": "Rover de Marte",
+      "alt": "Desenho de um rover de Marte. As rodas, o farol, a campainha e o painel solar mostram quais peças recebem energia.",
+      "on": "Ligado",
+      "off": "Desligado",
+      "unused": "Não é usado neste nível",
+      "allPowered": "O rover inteiro está com energia!"
+    },
+    "machine": {
+      "marsRover": {
+        "driveMotor": "Motores de tração",
+        "headlight": "Farol",
+        "buzzerAlert": "Alarme da campainha",
+        "solarCharging": "Carga solar"
+      }
+    },
+    "readout": {
+      "title": "Leitura do circuito",
+      "supply": "Fonte",
+      "voltage": "Tensão",
+      "resistance": "Resistência",
+      "current": "Corrente",
+      "totalResistance": "Resistência total",
+      "totalCurrent": "Corrente total",
+      "relative": "Brilho",
+      "noPath": "Ainda não há um circuito fechado",
+      "state": {
+        "lit": "Funcionando",
+        "dim": "Fraco",
+        "dark": "Desligado",
+        "spark": "Falha"
+      },
+      "brightness": {
+        "off": "Apagado",
+        "dim": "Fraco",
+        "medium": "Médio",
+        "bright": "Forte"
+      },
+      "noneHint": "Olhe o rover: cada peça está ligada ou desligada.",
+      "qualitativeHint": "As barras comparam o brilho de cada peça, sem unidades."
+    },
+    "game": {
+      "loading": "Começando sua partida...",
+      "level": "Nível",
+      "goal": "Objetivo",
+      "showHint": "Mostrar dica",
+      "hideHint": "Ocultar dica",
+      "solved": "O rover está funcionando! Verificando seu circuito...",
+      "solvedTitle": "Circuito completo",
+      "submitting": "O servidor está verificando seu circuito...",
+      "submitFailed": "Não conseguimos enviar seu circuito. Seu trabalho está salvo. Tente novamente.",
+      "rejected": "O servidor não conseguiu verificar esse circuito. Mude-o e tente novamente.",
+      "retry": "Tentar novamente",
+      "nextLevel": "Próximo nível",
+      "backToSetup": "Voltar aos níveis",
+      "quit": "Sair",
+      "noLevel": "Esse nível não foi encontrado.",
+      "learnTitle": "O que você aprendeu"
+    },
+    "faultOverlay": {
+      "label": "Falha no circuito",
+      "dismiss": "Fechar"
+    },
+    "sandbox": {
+      "badge": "Área de testes: nada aqui vale pontos",
+      "note": "Jogo livre com todos os componentes. Não há pontos e nenhuma partida diária é gasta.",
+      "back": "Voltar aos níveis"
+    },
+    "result": {
+      "serverScoreNote": "O servidor verificou esta pontuação.",
+      "rankLabel": "Posição no ranking"
     }
   },
   "miniGolf": {

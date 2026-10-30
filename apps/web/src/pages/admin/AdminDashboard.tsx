@@ -599,7 +599,7 @@ const AdminDashboard = () => {
                       COLOR_BY_NUMBER: 'Color by Number', HANGMAN: 'Hangman', TIC_TAC_TOE: 'Tic Tac Toe',
                       SCRATCH_CODING: 'Scratch Coding', MATH_MAZE: 'Math Maze', PATTERN_RECALL: 'Pattern Recall',
                       SPACE_ENTRY: 'Space Entry', BOND_AND_BURN: 'Bond & Burn', TRAFFIC_LAB: 'Traffic Lab',
-                      MINI_GOLF: 'Mini Golf',
+                      MINI_GOLF: 'Mini Golf', CIRCUIT_BUILDER: 'Circuit Builder',
                     };
                     const GAME_ICONS: Record<string, string> = {
                       MEMORY_MATCH: '🃏', MATH_CHALLENGE: '🧮', WORD_PUZZLE: '🔤',
@@ -609,7 +609,7 @@ const AdminDashboard = () => {
                       COLOR_BY_NUMBER: '🎨', HANGMAN: '🪢', TIC_TAC_TOE: '❌',
                       SCRATCH_CODING: '💻', MATH_MAZE: '🔢', PATTERN_RECALL: '🔲',
                       SPACE_ENTRY: '🚀', BOND_AND_BURN: '🔥', TRAFFIC_LAB: '🚗',
-                      MINI_GOLF: '⛳',
+                      MINI_GOLF: '⛳', CIRCUIT_BUILDER: '⚡',
                     };
                     const maxPlays = analytics.gamesByType![0]?.plays || 1;
                     const barWidth = Math.max(5, (game.plays / maxPlays) * 100);

@@ -29,6 +29,7 @@ const GAME_FILTER_MAP: Record<string, string> = {
   'space-entry': 'Science & Math',
   'bond-and-burn': 'Science & Math',
   'traffic-lab': 'Puzzles & Logic',
+  'circuit-builder': 'Science & Math',
 }
 
 const FILTER_CHIPS = [

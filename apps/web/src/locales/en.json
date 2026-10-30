@@ -99,6 +99,11 @@
       "title": "Bond & Burn",
       "description": "Read the formula, find elements on the periodic table, and build compounds before the lab overheats!",
       "category": "Science & Math"
+    },
+    "circuit-builder": {
+      "title": "Circuit Builder",
+      "description": "Wire up batteries, bulbs and switches, then watch the current flow and fix faults!",
+      "category": "Science & Math"
     }
   },
   "nav": {
@@ -805,6 +810,243 @@
         "hint": "Grab 2 Nitrogen and 1 Oxygen",
         "funFact": "Dentists use laughing gas (N₂O) to help patients relax during procedures!"
       }
+    }
+  },
+  "circuitBuilder": {
+    "canvasLabel": "Circuit building grid",
+    "canvasHint": "Drag a component from the tray, or tap a component then tap a cell. Arrow keys move the cursor, Enter places or activates, C starts a connection, Enter finishes it on the first terminal and Shift+Enter on the second, Delete removes.",
+    "component": {
+      "battery": { "name": "Battery", "abbr": "BAT" },
+      "solar": { "name": "Solar panel", "abbr": "SOL" },
+      "wire": { "name": "Wire", "abbr": "WIR" },
+      "switch": { "name": "Switch", "abbr": "SW" },
+      "resistor": { "name": "Resistor", "abbr": "RES" },
+      "led": { "name": "LED bulb", "abbr": "LED" },
+      "motor": { "name": "Motor", "abbr": "MOT" },
+      "buzzer": { "name": "Buzzer", "abbr": "BUZ" }
+    },
+    "tray": {
+      "title": "Components",
+      "remaining": "{{count}} left",
+      "exhausted": "None left",
+      "armed": "Selected — tap a grid cell to place"
+    },
+    "status": {
+      "energized": "Current is flowing",
+      "deEnergized": "No current is flowing",
+      "fuseBlown": "The fuse has blown",
+      "resetFuse": "Reset the fuse",
+      "voltage": "Supply voltage",
+      "lightLevel": "Light level"
+    },
+    "fault": {
+      "SHORT_CIRCUIT": "Short circuit",
+      "OVERCURRENT": "Too much current",
+      "REVERSED_POLARITY": "Component is backwards",
+      "SINGULAR_SYSTEM": "This circuit cannot work"
+    },
+    "faultHelp": {
+      "SHORT_CIRCUIT": "The current found a path straight from one side of the battery to the other with nothing to slow it down, so it rushed through and blew the fuse. Put a load in that path, such as an LED bulb with a resistor, or a motor.",
+      "OVERCURRENT": "There is more current in this path than the parts can carry safely. Raise the resistance by adding a resistor, or turn the supply voltage down.",
+      "REVERSED_POLARITY": "A component is connected the wrong way round, so it blocks the current instead of using it. Swap its two ends and try again.",
+      "SINGULAR_SYSTEM": "This circuit has no single answer the simulator can work out, usually because a part is wired across itself. Remove the connection that joins a component's two terminals together."
+    },
+    "rejection": {
+      "OUT_OF_BOUNDS": "That spot is off the grid",
+      "CELL_OCCUPIED": "Something is already there",
+      "OVER_BUDGET": "No more of those are available",
+      "ELEMENT_LIMIT": "The grid is full",
+      "CONNECTION_LIMIT": "No more connections can be added",
+      "UNKNOWN_ELEMENT": "That component is no longer there",
+      "UNKNOWN_CONNECTION": "That connection is no longer there",
+      "ELEMENT_LOCKED": "That component cannot be moved",
+      "NOT_A_SWITCH": "Only a switch can be opened and closed",
+      "SELF_CONNECTION": "A terminal cannot connect to itself",
+      "DUPLICATE_CONNECTION": "Those terminals are already connected",
+      "INVALID_VOLTAGE": "That voltage cannot be used",
+      "INVALID_LIGHT_LEVEL": "That light level cannot be used"
+    },
+    "layout": {
+      "enterFullScreen": "Full screen",
+      "exitFullScreen": "Leave full screen"
+    },
+    "audio": {
+      "soundOn": "Sound on",
+      "soundOff": "Sound off"
+    },
+    "error": {
+      "evaluationUnavailable": "The simulation is unavailable right now. Try changing your circuit.",
+      "levelUnavailable": "This circuit workbench could not be opened. Please try again."
+    },
+    "setup": {
+      "title": "Circuit Builder",
+      "subtitle": "Build circuits, power the rover",
+      "description": "Wire up batteries, switches and bulbs to bring a Mars rover to life. Each level teaches one idea about electricity.",
+      "howToPlay": "How to Play",
+      "step1": "Pick a component and place it on the grid",
+      "step2": "Connect the terminals with wires",
+      "step3": "Watch the rover: its parts light up when current flows",
+      "step4": "Reach the goal to send your circuit and earn points",
+      "chooseDifficulty": "Choose a difficulty",
+      "chooseLevel": "Choose a level",
+      "levelNumber": "Level {{n}}",
+      "concept": "Goal",
+      "startLevel": "Start level",
+      "selectDifficulty": "Select a difficulty",
+      "sandboxTitle": "Sandbox",
+      "sandboxDescription": "Free play with every component. No goal, no score, and it does not use up a daily game.",
+      "sandboxStart": "Open the sandbox",
+      "startFailed": "The game could not be started. Please try again.",
+      "noLevels": "No levels are available right now.",
+      "gateChecking": "Checking your access..."
+    },
+    "difficulty": {
+      "1": {
+        "name": "Easy",
+        "summary": "Learn the basics: closed loops and switches. The rover shows what is on and what is off.",
+        "disclosure": "No numbers, just parts that are lit or dark.",
+        "levels": "{{count}} levels"
+      },
+      "2": {
+        "name": "Medium",
+        "summary": "Compare series and parallel wiring.",
+        "disclosure": "Brightness bars that compare parts, with no units.",
+        "levels": "{{count}} levels"
+      },
+      "3": {
+        "name": "Hard",
+        "summary": "Power the whole rover and recover from a short circuit.",
+        "disclosure": "Voltage and resistance values.",
+        "levels": "{{count}} levels"
+      },
+      "4": {
+        "name": "Super Hard",
+        "summary": "Control current with resistors and change the supply voltage.",
+        "disclosure": "Everything: volts, ohms, amps and totals.",
+        "levels": "{{count}} levels"
+      }
+    },
+    "level": {
+      "cb-01-closed-circuit": {
+        "title": "Close the loop",
+        "goal": "Light the rover headlight.",
+        "hint": "Join the battery, the resistor and the LED bulb in a ring, and bring a wire back to the battery. If the bulb stays dark, check which way round it is connected.",
+        "learn": "Current only flows around a closed loop. The resistor protects the LED bulb from too much current."
+      },
+      "cb-02-switch-control": {
+        "title": "Switch it on",
+        "goal": "Light the headlight with the switch closed, then turn it off and on again.",
+        "hint": "The switch is already on the board. Put it in the loop with the battery, the resistor and the LED bulb, then select it to open or close it.",
+        "learn": "A switch opens or closes the loop. When it is open the loop is cut, no current flows and the light goes out."
+      },
+      "cb-03-series-loop": {
+        "title": "One loop for two",
+        "goal": "Light the headlight and sound the buzzer in the same loop.",
+        "hint": "Put the LED bulb and the buzzer one after the other in the same loop, with the resistor and the switch. Then open the switch and watch both.",
+        "learn": "In a series circuit the same current goes through every part, one after the other. Open the switch and everything stops."
+      },
+      "cb-04-parallel-branches": {
+        "title": "Two paths",
+        "goal": "Give the headlight one path and the buzzer another, each with its own switch.",
+        "hint": "Connect both paths to the same battery terminals. Each path has its own switch. Open one and see what the other does.",
+        "learn": "In a parallel circuit each path is its own loop. Switching one off leaves the other running."
+      },
+      "cb-05-series-vs-parallel": {
+        "title": "Power the whole rover",
+        "goal": "Run the motors, the headlight and the buzzer at the same time.",
+        "hint": "Wire the parts side by side, each one straight across the battery, with the resistor in front of the LED bulb. Motors in one series loop turn very slowly.",
+        "learn": "Parts side by side each get the full battery voltage. Parts in series share it, so motors in series get less and turn more slowly."
+      },
+      "cb-06-short-circuit-recovery": {
+        "title": "Beat the short circuit",
+        "goal": "Light the headlight even if a short circuit blows the fuse first.",
+        "hint": "A wire straight across the battery blows the fuse. Reset the fuse, take that wire away and put the load back in the loop.",
+        "learn": "A path with almost no resistance lets a huge current through. Always keep a load in the loop, and reset the fuse once the fault is fixed."
+      },
+      "cb-07-resistance-limits-current": {
+        "title": "Tame the current",
+        "goal": "Light the LED with a safe current, using the battery and LED already on the board.",
+        "hint": "Put a resistor in series with the LED. Two resistors in series add up. Two in parallel give less resistance than one, so more current flows.",
+        "learn": "Current is voltage divided by resistance. More resistance means less current, and resistors in parallel lower the total resistance."
+      },
+      "cb-08-variable-voltage": {
+        "title": "Find the right voltage",
+        "goal": "Power the motor, the buzzer and the headlight from one battery, and find which supply voltages work.",
+        "hint": "Close the master switch and the headlight switch. Change the supply voltage with the slider: the motor needs enough voltage to turn, and the LED can get too much current if it is high.",
+        "learn": "Voltage pushes current through resistance. If it is too low the motor will not turn. If it is too high the LED carries more current than it is rated for."
+      }
+    },
+    "rover": {
+      "title": "Mars Rover",
+      "alt": "Drawing of a Mars rover. Its wheels, headlight, buzzer and solar panel show which parts are powered.",
+      "on": "On",
+      "off": "Off",
+      "unused": "Not used in this level",
+      "allPowered": "The whole rover is powered!"
+    },
+    "machine": {
+      "marsRover": {
+        "driveMotor": "Drive motors",
+        "headlight": "Headlight",
+        "buzzerAlert": "Buzzer alert",
+        "solarCharging": "Solar charging"
+      }
+    },
+    "readout": {
+      "title": "Circuit readout",
+      "supply": "Supply",
+      "voltage": "Voltage",
+      "resistance": "Resistance",
+      "current": "Current",
+      "totalResistance": "Total resistance",
+      "totalCurrent": "Total current",
+      "relative": "Brightness",
+      "noPath": "No complete loop yet",
+      "state": {
+        "lit": "Working",
+        "dim": "Dim",
+        "dark": "Off",
+        "spark": "Fault"
+      },
+      "brightness": {
+        "off": "Off",
+        "dim": "Dim",
+        "medium": "Medium",
+        "bright": "Bright"
+      },
+      "noneHint": "Look at the rover: each part is on or off.",
+      "qualitativeHint": "The bars compare how bright each part is, with no units."
+    },
+    "game": {
+      "loading": "Starting your game...",
+      "level": "Level",
+      "goal": "Goal",
+      "showHint": "Show hint",
+      "hideHint": "Hide hint",
+      "solved": "The rover is working! Checking your circuit...",
+      "solvedTitle": "Circuit complete",
+      "submitting": "The server is checking your circuit...",
+      "submitFailed": "We could not send your circuit. Your work is safe. Please try again.",
+      "rejected": "The server could not verify that circuit. Change it and try again.",
+      "retry": "Try again",
+      "nextLevel": "Next level",
+      "backToSetup": "Back to levels",
+      "quit": "Quit",
+      "noLevel": "That level could not be found.",
+      "learnTitle": "What you learned"
+    },
+    "faultOverlay": {
+      "label": "Circuit fault",
+      "dismiss": "Dismiss"
+    },
+    "sandbox": {
+      "badge": "Sandbox: nothing here is scored",
+      "note": "Free play with every component. There is no score and no daily game is used.",
+      "back": "Back to levels"
+    },
+    "result": {
+      "serverScoreNote": "The server checked this score.",
+      "rankLabel": "Leaderboard rank"
     }
   },
   "miniGolf": {

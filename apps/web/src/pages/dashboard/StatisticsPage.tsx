@@ -24,6 +24,7 @@ const GAME_INFO: Record<string, { icon: string; name: string; color: string }> =
   PATTERN_RECALL:   { icon: '🧩', name: 'Pattern Recall',   color: '#0ea5e9' },
   SPACE_ENTRY:      { icon: '🚀', name: 'Space Entry',      color: '#22d3ee' },
   SCRATCH_CODING:   { icon: '👨‍🚀', name: 'Space Coder',      color: '#818cf8' },
+  CIRCUIT_BUILDER:  { icon: '⚡', name: 'Circuit Builder',  color: '#f59e0b' },
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────

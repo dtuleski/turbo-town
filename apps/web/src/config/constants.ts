@@ -53,6 +53,9 @@ export const ROUTES = {
   TRAFFIC_LAB_GAME: '/traffic-lab/game',
   MINI_GOLF_SETUP: '/mini-golf/setup',
   MINI_GOLF_GAME: '/mini-golf/game',
+  CIRCUIT_BUILDER_SETUP: '/circuit-builder/setup',
+  CIRCUIT_BUILDER_GAME: '/circuit-builder/game',
+  CIRCUIT_BUILDER_SANDBOX: '/circuit-builder/sandbox',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',
@@ -86,6 +89,7 @@ export const STORAGE_KEYS = {
   REFRESH_TOKEN: 'refresh_token',
   USER: 'user',
   GAME_SETTINGS: 'game_settings',
+  SOUND_ENABLED: 'sound_enabled',
 } as const
 
 export const QUERY_KEYS = {

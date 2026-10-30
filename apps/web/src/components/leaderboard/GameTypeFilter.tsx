@@ -29,6 +29,7 @@ const gameTypes = [
   { value: GameType.BOND_AND_BURN, label: 'Bond & Burn', icon: '🧪' },
   { value: GameType.TRAFFIC_LAB, label: 'Traffic Lab', icon: '🚦' },
   { value: GameType.MINI_GOLF, label: 'Mini Golf', icon: '⛳' },
+  { value: GameType.CIRCUIT_BUILDER, label: 'Circuit Builder', icon: '⚡' },
 ]
 
 const GameTypeFilter = ({ selected, onChange }: GameTypeFilterProps) => {
