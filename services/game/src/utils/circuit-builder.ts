@@ -53,8 +53,20 @@ export const CB_MAX_COMPLETION_TIME = 3600;
 // Scoring weights (E3) - FR-CB-24, FR-CB-25
 // ---------------------------------------------------------------------------
 
-/** Same base as the existing premium games, so Circuit Builder scores are comparable. */
-export const CB_BASE_SCORE = 1700;
+/**
+ * Chosen so a perfect difficulty-4 run lands exactly on the 8000 cap (CB_SCORE_CAP).
+ *
+ * The fastest legal difficulty-4 completion is 8 s (validateCompletionTime floors at 2 s per
+ * difficulty level). Against the 180 s target that gives a speed bonus of
+ * 1 + 0.15 * (180 - 8) / 180 = 1.1433, not the 1.15 band ceiling, which would need 0 s. With
+ * two components (efficiency 1.0, accuracy bonus 1.5) and the 2.5x multiplier:
+ *
+ *   1866 * 2.5 * 1.1433 * 1.5 = 8000.5, which rounds to 8000.
+ *
+ * Faster submissions (down to the 1 s schema minimum) compute slightly above 8000 and are
+ * clamped by CB_SCORE_CAP. Difficulty 3 tops out near 6400, below the cap.
+ */
+export const CB_BASE_SCORE = 1866;
 
 /** Same ceiling the generic path applies to premium games and to difficulty 4. */
 export const CB_SCORE_CAP = 8000;

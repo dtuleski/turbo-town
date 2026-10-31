@@ -303,17 +303,17 @@ verified        = unresolvedFaultCount  * 0.30                        // engine-
 faultPenalty    = min(0.60, historical + verified)
 qualityRatio    = clamp(0, 1, efficiencyRatio - faultPenalty)
 
-baseScore       = 1700
+baseScore       = 1866
 difficultyMult  = 1.0 / 1.5 / 2.0 / 2.5 by difficulty 1 to 4          // the existing private helper
 accuracyBonus   = 0.5 + qualityRatio                                  // range 0.5 to 1.5, same shape as the existing formula
-finalScore      = clamp(0, 8000, round(1700 * difficultyMult * speedBonus * accuracyBonus))
+finalScore      = clamp(0, 8000, round(1866 * difficultyMult * speedBonus * accuracyBonus))
 ```
 
 ### ScoreBreakdown field mapping
 
 | Field | Value | Note |
 |---|---|---|
-| `baseScore` | 1700 | matches the existing premium-game base |
+| `baseScore` | 1866 | chosen so a perfect difficulty-4 run reaches the 8000 cap exactly |
 | `difficultyMultiplier` | 1.0 / 1.5 / 2.0 / 2.5 | from the server-stored `game.difficulty` |
 | `speedBonus` | the time factor, 0.90 to 1.15 | the modest factor |
 | `accuracyBonus` | `0.5 + qualityRatio`, 0.5 to 1.5 | carries efficiency **and** fault avoidance |
@@ -347,7 +347,7 @@ also occurred during the attempt, so it is already inside whatever the client re
 Pricing the reported count in full would charge that fault twice, and charge a truthful client
 more than a lying one for the identical circuit. Netting the verified count out of the cleared
 count makes honest reporting cost exactly what hiding costs - asserted directly: `faultCount:
-1` with one unresolved fault scores the same 2040 as `faultCount: 0` with one unresolved
+1` with one unresolved fault scores the same 2239 as `faultCount: 0` with one unresolved
 fault.
 
 **Why the two terms add rather than one replacing the other.** This is the correction to the
@@ -356,18 +356,18 @@ verified penalty only *substitutes* for the historical one, so the quantity that
 decides whether leaving a fault in the layout pays - the **marginal** cost of that fault - was
 `0.30 - 0.05 * faultCount`, which falls to zero at a reported count of 6. One component is
 worth 0.20 of `qualityRatio` on `cb-01-closed-circuit`, so the protective-resistor exploit
-reopened from a reported count of 3 upward: 1955 against 2040 at 3 reported faults, and 1700
-against 2040 at 6 or more. That is the experimenting player the game is built for, scoring
+reopened from a reported count of 3 upward: 2146 against 2239 at 3 reported faults, and 1866
+against 2239 at 6 or more. That is the experimenting player the game is built for, scoring
 better for the mistake the level teaches against. Summing the netted terms holds the marginal
 cost flat at `0.30 - 0.05 = 0.25` at every count, which clears the 0.20 one component buys.
 
 **Why each term is capped separately.** A single 0.60 ceiling over the summed penalty
 reproduces the same inversion at high counts: once both halves saturate it the verified fault
-is free again, and the unprotected solve wins by 340 points at a reported count of 12 or more.
+is free again, and the unprotected solve wins by 373 points at a reported count of 12 or more.
 Capping the historical half at 0.30 on its own leaves exactly one verified fault's worth of
 room under the 0.60 total, so the verified penalty always survives the ceiling. At a reported
-count of 20 - the clamp - a clean layout scores 2040 and the same layout with one engine-
-visible fault scores 1530: the fault still costs 510 points. Asserted.
+count of 20 - the clamp - a clean layout scores 2239 and the same layout with one engine-
+visible fault scores 1679: the fault still costs 560 points. Asserted.
 
 **Neither signal can hide the other, in absolute and in marginal terms.** A client that
 reports `faultCount: 0` still pays 0.30 for every fault the engine finds in what it submitted.
@@ -438,9 +438,9 @@ unresolved fault, so these figures are **unchanged** by the two-signal penalty.
 
 | | components | faults | time | speedBonus | efficiency | penalty | quality | accuracyBonus | finalScore |
 |---|---|---|---|---|---|---|---|---|---|
-| **A** elegant, fault-free, slower | 3 | 0 | 120 s | 0.950 | 0.80 | 0.00 | 0.80 | 1.30 | **2100** |
-| **B** careless, faster | 6 | 3 | 45 s | 1.075 | 0.20 | 0.15 | 0.05 | 0.55 | **1005** |
-| **C** careless, fastest legal | 5 | 1 | 30 s | 1.100 | 0.40 | 0.05 | 0.35 | 0.85 | **1590** |
+| **A** elegant, fault-free, slower | 3 | 0 | 120 s | 0.950 | 0.80 | 0.00 | 0.80 | 1.30 | **2305** |
+| **B** careless, faster | 6 | 3 | 45 s | 1.075 | 0.20 | 0.15 | 0.05 | 0.55 | **1103** |
+| **C** careless, fastest legal | 5 | 1 | 30 s | 1.100 | 0.40 | 0.05 | 0.35 | 0.85 | **1745** |
 
 A beats both by a wide margin.
 
@@ -453,12 +453,12 @@ counts are the engine's own rather than hand-written.
 
 | | components | efficiency | unresolved faults | penalty | quality | accuracyBonus | finalScore |
 |---|---|---|---|---|---|---|---|
-| **protected** battery + 470 ohm resistor + LED | 3 | 1.00 → 0.80 | 0 | 0.00 | 0.80 | 1.30 | **2210** |
-| **unprotected** battery + LED | 2 | 1.00 | 1 (`OVERCURRENT`) | 0.30 | 0.70 | 1.20 | **2040** |
+| **protected** battery + 470 ohm resistor + LED | 3 | 1.00 → 0.80 | 0 | 0.00 | 0.80 | 1.30 | **2426** |
+| **unprotected** battery + LED | 2 | 1.00 | 1 (`OVERCURRENT`) | 0.30 | 0.70 | 1.20 | **2239** |
 
-The protected solve wins by 170 points, 8.3%. Before the engine's faults reached the scorer
-the unprotected solve scored **2550** against the same 2210, that is **15.4% more** for the
-circuit the level exists to teach against. Both the new ranking and the old 2550 figure are
+The protected solve wins by 187 points, 8.4%. Before the engine's faults reached the scorer
+the unprotected solve scored **2799** against the same 2426, that is **15.4% more** for the
+circuit the level exists to teach against. Both the new ranking and the old 2799 figure are
 asserted, the second so the defect cannot return unnoticed.
 
 The rows above both carry a reported `faultCount` of 0. The ranking has to hold at **every**
@@ -468,22 +468,22 @@ of this design let it absorb the verified one. Same level, same 90 seconds, so `
 
 | reported `faultCount` | protected (3 components) | unprotected (2 components) | margin | under the superseded `max` rule |
 |---|---|---|---|---|
-| 0 | **2210** | 2040 | +170 | protected +170 |
-| 1 | **2125** | 2040 | +85 | protected +85 |
-| 2 | **2040** | 1955 | +85 | tie |
-| 3 | **1955** | 1870 | +85 | **unprotected +85** |
-| 6 | **1700** | 1615 | +85 | **unprotected +340** |
-| 7 | **1700** | 1530 | +170 | **unprotected +340** |
-| 12 | **1700** | 1530 | +170 | **unprotected +340** |
-| 20 (the clamp) | **1700** | 1530 | +170 | **unprotected +340** |
+| 0 | **2426** | 2239 | +187 | protected +187 |
+| 1 | **2333** | 2239 | +94 | protected +94 |
+| 2 | **2239** | 2146 | +93 | tie |
+| 3 | **2146** | 2053 | +93 | **unprotected +93** |
+| 6 | **1866** | 1773 | +93 | **unprotected +373** |
+| 7 | **1866** | 1679 | +187 | **unprotected +373** |
+| 12 | **1866** | 1679 | +187 | **unprotected +373** |
+| 20 (the clamp) | **1866** | 1679 | +187 | **unprotected +373** |
 
-The margin never drops below 85 points, which is the 0.05 by which the 0.25 marginal fault
-cost exceeds the 0.20 one component buys at this budget, times the 1700 base.
+The margin never drops below about 93 points, which is the 0.05 by which the 0.25 marginal fault
+cost exceeds the 0.20 one component buys at this budget, times the 1866 base.
 
 **Bounds sanity.** The best possible submission - 2 components of a 7 budget, 0 faults,
-difficulty 4, 8 seconds - scores 7289, below the 8000 cap, so the formula stays monotone and
-is never clipped. The worst possible *successful* submission - efficiency 0, the historical
-penalty at its 0.30 cap, time at twice target, difficulty 1 - scores 765: never zero, never
+difficulty 4, 8 seconds - scores exactly 8000 (1866 x 2.5 x 1.1433 x 1.5 = 8000.5), so a perfect
+Super Hard run reaches the cap; a 1 second run computes above 8000 and is clamped. The worst possible *successful* submission - efficiency 0, the historical
+penalty at its 0.30 cap, time at twice target, difficulty 1 - scores 840: never zero, never
 negative, because `qualityRatio` clamps at 0 before the penalty is exhausted. Both are
 asserted in the test suite.
 
@@ -541,7 +541,7 @@ problem that is server-knowable, and they cannot close the other half: a short t
 genuinely repaired leaves nothing behind to re-derive. So the historical weight stays at 0.05
 and the residual stays exactly as U6 quantified it. A player who shorted five times, repaired
 every one, and reports zero gains at most `5 x 0.05 = 0.25` of `qualityRatio`, hence at most
-`0.25 x 1700 x 2.5 = 1062` points - under 13% of the 8000 cap, and only at the highest
+`0.25 x 1866 x 2.5 = 1166` points - under 15% of the 8000 cap, and only at the highest
 difficulty. Closing it would require streaming fault events to the server during play, which is
 outside this unit's scope. **This is documented as residual trust, not claimed as verified.**
 
