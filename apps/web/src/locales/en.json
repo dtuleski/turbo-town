@@ -1092,5 +1092,181 @@
     "time": "Time",
     "difficulty": "Difficulty",
     "wordsToFind": "Words to Find"
+  },
+  "quest": {
+    "title": "Quest Map",
+    "subtitle": "Clear each node to open the next one. Earn up to 3 stars per node.",
+    "playsLeft": "{{count}} plays left today",
+    "playsUsed": "{{used}} of {{limit}} plays used",
+    "resetsAt": "Resets at {{time}}",
+    "loading": "Loading your Quest Map...",
+    "error": {
+      "title": "We could not load the Quest Map.",
+      "retry": "Retry"
+    },
+    "worldStars": "{{stars}} of {{max}} stars",
+    "worlds": {
+      "brain-peaks": {
+        "name": "Brain Peaks"
+      },
+      "science-island": {
+        "name": "Science Island"
+      }
+    },
+    "nodes": {
+      "bp-01-memory": {
+        "name": "Animal Memory"
+      },
+      "bp-02-math": {
+        "name": "Math Warm-up"
+      },
+      "bp-03-words": {
+        "name": "Word Hunt"
+      },
+      "bp-04-sequence": {
+        "name": "Sequence Steps"
+      },
+      "bp-05-geo": {
+        "name": "Geo Pass"
+      },
+      "bp-06-maze": {
+        "name": "Number Maze"
+      },
+      "bp-07-memory-hard": {
+        "name": "Deep Ocean Memory"
+      },
+      "bp-boss": {
+        "name": "Peak Boss"
+      },
+      "bp-bonus-sequence": {
+        "name": "Bonus: Long Sequence"
+      },
+      "si-01-bond-burn": {
+        "name": "Chemistry Lab"
+      },
+      "si-02-space-entry": {
+        "name": "Rocket Landing"
+      },
+      "si-03-circuit-series": {
+        "name": "Series Circuit"
+      },
+      "si-04-traffic-lab": {
+        "name": "Traffic Control"
+      },
+      "si-05-scratch": {
+        "name": "Code Corner"
+      },
+      "si-06-mini-golf": {
+        "name": "Golf Cove"
+      },
+      "si-07-circuit-parallel": {
+        "name": "Parallel Circuit"
+      },
+      "si-boss": {
+        "name": "Island Boss"
+      },
+      "si-bonus": {
+        "name": "Bonus: Expert Circuit"
+      }
+    },
+    "games": {
+      "ANIMALS": "Memory Match: Animals",
+      "FRUITS": "Memory Match: Fruits",
+      "VEHICLES": "Memory Match: Vehicles",
+      "SPACE": "Memory Match: Space",
+      "OCEAN": "Memory Match: Ocean",
+      "FORMULA1": "Memory Match: Formula 1",
+      "MATH_CHALLENGE": "Math Challenge",
+      "WORD_PUZZLE": "Word Puzzle",
+      "SEQUENCE_MEMORY": "Sequence Memory",
+      "PATTERN_RECALL": "Pattern Recall",
+      "GEO_QUIZ": "Geography Quiz",
+      "MATH_MAZE": "Math Maze",
+      "BUBBLE_POP": "Bubble Pop",
+      "BOND_AND_BURN": "Bond & Burn",
+      "SPACE_ENTRY": "Space Entry",
+      "TRAFFIC_LAB": "Traffic Lab",
+      "MINI_GOLF": "Mini Golf",
+      "SCRATCH_CODING": "Space Coder",
+      "CIRCUIT_BUILDER": "Circuit Builder"
+    },
+    "difficulty": {
+      "1": "Easy",
+      "2": "Medium",
+      "3": "Hard",
+      "4": "Expert"
+    },
+    "node": {
+      "aria": {
+        "locked": "{{name}}, locked",
+        "available": "{{name}}, ready to play",
+        "earned": "{{name}}, {{count}} of 3 stars",
+        "unavailable": "{{name}}, not available",
+        "boss": "boss",
+        "bonus": "bonus",
+        "new": "newly unlocked"
+      },
+      "boss": "Boss",
+      "bonus": "Bonus",
+      "new": "New"
+    },
+    "panel": {
+      "goals": "Star goals",
+      "goal1": "1 star",
+      "goal2": "2 stars",
+      "goal3": "3 stars",
+      "points": "{{points}} points",
+      "combinedScore": "Combined score",
+      "reached": "Reached",
+      "best": "Best: {{score}}",
+      "legs": "Games",
+      "legOf": "Leg {{k}} of {{n}}",
+      "order": "Play the legs in order within 30 minutes.",
+      "runInProgress": "Run in progress: {{done}} of {{total}} legs, expires at {{time}}",
+      "play": "Play",
+      "replay": "Replay",
+      "continue": "Continue run",
+      "notAvailableNow": "This node is not available right now.",
+      "locked": "Earn a star on the previous node to unlock.",
+      "bonusLocked": "Collect stars in this world to unlock.",
+      "unavailable": "This game is not available right now. Skipping it counts as passed.",
+      "paywall": "Subscribe to unlock World 2",
+      "noPlaysLeft": "You have no plays left today. Playing now will take you to the limit page.",
+      "close": "Close"
+    },
+    "worldLocked": {
+      "label": "Locked: subscribers only",
+      "link": "Subscribe to unlock World 2"
+    },
+    "banner": {
+      "playing": "Playing from Quest Map",
+      "goal": "3-star goal: {{points}} points",
+      "back": "Back to map"
+    },
+    "result": {
+      "stars": "Stars this run: {{count}} of 3",
+      "best": "Best: {{count}} of 3 stars",
+      "goals": "Goals",
+      "score": "Your score: {{score}}",
+      "nextGoal": "Next star at {{points}} points",
+      "allGoals": "All goals reached",
+      "legDone": "Leg {{k}} of {{n}} done",
+      "legScore": "Leg score: {{score}}",
+      "nextLeg": "Next leg",
+      "combined": "Combined score: {{score}}",
+      "expired": "This run expired. Start the boss again from leg 1.",
+      "unlocked": "Unlocked: {{names}}",
+      "worldCleared": "World cleared!",
+      "notSaved": "Progress could not be saved, replay to retry.",
+      "backToMap": "Back to map"
+    },
+    "notice": {
+      "questUnavailable": "That node is not available right now."
+    },
+    "hub": {
+      "title": "Quest Map",
+      "body": "Follow a path of games, earn stars and beat the boss.",
+      "cta": "Open Quest Map"
+    }
   }
 }
