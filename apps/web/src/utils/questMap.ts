@@ -1,4 +1,5 @@
 import type { LegView, QuestActiveGauntlet, QuestNodeView, QuestWorldView } from '@/types/quest'
+import { buildLaunchUrl } from '@/utils/questLaunch'
 
 /**
  * Pure Quest Map view logic (FD sections 1 to 3). The server decides statuses, stars and access;
@@ -155,6 +156,25 @@ export function getLegToRun(
     return { leg: node.legs[activeGauntlet.legsDone], legIndex: activeGauntlet.legsDone }
   }
   return { leg: node.legs[0], legIndex: 0 }
+}
+
+/** Launch URL for the node's next leg, or null when the node cannot be played from here. */
+export function getPlayUrl(node: QuestNodeView, world: QuestWorldView): string | null {
+  if (!canLaunch(node, world)) return null
+  const run = getLegToRun(node, world.activeGauntlet)
+  if (run === null) return null
+  return buildLaunchUrl(run.leg, { worldId: world.id, nodeId: node.id, legIndex: run.legIndex })
+}
+
+export type PanelForm = 'play' | 'locked' | 'paywall' | 'unavailable'
+
+/** Which node panel form to show (FD section 2). Paywall wins for a world the user cannot access. */
+export function getPanelForm(node: QuestNodeView, world: Pick<QuestWorldView, 'accessible'>): PanelForm {
+  if (!world.accessible) return 'paywall'
+  const state = getNodeVisualState(node, true)
+  if (state === 'unavailable') return 'unavailable'
+  if (state === 'locked') return 'locked'
+  return 'play'
 }
 
 export type StartFailed = 'rate' | 'quest' | null
