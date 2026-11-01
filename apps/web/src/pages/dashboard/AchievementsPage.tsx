@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getUserScoreHistory, LeaderboardEntry } from '@/api/leaderboard'
+import { useQuestProgress } from '@/hooks/useQuestProgress'
+import QuestAchievementsSection from '@/components/quest/QuestAchievementsSection'
 
 // ── Game metadata ──────────────────────────────────────────────────────────────
 
@@ -228,6 +230,7 @@ const AchievementsPage = () => {
   const [history, setHistory] = useState<LeaderboardEntry[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const questProgress = useQuestProgress()
 
   useEffect(() => {
     const load = async () => {
@@ -375,6 +378,7 @@ const AchievementsPage = () => {
           </div>
         </div>
       ))}
+      <QuestAchievementsSection state={questProgress} />
     </div>
   )
 }

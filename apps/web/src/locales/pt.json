@@ -1103,6 +1103,25 @@
       "retry": "Tentar novamente"
     },
     "worldStars": "{{stars}} de {{max}} estrelas",
+    "badges": {
+      "shelfLabel": "Insígnias de {{world}}",
+      "earned": "Conquistada",
+      "locked": "Bloqueada",
+      "new": "Nova",
+      "WORLD_CLEARED": {
+        "name": "Mundo concluído",
+        "hint": "Derrote o chefe com pelo menos 1 estrela."
+      },
+      "WORLD_MASTERED": {
+        "name": "Mundo dominado",
+        "hint": "Ganhe 3 estrelas em cada nó do caminho."
+      }
+    },
+    "achievements": {
+      "title": "Insígnias do Quest Map",
+      "summary": "{{earned}} de {{total}} insígnias conquistadas",
+      "error": "As insígnias do Quest Map não estão disponíveis agora."
+    },
     "worlds": {
       "brain-peaks": {
         "name": "Picos do Cérebro"

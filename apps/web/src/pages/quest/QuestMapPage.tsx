@@ -6,8 +6,10 @@ import { ROUTES } from '@/config/constants'
 import { useQuestProgress } from '@/hooks/useQuestProgress'
 import type { QuestNodeView, QuestProgressView } from '@/types/quest'
 import { getFrontierNodeId, resolveStartFailed } from '@/utils/questMap'
+import { badgeKey } from '@/utils/questBadges'
 import { questResultStore } from '@/utils/questResultStore'
 import PlaysLeftBar from '@/components/quest/PlaysLeftBar'
+import BadgeShelf from '@/components/quest/BadgeShelf'
 import QuestNodePanel from '@/components/quest/QuestNodePanel'
 import QuestWorldPath from '@/components/quest/QuestWorldPath'
 import { worldName } from '@/components/quest/questText'
@@ -29,6 +31,7 @@ export interface QuestMapViewProps {
   onPlay: (url: string) => void
   reducedMotion: boolean
   justUnlocked?: ReadonlySet<string>
+  justEarned?: ReadonlySet<string>
 }
 
 const LINK =
@@ -47,6 +50,7 @@ export function QuestMapView({
   onPlay,
   reducedMotion,
   justUnlocked,
+  justEarned,
 }: QuestMapViewProps) {
   const { t } = useTranslation()
   const worlds = data ? [...data.worlds].sort((a, b) => a.order - b.order) : []
@@ -109,6 +113,7 @@ export function QuestMapView({
                 </Link>
               </div>
             )}
+            <BadgeShelf world={world} reducedMotion={reducedMotion} justEarned={justEarned} />
             <QuestWorldPath
               world={world}
               reducedMotion={reducedMotion}
@@ -148,6 +153,10 @@ export default function QuestMapPage() {
     () => new Set(questResultStore.get()?.newlyUnlocked ?? [])
   )
 
+  const [justEarned] = useState<ReadonlySet<string>>(() => {
+    const result = questResultStore.get()
+    return new Set((result?.badgesAwarded ?? []).map((id) => badgeKey(result?.worldId ?? '', id)))
+  })
   useEffect(() => {
     questResultStore.clear()
   }, [])
@@ -205,6 +214,7 @@ export default function QuestMapPage() {
       onPlay={onPlay}
       reducedMotion={reducedMotion}
       justUnlocked={justUnlocked}
+      justEarned={justEarned}
     />
   )
 }

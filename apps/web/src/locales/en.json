@@ -1105,6 +1105,25 @@
       "retry": "Retry"
     },
     "worldStars": "{{stars}} of {{max}} stars",
+    "badges": {
+      "shelfLabel": "{{world}} badges",
+      "earned": "Earned",
+      "locked": "Locked",
+      "new": "New",
+      "WORLD_CLEARED": {
+        "name": "World Cleared",
+        "hint": "Beat the boss with at least 1 star."
+      },
+      "WORLD_MASTERED": {
+        "name": "World Mastered",
+        "hint": "Earn 3 stars on every path node."
+      }
+    },
+    "achievements": {
+      "title": "Quest Map badges",
+      "summary": "{{earned}} of {{total}} badges earned",
+      "error": "Quest Map badges are not available right now."
+    },
     "worlds": {
       "brain-peaks": {
         "name": "Brain Peaks"
