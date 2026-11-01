@@ -42,6 +42,7 @@ const RAW = import.meta.glob<string>(
     '../../../../services/game/src/services/game.service.ts',
     '../../../../services/game/src/utils/circuit-builder.ts',
     '../../../../services/game/src/services/review.service.ts',
+    '../../../../packages/shared/src/constants/paid-games.ts',
   ],
   { query: '?raw', import: 'default', eager: true },
 )
@@ -68,6 +69,7 @@ export interface RegistrySources {
   gameServiceGameService: string
   gameServiceCircuitUtil: string
   gameServiceReviewService: string
+  sharedPaidGames: string
   locales: Record<string, unknown>
 }
 
@@ -87,6 +89,7 @@ export const loadSources = (): RegistrySources => ({
   gameServiceGameService: read('../../../../services/game/src/services/game.service.ts'),
   gameServiceCircuitUtil: read('../../../../services/game/src/utils/circuit-builder.ts'),
   gameServiceReviewService: read('../../../../services/game/src/services/review.service.ts'),
+  sharedPaidGames: read('../../../../packages/shared/src/constants/paid-games.ts'),
   locales: { en, es, pt },
 })
 
@@ -150,7 +153,13 @@ export const findRegistryFailures = (s: RegistrySources): string[] => {
   if (!inWebPremium) {
     fail('apps/web GameTile.tsx PREMIUM_GAMES', `add '${CATALOG_ID}' (backend blocks Free users, the tile needs the paid badge)`)
   }
-  const paid = blockAfter(s.gameServiceGameService, 'const PAID_GAMES')
+  // The Game Service gates either on a local `PAID_GAMES` array or (since Quest Map QM2) on the
+  // shared `PAID_GAME_THEME_IDS` constant; read whichever list the start gate actually uses.
+  const usesShared = /PAID_GAME_THEME_IDS\.includes\(input\.themeId\)/.test(s.gameServiceGameService)
+  const paid = usesShared
+    ? // start at the initializer: the `readonly string[]` annotation's `[` would be taken as the block
+      blockAfter(s.sharedPaidGames, '= Object.freeze(')
+    : blockAfter(s.gameServiceGameService, 'const PAID_GAMES')
   const inPaid = paid.includes(`'${THEME_ID}'`) || (paid.includes('CIRCUIT_BUILDER_THEME_ID') && themeConst === THEME_ID)
   if (!inPaid) {
     fail('services/game game.service.ts PAID_GAMES', `add ${THEME_ID} (web PREMIUM_GAMES and backend PAID_GAMES must agree)`)
@@ -245,7 +254,8 @@ describe('Circuit Builder registry check can fail (mutation proof)', () => {
     ['HistoryPage entry removed', (s) => ({ ...s, historyPage: strip(s.historyPage, /\s*CIRCUIT_BUILDER:[^\n]*/) }), 'HistoryPage.tsx'],
     ['AchievementsPage entry removed', (s) => ({ ...s, achievementsPage: strip(s.achievementsPage, /\s*CIRCUIT_BUILDER:[^\n]*/) }), 'AchievementsPage.tsx'],
     ['StatisticsPage entry removed', (s) => ({ ...s, statisticsPage: strip(s.statisticsPage, /\s*CIRCUIT_BUILDER:[^\n]*/) }), 'StatisticsPage.tsx'],
-    ['backend PAID_GAMES entry removed', (s) => ({ ...s, gameServiceGameService: s.gameServiceGameService.replace(/(const PAID_GAMES = \[[^\]]*?), CIRCUIT_BUILDER_THEME_ID\]/, '$1]') }), 'PAID_GAMES'],
+    ['backend paid list entry removed', (s) => ({ ...s, sharedPaidGames: strip(s.sharedPaidGames, /\s*'CIRCUIT_BUILDER',/) }), 'PAID_GAMES'],
+    ['backend gate stops using the shared paid list', (s) => ({ ...s, gameServiceGameService: strip(s.gameServiceGameService, /PAID_GAME_THEME_IDS\.includes\(input\.themeId\) && /) }), 'PAID_GAMES'],
     ['emitted event gameType changed', (s) => ({ ...s, gameServiceGameService: s.gameServiceGameService.replace('gameType: CIRCUIT_BUILDER_THEME_ID', "gameType: 'CIRCUIT_BUILD'") }), 'publishGameCompleted gameType'],
     ['review registry entry removed', (s) => ({ ...s, gameServiceReviewService: strip(s.gameServiceReviewService, /, 'CIRCUIT_BUILDER',/) }), 'review.service.ts'],
     ['route registration removed', (s) => ({ ...s, appRoutes: strip(s.appRoutes, /<Route path=\{ROUTES\.CIRCUIT_BUILDER_SETUP\}[^\n]*/) }), 'App.tsx routes'],
