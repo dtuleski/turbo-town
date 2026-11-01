@@ -10,15 +10,17 @@ import GameOverModal from '@/components/game/GameOverModal'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 import AchievementToast from '@/components/game/AchievementToast'
 import type { GameTheme, DifficultyLevel } from '@/types/game'
+import { resolveGameSettings } from '@/utils/questLaunch'
 
 const GamePage = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { theme, difficulty } = (location.state as {
+  // Router state first; a Quest Map launch carries ?theme=&difficulty= instead.
+  const { theme, difficulty } = resolveGameSettings(location.state, location.search) as {
     theme: GameTheme
     difficulty: DifficultyLevel
-  }) || {}
+  }
 
   const [achievement, setAchievement] = useState<{
     id: string
