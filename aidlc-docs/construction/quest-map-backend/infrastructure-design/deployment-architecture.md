@@ -96,7 +96,7 @@ $policy = @'
     {
       "Sid": "QuestProgressWrite",
       "Effect": "Allow",
-      "Action": ["dynamodb:PutItem", "dynamodb:UpdateItem"],
+      "Action": ["dynamodb:PutItem"],
       "Resource": "arn:aws:dynamodb:us-east-1:342278407349:table/memory-game-quest-progress-prod"
     }
   ]
@@ -111,7 +111,7 @@ aws iam put-role-policy --role-name $roleName --policy-name QuestProgressTableAc
 # Verify (read-only)
 aws iam get-role-policy --role-name $roleName --policy-name QuestProgressTableAccess --profile dashden-new --region us-east-1
 ```
-Expected: the returned document equals the one above. Note: `UpdateItem` is granted because the approved design lists it; if Code Generation ends with no `UpdateItem` call, remove it from this document before running (SECURITY-06).
+Expected: the returned document equals the one above. Note: `UpdateItem` was removed after Code Generation confirmed the quest repository uses only GetItem, Query and PutItem (SECURITY-06).
 
 ## 7. Step 6 - environment variable by read-merge-write
 `aws lambda update-function-configuration --environment` **replaces all variables**. Passing only the new one would delete the others (Stripe ARNs, table names, `EVENT_BUS_NAME` and more). This procedure reads, backs up, merges and verifies. The backup file holds the full configuration (secret ARNs): it lives in `$env:TEMP`, outside the repository, and is deleted at the end.

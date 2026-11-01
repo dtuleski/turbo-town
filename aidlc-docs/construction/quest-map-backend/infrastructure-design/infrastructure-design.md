@@ -33,7 +33,7 @@ Also: `public readonly questProgressTable: dynamodb.Table;` and a `CfnOutput` `Q
 - Game function environment: `QUEST_PROGRESS_TABLE_NAME: props.questProgressTable.tableName`.
 - Two new statements on the **Game function only**, separate from the existing shared statement (which is not edited):
   - Read: `dynamodb:GetItem`, `dynamodb:Query` on `props.questProgressTable.tableArn`.
-  - Write: `dynamodb:PutItem`, `dynamodb:UpdateItem` on `props.questProgressTable.tableArn`.
+  - Write: `dynamodb:PutItem` on `props.questProgressTable.tableArn`.
 - No `/index/*` resource (the table has no index), no wildcard action, no wildcard resource.
 - Auth and Leaderboard functions are not touched.
 

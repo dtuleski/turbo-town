@@ -210,7 +210,7 @@ export class LambdaStack extends cdk.Stack {
     this.gameFunction.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'],
+        actions: ['dynamodb:PutItem'],
         resources: [props.questProgressTable.tableArn],
       })
     );
