@@ -30,6 +30,8 @@ type Query {
   getGameHistory(input: GameHistoryInput!): GameHistoryResponse!
   getUserStatistics: GameStatistics!
   canStartGame: CanStartGameResponse!
+  # Quest Map: progress, tier, daily limit and remaining plays. No input; user from the JWT.
+  getQuestProgress: QuestProgressView!
   listAvailableGames: [GameCatalogItem!]!
   
   # Language learning queries
@@ -59,6 +61,15 @@ type Query {
 input StartGameInput {
   themeId: ID!
   difficulty: Int! # 1-5
+  # Optional Quest Map launch context. Validated server-side (zod) before rate limiting; any
+  # failure returns one generic error and consumes no play. Without it a start behaves as always.
+  questContext: QuestContextInput
+}
+
+input QuestContextInput {
+  worldId: String! # ^[a-z0-9-]{1,40}$
+  nodeId: String! # ^[a-z0-9-]{1,40}$
+  legIndex: Int! # 0-2
 }
 
 input CompleteGameInput {
@@ -118,6 +129,87 @@ type CompleteGameResponse {
   achievements: [Achievement!]!
   scoreBreakdown: ScoreBreakdown # NEW - Score calculation details
   leaderboardRank: Int # NEW - User's rank after this game
+  # Quest Map result. Null for non-quest games or when the progress write failed (fail-soft).
+  quest: QuestResult
+}
+
+type QuestResult {
+  worldId: String!
+  nodeId: String!
+  kind: String! # GAME | BOSS | BONUS
+  score: Int!
+  thresholds: [Int!]!
+  stars: Int!
+  bestStars: Int!
+  newlyUnlocked: [String!]!
+  worldCleared: Boolean!
+  badgesAwarded: [String!]!
+  gauntlet: QuestGauntletResult
+}
+
+type QuestGauntletResult {
+  legIndex: Int!
+  legsTotal: Int!
+  status: String! # IN_PROGRESS | COMPLETE | EXPIRED
+  nextLeg: QuestLegView
+}
+
+type QuestLegView {
+  themeId: String!
+  difficulty: Int!
+  params: QuestLegParams
+}
+
+type QuestLegParams {
+  levelId: String
+  pageTheme: String
+}
+
+type QuestProgressView {
+  tier: String!
+  rateLimit: QuestRateLimit!
+  worlds: [QuestWorldView!]!
+}
+
+type QuestRateLimit {
+  limit: Int!
+  used: Int!
+  remaining: Int!
+  resetAt: String!
+}
+
+type QuestWorldView {
+  id: String!
+  order: Int!
+  accessible: Boolean!
+  totalStars: Int!
+  maxStars: Int!
+  badges: [String!]!
+  activeGauntlet: QuestActiveGauntlet
+  nodes: [QuestNodeView!]! # path nodes in order, bonus node last
+}
+
+type QuestActiveGauntlet {
+  nodeId: String!
+  legsDone: Int!
+  legsTotal: Int!
+  expiresAt: String!
+}
+
+type QuestNodeView {
+  id: String!
+  kind: String!
+  status: String! # LOCKED | AVAILABLE | UNAVAILABLE
+  stars: Int!
+  bestScore: Int!
+  thresholds: [Int!]!
+  map: QuestMapPoint!
+  legs: [QuestLegView!]!
+}
+
+type QuestMapPoint {
+  x: Float!
+  y: Float!
 }
 
 type GameHistoryResponse {

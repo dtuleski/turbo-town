@@ -1,4 +1,15 @@
-import { Game, GameStatus, SubscriptionTier, AuthorizationError, NotFoundError, ValidationError } from '@memory-game/shared';
+import {
+  Game,
+  GameStatus,
+  SubscriptionTier,
+  AuthorizationError,
+  NotFoundError,
+  ValidationError,
+  PAID_GAME_THEME_IDS,
+} from '@memory-game/shared';
+import type { QuestContext } from '@memory-game/shared';
+import { QuestService, QUEST_UNAVAILABLE_MESSAGE } from './quest.service';
+import type { QuestResultPayload } from '../types/quest';
 import { GameRepository } from '../repositories/game.repository';
 import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
@@ -41,8 +52,30 @@ export class GameService {
     private scoreCalculator: ScoreCalculatorService,
     private rateLimiter: RateLimiterService,
     private achievementTracker: AchievementTrackerService,
-    private eventPublisher: EventPublisherService
+    private eventPublisher: EventPublisherService,
+    // Optional trailing dependency: existing callers keep working without Quest Map.
+    private questService?: QuestService
   ) {}
+
+  /**
+   * Quest Map completion hook. Runs after the game record is updated, so the score is
+   * already stored; any failure yields no quest result and never fails the completion.
+   * Games without a questContext take no extra I/O.
+   */
+  private async finalizeQuest(
+    userId: string,
+    game: Game,
+    score: number,
+    extras?: { levelId?: string }
+  ): Promise<QuestResultPayload | undefined> {
+    if (!game.questContext || !this.questService) return undefined;
+    try {
+      return await this.questService.applyCompletion(userId, game, score, extras);
+    } catch (error) {
+      logger.error('Quest completion hook failed', error as Error, { userId, gameId: game.id });
+      return undefined;
+    }
+  }
 
   /**
    * Start a new game
@@ -53,9 +86,28 @@ export class GameService {
     // Get user's subscription tier
     const tier = await this.subscriptionRepository.getTier(userId);
 
+    // Quest Map: validate the context BEFORE any gate that consumes or checks allowance, so a
+    // failure costs no play and always returns the one generic message. The paid-game and
+    // difficulty gates below still run afterwards, so a quest context can never bypass them.
+    let questContext: QuestContext | undefined;
+    if (input.questContext !== undefined && input.questContext !== null) {
+      if (!this.questService) {
+        // Fail closed: never treat a quest request as a normal play.
+        logger.warn('Quest start rejected', { userId, reason: 'NOT_CONFIGURED' });
+        throw new ValidationError(QUEST_UNAVAILABLE_MESSAGE);
+      }
+      const validated = await this.questService.validateStart(
+        userId,
+        tier,
+        input.questContext,
+        input.themeId,
+        input.difficulty
+      );
+      questContext = validated.context;
+    }
+
     // Check if game requires a paid subscription (any tier above FREE)
-    const PAID_GAMES = ['SPACE_ENTRY', 'SCRATCH_CODING', 'BOND_AND_BURN', 'TRAFFIC_LAB', 'MINI_GOLF', 'LANGUAGE_PRONUNCIATION', CIRCUIT_BUILDER_THEME_ID];
-    if (PAID_GAMES.includes(input.themeId) && tier === SubscriptionTier.Free) {
+    if (PAID_GAME_THEME_IDS.includes(input.themeId) && tier === SubscriptionTier.Free) {
       throw new AuthorizationError('This game requires a paid subscription. Upgrade to play!');
     }
 
@@ -79,6 +131,7 @@ export class GameService {
       startedAt: new Date(),
       attempts: 0,
       score: 0,
+      ...(questContext ? { questContext } : {}),
     });
 
     // Increment rate limit usage
@@ -86,6 +139,9 @@ export class GameService {
 
     // Publish metrics
     await metricsPublisher.publishGameStarted(input.difficulty, tier);
+    if (questContext) {
+      await metricsPublisher.publishQuestMetric('QuestNodeStarted', questContext.worldId);
+    }
 
     // Build rate limit info
     const limit = this.rateLimiter.getTierLimit(tier);
@@ -428,10 +484,14 @@ export class GameService {
       achievementsUnlocked: achievements.length,
     });
 
+    // Quest Map hook (exit 1 of 2). Stars come from the server score computed above.
+    const quest = await this.finalizeQuest(userId, game, score);
+
     return {
       game: completedGame,
       achievements,
       scoreBreakdown,
+      ...(quest ? { quest } : {}),
     };
   }
 
@@ -571,10 +631,14 @@ export class GameService {
       achievementsUnlocked: achievements.length,
     });
 
+    // Quest Map hook (exit 2 of 2). Score is the server-verified Circuit Builder score.
+    const quest = await this.finalizeQuest(userId, game, score, { levelId: submission.levelId });
+
     return {
       game: completedGame,
       achievements,
       scoreBreakdown,
+      ...(quest ? { quest } : {}),
     };
   }
 

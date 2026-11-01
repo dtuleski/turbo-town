@@ -8,6 +8,10 @@ import { StartGameInput, CompleteGameInput, GameHistoryInput } from '../types';
 export const startGameInputSchema = z.object({
   themeId: z.string().min(1, 'Theme ID is required'),
   difficulty: z.number().int().min(1).max(5, 'Difficulty must be between 1 and 5'),
+  // Quest Map context. Passed through as `unknown` (like circuitSubmission) so zod never
+  // emits its own error text for it; QuestService parses it with the shared schema and
+  // returns the single generic quest error on any failure.
+  questContext: z.unknown().optional(),
 });
 
 export const completeGameInputSchema = z.object({

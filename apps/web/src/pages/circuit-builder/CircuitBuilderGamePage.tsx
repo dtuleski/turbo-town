@@ -7,6 +7,7 @@ import { useGuidedSession } from '@/hooks/useGuidedSession'
 import { routeForStartOutcome } from '@/services/circuitGameSession'
 import type { LevelDefinition } from '@/utils/circuitEngine'
 import { levelCopyKey, nextGuidedLevel, parseGameSearch } from '@/utils/circuitLevels'
+import { parseQuestParam } from '@/utils/questLaunch'
 import CircuitBuilderSurface from './CircuitBuilderSurface'
 
 const BUTTON =
@@ -29,6 +30,7 @@ export default function CircuitBuilderGamePage() {
 function GuidedGame({ level }: { level: LevelDefinition }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const inQuest = parseQuestParam(useLocation().search) !== null
   const { session, state } = useGuidedSession(level)
   const [hintOpen, setHintOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(true)
@@ -143,6 +145,8 @@ function GuidedGame({ level }: { level: LevelDefinition }) {
               {t('circuitBuilder.result.rankLabel')}: #{result.leaderboardRank}
             </p>
           )}
+          {/* From the Quest Map the way out is the result modal's Back to map, so hide these. */}
+          {!inQuest && (
           <div className="mt-3 flex flex-wrap gap-3">
             {next !== null && (
               <button
@@ -161,6 +165,7 @@ function GuidedGame({ level }: { level: LevelDefinition }) {
               {t('circuitBuilder.game.backToSetup')}
             </button>
           </div>
+          )}
         </section>
       )}
 

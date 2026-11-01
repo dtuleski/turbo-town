@@ -74,6 +74,7 @@ const lambdaStack = new LambdaStack(app, `MemoryGame-Lambda-${environment}`, {
   languageWordsTable: databaseStack.languageWordsTable,
   languageProgressTable: databaseStack.languageProgressTable,
   languageResultsTable: databaseStack.languageResultsTable,
+  questProgressTable: databaseStack.questProgressTable,
   userPool: cognitoStack.userPool,
   userPoolClient: cognitoStack.userPoolClient,
   eventBus: eventBridgeStack.gameEventsEventBus, // Use game-events-dev bus for game service

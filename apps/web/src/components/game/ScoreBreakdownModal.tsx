@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Modal from '@/components/common/Modal'
 import Button from '@/components/common/Button'
+import QuestResultSection from '@/components/quest/QuestResultSection'
 import { ROUTES } from '@/config/constants'
 import { submitGameReview } from '@/api/game'
+import { getNextLegUrl, isQuestMode } from '@/utils/questModal'
+import { useQuestResult } from '@/utils/questResultStore'
 
 interface ScoreBreakdown {
   baseScore: number
@@ -39,6 +42,13 @@ const ScoreBreakdownModal = ({
   const [hoveredStar, setHoveredStar] = useState(0)
   const [selectedRating, setSelectedRating] = useState(0)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
+  // Rule R2 (Quest Map): read before any early return so the hook order never changes.
+  const questResult = useQuestResult()
+  const { search } = useLocation()
+  const questMode = isQuestMode(search, questResult)
+  const nextLegUrl = questMode ? getNextLegUrl(questResult) : null
+  // In quest mode every close path returns to the map; the page's onClose is never called.
+  const handleClose = questMode ? () => navigate(ROUTES.QUEST_MAP) : onClose
 
   if (!scoreBreakdown) return null
 
@@ -64,7 +74,7 @@ const ScoreBreakdownModal = ({
   const rankBadge = leaderboardRank ? getRankBadge(leaderboardRank) : null
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`🎉 ${t('game.gameComplete')}`} size="lg">
+    <Modal isOpen={isOpen} onClose={handleClose} title={`🎉 ${t('game.gameComplete')}`} size="lg">
       <div className="space-y-3">
         {/* Final Score + Rank */}
         <div className="text-center py-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg">
@@ -78,6 +88,13 @@ const ScoreBreakdownModal = ({
             </div>
           )}
         </div>
+
+        {questMode && (
+          <QuestResultSection
+            result={questResult}
+            onNextLeg={nextLegUrl !== null ? () => navigate(nextLegUrl) : undefined}
+          />
+        )}
 
         {/* Score Breakdown — compact rows */}
         <div className="space-y-1">
@@ -138,7 +155,12 @@ const ScoreBreakdownModal = ({
           >
             {t('game.leaderboardBtn')}
           </Button>
-          {onPlayAgain && (
+          {questMode && (
+            <Button variant="secondary" className="flex-1" onClick={handleClose}>
+              {t('quest.result.backToMap')}
+            </Button>
+          )}
+          {onPlayAgain && !questMode && (
             <Button
               variant="secondary"
               className="flex-1"
@@ -147,7 +169,7 @@ const ScoreBreakdownModal = ({
               {t('game.playAgainBtn')}
             </Button>
           )}
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" onClick={handleClose}>
             {t('game.close')}
           </Button>
         </div>

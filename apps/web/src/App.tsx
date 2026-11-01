@@ -62,6 +62,7 @@ import MiniGolfGamePage from './pages/mini-golf/MiniGolfGamePage'
 import CircuitBuilderSetupPage from './pages/circuit-builder/CircuitBuilderSetupPage'
 import CircuitBuilderGamePage from './pages/circuit-builder/CircuitBuilderGamePage'
 import CircuitBuilderSandboxPage from './pages/circuit-builder/CircuitBuilderSandboxPage'
+import QuestMapPage from './pages/quest/QuestMapPage'
 import RateLimitPage from './pages/subscription/RateLimitPage'
 import SubscriptionSuccessPage from './pages/subscription/SubscriptionSuccessPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -99,6 +100,7 @@ function App() {
         <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
           <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.HUB} replace />} />
           <Route path={ROUTES.HUB} element={<GameHubPage />} />
+          <Route path={ROUTES.QUEST_MAP} element={<QuestMapPage />} />
           <Route path={ROUTES.GAME_SETUP} element={<GameSetupPage />} />
           <Route path={ROUTES.GAME} element={<GamePage />} />
           <Route path={ROUTES.MATH_SETUP} element={<MathSetupPage />} />

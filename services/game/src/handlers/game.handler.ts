@@ -5,6 +5,8 @@ import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
 import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
+import { QuestService } from '../services/quest.service';
+import { QuestProgressRepository } from '../repositories/quest-progress.repository';
 import { AdminService } from '../services/admin.service';
 import { StripeService } from '../services/stripe.service';
 import { LanguageHandler } from './language.handler';
@@ -55,6 +57,7 @@ export class GameHandler {
   private reviewService: ReviewService;
   private emailPrefsService: EmailPrefsService;
   private contactService: ContactService;
+  private questService: QuestService;
 
   constructor() {
     // Initialize repositories
@@ -74,6 +77,13 @@ export class GameHandler {
     );
     const eventPublisher = new EventPublisherService();
 
+    // Quest Map (injected optionally into the game service)
+    this.questService = new QuestService(
+      new QuestProgressRepository(),
+      this.gameCatalogRepository,
+      rateLimiter
+    );
+
     // Initialize game service
     this.gameService = new GameService(
       gameRepository,
@@ -82,7 +92,8 @@ export class GameHandler {
       scoreCalculator,
       rateLimiter,
       achievementTracker,
-      eventPublisher
+      eventPublisher,
+      this.questService
     );
 
     // Initialize admin service
@@ -178,6 +189,9 @@ export class GameHandler {
 
       case 'completeGame':
         return this.completeGame(userId, variables.input, username);
+
+      case 'getQuestProgress':
+        return this.getQuestProgress(userId);
 
       // Queries
       case 'getGame':
@@ -352,6 +366,7 @@ export class GameHandler {
       attempts: result.game.attempts,
       score: result.game.score,
       scoreBreakdown: result.scoreBreakdown || null,
+      quest: result.quest ?? null,
       leaderboardRank: null,
       achievements: result.achievements.map((a) => ({
         type: a.achievementType,
@@ -359,6 +374,14 @@ export class GameHandler {
         progress: a.progress,
       })),
     };
+  }
+
+  /**
+   * Query: getQuestProgress (no client input; userId is the verified JWT subject)
+   */
+  private async getQuestProgress(userId: string): Promise<any> {
+    const tier = await this.subscriptionRepository.getTier(userId);
+    return this.questService.getProgressView(userId, tier);
   }
 
   /**

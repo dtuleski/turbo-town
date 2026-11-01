@@ -1090,5 +1090,200 @@
     "time": "Tiempo",
     "difficulty": "Dificultad",
     "wordsToFind": "Palabras a Encontrar"
+  },
+  "quest": {
+    "title": "Mapa de Aventura",
+    "subtitle": "Supera cada nodo para abrir el siguiente. Gana hasta 3 estrellas por nodo.",
+    "playsLeft": "Te quedan {{count}} partidas hoy",
+    "playsUsed": "{{used}} de {{limit}} partidas usadas",
+    "resetsAt": "Se reinicia a las {{time}}",
+    "loading": "Cargando tu Mapa de Aventura...",
+    "error": {
+      "title": "No pudimos cargar el Mapa de Aventura.",
+      "retry": "Reintentar"
+    },
+    "worldStars": "{{stars}} de {{max}} estrellas",
+    "badges": {
+      "shelfLabel": "Insignias de {{world}}",
+      "earned": "Obtenida",
+      "locked": "Bloqueada",
+      "new": "Nueva",
+      "WORLD_CLEARED": {
+        "name": "Mundo completado",
+        "hint": "Vence al jefe con al menos 1 estrella."
+      },
+      "WORLD_MASTERED": {
+        "name": "Mundo dominado",
+        "hint": "Consigue 3 estrellas en cada nodo del camino."
+      }
+    },
+    "achievements": {
+      "title": "Insignias del Quest Map",
+      "summary": "{{earned}} de {{total}} insignias obtenidas",
+      "error": "Las insignias del Quest Map no están disponibles ahora."
+    },
+    "worlds": {
+      "brain-peaks": {
+        "name": "Picos del Cerebro"
+      },
+      "science-island": {
+        "name": "Isla de la Ciencia"
+      }
+    },
+    "nodes": {
+      "bp-01-memory": {
+        "name": "Memoria Animal"
+      },
+      "bp-02-math": {
+        "name": "Calentamiento Matemático"
+      },
+      "bp-03-words": {
+        "name": "Caza de Palabras"
+      },
+      "bp-04-sequence": {
+        "name": "Pasos en Secuencia"
+      },
+      "bp-05-geo": {
+        "name": "Paso Geográfico"
+      },
+      "bp-06-maze": {
+        "name": "Laberinto de Números"
+      },
+      "bp-07-memory-space": {
+        "name": "Memoria del Espacio"
+      },
+      "bp-boss": {
+        "name": "Jefe de la Cima"
+      },
+      "bp-bonus-sequence": {
+        "name": "Extra: Secuencia Larga"
+      },
+      "si-01-bond-burn": {
+        "name": "Laboratorio de Química"
+      },
+      "si-02-space-entry": {
+        "name": "Aterrizaje de Cohete"
+      },
+      "si-03-circuit-series": {
+        "name": "Circuito en Serie"
+      },
+      "si-04-circuit-branches": {
+        "name": "Ramas en Paralelo"
+      },
+      "si-05-scratch": {
+        "name": "Rincón del Código"
+      },
+      "si-06-mini-golf": {
+        "name": "Bahía del Golf"
+      },
+      "si-07-circuit-parallel": {
+        "name": "Circuito en Paralelo"
+      },
+      "si-boss": {
+        "name": "Jefe de la Isla"
+      },
+      "si-bonus": {
+        "name": "Extra: Circuito Experto"
+      }
+    },
+    "games": {
+      "ANIMALS": "Memoria: Animales",
+      "FRUITS": "Memoria: Frutas",
+      "VEHICLES": "Memoria: Vehículos",
+      "SPACE": "Memoria: Espacio",
+      "OCEAN": "Memoria: Océano",
+      "FORMULA1": "Memoria: Fórmula 1",
+      "MATH_CHALLENGE": "Desafío Matemático",
+      "WORD_PUZZLE": "Sopa de Letras",
+      "SEQUENCE_MEMORY": "Memoria de Secuencias",
+      "PATTERN_RECALL": "Memoria de Patrones",
+      "GEO_QUIZ": "Quiz de Geografía",
+      "MATH_MAZE": "Laberinto Matemático",
+      "BUBBLE_POP": "Revienta Burbujas",
+      "BOND_AND_BURN": "Bond & Burn",
+      "SPACE_ENTRY": "Entrada Espacial",
+      "TRAFFIC_LAB": "Laboratorio de Tráfico",
+      "MINI_GOLF": "Minigolf",
+      "SCRATCH_CODING": "Space Coder",
+      "CIRCUIT_BUILDER": "Constructor de Circuitos"
+    },
+    "difficulty": {
+      "1": "Fácil",
+      "2": "Medio",
+      "3": "Difícil",
+      "4": "Experto"
+    },
+    "node": {
+      "aria": {
+        "locked": "{{name}}, bloqueado",
+        "available": "{{name}}, listo para jugar",
+        "earned": "{{name}}, {{count}} de 3 estrellas",
+        "unavailable": "{{name}}, no disponible",
+        "boss": "jefe",
+        "bonus": "extra",
+        "new": "recién desbloqueado"
+      },
+      "boss": "Jefe",
+      "bonus": "Extra",
+      "new": "Nuevo"
+    },
+    "panel": {
+      "goals": "Metas de estrellas",
+      "goal1": "1 estrella",
+      "goal2": "2 estrellas",
+      "goal3": "3 estrellas",
+      "points": "{{points}} puntos",
+      "combinedScore": "Puntuación combinada",
+      "reached": "Logrado",
+      "best": "Mejor: {{score}}",
+      "legs": "Juegos",
+      "legOf": "Etapa {{k}} de {{n}}",
+      "order": "Juega las etapas en orden en menos de 30 minutos.",
+      "runInProgress": "Intento en curso: {{done}} de {{total}} etapas, vence a las {{time}}",
+      "play": "Jugar",
+      "replay": "Jugar de nuevo",
+      "continue": "Continuar intento",
+      "notAvailableNow": "Este nodo no está disponible en este momento.",
+      "locked": "Gana una estrella en el nodo anterior para desbloquearlo.",
+      "bonusLocked": "Reúne estrellas en este mundo para desbloquearlo.",
+      "unavailable": "Este juego no está disponible ahora. Saltarlo cuenta como superado.",
+      "paywall": "Suscríbete para desbloquear el Mundo 2",
+      "noPlaysLeft": "No te quedan partidas hoy. Si juegas ahora irás a la página de límite.",
+      "close": "Cerrar"
+    },
+    "worldLocked": {
+      "label": "Bloqueado: solo suscriptores",
+      "link": "Suscríbete para desbloquear el Mundo 2"
+    },
+    "banner": {
+      "playing": "Jugando desde el Mapa de Aventura",
+      "goal": "Meta de 3 estrellas: {{points}} puntos",
+      "back": "Volver al mapa"
+    },
+    "result": {
+      "stars": "Estrellas en esta partida: {{count}} de 3",
+      "best": "Mejor: {{count}} de 3 estrellas",
+      "goals": "Metas",
+      "score": "Tu puntuación: {{score}}",
+      "nextGoal": "Siguiente estrella con {{points}} puntos",
+      "allGoals": "Todas las metas logradas",
+      "legDone": "Etapa {{k}} de {{n}} completada",
+      "legScore": "Puntuación de la etapa: {{score}}",
+      "nextLeg": "Siguiente etapa",
+      "combined": "Puntuación combinada: {{score}}",
+      "expired": "Este intento venció. Empieza el jefe de nuevo desde la etapa 1.",
+      "unlocked": "Desbloqueado: {{names}}",
+      "worldCleared": "¡Mundo completado!",
+      "notSaved": "No se pudo guardar el progreso, juega de nuevo para reintentar.",
+      "backToMap": "Volver al mapa"
+    },
+    "notice": {
+      "questUnavailable": "Ese nodo no está disponible en este momento."
+    },
+    "hub": {
+      "title": "Mapa de Aventura",
+      "body": "Sigue un camino de juegos, gana estrellas y vence al jefe.",
+      "cta": "Abrir el Mapa de Aventura"
+    }
   }
 }

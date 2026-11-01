@@ -39,6 +39,8 @@ export class GameRepository implements IGameRepository {
       completionTime: game.completionTime,
       attempts: game.attempts,
       score: game.score,
+      // Quest Map: the validated, stripped context only; absent for ordinary games.
+      ...(game.questContext ? { questContext: game.questContext } : {}),
       createdAt: nowISO,
       updatedAt: nowISO,
     };
@@ -63,6 +65,7 @@ export class GameRepository implements IGameRepository {
         completionTime: game.completionTime,
         attempts: game.attempts,
         score: game.score,
+        ...(game.questContext ? { questContext: game.questContext } : {}),
         createdAt: now,
         updatedAt: now,
       };

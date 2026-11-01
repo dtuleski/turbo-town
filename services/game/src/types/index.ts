@@ -1,4 +1,5 @@
 import { Game, Achievement, GameStatus, AchievementType, SubscriptionTier } from '@memory-game/shared';
+import type { QuestResultPayload } from './quest';
 
 /**
  * GraphQL Input Types
@@ -7,6 +8,9 @@ import { Game, Achievement, GameStatus, AchievementType, SubscriptionTier } from
 export interface StartGameInput {
   themeId: string;
   difficulty: number; // 1-5
+  // Quest Map. Typed `unknown` on purpose: validated with the shared zod schema inside
+  // QuestService before rate limiting; never trusted as typed input.
+  questContext?: unknown;
 }
 
 export interface CompleteGameInput {
@@ -49,6 +53,8 @@ export interface StartGameResponse {
 export interface CompleteGameResponse {
   game: Game;
   achievements: Achievement[];
+  /** Quest Map result; absent for non-quest games or when the progress write failed. */
+  quest?: QuestResultPayload;
   scoreBreakdown?: {
     baseScore: number;
     difficultyMultiplier: number;
