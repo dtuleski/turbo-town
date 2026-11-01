@@ -1,5 +1,9 @@
 import { gql } from '@apollo/client'
 import { gameClient } from './client'
+import { ROUTES } from '@/config/constants'
+import type { QuestResultPayload } from '@/types/quest'
+import { parseQuestParam } from '@/utils/questLaunch'
+import { questResultStore } from '@/utils/questResultStore'
 
 // GraphQL Mutations
 const START_GAME = gql`
@@ -48,6 +52,31 @@ const COMPLETE_GAME = gql`
         unlocked
         progress
         completedAt
+      }
+      quest {
+        worldId
+        nodeId
+        kind
+        score
+        thresholds
+        stars
+        bestStars
+        newlyUnlocked
+        worldCleared
+        badgesAwarded
+        gauntlet {
+          legIndex
+          legsTotal
+          status
+          nextLeg {
+            themeId
+            difficulty
+            params {
+              levelId
+              pageTheme
+            }
+          }
+        }
       }
     }
   }
@@ -119,6 +148,8 @@ const CAN_START_GAME = gql`
 export interface StartGameInput {
   themeId: string
   difficulty: number // 1-5
+  // Set by startGame itself from the page URL (Quest Map launch); callers never pass it.
+  questContext?: { worldId: string; nodeId: string; legIndex: number }
 }
 
 export interface CompleteGameInput {
@@ -199,6 +230,7 @@ export interface CompleteGameResult {
   scoreBreakdown: ScoreBreakdownResult | null
   leaderboardRank: number | null
   achievements: { type: string; unlocked: boolean; progress: number; completedAt: string | null }[]
+  quest: QuestResultPayload | null
 }
 
 export interface GameHistoryInput {
@@ -212,12 +244,47 @@ export interface GameHistoryInput {
   endDate?: string
 }
 
+/** Same test the game pages use for a rate-limit failure. */
+export const isRateLimitError = (error: unknown): boolean => {
+  const e = error as { message?: unknown; graphQLErrors?: { extensions?: { code?: unknown } }[] } | null
+  return (
+    (typeof e?.message === 'string' && e.message.includes('Rate limit')) ||
+    e?.graphQLErrors?.[0]?.extensions?.code === 'RATE_LIMIT_EXCEEDED'
+  )
+}
+
 export const startGame = async (input: StartGameInput) => {
-  const { data } = await gameClient.mutate({
-    mutation: START_GAME,
-    variables: { input },
-  })
-  return data.startGame
+  const search = typeof window !== 'undefined' ? window.location.search : ''
+  const ctx = parseQuestParam(search)
+  // A new start always drops any stale quest result so it never leaks into a hub game.
+  questResultStore.clear()
+
+  if (!ctx) {
+    const { data } = await gameClient.mutate({
+      mutation: START_GAME,
+      variables: { input },
+    })
+    return data.startGame
+  }
+
+  try {
+    const { data } = await gameClient.mutate({
+      mutation: START_GAME,
+      variables: { input: { ...input, questContext: ctx } },
+    })
+    const result = data.startGame
+    // R1: a quest start the server accepted is playable, even when this was the last allowed play.
+    if (result && typeof result.id === 'string' && result.id !== '') {
+      return { ...result, canPlay: true }
+    }
+    return result
+  } catch (error) {
+    // R1: any quest start failure goes back to the map; the caller never sees it.
+    const reason = isRateLimitError(error) ? 'rate' : 'quest'
+    console.error('Quest start failed:', reason)
+    window.location.replace(`${ROUTES.QUEST_MAP}?startFailed=${reason}`)
+    return new Promise<never>(() => {})
+  }
 }
 
 export const completeGame = async (input: CompleteGameInput) => {
@@ -226,6 +293,12 @@ export const completeGame = async (input: CompleteGameInput) => {
     variables: { input },
     fetchPolicy: 'no-cache',
   })
+  const quest: QuestResultPayload | null = data.completeGame?.quest ?? null
+  if (quest) {
+    questResultStore.set(quest)
+  } else {
+    questResultStore.clear()
+  }
   return data.completeGame
 }
 
