@@ -1,4 +1,5 @@
 import type { QuestNodeView, QuestProgressView, QuestWorldView } from '@/types/quest'
+import { getWorld } from '@/utils/questShared'
 
 /** Test fixtures for the Quest Map (not shipped code paths; only tests import this). */
 export function makeNode(overrides: Partial<QuestNodeView> & { id: string }): QuestNodeView {
@@ -21,7 +22,7 @@ export function makeWorld1(): QuestWorldView {
     order: 1,
     accessible: true,
     totalStars: 6,
-    maxStars: 27,
+    maxStars: 24,
     badges: [],
     activeGauntlet: null,
     nodes: [
@@ -48,25 +49,66 @@ export function makeWorld1(): QuestWorldView {
   }
 }
 
-/** World 2 as a FREE user sees it: not accessible, with stored stars on one node. */
-export function makeWorld2Locked(): QuestWorldView {
+/**
+ * A world built from the shared QUEST_WORLDS config exactly as the server maps it (every path
+ * node, then the bonus; catalogGameId dropped, leg params kept), so a fixture cannot drift from
+ * the real node list. `stars` and `status` are overridable per node id.
+ */
+export function makeWorldFromConfig(
+  worldId: string,
+  options: {
+    accessible: boolean
+    stars?: Record<string, 1 | 2 | 3>
+    status?: Record<string, QuestNodeView['status']>
+  }
+): QuestWorldView {
+  const world = getWorld(worldId)
+  if (!world) throw new Error(`Unknown quest world ${worldId}`)
+  const nodes = [...world.nodes, world.bonus].map((n) =>
+    makeNode({
+      id: n.id,
+      kind: n.kind,
+      status: options.status?.[n.id] ?? 'LOCKED',
+      stars: options.stars?.[n.id] ?? 0,
+      thresholds: [...n.thresholds] as [number, number, number],
+      map: { x: n.map.x, y: n.map.y },
+      legs: n.legs.map((l) => ({
+        themeId: l.themeId,
+        difficulty: l.difficulty,
+        ...(l.params ? { params: { ...l.params } } : {}),
+      })),
+    })
+  )
+  const total = Object.values(options.stars ?? {}).reduce<number>((sum, s) => sum + s, 0)
   return {
-    id: 'science-island',
-    order: 2,
-    accessible: false,
-    totalStars: 2,
-    maxStars: 27,
+    id: world.id,
+    order: world.order,
+    accessible: options.accessible,
+    totalStars: total,
+    maxStars: 24,
     badges: [],
     activeGauntlet: null,
-    nodes: [
-      makeNode({ id: 'si-01-bond-burn', stars: 2, status: 'AVAILABLE', map: { x: 80, y: 92 }, legs: [{ themeId: 'BOND_AND_BURN', difficulty: 1 }] }),
-      makeNode({ id: 'si-02-space-entry', status: 'LOCKED', map: { x: 40, y: 80 }, legs: [{ themeId: 'SPACE_ENTRY', difficulty: 1 }] }),
-      makeNode({ id: 'si-boss', kind: 'BOSS', status: 'LOCKED', map: { x: 50, y: 10 } }),
-      makeNode({ id: 'si-bonus', kind: 'BONUS', status: 'LOCKED', map: { x: 15, y: 10 } }),
-    ],
+    nodes,
   }
 }
 
+/** World 2 as a FREE user sees it: not accessible, all 9 nodes locked, stored stars on one node. */
+export function makeWorld2Locked(): QuestWorldView {
+  return makeWorldFromConfig('science-island', {
+    accessible: false,
+    stars: { 'si-01-bond-burn': 2 },
+    status: { 'si-01-bond-burn': 'AVAILABLE' },
+  })
+}
+
+/** World 2 as a PAID user sees it: accessible, node 1 done, node 2 next, the rest locked. */
+export function makeWorld2Paid(): QuestWorldView {
+  return makeWorldFromConfig('science-island', {
+    accessible: true,
+    stars: { 'si-01-bond-burn': 2 },
+    status: { 'si-01-bond-burn': 'AVAILABLE', 'si-02-space-entry': 'AVAILABLE' },
+  })
+}
 export function makeProgress(overrides: Partial<QuestProgressView> = {}): QuestProgressView {
   return {
     tier: 'FREE',

@@ -13,19 +13,8 @@ export interface QuestAchievementsSectionProps {
 /** Achievements page block: the Quest Map world badges, read from getQuestProgress. */
 export function QuestAchievementsSection({ state, reducedMotion = false }: QuestAchievementsSectionProps) {
   const { t } = useTranslation()
-  if (state.loading) return null
-  if (state.error || !state.data) {
-    return (
-      <section className="mb-8" aria-labelledby="quest-achievements-title">
-        <h2 id="quest-achievements-title" className="text-lg font-bold mb-3">
-          {t('quest.achievements.title')}
-        </h2>
-        <p role="status" className="text-sm text-text-secondary">
-          {t('quest.achievements.error')}
-        </p>
-      </section>
-    )
-  }
+  // Loading or failure: render nothing. A Quest Map hiccup must not show an error on the Achievements page.
+  if (state.loading || state.error || !state.data) return null
   const worlds = [...state.data.worlds].sort((a, b) => a.order - b.order)
   const summary = summarizeBadges(state.data)
   return (

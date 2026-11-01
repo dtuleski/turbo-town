@@ -3,9 +3,10 @@ import { QuestMapView, type QuestMapViewProps } from '@/pages/quest/QuestMapPage
 import QuestNodePanel from '../QuestNodePanel'
 import QuestWorldPath from '../QuestWorldPath'
 import { decode, renderMarkup } from '@/test/renderWithProviders'
-import { makeNode, makeProgress, makeWorld1, makeWorld2Locked } from '@/test/questFixtures'
+import { makeNode, makeProgress, makeWorld1, makeWorld2Locked, makeWorld2Paid } from '@/test/questFixtures'
+import { QUEST_WORLDS } from '@/utils/questShared'
 import { getPlayUrl } from '@/utils/questMap'
-import type { QuestNodeView, QuestWorldView } from '@/types/quest'
+import type { QuestNodeView, QuestProgressView, QuestWorldView } from '@/types/quest'
 
 interface ButtonInfo {
   label: string
@@ -119,7 +120,9 @@ describe('QuestMapView', () => {
   it('orders worlds by order and shows world stars', () => {
     const html = decode(renderMarkup(<QuestMapView {...viewProps()} />))
     expect(html.indexOf('Brain Peaks')).toBeLessThan(html.indexOf('Science Island'))
-    expect(html).toContain('6 of 27 stars')
+    expect(html).toContain('6 of 24 stars')
+    expect(html).toContain('2 of 24 stars')
+    expect(html).not.toContain('of 27')
     expect(html).toContain('7 plays left today')
     expect(html).toContain('role="progressbar"')
   })
@@ -127,7 +130,7 @@ describe('QuestMapView', () => {
   it('FREE tier: World 2 nodes all locked, stored stars still shown, subscription link', () => {
     const html = decode(renderMarkup(<QuestMapView {...viewProps()} />))
     const world2 = nodeButtons(html).filter((b) => b.id.startsWith('si-'))
-    expect(world2.length).toBe(4)
+    expect(world2.length).toBe(9)
     for (const b of world2) expect(b.label).toContain('locked')
     expect(html).toContain('Locked: subscribers only')
     expect(html).toMatch(/<a [^>]*href="\/subscription"[^>]*>Subscribe to unlock World 2<\/a>/)
@@ -256,5 +259,38 @@ describe('play URL from a node', () => {
     expect(getPlayUrl(world.nodes[4], world)).toBeNull()
     const w2 = makeWorld2Locked()
     expect(getPlayUrl(w2.nodes[0], w2)).toBeNull()
+  })
+})
+
+describe('every config node is drawn (QUEST_WORLDS vs rendered buttons)', () => {
+  const expectedIds = (worldId: string): string[] => {
+    const world = QUEST_WORLDS.find((w) => w.id === worldId)!
+    return [...world.nodes.map((n) => n.id), world.bonus.id]
+  }
+  const cases: Array<[string, string, () => QuestProgressView]> = [
+    ['FREE (World 2 locked)', 'science-island', () => makeProgress()],
+    ['FREE (World 2 locked)', 'brain-peaks', () => makeProgress()],
+    ['paid', 'science-island', () => makeProgress({ tier: 'PAID', worlds: [makeWorld2Paid(), makeWorld1()] })],
+    ['paid', 'brain-peaks', () => makeProgress({ tier: 'PAID', worlds: [makeWorld2Paid(), makeWorld1()] })],
+  ]
+  it.each(cases)('%s user: %s has a button for all 9 config nodes', (_label, worldId, build) => {
+    const html = decode(renderMarkup(<QuestMapView {...viewProps({ data: build() })} />))
+    const ids = nodeButtons(html)
+      .map((b) => b.id)
+      .filter((id) => expectedIds(worldId).includes(id))
+    expect(expectedIds(worldId)).toHaveLength(9)
+    expect(ids).toEqual(expectedIds(worldId))
+  })
+  it('fixture worlds list exactly the config nodes (no drift)', () => {
+    for (const world of [makeWorld2Locked(), makeWorld2Paid()]) {
+      expect(world.nodes.map((n) => n.id)).toEqual(expectedIds(world.id))
+    }
+    expect(makeWorld1().nodes.map((n) => n.id)).toEqual(expectedIds('brain-peaks'))
+  })
+  it('keeps Circuit Builder level params and launches them for a paid user', () => {
+    const world = makeWorld2Paid()
+    const node = world.nodes.find((n) => n.id === 'si-03-circuit-series')!
+    expect(node.legs[0].params?.levelId).toBe('cb-03-series-loop')
+    expect(getPlayUrl({ ...node, status: 'AVAILABLE' }, world)).toContain('cb-03-series-loop')
   })
 })

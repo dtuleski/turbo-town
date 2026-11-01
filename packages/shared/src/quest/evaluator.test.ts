@@ -5,6 +5,7 @@ import {
   computeNodeStatuses,
   emptyWorldProgress,
   isNodeStartable,
+  maxStars,
   starsForScore,
   totalStars,
 } from './evaluator';
@@ -563,5 +564,16 @@ describe('real thresholds produce the documented stars (thresholds.md)', () => {
         ]);
       }
     }
+  });
+});
+
+describe('maxStars', () => {
+  it('is 3 per path node including the boss and excluding the bonus (24 per world)', () => {
+    expect(maxStars(w1, none)).toBe(24);
+    expect(maxStars(w2, none)).toBe(24);
+  });
+  it('excludes unavailable nodes', () => {
+    expect(maxStars(w1, without('bp-02-math'))).toBe(21);
+    expect(maxStars(w1, without('bp-bonus-sequence'))).toBe(24);
   });
 });

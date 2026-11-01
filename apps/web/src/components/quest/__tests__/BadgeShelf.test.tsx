@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { decode, renderMarkup } from '@/test/renderWithProviders'
 import { makeProgress, makeWorld1 } from '@/test/questFixtures'
 import { QuestMapView, type QuestMapViewProps } from '@/pages/quest/QuestMapPage'
@@ -109,9 +109,8 @@ describe('QuestAchievementsSection', () => {
     expect(renderMarkup(<QuestAchievementsSection state={{ data: null, loading: true, error: false }} />)).toBe('')
   })
 
-  it('shows a short message on error and no badges', () => {
+  it('renders nothing on error (no scary message, no badges)', () => {
     const html = decode(renderMarkup(<QuestAchievementsSection state={{ data: null, loading: false, error: true }} />))
-    expect(html).toContain('Quest Map badges are not available right now.')
-    expect(html).not.toContain('data-badge')
+    expect(html).toBe('')
   })
 })

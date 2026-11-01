@@ -13,6 +13,7 @@ import {
   listWorlds,
   questContextSchema,
   recordLeg,
+  maxStars,
   totalStars,
 } from '@memory-game/shared';
 import type {
@@ -457,7 +458,7 @@ export class QuestService {
         accessible,
         // Recomputed; the stored totalStars is never trusted.
         totalStars: totalStars(world, progress, ctx),
-        maxStars: 3 * world.nodes.filter((n) => !ctx.unavailableNodeIds.has(n.id)).length,
+        maxStars: maxStars(world, ctx),
         badges: progress?.badges ?? [],
         ...(activeGauntlet ? { activeGauntlet } : {}),
         nodes,

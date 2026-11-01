@@ -62,6 +62,11 @@ export function totalStars(
   return availablePath(world, ctx).reduce((sum, n) => sum + starsOf(progress, n.id), 0);
 }
 
+/** Maximum stars: 3 per available path node (boss included, bonus excluded, unavailable excluded). */
+export function maxStars(world: QuestWorld, ctx: EvalContext): number {
+  return 3 * availablePath(world, ctx).length;
+}
+
 interface Chain {
   statuses: Record<string, NodeStatus>;
   /** The "unlocked" flag at the boss: every earlier node was passed. */
