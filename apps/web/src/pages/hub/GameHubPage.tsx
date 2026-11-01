@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listAvailableGames, GameCatalogItem, getReviewStats, ReviewStats, canStartGame } from '../../api/game'
 import GameTile, { PREMIUM_GAMES } from '../../components/hub/GameTile'
+import QuestHubCard from '../../components/quest/QuestHubCard'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
@@ -170,6 +171,8 @@ export default function GameHubPage() {
             </button>
           ))}
         </div>
+
+        <QuestHubCard />
 
         {/* Games Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
