@@ -18,11 +18,11 @@ Scores are the server-computed score of one play (boss: sum of all legs). All va
 | `bp-02-math` | `MATH_CHALLENGE` | 1 | 1800 | 2350 | 2650 |
 | `bp-03-words` | `WORD_PUZZLE` | 1 | 1600 | 2200 | 2600 |
 | `bp-04-sequence` | `SEQUENCE_MEMORY` | 2 | 2650 | 3450 | 3950 |
-| `bp-05-pattern` | `PATTERN_RECALL` | 2 | 2850 | 3300 | 3500 |
+| `bp-05-geo` | `GEO_QUIZ` | 2 | 2700 | 3500 | 3950 |
 | `bp-06-maze` | `MATH_MAZE` | 2 | 2500 | 3350 | 3900 |
 | `bp-07-memory-hard` | Memory Match / `OCEAN` | 3 | 2500 | 4000 | 5100 |
 | `bp-boss` | `MATH_CHALLENGE` d2 + `BUBBLE_POP` d2 (combined) | 2 + 2 | 5550 | 7000 | 7400 |
-| `bp-bonus` | `PATTERN_RECALL` | 3 | 3800 | 4400 | 4650 |
+| `bp-bonus-sequence` | `SEQUENCE_MEMORY` | 3 | 3500 | 4600 | 5300 |
 
 Bonus star threshold: **14** of a maximum 24 path stars (8 path nodes x 3).
 
@@ -92,12 +92,12 @@ Format: anchors (time t in seconds, accuracy a) and the score the formula gives.
 | `bp-02-math` (10 questions, base 1000) | t 110, a 0.50: 1.82 x 1.0 = 1817 | t 75, a 0.75: 1.875 x 1.25 = 2344 | t 45, a 0.90: 1.925 x 1.4 = 2695 | 1800 / 2350 / 2650 (B rounded down to a multiple of 50 is 2650) |
 | `bp-03-words` (base 1000) | t 240, a 0.50: 1.6 x 1.0 = 1600 | t 150, a 0.75: 1.75 x 1.25 = 2188 | t 80, a 0.90: 1.867 x 1.4 = 2613 | 1600 / 2200 / 2600 |
 | `bp-04-sequence` (10 cards, base 1000 x 1.5) | t 150, a 0.50: 1500 x 1.75 x 1.0 = 2625 | t 100, a 0.75: 1500 x 1.833 x 1.25 = 3438 | t 60, a 0.90: 1500 x 1.9 x 1.4 = 3990 | 2650 / 3450 / 3950 |
-| `bp-05-pattern` d2 | see section 4, finding F1 | | | 2850 / 3300 / 3500 |
+| `bp-05-geo` (Geo Quiz d2, 10 questions, base 1000 x 1.5, maxTime 600; t includes about 2.5 s of feedback per question) | t 115 (about 9 s per answer), 5 of 10 correct: 1500 x 1.808 x 1.0 = 2712 | t 85, a 0.75: 1500 x 1.858 x 1.25 = 3484 | t 60, 9 of 10 correct: 1500 x 1.9 x 1.4 = 3990 | 2700 / 3500 / 3950. Perfect play (10 of 10, t 55) scores 4293, above 3950. See F1 |
 | `bp-06-maze` (base 1000 x 1.5) | t 200, a 0.50: 1500 x 1.667 x 1.0 = 2500 | t 130, a 0.75: 1500 x 1.783 x 1.25 = 3344 | t 80, a 0.90: 1500 x 1.867 x 1.4 = 3920 | 2500 / 3350 / 3900 |
 | `bp-07-memory-hard` (10 pairs, base 1000 x 2.0) | t 300, 30 attempts, a 0.33: 2000 x 1.5 x 0.83 = 2500 | t 180, 20 attempts, a 0.67: 2000 x 1.7 x 1.17 = 3967 | t 100, 13 attempts, a 0.90: 2000 x 1.833 x 1.4 = 5133 | 2500 / 4000 / 5100. Ten pairs is hard for an 8-year-old; W is set at 30 attempts so the boss is not gated by a coin flip |
 | `bp-boss` leg 0 `MATH_CHALLENGE` d2 (15 q) | t 170, a 0.50: 2575 | t 120, a 0.75: 3375 | t 75, a 0.90: 3937 | |
 | `bp-boss` leg 1 `BUBBLE_POP` d2 (5 rounds) | t 120, a 0.60: 2970 | t 80, a 0.80: 3640 | t 50, a 1.00: 4313 | sums 5545 / 7015 / 8250; 3 stars = 0.9 x 8250 = 7425. Stored 5550 / 7000 / 7400 |
-| `bp-bonus` d3 | section 4, F1 | | | 3800 / 4400 / 4650 |
+| `bp-bonus-sequence` (d3, base 1000 x 2.0, same anchors as `bp-04-sequence`) | t 150, a 0.50: 2000 x 1.75 x 1.0 = 3500 | t 100, a 0.75: 2000 x 1.833 x 1.25 = 4583 | t 60, a 0.90: 2000 x 1.9 x 1.4 = 5320 | 3500 / 4600 / 5300. Perfect play at t 60 scores 5700, under the 6000 `game.service` cap |
 | `si-01-bond-burn` (5 recipes, base 1700, maxTime 60, cap 1.3) | t 70, a 0.60: 1700 x 0.833 x 1.1 = 1558 | t 45, a 0.80: 1700 x 1.25 x 1.3 = 2763 | t 38, a 1.00: 1700 x 1.3 (capped) x 1.5 = 3315 | 1550 / 2750 / 3300. The speed cap makes 3 stars an all-recipes run at about 38 s or faster |
 | `si-02-space-entry` (d1, maxTime 180, countdown 90 s) | t 90 (whole countdown), a 0.50: 1700 x 1.5 x 1.0 = 2550 | t 55, a 0.75: 1700 x 1.694 x 1.25 = 3600 | t 35, a 0.90: 1700 x 1.806 x 1.4 = 4297 | 2550 / 3600 / 4250 |
 | `si-03-circuit-series` | see section 5 | | | 2200 / 2950 / 3900 |
@@ -113,14 +113,11 @@ Format: anchors (time t in seconds, accuracy a) and the score the formula gives.
 
 ## 4. Findings for the owner and PL3
 
-**F1 - Pattern Recall scores are nearly flat in skill (affects `bp-05-pattern` and the World 1 bonus `bp-bonus`).** The page sends `correctAnswers = rounds completed` and `totalQuestions = round reached` (`PatternRecallGamePage.tsx`, `handleSeeScore`), so accuracy is `n / (n + 1)`. The game ends at the first wrong tap, so a longer run also takes longer and the speed bonus falls. Assuming about `20 + 18 x n` seconds for n rounds, the formula gives:
-
-| Rounds n | 0 | 1 | 2 | 3 | 4 | 6 | 8 | 10 | 12 | 14 |
-|---|---|---|---|---|---|---|---|---|---|---|
-| d2 score | 1475 | 2905 | 3337 | 3519 | 3601 | 3637 | 3597 | 3523 | 3430 | 3325 |
-| d3 score | 1967 | 3873 | 4449 | 4692 | 4801 | 4850 | 4796 | 4697 | 4573 | 4434 |
-
-The score peaks near 6 rounds and then falls slowly. Seed thresholds: d2 2850 / 3300 / 3500 (1 star from 1 round, 2 stars from 2 to 3 rounds, 3 stars from about 3 to 10 rounds); d3 3800 / 4400 / 4650 (3 stars from about 3 to 11 rounds). A very long run can therefore score fewer stars than a medium run. This is a property of the existing score formula, not of Quest Map. The approved launch content puts this game in both nodes, so it is kept, and the thresholds sit on the plateau. **Owner decision requested:** keep it, or replace the two Pattern Recall nodes with another free game (a config-only change, thresholds re-derived by the same method; for example Sequence Memory d3 for the bonus).
+**F1 - Pattern Recall scores are nearly flat in skill (RESOLVED by owner decision: both Pattern Recall nodes replaced).** The page sends `correctAnswers = rounds completed` and `totalQuestions = round reached` (`PatternRecallGamePage.tsx`, `handleSeeScore`), so accuracy is `n / (n + 1)`. The game ends at the first wrong tap, so a longer run also takes longer and the speed bonus falls. Assuming about `20 + 18 x n` seconds for n rounds, the d2 score peaks near 6 rounds (3637) and then falls slowly (3325 at 14 rounds), and d3 peaks at 4850. A longer run could therefore earn fewer stars than a medium one.
+**Decision (owner, approved):** replace both nodes with games whose formula rewards skill monotonically. `bp-bonus` becomes `bp-bonus-sequence` (`SEQUENCE_MEMORY` d3). `bp-05-pattern` becomes `bp-05-geo` (`GEO_QUIZ` d2). `PATTERN_RECALL` stays in the theme allowlist but is no longer used by launch content.
+**Why Geo Quiz for node 5.** Both candidates were read. `GeoQuizGamePage.tsx` sends `correctAnswers` = correct count and `totalQuestions` = 10 (fixed), with `completionTime` = total seconds. Accuracy is `correct / 10`, a fixed denominator, and each wrong answer also costs time, so more correct answers always means a higher score; no plateau. `HangmanGamePage.tsx` sends `correctAnswers` = rounds won out of a fixed round count, also monotone, but Hangman is a word game next to `bp-03-words` and `bp-04-sequence` on the path, and its time depends on wrong letter guesses. Geo Quiz differs from both neighbours (`bp-04-sequence` and `bp-06-maze`) and from `bp-03-words`, so no game repeats next to itself. Sequence Memory in the bonus repeats `bp-04-sequence` at d3, as the owner specified; the two are not adjacent (the bonus sits off the path).
+**Derivation.** Same W/M/B method as section 2 (standard game: base 1000, maxTime 600, speed cap 2.0, accuracy `0.5 + a`). Geo Quiz d2 time per question is the answer time plus about 2.5 s of fixed feedback (the page waits 2500 ms); the d2 answer limit is 12 s. W: 5 of 10, about 9 s per answer; M: a 0.75, about 6 s; B: 9 of 10, about 3.5 s. Results in section 3. Sequence Memory d3 reuses the `bp-04-sequence` anchors (t 150 / 100 / 60 and a 0.50 / 0.75 / 0.90) with the d3 multiplier of 2.0. Both caps are not binding: the 3-star values (3950, 5300) are below the 6000 `game.service` cap for non-premium games and below the 8000 calculator cap. The bonus stays under the 8000 single-leg limit (V17). Page inputs for Sequence Memory: `correctAnswers` = rounds, `totalQuestions` = card count, `attempts` = rounds + mistakes (`SequenceMemoryGamePage.tsx`). Quest launches Geo Quiz with its default `mode` (capitals); the config has no mode parameter.
+**PL3 note.** The Geo Quiz time anchors are assumptions (answer speed per question is not measured). The 1-star value (2700) needs about 5 correct answers at a relaxed pace; fewer than 5 correct gives no star.
 
 **F2 - Scratch Coding and Mini Golf have tight speed windows, so slow completions are near the floor.** Scratch d1 uses `maxTime` 120 s, but its own comment expects 1 to 4 minutes (`score-calculator.service.ts`, Scratch branch). A finish after about 240 s hits the speed floor of 0.1, which is about 255 points for a full completion. Mini Golf d2 uses `maxTime` 50 s against an expected 40 to 120 s. To keep "1 star reachable by a typical 8-year-old", star 1 is set to the completion floor (250) on both nodes, and star 2 starts the real speed ladder. If PL3 shows most children finish slower than the floor, those two nodes award star 1 for any completion, which is acceptable for an entry star.
 

@@ -44,8 +44,8 @@ WorldProgress 1 --- 0..1 GauntletAttempt
 | `GAUNTLET_TTL_MS` | `1_800_000` (30 minutes) | FR-QM-10 |
 | `PAID_GAME_THEME_IDS` | `SPACE_ENTRY`, `SCRATCH_CODING`, `BOND_AND_BURN`, `TRAFFIC_LAB`, `MINI_GOLF`, `LANGUAGE_PRONUNCIATION`, `CIRCUIT_BUILDER` | The local `PAID_GAMES` array in `services/game/src/services/game.service.ts` (line 57), whose last element is `CIRCUIT_BUILDER_THEME_ID` = `'CIRCUIT_BUILDER'` from `services/game/src/utils/circuit-builder.ts` |
 | `QUEST_CARD_THEME_IDS` | `ANIMALS`, `FRUITS`, `VEHICLES`, `SPACE`, `OCEAN`, `FORMULA1` | `GAME_THEMES` in `apps/web/src/config/constants.ts` (lines 71-78) |
-| `QUEST_GAME_THEME_IDS` | `MATH_CHALLENGE`, `WORD_PUZZLE`, `SEQUENCE_MEMORY`, `PATTERN_RECALL`, `MATH_MAZE`, `BUBBLE_POP`, `BOND_AND_BURN`, `SPACE_ENTRY`, `TRAFFIC_LAB`, `MINI_GOLF`, `SCRATCH_CODING`, `CIRCUIT_BUILDER` (12) | themeId strings used by the server: the per-game branches in `completeGame` and the `preAccuracy` list in `services/game/src/services/game.service.ts` (lines 160 and 182), `CIRCUIT_BUILDER_THEME_ID` in `utils/circuit-builder.ts`, and the `startGame({ themeId })` calls in `apps/web/src/pages/*/` |
-| `QUEST_KNOWN_THEME_IDS` | union of the two arrays above (18 ids) | Q7 |
+| `QUEST_GAME_THEME_IDS` | `MATH_CHALLENGE`, `WORD_PUZZLE`, `SEQUENCE_MEMORY`, `PATTERN_RECALL`, `GEO_QUIZ`, `MATH_MAZE`, `BUBBLE_POP`, `BOND_AND_BURN`, `SPACE_ENTRY`, `TRAFFIC_LAB`, `MINI_GOLF`, `SCRATCH_CODING`, `CIRCUIT_BUILDER` (12) | themeId strings used by the server: the per-game branches in `completeGame` and the `preAccuracy` list in `services/game/src/services/game.service.ts` (lines 160 and 182), `CIRCUIT_BUILDER_THEME_ID` in `utils/circuit-builder.ts`, and the `startGame({ themeId })` calls in `apps/web/src/pages/*/` |
+| `QUEST_KNOWN_THEME_IDS` | union of the two arrays above (19 ids) | Q7 |
 
 Note on `SPACE`: it is both a Memory Match card theme and part of `SPACE_ENTRY`'s name. They are different ids (`SPACE` vs `SPACE_ENTRY`) and do not collide.
 
@@ -65,11 +65,11 @@ Star thresholds are in `thresholds.md` (the single source for those numbers; the
 | 2 | `bp-02-math` | GAME | `MATH_CHALLENGE` d1 | `math-challenge` |
 | 3 | `bp-03-words` | GAME | `WORD_PUZZLE` d1 | `word-puzzle` |
 | 4 | `bp-04-sequence` | GAME | `SEQUENCE_MEMORY` d2 | `sequence-memory` |
-| 5 | `bp-05-pattern` | GAME | `PATTERN_RECALL` d2, `pageTheme: colors` | `pattern-recall` |
+| 5 | `bp-05-geo` | GAME | `GEO_QUIZ` d2 | `geo-quiz` |
 | 6 | `bp-06-maze` | GAME | `MATH_MAZE` d2 | `math-maze` |
 | 7 | `bp-07-memory-hard` | GAME | `OCEAN` d3 | `memory-match` |
 | 8 | `bp-boss` | BOSS | leg 0 `MATH_CHALLENGE` d2; leg 1 `BUBBLE_POP` d2 | `math-challenge`, `bubble-pop` |
-| bonus | `bp-bonus` | BONUS | `PATTERN_RECALL` d3, `pageTheme: animals` | `pattern-recall` |
+| bonus | `bp-bonus-sequence` | BONUS | `SEQUENCE_MEMORY` d3 | `sequence-memory` |
 
 ### World 2 - `science-island` ("Science Island"), order 2, `PAID`, `bonusStarThreshold` 16
 

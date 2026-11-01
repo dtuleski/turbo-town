@@ -18,7 +18,7 @@ const none: EvalContext = { unavailableNodeIds: new Set() };
 const without = (...ids: string[]): EvalContext => ({ unavailableNodeIds: new Set(ids) });
 
 const PATH = w1.nodes.map((n) => n.id);
-// bp-01-memory, bp-02-math, bp-03-words, bp-04-sequence, bp-05-pattern, bp-06-maze, bp-07-memory-hard, bp-boss
+// bp-01-memory, bp-02-math, bp-03-words, bp-04-sequence, bp-05-geo, bp-06-maze, bp-07-memory-hard, bp-boss
 
 function np(stars: number, bestScore = stars * 1000): NodeProgress {
   return {
@@ -73,7 +73,7 @@ describe('computeNodeStatuses / unlock chain (R-UNLOCK-*)', () => {
     const s = computeNodeStatuses(w1, undefined, none);
     expect(s['bp-01-memory']).toBe('AVAILABLE');
     for (const id of PATH.slice(1)) expect(s[id]).toBe('LOCKED');
-    expect(s['bp-bonus']).toBe('LOCKED');
+    expect(s['bp-bonus-sequence']).toBe('LOCKED');
   });
 
   it('1 star on node n unlocks n+1; 0 stars does not (AC5)', () => {
@@ -87,7 +87,7 @@ describe('computeNodeStatuses / unlock chain (R-UNLOCK-*)', () => {
   it('a starred node stays available whatever its predecessors hold (replay, R-UNLOCK-3)', () => {
     const s = computeNodeStatuses(w1, prog({ 'bp-04-sequence': 2 }), none);
     expect(s['bp-04-sequence']).toBe('AVAILABLE');
-    expect(s['bp-05-pattern']).toBe('AVAILABLE');
+    expect(s['bp-05-geo']).toBe('AVAILABLE');
     expect(s['bp-02-math']).toBe('LOCKED');
   });
 
@@ -99,20 +99,20 @@ describe('computeNodeStatuses / unlock chain (R-UNLOCK-*)', () => {
   it('a removed game is UNAVAILABLE and is passed once its predecessor is passed (R-UNLOCK-4)', () => {
     const s = computeNodeStatuses(w1, prog(firstN(3)), without('bp-04-sequence'));
     expect(s['bp-04-sequence']).toBe('UNAVAILABLE');
-    expect(s['bp-05-pattern']).toBe('AVAILABLE');
+    expect(s['bp-05-geo']).toBe('AVAILABLE');
     expect(s['bp-06-maze']).toBe('LOCKED');
   });
 
   it('a removed game does not open the path past nodes the player never reached', () => {
-    const s = computeNodeStatuses(w1, prog(firstN(2)), without('bp-05-pattern'));
+    const s = computeNodeStatuses(w1, prog(firstN(2)), without('bp-05-geo'));
     expect(s['bp-03-words']).toBe('AVAILABLE');
     expect(s['bp-04-sequence']).toBe('LOCKED');
-    expect(s['bp-05-pattern']).toBe('UNAVAILABLE');
+    expect(s['bp-05-geo']).toBe('UNAVAILABLE');
     expect(s['bp-06-maze']).toBe('LOCKED');
   });
 
   it('consecutive removed nodes are passed through', () => {
-    const s = computeNodeStatuses(w1, prog(firstN(3)), without('bp-04-sequence', 'bp-05-pattern'));
+    const s = computeNodeStatuses(w1, prog(firstN(3)), without('bp-04-sequence', 'bp-05-geo'));
     expect(s['bp-06-maze']).toBe('AVAILABLE');
   });
 
@@ -167,7 +167,7 @@ describe('isNodeStartable (R-UNLOCK-6)', () => {
 
 describe('totals and bonus (R-BONUS-*)', () => {
   it('totalStars counts path nodes including the boss and excludes the bonus', () => {
-    const p = prog({ ...firstN(8, 3), 'bp-bonus': 3 });
+    const p = prog({ ...firstN(8, 3), 'bp-bonus-sequence': 3 });
     expect(totalStars(w1, p, none)).toBe(24);
   });
 
@@ -176,15 +176,15 @@ describe('totals and bonus (R-BONUS-*)', () => {
   });
 
   it('bonus unlocks at the threshold (14) and not at 13', () => {
-    const at13 = prog({ ...firstN(4, 3), 'bp-05-pattern': 1 }); // 12 + 1
-    const at14 = prog({ ...firstN(4, 3), 'bp-05-pattern': 2 });
+    const at13 = prog({ ...firstN(4, 3), 'bp-05-geo': 1 }); // 12 + 1
+    const at14 = prog({ ...firstN(4, 3), 'bp-05-geo': 2 });
     expect(totalStars(w1, at13, none)).toBe(13);
-    expect(computeNodeStatuses(w1, at13, none)['bp-bonus']).toBe('LOCKED');
-    expect(computeNodeStatuses(w1, at14, none)['bp-bonus']).toBe('AVAILABLE');
+    expect(computeNodeStatuses(w1, at13, none)['bp-bonus-sequence']).toBe('LOCKED');
+    expect(computeNodeStatuses(w1, at14, none)['bp-bonus-sequence']).toBe('AVAILABLE');
   });
 
   it('the bonus node cannot unlock itself (its stars do not count)', () => {
-    expect(computeNodeStatuses(w1, prog({ 'bp-bonus': 0 }), none)['bp-bonus']).toBe('LOCKED');
+    expect(computeNodeStatuses(w1, prog({ 'bp-bonus-sequence': 0 }), none)['bp-bonus-sequence']).toBe('LOCKED');
   });
 
   it('removed games cannot make the bonus unreachable (min with 3 x available path)', () => {
@@ -194,19 +194,19 @@ describe('totals and bonus (R-BONUS-*)', () => {
       'bp-02-math',
       'bp-03-words',
       'bp-04-sequence',
-      'bp-05-pattern'
+      'bp-05-geo'
     );
     const p = prog({ 'bp-06-maze': 3, 'bp-07-memory-hard': 3, 'bp-boss': 3 });
     expect(totalStars(w1, p, ctx)).toBe(9);
-    expect(computeNodeStatuses(w1, p, ctx)['bp-bonus']).toBe('AVAILABLE');
+    expect(computeNodeStatuses(w1, p, ctx)['bp-bonus-sequence']).toBe('AVAILABLE');
   });
 
   it('a bonus with stars stays available even if the total falls (R-BONUS-4)', () => {
-    expect(computeNodeStatuses(w1, prog({ 'bp-bonus': 1 }), none)['bp-bonus']).toBe('AVAILABLE');
+    expect(computeNodeStatuses(w1, prog({ 'bp-bonus-sequence': 1 }), none)['bp-bonus-sequence']).toBe('AVAILABLE');
   });
 
   it('an unavailable bonus is UNAVAILABLE', () => {
-    expect(computeNodeStatuses(w1, prog(firstN(8, 3)), without('bp-bonus'))['bp-bonus']).toBe(
+    expect(computeNodeStatuses(w1, prog(firstN(8, 3)), without('bp-bonus-sequence'))['bp-bonus-sequence']).toBe(
       'UNAVAILABLE'
     );
   });
@@ -344,15 +344,15 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
   });
 
   it('the 14th path star makes the bonus newlyUnlocked', () => {
-    const p = prog({ ...firstN(4, 3), 'bp-05-pattern': 1 }); // 13 stars
-    const out = applyNodeResult(w1, p, { nodeId: 'bp-05-pattern', score: 3300, nowIso: NOW }, none); // -> 2 stars = 14
+    const p = prog({ ...firstN(4, 3), 'bp-05-geo': 1 }); // 13 stars
+    const out = applyNodeResult(w1, p, { nodeId: 'bp-05-geo', score: 3500, nowIso: NOW }, none); // -> 2 stars = 14
     expect(out.progress.totalStars).toBe(14);
-    expect(out.newlyUnlocked).toContain('bp-bonus');
+    expect(out.newlyUnlocked).toContain('bp-bonus-sequence');
   });
 
   it('playing the bonus changes no path total (R-BONUS-1)', () => {
     const p = prog(firstN(8, 3));
-    const out = applyNodeResult(w1, p, { nodeId: 'bp-bonus', score: 4650, nowIso: NOW }, none);
+    const out = applyNodeResult(w1, p, { nodeId: 'bp-bonus-sequence', score: 5300, nowIso: NOW }, none);
     expect(out.stars).toBe(3);
     expect(out.progress.totalStars).toBe(24);
   });
@@ -502,7 +502,7 @@ describe('computeBadges (R-BADGE-*)', () => {
   });
 
   it('the bonus never counts toward either badge', () => {
-    expect(computeBadges(w1, prog({ 'bp-bonus': 3 }), none)).toEqual([]);
+    expect(computeBadges(w1, prog({ 'bp-bonus-sequence': 3 }), none)).toEqual([]);
   });
 
   it('boss unavailable: WORLD_CLEARED once every earlier node is passed (R-BADGE-3)', () => {

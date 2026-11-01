@@ -65,10 +65,10 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
       62
     ),
     node(
-      'bp-05-pattern',
+      'bp-05-geo',
       'GAME',
-      [leg('PATTERN_RECALL', 'pattern-recall', 2, { pageTheme: 'colors' })],
-      [2850, 3300, 3500],
+      [leg('GEO_QUIZ', 'geo-quiz', 2)],
+      [2700, 3500, 3950],
       18,
       50
     ),
@@ -91,10 +91,10 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
     ),
   ]),
   bonus: node(
-    'bp-bonus',
+    'bp-bonus-sequence',
     'BONUS',
-    [leg('PATTERN_RECALL', 'pattern-recall', 3, { pageTheme: 'animals' })],
-    [3800, 4400, 4650],
+    [leg('SEQUENCE_MEMORY', 'sequence-memory', 3)],
+    [3500, 4600, 5300],
     84,
     10
   ),

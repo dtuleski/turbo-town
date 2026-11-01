@@ -194,8 +194,8 @@ Returns `string[]`; an empty array means valid. Each message starts with `<world
 | `bp-01-memory` score 2100 (thresholds 1800 / 2300 / 2650) | 1 star; node 2 unlocks; `newlyUnlocked: ['bp-02-math']` |
 | Replay of `bp-01-memory` with 1500 | `stars: 0` for this play, `bestStars: 1`, `bestScore` stays 2100 |
 | `bp-03-words` scores 1500 (below 1600) | 0 stars; `bp-04-sequence` stays locked |
-| 14 path stars reached | `bp-bonus` becomes `AVAILABLE` and is listed in `newlyUnlocked` |
-| `bp-04-sequence` game removed, node 3 starred | `bp-04-sequence` is `UNAVAILABLE`; `bp-05-pattern` is `AVAILABLE`; `maxStars` falls from 24 to 21; bonus threshold stays 14 (`min(14, 21)`) |
+| 14 path stars reached | `bp-bonus-sequence` becomes `AVAILABLE` and is listed in `newlyUnlocked` |
+| `bp-04-sequence` game removed, node 3 starred | `bp-04-sequence` is `UNAVAILABLE`; `bp-05-geo` is `AVAILABLE`; `maxStars` falls from 24 to 21; bonus threshold stays 14 (`min(14, 21)`) |
 | `bp-boss` leg 0 then leg 1 (3200, 3300), combined 6500 | Thresholds 5550 / 7000 / 7400: 1 star; `WORLD_CLEARED` awarded; `worldCleared: true` |
 | Same boss, leg 1 played 35 minutes after leg 0 | `canStartLeg(..., 1, ...)` is false; the player starts again at leg 0 |
 | Boss game removed, nodes 1 to 7 all starred | Boss `UNAVAILABLE`, boss reached: `WORLD_CLEARED` is awarded on the next `applyNodeResult` or `computeBadges` call |

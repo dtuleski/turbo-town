@@ -81,16 +81,16 @@ describe('QUEST_WORLDS (real config)', () => {
   it('getNode finds path nodes and the bonus; getWorld returns undefined for unknown ids', () => {
     const w = QUEST_WORLDS[0] as QuestWorld;
     expect(getNode(w, 'bp-boss')?.kind).toBe('BOSS');
-    expect(getNode(w, 'bp-bonus')?.kind).toBe('BONUS');
+    expect(getNode(w, 'bp-bonus-sequence')?.kind).toBe('BONUS');
     expect(getNode(w, 'nope')).toBeUndefined();
     expect(getWorld('nope')).toBeUndefined();
   });
 
-  it('theme allowlist is the union of the card and game ids (18)', () => {
+  it('theme allowlist is the union of the card and game ids (19)', () => {
     expect(QUEST_CARD_THEME_IDS).toHaveLength(6);
-    expect(QUEST_GAME_THEME_IDS).toHaveLength(12);
-    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(18);
-    expect(new Set(QUEST_KNOWN_THEME_IDS).size).toBe(18);
+    expect(QUEST_GAME_THEME_IDS).toHaveLength(13);
+    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(19);
+    expect(new Set(QUEST_KNOWN_THEME_IDS).size).toBe(19);
   });
 
   it('PAID_GAME_THEME_IDS matches the server list', () => {
@@ -289,7 +289,7 @@ describe('validateQuestConfig negative cases (FR-QM-2 AC2 and V1 to V17)', () =>
   it('V8 applies to the World 1 bonus and boss legs', () => {
     expectError(
       validateWith((w) => (w[0].bonus.legs[0].difficulty = 4)),
-      'bp-bonus: difficulty 4 above 3 in a FREE world'
+      'bp-bonus-sequence: difficulty 4 above 3 in a FREE world'
     );
     expectError(
       validateWith((w) => (w[0].nodes[7].legs[1].themeId = 'SPACE_ENTRY')),
@@ -351,11 +351,17 @@ describe('validateQuestConfig negative cases (FR-QM-2 AC2 and V1 to V17)', () =>
   });
   it('V11 Pattern Recall without pageTheme', () => {
     expectError(
-      validateWith((w) => delete w[0].nodes[4].legs[0].params),
+      validateWith((w) => {
+        w[0].nodes[4].legs[0].themeId = 'PATTERN_RECALL';
+        w[0].nodes[4].legs[0].catalogGameId = 'pattern-recall';
+      }),
       'needs params.pageTheme'
     );
     expectError(
-      validateWith((w) => (w[0].bonus.legs[0].params.pageTheme = '')),
+      validateWith((w) => {
+        w[0].bonus.legs[0].themeId = 'PATTERN_RECALL';
+        w[0].bonus.legs[0].params = { pageTheme: '' };
+      }),
       'needs params.pageTheme'
     );
   });

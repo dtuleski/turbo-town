@@ -98,7 +98,7 @@ X) Other
 
 ### Question 10: Node ids and world ids
 A) Numeric (`w1-n1`)
-B) Short readable ids, stable across difficulty edits: `brain-peaks`, `science-island`; nodes `bp-01-memory`, ... `bp-boss`, `bp-bonus`; `si-01-bond-burn`, ... `si-boss`, `si-bonus`
+B) Short readable ids, stable across difficulty edits: `brain-peaks`, `science-island`; nodes `bp-01-memory`, ... `bp-boss`, `bp-bonus-sequence`; `si-01-bond-burn`, ... `si-boss`, `si-bonus`
 X) Other
 
 [Answer]: B. Ids appear in stored items and URLs (`quest=<worldId>:<nodeId>:<legIndex>`), so they must not embed difficulty (it is tunable). All match `^[a-z0-9-]{1,40}$`, and the validator checks this and global uniqueness.
