@@ -33,7 +33,7 @@ export default function BadgeShelf({ world, reducedMotion, justEarned, showHints
         const body = (
           <>
             <span aria-hidden="true" className="text-lg">
-              {badge.earned ? 'ðŸ…' : 'ðŸ”’'}
+              {badge.earned ? '\u{1F3C5}' : '\u{1F512}'}
             </span>
             <span className="flex flex-col leading-tight">
               <span className="text-sm font-bold">{t(`quest.badges.${badge.id}.name`)}</span>
