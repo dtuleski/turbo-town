@@ -64,7 +64,6 @@ describe('QUEST_WORLDS (real config)', () => {
     expect(getWorld('science-island')?.nodes[7]?.legs.map((l) => l.themeId)).toEqual([
       'BOND_AND_BURN',
       'SPACE_ENTRY',
-      'TRAFFIC_LAB',
     ]);
   });
 
@@ -86,11 +85,11 @@ describe('QUEST_WORLDS (real config)', () => {
     expect(getWorld('nope')).toBeUndefined();
   });
 
-  it('theme allowlist is the union of the card and game ids (19)', () => {
+  it('theme allowlist is the union of the card and game ids (18)', () => {
     expect(QUEST_CARD_THEME_IDS).toHaveLength(6);
-    expect(QUEST_GAME_THEME_IDS).toHaveLength(13);
-    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(19);
-    expect(new Set(QUEST_KNOWN_THEME_IDS).size).toBe(19);
+    expect(QUEST_GAME_THEME_IDS).toHaveLength(12);
+    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(18);
+    expect(new Set(QUEST_KNOWN_THEME_IDS).size).toBe(18);
   });
 
   it('PAID_GAME_THEME_IDS matches the server list', () => {
@@ -212,6 +211,7 @@ describe('validateQuestConfig negative cases (FR-QM-2 AC2 and V1 to V17)', () =>
     expectError(
       validateWith((w) => {
         const legs = w[1].nodes[7].legs;
+        legs.push({ themeId: 'MINI_GOLF', catalogGameId: 'mini-golf', difficulty: 1 });
         legs.push({ themeId: 'MINI_GOLF', catalogGameId: 'mini-golf', difficulty: 1 });
       }),
       'BOSS node has 4 legs'

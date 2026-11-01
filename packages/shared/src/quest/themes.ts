@@ -21,7 +21,7 @@ export const QUEST_CARD_THEME_IDS: readonly string[] = Object.freeze([
   'FORMULA1',
 ]);
 
-/** The 13 non-card game themeIds usable by quest legs. */
+/** The 12 non-card game themeIds usable by quest legs. */
 export const QUEST_GAME_THEME_IDS: readonly string[] = Object.freeze([
   'MATH_CHALLENGE',
   'WORD_PUZZLE',
@@ -32,7 +32,6 @@ export const QUEST_GAME_THEME_IDS: readonly string[] = Object.freeze([
   'BUBBLE_POP',
   'BOND_AND_BURN',
   'SPACE_ENTRY',
-  'TRAFFIC_LAB',
   'MINI_GOLF',
   'SCRATCH_CODING',
   'CIRCUIT_BUILDER',

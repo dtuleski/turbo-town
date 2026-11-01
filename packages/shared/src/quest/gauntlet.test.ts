@@ -13,7 +13,9 @@ import type { EvalContext, GauntletAttempt, QuestNode, QuestWorld, WorldProgress
 const world1 = QUEST_WORLDS[0] as QuestWorld;
 const world2 = QUEST_WORLDS[1] as QuestWorld;
 const boss2 = getNode(world1, 'bp-boss') as QuestNode; // 2 legs
-const boss3 = getNode(world2, 'si-boss') as QuestNode; // 3 legs
+// The launch config has no 3-leg boss, so the 3-leg paths are tested on a copy with one extra leg.
+const siBoss = getNode(world2, 'si-boss') as QuestNode;
+const boss3: QuestNode = { ...siBoss, legs: [...siBoss.legs, siBoss.legs[0] as QuestNode['legs'][number]] }; // 3 legs
 const plain = getNode(world1, 'bp-01-memory') as QuestNode;
 const ctx: EvalContext = { unavailableNodeIds: new Set() };
 

@@ -69,7 +69,6 @@ export const QUEST_LAUNCH_TABLE: Readonly<Record<string, LaunchRow>> = Object.fr
     row('difficulty', 'BUBBLE_POP', ROUTES.BUBBLE_POP_GAME),
     row('difficulty', 'BOND_AND_BURN', ROUTES.BOND_AND_BURN_GAME),
     row('difficulty', 'SPACE_ENTRY', ROUTES.SPACE_ENTRY_GAME),
-    row('difficulty', 'TRAFFIC_LAB', ROUTES.TRAFFIC_LAB_GAME),
     row('difficulty', 'MINI_GOLF', ROUTES.MINI_GOLF_GAME),
     row('difficulty', 'SCRATCH_CODING', ROUTES.SCRATCH_CODING_GAME),
     row('circuit', 'CIRCUIT_BUILDER', ROUTES.CIRCUIT_BUILDER_GAME),

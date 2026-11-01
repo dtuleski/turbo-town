@@ -19,7 +19,7 @@ const none: EvalContext = { unavailableNodeIds: new Set() };
 const without = (...ids: string[]): EvalContext => ({ unavailableNodeIds: new Set(ids) });
 
 const PATH = w1.nodes.map((n) => n.id);
-// bp-01-memory, bp-02-math, bp-03-words, bp-04-sequence, bp-05-geo, bp-06-maze, bp-07-memory-hard, bp-boss
+// bp-01-memory, bp-02-math, bp-03-words, bp-04-sequence, bp-05-geo, bp-06-maze, bp-07-memory-space, bp-boss
 
 function np(stars: number, bestScore = stars * 1000): NodeProgress {
   return {
@@ -131,7 +131,7 @@ describe('computeNodeStatuses / unlock chain (R-UNLOCK-*)', () => {
   });
 
   it('the player can still reach the boss with a deactivated game (AC18)', () => {
-    const s = computeNodeStatuses(w1, prog(firstN(6)), without('bp-07-memory-hard'));
+    const s = computeNodeStatuses(w1, prog(firstN(6)), without('bp-07-memory-space'));
     expect(s['bp-boss']).toBe('AVAILABLE');
   });
 
@@ -197,7 +197,7 @@ describe('totals and bonus (R-BONUS-*)', () => {
       'bp-04-sequence',
       'bp-05-geo'
     );
-    const p = prog({ 'bp-06-maze': 3, 'bp-07-memory-hard': 3, 'bp-boss': 3 });
+    const p = prog({ 'bp-06-maze': 3, 'bp-07-memory-space': 3, 'bp-boss': 3 });
     expect(totalStars(w1, p, ctx)).toBe(9);
     expect(computeNodeStatuses(w1, p, ctx)['bp-bonus-sequence']).toBe('AVAILABLE');
   });
@@ -512,12 +512,12 @@ describe('computeBadges (R-BADGE-*)', () => {
 
   it('boss unavailable: not awarded while an earlier node is still unplayed', () => {
     expect(computeBadges(w1, prog(firstN(6)), without('bp-boss'))).toEqual([]);
-    expect(computeBadges(w1, prog(firstN(3)), without('bp-boss', 'bp-07-memory-hard'))).toEqual([]);
+    expect(computeBadges(w1, prog(firstN(3)), without('bp-boss', 'bp-07-memory-space'))).toEqual([]);
   });
 
   it('boss unavailable with earlier nodes also unavailable and reached', () => {
     expect(
-      computeBadges(w1, prog(firstN(5)), without('bp-06-maze', 'bp-07-memory-hard', 'bp-boss'))
+      computeBadges(w1, prog(firstN(5)), without('bp-06-maze', 'bp-07-memory-space', 'bp-boss'))
     ).toEqual(['WORLD_CLEARED']);
   });
 
@@ -525,7 +525,7 @@ describe('computeBadges (R-BADGE-*)', () => {
     const out = applyNodeResult(
       w1,
       prog(firstN(6)),
-      { nodeId: 'bp-07-memory-hard', score: 2600, nowIso: NOW },
+      { nodeId: 'bp-07-memory-space', score: 2600, nowIso: NOW },
       without('bp-boss')
     );
     expect(out.worldCleared).toBe(true);

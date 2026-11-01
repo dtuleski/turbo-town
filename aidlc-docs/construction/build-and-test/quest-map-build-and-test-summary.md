@@ -1,4 +1,4 @@
-﻿# Quest Map Build and Test Summary
+# Quest Map Build and Test Summary
 
 **Branch**: feat/quest-map · **Stage**: CONSTRUCTION - Build and Test
 **Result**: Build success. All automated tests pass except the two known baseline suites. Manual and owner-run checks below are still open.
@@ -15,7 +15,7 @@
 | infrastructure | `npx tsc --noEmit` | PASS (exit 0) |
 | apps/web | `npm install` | OK; `package-lock.json` churn reverted, tree clean |
 | apps/web | `npx tsc --noEmit` | PASS (exit 0) |
-| apps/web | `npx vitest run` | PASS: 44 files, 833 tests |
+| apps/web | `npx vitest run` | PASS: 44 files, 832 tests (was 833: the TRAFFIC_LAB launch row case was removed) |
 | apps/web | `npm run build` | PASS (exit 0); pre-existing chunk-size warning (1.76 MB, 510 kB gzip) |
 
 No failures beyond the baseline. No code fixes were needed. Not run: coverage, load tests, `cdk synth`/`cdk diff`, any AWS or Vercel command.
@@ -43,12 +43,16 @@ PL5:
 ## 3. Pre-launch checks PL1 to PL6
 | Id | Check | Owner action | Status |
 |---|---|---|---|
-| PL1 | Every themeId in config has a PUBLISHED row in `memory-game-themes-prod` | AWS read, `dashden-new` | Open |
-| PL2 | Every `catalogGameId` in config is `ACTIVE` in `memory-game-catalog-prod` | AWS read, `dashden-new` | Open |
+| PL1 | Every themeId in config has a PUBLISHED row in `memory-game-themes-prod` | AWS read, `dashden-new` | Done (prod, read-only). Found `OCEAN` missing; fixed by moving `bp-07` to `SPACE` (thresholds.md section 7) |
+| PL2 | Every `catalogGameId` in config is `ACTIVE` in `memory-game-catalog-prod` | AWS read, `dashden-new` | Done (prod, read-only). Found `traffic-lab` COMING_SOON; fixed by removing Traffic Lab from launch content (thresholds.md section 7) |
 | PL3 | Calibrate thresholds from real score percentiles (read-only leaderboard data) | Owner analysis | Open |
 | PL4 | `cdk diff MemoryGame-Database-prod` shows exactly one new table plus added Outputs/exports; anything else means stop | Owner, read-only | Open |
 | PL5 | Manual accessibility, 320 px and reduced-motion pass | Manual (section 2) | Open |
 | PL6 | Playtest node durations acceptable for ages 8 to 16 | Playtest | Open |
+
+PL1 and PL2 fix results (config only, no AWS write): shared jest 23 suites / 534 tests, game jest 9 suites / 214 tests (same 2 baseline suites fail to run), web vitest 44 files / 832 tests; all three `tsc --noEmit` and the shared and web builds pass.
+
+Known pre-existing issue, NOT fixed here: the hub's Memory Match offers the `OCEAN` theme (`apps/web/src/config/constants.ts`, `GAME_THEMES`), but prod has no `OCEAN` row in `memory-game-themes-prod`, so that hub option fails today with "Theme not found". Quest Map no longer uses `OCEAN`.
 
 ## 4. Release order (critical)
 The hub card always renders for signed-in users and there is no feature flag. So the backend must be live in prod before the frontend ships.

@@ -1149,8 +1149,8 @@
       "bp-06-maze": {
         "name": "Laberinto de Números"
       },
-      "bp-07-memory-hard": {
-        "name": "Memoria del Océano Profundo"
+      "bp-07-memory-space": {
+        "name": "Memoria del Espacio"
       },
       "bp-boss": {
         "name": "Jefe de la Cima"
@@ -1167,8 +1167,8 @@
       "si-03-circuit-series": {
         "name": "Circuito en Serie"
       },
-      "si-04-traffic-lab": {
-        "name": "Control de Tráfico"
+      "si-04-circuit-branches": {
+        "name": "Ramas en Paralelo"
       },
       "si-05-scratch": {
         "name": "Rincón del Código"

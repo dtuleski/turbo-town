@@ -1151,8 +1151,8 @@
       "bp-06-maze": {
         "name": "Number Maze"
       },
-      "bp-07-memory-hard": {
-        "name": "Deep Ocean Memory"
+      "bp-07-memory-space": {
+        "name": "Space Memory"
       },
       "bp-boss": {
         "name": "Peak Boss"
@@ -1169,8 +1169,8 @@
       "si-03-circuit-series": {
         "name": "Series Circuit"
       },
-      "si-04-traffic-lab": {
-        "name": "Traffic Control"
+      "si-04-circuit-branches": {
+        "name": "Parallel Branches"
       },
       "si-05-scratch": {
         "name": "Code Corner"

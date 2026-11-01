@@ -151,18 +151,18 @@ describe('validateStart - boss gauntlet order and expiry (R-START-5)', () => {
     ).rejects.toMatchObject({ message: QUEST_UNAVAILABLE_MESSAGE });
   });
 
-  it('rejects skipping a leg on the three-leg boss', async () => {
+  it('rejects skipping a leg on a boss', async () => {
     const rig = questRig();
-    const progress = clearedWorld(SI, 1, ['si-boss']);
+    const progress = clearedWorld(BP, 1, ['bp-boss']);
     progress.activeGauntlet = {
-      nodeId: 'si-boss',
-      legs: [{ gameId: 'g0', score: 1 }],
+      nodeId: 'bp-boss',
+      legs: [],
       startedAt: new Date(T0).toISOString(),
       lastActivityAt: new Date(T0).toISOString(),
     };
     rig.repo.seed(progress);
     await expect(
-      rig.service.validateStart(USER_ID, SubscriptionTier.Premium, ctx(SI, 'si-boss', 2), 'TRAFFIC_LAB', 2)
+      rig.service.validateStart(USER_ID, SubscriptionTier.Free, ctx(BP, 'bp-boss', 1), 'BUBBLE_POP', 2)
     ).rejects.toMatchObject({ message: QUEST_UNAVAILABLE_MESSAGE });
   });
 
@@ -179,7 +179,7 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
 
   it('computes stars from the given server score and saves version 1', async () => {
     const rig = questRig();
-    rig.repo.seed(clearedWorld(BP, 1, ['bp-02-math', 'bp-03-words', 'bp-boss', 'bp-04-sequence', 'bp-05-geo', 'bp-06-maze', 'bp-07-memory-hard']));
+    rig.repo.seed(clearedWorld(BP, 1, ['bp-02-math', 'bp-03-words', 'bp-boss', 'bp-04-sequence', 'bp-05-geo', 'bp-06-maze', 'bp-07-memory-space']));
     const result = await rig.service.applyCompletion(USER_ID, game('a'), 2400);
     expect(result).toMatchObject({
       worldId: BP,
@@ -381,18 +381,18 @@ describe('applyCompletion - boss gauntlet (R-DONE-6, R-DONE-7)', () => {
 
   it('an out-of-order leg clears the attempt and reports EXPIRED with 0 stars', async () => {
     const rig = questRig();
-    const progress = clearedWorld(SI, 1, ['si-boss']);
+    const progress = clearedWorld(BP, 1, ['bp-boss']);
     progress.activeGauntlet = {
-      nodeId: 'si-boss',
-      legs: [{ gameId: 'g0', score: 1000 }],
+      nodeId: 'bp-boss',
+      legs: [],
       startedAt: new Date(T0).toISOString(),
       lastActivityAt: new Date(T0).toISOString(),
     };
     rig.repo.seed(progress);
-    const skipped = questGame('g2', ctx(SI, 'si-boss', 2), 'TRAFFIC_LAB', 2);
+    const skipped = questGame('g2', ctx(BP, 'bp-boss', 1), 'BUBBLE_POP', 2);
     const result = await rig.service.applyCompletion(USER_ID, skipped, 5000);
     expect(result).toMatchObject({ stars: 0, gauntlet: { status: 'EXPIRED' } });
-    expect(rig.repo.stored(SI)!.activeGauntlet).toBeUndefined();
+    expect(rig.repo.stored(BP)!.activeGauntlet).toBeUndefined();
   });
 
   it('a stale leg with no attempt reports EXPIRED without writing', async () => {
@@ -455,7 +455,7 @@ describe('getProgressView (R-VIEW-*)', () => {
     const view = await rig.service.getProgressView(USER_ID, SubscriptionTier.Premium);
     const byId = Object.fromEntries(view.worlds[0].nodes.map((n) => [n.id, n.status]));
     expect(byId['bp-01-memory']).toBe('UNAVAILABLE');
-    expect(byId['bp-07-memory-hard']).toBe('UNAVAILABLE');
+    expect(byId['bp-07-memory-space']).toBe('UNAVAILABLE');
   });
 
   it('includes an active gauntlet until it expires', async () => {

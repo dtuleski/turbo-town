@@ -20,7 +20,7 @@ Scores are the server-computed score of one play (boss: sum of all legs). All va
 | `bp-04-sequence` | `SEQUENCE_MEMORY` | 2 | 2650 | 3450 | 3950 |
 | `bp-05-geo` | `GEO_QUIZ` | 2 | 2700 | 3500 | 3950 |
 | `bp-06-maze` | `MATH_MAZE` | 2 | 2500 | 3350 | 3900 |
-| `bp-07-memory-hard` | Memory Match / `OCEAN` | 3 | 2500 | 4000 | 5100 |
+| `bp-07-memory-space` | Memory Match / `SPACE` | 3 | 2500 | 4000 | 5100 |
 | `bp-boss` | `MATH_CHALLENGE` d2 + `BUBBLE_POP` d2 (combined) | 2 + 2 | 5550 | 7000 | 7400 |
 | `bp-bonus-sequence` | `SEQUENCE_MEMORY` | 3 | 3500 | 4600 | 5300 |
 
@@ -33,11 +33,11 @@ Bonus star threshold: **14** of a maximum 24 path stars (8 path nodes x 3).
 | `si-01-bond-burn` | `BOND_AND_BURN` | 1 | 1550 | 2750 | 3300 |
 | `si-02-space-entry` | `SPACE_ENTRY` | 1 | 2550 | 3600 | 4250 |
 | `si-03-circuit-series` | `CIRCUIT_BUILDER` / `cb-03-series-loop` | 2 | 2200 | 2950 | 3900 |
-| `si-04-traffic-lab` | `TRAFFIC_LAB` | 2 | 2800 | 3300 | 3650 |
 | `si-05-scratch` | `SCRATCH_CODING` | 1 | 250 | 1500 | 3150 |
+| `si-04-circuit-branches` | `CIRCUIT_BUILDER` / `cb-04-parallel-branches` | 2 | 2200 | 2950 | 3900 |
 | `si-06-mini-golf` | `MINI_GOLF` | 2 | 250 | 1850 | 4150 |
 | `si-07-circuit-parallel` | `CIRCUIT_BUILDER` / `cb-05-series-vs-parallel` | 3 | 2900 | 3900 | 5200 |
-| `si-boss` | `BOND_AND_BURN` d3 + `SPACE_ENTRY` d2 + `TRAFFIC_LAB` d2 (combined) | 3 + 2 + 2 | 8750 | 13150 | 14500 |
+| `si-boss` | `BOND_AND_BURN` d3 + `SPACE_ENTRY` d2 (combined) | 3 + 2 | 5950 | 9800 | 11150 |
 | `si-bonus` | `CIRCUIT_BUILDER` / `cb-07-resistance-limits-current` | 4 | 3650 | 4900 | 6500 |
 
 Bonus star threshold: **16** of a maximum 24 path stars.
@@ -94,19 +94,19 @@ Format: anchors (time t in seconds, accuracy a) and the score the formula gives.
 | `bp-04-sequence` (10 cards, base 1000 x 1.5) | t 150, a 0.50: 1500 x 1.75 x 1.0 = 2625 | t 100, a 0.75: 1500 x 1.833 x 1.25 = 3438 | t 60, a 0.90: 1500 x 1.9 x 1.4 = 3990 | 2650 / 3450 / 3950 |
 | `bp-05-geo` (Geo Quiz d2, 10 questions, base 1000 x 1.5, maxTime 600; t includes about 2.5 s of feedback per question) | t 115 (about 9 s per answer), 5 of 10 correct: 1500 x 1.808 x 1.0 = 2712 | t 85, a 0.75: 1500 x 1.858 x 1.25 = 3484 | t 60, 9 of 10 correct: 1500 x 1.9 x 1.4 = 3990 | 2700 / 3500 / 3950. Perfect play (10 of 10, t 55) scores 4293, above 3950. See F1 |
 | `bp-06-maze` (base 1000 x 1.5) | t 200, a 0.50: 1500 x 1.667 x 1.0 = 2500 | t 130, a 0.75: 1500 x 1.783 x 1.25 = 3344 | t 80, a 0.90: 1500 x 1.867 x 1.4 = 3920 | 2500 / 3350 / 3900 |
-| `bp-07-memory-hard` (10 pairs, base 1000 x 2.0) | t 300, 30 attempts, a 0.33: 2000 x 1.5 x 0.83 = 2500 | t 180, 20 attempts, a 0.67: 2000 x 1.7 x 1.17 = 3967 | t 100, 13 attempts, a 0.90: 2000 x 1.833 x 1.4 = 5133 | 2500 / 4000 / 5100. Ten pairs is hard for an 8-year-old; W is set at 30 attempts so the boss is not gated by a coin flip |
+| `bp-07-memory-space` (was `bp-07-memory-hard` / `OCEAN`; same game, difficulty and pairs; 10 pairs, base 1000 x 2.0) | t 300, 30 attempts, a 0.33: 2000 x 1.5 x 0.83 = 2500 | t 180, 20 attempts, a 0.67: 2000 x 1.7 x 1.17 = 3967 | t 100, 13 attempts, a 0.90: 2000 x 1.833 x 1.4 = 5133 | 2500 / 4000 / 5100. Ten pairs is hard for an 8-year-old; W is set at 30 attempts so the boss is not gated by a coin flip |
 | `bp-boss` leg 0 `MATH_CHALLENGE` d2 (15 q) | t 170, a 0.50: 2575 | t 120, a 0.75: 3375 | t 75, a 0.90: 3937 | |
 | `bp-boss` leg 1 `BUBBLE_POP` d2 (5 rounds) | t 120, a 0.60: 2970 | t 80, a 0.80: 3640 | t 50, a 1.00: 4313 | sums 5545 / 7015 / 8250; 3 stars = 0.9 x 8250 = 7425. Stored 5550 / 7000 / 7400 |
 | `bp-bonus-sequence` (d3, base 1000 x 2.0, same anchors as `bp-04-sequence`) | t 150, a 0.50: 2000 x 1.75 x 1.0 = 3500 | t 100, a 0.75: 2000 x 1.833 x 1.25 = 4583 | t 60, a 0.90: 2000 x 1.9 x 1.4 = 5320 | 3500 / 4600 / 5300. Perfect play at t 60 scores 5700, under the 6000 `game.service` cap |
 | `si-01-bond-burn` (5 recipes, base 1700, maxTime 60, cap 1.3) | t 70, a 0.60: 1700 x 0.833 x 1.1 = 1558 | t 45, a 0.80: 1700 x 1.25 x 1.3 = 2763 | t 38, a 1.00: 1700 x 1.3 (capped) x 1.5 = 3315 | 1550 / 2750 / 3300. The speed cap makes 3 stars an all-recipes run at about 38 s or faster |
 | `si-02-space-entry` (d1, maxTime 180, countdown 90 s) | t 90 (whole countdown), a 0.50: 1700 x 1.5 x 1.0 = 2550 | t 55, a 0.75: 1700 x 1.694 x 1.25 = 3600 | t 35, a 0.90: 1700 x 1.806 x 1.4 = 4297 | 2550 / 3600 / 4250 |
 | `si-03-circuit-series` | see section 5 | | | 2200 / 2950 / 3900 |
-| `si-04-traffic-lab` (d2, maxTime 90, sim 90 s, cap 1.3) | t 90, a 0.60: 2550 x 1.0 x 1.1 = 2805 | t 90, a 0.80: 2550 x 1.3 = 3315 | t 90, a 0.95: 2550 x 1.45 = 3698 | 2800 / 3300 / 3650. Time is the whole simulation, so speed is 1.0 and accuracy decides |
+| `si-04-circuit-branches` | see section 5 and section 7 (same d2 anchors as `si-03`) | | | 2200 / 2950 / 3900 |
 | `si-05-scratch` (d1, base 1700, maxTime 120) | t 240+: speed floor 0.1 x 1.5 x 1700 = 255 | t 140, a 1.0: 1700 x 0.833 x 1.5 = 2125 | t 90, a 1.0: 1700 x 1.25 x 1.5 = 3188 | 250 / 1500 / 3150. See F2 |
 | `si-06-mini-golf` (d2, base 1800 x 1.5, maxTime 50, cap 1.5) | slow and wild: speed floor 0.1: about 135 to 365 | t 70, strokes ratio 0.8 so a 0.64: 2700 x 0.6 x 1.14 = 1847 | t 45, ratio 0.95 so a 0.90: 2700 x 1.1 x 1.4 = 4158 | 250 / 1850 / 4150. See F2 |
 | `si-boss` leg 0 `BOND_AND_BURN` d3 (maxTime 30) | t 36, a 0.60: 3400 x 0.8 x 1.1 = 2992 | t 24, a 0.80: 3400 x 1.2 x 1.3 = 5304 | t 20, a 1.00: 3400 x 1.3 x 1.5 = 6630 | |
 | `si-boss` leg 1 `SPACE_ENTRY` d2 (maxTime 120) | t 100, a 0.50: 2975 | t 70, a 0.75: 4516 | t 45, a 0.90: 5801 | |
-| `si-boss` leg 2 `TRAFFIC_LAB` d2 | 2805 | 3315 | 3698 | sums 8772 / 13135 / 16129; 3 stars = 0.9 x 16129 = 14516. Stored 8750 / 13150 / 14500 |
+| `si-boss` (2 legs, Traffic Lab leg dropped, section 7) | sum 5967 | sum 9820 | sum 12431 | 5950 / 9800 / 11150 (3 stars = 0.9 x 12431 = 11188, rounded down) |
 | `si-bonus` | section 5 | | | 3650 / 4900 / 6500 |
 
 ---
@@ -157,3 +157,20 @@ Level budgets (read from `guided-levels.ts`): `cb-03` allows 7 components plus 1
 ## 6. What the owner can change without code
 
 Thresholds, the two bonus star thresholds, node order and coordinates are config. A new threshold set passes the config test if each triple is strictly ascending and each 3-star value is at most 8000 x leg count. Calibration (PL3) should: pull read-only score percentiles per `(themeId, difficulty)` for completed games, set star 1 near the 25th percentile of finishers, star 2 near the median, star 3 near the 90th, and keep the boss sums as defined in section 2. Percentiles are a proposal, not a measured fit.
+
+---
+## 7. Production pre-launch findings (PL1 and PL2) and the config changes they caused
+Read-only prod checks found two content problems. Both were fixed in `config.ts`; no other node changed.
+- **PL1: theme `OCEAN` does not exist in `memory-game-themes-prod`**, so `startGame` for `OCEAN` fails with "Theme not found". Published Memory Match themes in prod: ANIMALS, FRUITS, VEHICLES, SPACE, FORMULA1, SPORTS. Every other Quest Map themeId is published.
+- **PL2: catalog `traffic-lab` is COMING_SOON**, not ACTIVE. Every other `catalogGameId` used by the config is ACTIVE.
+
+**Change 1 - `bp-07-memory-hard` becomes `bp-07-memory-space`.** Memory Match difficulty 3 (10 pairs) with themeId `SPACE` instead of `OCEAN`. Same game, difficulty and pairs, so the formula inputs and the derivation in section 3 are unchanged; thresholds stay 2500 / 4000 / 5100. Display name "Space Memory" (es "Memoria del Espacio", pt "Memória do Espaço").
+
+**Change 2a - `si-04-traffic-lab` becomes `si-04-circuit-branches`.** Circuit Builder `cb-04-parallel-branches`, difficulty 2 (the only other d2 guided level; `cb-03` is used by `si-03`). The leg difficulty equals the level's, as the validator requires. Thresholds 2200 / 2950 / 3900 are the section 5 W/M/B result for a d2 level (base 1700: 2192 / 2933 / 3919). Robustness at base 1866 (PR #25): W 2406 < 2950 and M 3219 < 3900, so no anchor moves up a tier; no change needed. The level's own budget was not re-derived; it is assumed comparable to `cb-03`.
+Order: to avoid two Circuit Builder nodes side by side, the new node sits after `si-05-scratch` and before `si-06-mini-golf` (path: bond, space, circuit, scratch, circuit, golf, circuit, boss). The node ids keep their original numbers, so array order is si-05-scratch then si-04-circuit-branches. `si-05-scratch` took the old Traffic Lab map slot (55, 62) and the new node took the old Scratch slot (82, 50). Boss and bonus did not move. The bonus is off the path.
+
+**Change 2b - `si-boss` becomes a 2-leg gauntlet.** `BOND_AND_BURN` d3 + `SPACE_ENTRY` d2. Section 2 method with the section 3 anchors: W 2992 + 2975 = 5967, M 5304 + 4516 = 9820, B 6630 + 5801 = 12431. Star 1 = 5950, star 2 = 9800 (nearest 50), star 3 = 0.9 x 12431 = 11188, rounded down to 11150. Thresholds 5950 / 9800 / 11150 (was 8750 / 13150 / 14500). The 3-star value is far under the 8000 x 2 limit (V17).
+
+**Allowlist and launch table.** `TRAFFIC_LAB` was removed from `QUEST_GAME_THEME_IDS` (now 12 game ids, 18 known with the 6 card ids) and from the web launch table, because nothing in quest mode references it. The Traffic Lab page and its route are untouched. `PATTERN_RECALL` stays in both, as in section 4 F1.
+
+**Not fixed here (pre-existing):** the hub's Memory Match offers `OCEAN` (`GAME_THEMES` in `apps/web/src/config/constants.ts`), but prod has no `OCEAN` row, so that hub option fails today.

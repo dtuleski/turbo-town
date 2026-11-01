@@ -83,7 +83,6 @@ describe('buildLaunchUrl', () => {
     ['BUBBLE_POP', ROUTES.BUBBLE_POP_GAME],
     ['BOND_AND_BURN', ROUTES.BOND_AND_BURN_GAME],
     ['SPACE_ENTRY', ROUTES.SPACE_ENTRY_GAME],
-    ['TRAFFIC_LAB', ROUTES.TRAFFIC_LAB_GAME],
     ['MINI_GOLF', ROUTES.MINI_GOLF_GAME],
     ['SCRATCH_CODING', ROUTES.SCRATCH_CODING_GAME],
   ]
@@ -142,8 +141,8 @@ describe('buildLaunchUrl', () => {
     expect(getGameNameKey('toString')).toBeNull()
   })
 
-  it('has a launch row for every known themeId (19) and no extras', () => {
-    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(19)
+  it('has a launch row for every known themeId (18) and no extras', () => {
+    expect(QUEST_KNOWN_THEME_IDS).toHaveLength(18)
     expect(Object.keys(QUEST_LAUNCH_TABLE).sort()).toEqual([...QUEST_KNOWN_THEME_IDS].sort())
     for (const id of QUEST_GAME_THEME_IDS) {
       expect(getGameNameKey(id)).toBe(`quest.games.${id}`)

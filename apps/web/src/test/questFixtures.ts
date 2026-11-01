@@ -32,7 +32,7 @@ export function makeWorld1(): QuestWorldView {
       makeNode({ id: 'bp-04-sequence', map: { x: 45, y: 62 }, legs: [{ themeId: 'SEQUENCE_MEMORY', difficulty: 2 }] }),
       makeNode({ id: 'bp-05-geo', status: 'UNAVAILABLE', map: { x: 18, y: 50 }, legs: [{ themeId: 'GEO_QUIZ', difficulty: 2 }] }),
       makeNode({ id: 'bp-06-maze', status: 'LOCKED', map: { x: 42, y: 38 }, legs: [{ themeId: 'MATH_MAZE', difficulty: 2 }] }),
-      makeNode({ id: 'bp-07-memory-hard', status: 'LOCKED', map: { x: 72, y: 28 }, legs: [{ themeId: 'OCEAN', difficulty: 3 }] }),
+      makeNode({ id: 'bp-07-memory-space', status: 'LOCKED', map: { x: 72, y: 28 }, legs: [{ themeId: 'SPACE', difficulty: 3 }] }),
       makeNode({
         id: 'bp-boss',
         kind: 'BOSS',

@@ -74,9 +74,9 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
     ),
     node('bp-06-maze', 'GAME', [leg('MATH_MAZE', 'math-maze', 2)], [2500, 3350, 3900], 42, 38),
     node(
-      'bp-07-memory-hard',
+      'bp-07-memory-space',
       'GAME',
-      [leg('OCEAN', 'memory-match', 3)],
+      [leg('SPACE', 'memory-match', 3)],
       [2500, 4000, 5100],
       72,
       28
@@ -131,18 +131,18 @@ const SCIENCE_ISLAND: QuestWorld = Object.freeze({
       70
     ),
     node(
-      'si-04-traffic-lab',
-      'GAME',
-      [leg('TRAFFIC_LAB', 'traffic-lab', 2)],
-      [2800, 3300, 3650],
-      55,
-      62
-    ),
-    node(
       'si-05-scratch',
       'GAME',
       [leg('SCRATCH_CODING', 'scratch-coding', 1)],
       [250, 1500, 3150],
+      55,
+      62
+    ),
+    node(
+      'si-04-circuit-branches',
+      'GAME',
+      [leg('CIRCUIT_BUILDER', 'circuit-builder', 2, { levelId: 'cb-04-parallel-branches' })],
+      [2200, 2950, 3900],
       82,
       50
     ),
@@ -161,9 +161,8 @@ const SCIENCE_ISLAND: QuestWorld = Object.freeze({
       [
         leg('BOND_AND_BURN', 'bond-and-burn', 3),
         leg('SPACE_ENTRY', 'space-entry', 2),
-        leg('TRAFFIC_LAB', 'traffic-lab', 2),
       ],
-      [8750, 13150, 14500],
+      [5950, 9800, 11150],
       50,
       10
     ),
