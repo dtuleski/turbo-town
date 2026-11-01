@@ -24,6 +24,7 @@ export interface LambdaStackProps extends cdk.StackProps {
   languageWordsTable: dynamodb.Table;
   languageProgressTable: dynamodb.Table;
   languageResultsTable: dynamodb.Table;
+  questProgressTable: dynamodb.ITable;
   // Cognito
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
@@ -142,6 +143,7 @@ export class LambdaStack extends cdk.Stack {
         LANGUAGE_WORDS_TABLE_NAME: props.languageWordsTable.tableName,
         LANGUAGE_PROGRESS_TABLE_NAME: props.languageProgressTable.tableName,
         LANGUAGE_RESULTS_TABLE_NAME: props.languageResultsTable.tableName,
+        QUEST_PROGRESS_TABLE_NAME: props.questProgressTable.tableName,
         COGNITO_USER_POOL_ID: props.userPool.userPoolId,
         EVENT_BUS_NAME: props.eventBus.eventBusName,
         LOG_LEVEL: props.environment === 'prod' ? 'INFO' : 'DEBUG',
@@ -193,6 +195,23 @@ export class LambdaStack extends cdk.Stack {
           props.languageResultsTable.tableArn,
           `${props.languageResultsTable.tableArn}/index/*`,
         ],
+      })
+    );
+
+    // Quest Map progress table: Game Lambda only, named actions, this table's ARN only
+    // (no index resource: the table has no GSI). Read and write are separate statements.
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['dynamodb:GetItem', 'dynamodb:Query'],
+        resources: [props.questProgressTable.tableArn],
+      })
+    );
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'],
+        resources: [props.questProgressTable.tableArn],
       })
     );
 

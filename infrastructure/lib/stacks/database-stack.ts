@@ -23,6 +23,7 @@ export class DatabaseStack extends cdk.Stack {
   public readonly leaderboardEntriesTable: dynamodb.Table;
   public readonly userAggregatesTable: dynamodb.Table;
   public readonly rateLimitBucketsTable: dynamodb.Table;
+  public readonly questProgressTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -307,6 +308,17 @@ export class DatabaseStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
+    // QuestProgress Table - Quest Map progress, one item per user per world
+    this.questProgressTable = new dynamodb.Table(this, 'QuestProgressTable', {
+      tableName: `memory-game-quest-progress-${environment}`,
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'worldId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
     // Outputs
     new cdk.CfnOutput(this, 'UsersTableName', {
       value: this.usersTable.tableName,
@@ -346,6 +358,11 @@ export class DatabaseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'RateLimitBucketsTableName', {
       value: this.rateLimitBucketsTable.tableName,
       exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-RateLimitBucketsTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'QuestProgressTableName', {
+      value: this.questProgressTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-QuestProgressTableName`,
     });
   }
 }

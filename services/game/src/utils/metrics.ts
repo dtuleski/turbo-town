@@ -5,6 +5,13 @@ import { logger } from './logger';
 const cloudwatch = new CloudWatchClient({});
 const NAMESPACE = 'MemoryGame/GameService';
 
+export type QuestMetricName =
+  | 'QuestNodeStarted'
+  | 'QuestNodeCleared'
+  | 'QuestWorldCleared'
+  | 'QuestPaywallHit'
+  | 'QuestProgressWriteFailed';
+
 /**
  * Publish custom metrics to CloudWatch
  */
@@ -95,6 +102,30 @@ export class MetricsPublisher {
       );
     } catch (error) {
       logger.error('Failed to publish RateLimitExceeded metric', error as Error);
+    }
+  }
+
+  /**
+   * Publish a Quest Map metric. World id is the only dimension (no PII). Never throws.
+   */
+  async publishQuestMetric(name: QuestMetricName, worldId: string): Promise<void> {
+    try {
+      await cloudwatch.send(
+        new PutMetricDataCommand({
+          Namespace: NAMESPACE,
+          MetricData: [
+            {
+              MetricName: name,
+              Value: 1,
+              Unit: 'Count',
+              Timestamp: new Date(),
+              Dimensions: [{ Name: 'World', Value: worldId }],
+            },
+          ],
+        })
+      );
+    } catch (error) {
+      logger.error(`Failed to publish ${name} metric`, error as Error);
     }
   }
 

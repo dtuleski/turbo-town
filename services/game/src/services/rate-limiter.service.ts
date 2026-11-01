@@ -1,6 +1,6 @@
 import { SubscriptionTier, RateLimitError } from '@memory-game/shared';
 import { RateLimitRepository } from '../repositories/rate-limit.repository';
-import { RateLimit } from '../types';
+import { RateLimit, RateLimitInfo } from '../types';
 import { ErrorMessages } from '../utils/error-mapper';
 import { logger } from '../utils/logger';
 
@@ -46,6 +46,28 @@ export class RateLimiterService {
       limit,
       remaining: limit - rateLimit.count,
     });
+  }
+
+  /**
+   * Read-only usage from the same record checkLimit reads (Quest Map, FR-QM-17).
+   * A missing or expired record means nothing used yet. Never writes.
+   */
+  async getUsage(userId: string, tier: SubscriptionTier): Promise<RateLimitInfo> {
+    const limit = this.getTierLimit(tier);
+    const rateLimit = await this.rateLimitRepository.get(userId);
+
+    if (!rateLimit || this.isExpired(rateLimit.resetAt)) {
+      return { tier, limit, used: 0, remaining: limit, resetAt: this.getNextMidnightUTC() };
+    }
+
+    const used = Number.isFinite(rateLimit.count) ? rateLimit.count : 0;
+    return {
+      tier,
+      limit,
+      used,
+      remaining: Math.max(0, limit - used),
+      resetAt: new Date(rateLimit.resetAt),
+    };
   }
 
   /**
