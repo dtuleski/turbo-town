@@ -18,3 +18,5 @@ export * from './constants';
 
 // Circuit Builder engine
 export * from './circuit';
+// Quest Map shared core
+export * from './quest';

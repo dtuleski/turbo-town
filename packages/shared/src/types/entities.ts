@@ -15,6 +15,7 @@ import {
   InvoiceStatus,
   UITheme,
 } from './enums';
+import type { QuestContext } from '../quest/types';
 
 export interface User {
   id: string;
@@ -41,6 +42,7 @@ export interface Game {
   completionTime?: number;
   attempts: number;
   score?: number;
+  questContext?: QuestContext;
   createdAt: Date;
   updatedAt: Date;
 }

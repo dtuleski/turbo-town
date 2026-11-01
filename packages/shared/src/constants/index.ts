@@ -7,3 +7,4 @@ export * from './pricing';
 export * from './achievements';
 export * from './app.constants';
 export * from './errors';
+export * from './paid-games';
