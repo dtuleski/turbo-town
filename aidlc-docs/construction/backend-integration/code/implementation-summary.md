@@ -144,12 +144,12 @@ efficiencyRatio = clamp(0, 1, (budget - componentCount) / max(1, budget - 2))
 cleared         = max(0, faultCount - unresolvedFaultCount)
 faultPenalty    = min(0.60, min(0.30, cleared * 0.05) + unresolvedFaultCount * 0.30)
 qualityRatio    = clamp(0, 1, efficiencyRatio - faultPenalty)
-finalScore      = clamp(0, 8000, round(1700 * difficultyMult * speedBonus * (0.5 + qualityRatio)))
+finalScore      = clamp(0, 8000, round(1866 * difficultyMult * speedBonus * (0.5 + qualityRatio)))
 ```
 
 | Constant | Value | Reasoning |
 |---|---|---|
-| `CB_BASE_SCORE` | 1700 | the existing premium-game base, so scores are comparable across games |
+| `CB_BASE_SCORE` | 1866 | chosen so a perfect difficulty-4 run (8 s floor, speed 1.1433) reaches the 8000 cap exactly |
 | `CB_TIME_WEIGHT` | 0.15 | time spans 0.90 to 1.15, a 1.28x range; quality spans 0.5 to 1.5, a 3x range. Quality therefore has about 2.4x the leverage of speed - the "modest" weighting FR-CB-25 asks for, while speed still breaks ties |
 | `CB_SPEED_BONUS_MIN` / `MAX` | 0.90 / 1.15 | keeps a very slow attempt from scoring zero and a very fast one from dominating |
 | `CB_TARGET_TIME_BY_DIFFICULTY` | 90 / 120 / 150 / 180 s | U6's judgement, not a requirement. Sits between the existing `SCRATCH_CODING` targets (120/180/240) and `TRAFFIC_LAB` (60/90/120), which bracket a comparable puzzle game. One object to retune after playtesting |
@@ -164,13 +164,13 @@ finalScore      = clamp(0, 8000, round(1700 * difficultyMult * speedBonus * (0.5
 
 | | components | faults | time | finalScore |
 |---|---|---|---|---|
-| A elegant, fault-free, slower | 3 | 0 | 120 s | **2100** |
-| B careless, faster | 6 | 3 | 45 s | **1005** |
-| C careless, fastest legal | 5 | 1 | 30 s | **1590** |
+| A elegant, fault-free, slower | 3 | 0 | 120 s | **2305** |
+| B careless, faster | 6 | 3 | 45 s | **1103** |
+| C careless, fastest legal | 5 | 1 | 30 s | **1745** |
 
 A out-scores both, which is FR-CB-25. The best legal submission - 2 components, 0 faults,
-difficulty 4, 8 s - scores **7289**, below the cap, so the formula is never clipped. The worst
-successful submission scores **765**: never zero, never negative. All five figures are
+difficulty 4, 8 s - scores exactly **8000** (the cap; a 1 s run computes above it and is clamped). The worst
+successful submission scores **840**: never zero, never negative. All five figures are
 asserted in `circuit-score.test.ts`.
 
 ---
@@ -188,8 +188,8 @@ it, **clamp** a merely large one, and **floor** the penalty.
 | Under-reporting faults that were CLEARED during play | **NOT verified, and unprovable from a final layout.** Faults are historical events; a final layout cannot reconstruct them. |
 
 **Quantified residual.** A player who shorted five times, repaired every one, and reports zero
-gains at most `5 x 0.05 = 0.25` of `qualityRatio`, hence at most `0.25 x 1700 x 2.5 = 1062`
-points - under 13% of the 8000 cap, and only at the highest difficulty. Closing it would
+gains at most `5 x 0.05 = 0.25` of `qualityRatio`, hence at most `0.25 x 1866 x 2.5 = 1166`
+points - under 15% of the 8000 cap, and only at the highest difficulty. Closing it would
 require streaming fault events to the server during play, which is outside this unit's scope.
 **This is residual trust, documented, not claimed as verified.** Engine faults close the half
 of the problem that is server-knowable and cannot close this half, so the figure stands
@@ -410,7 +410,7 @@ Added by the hardening pass (section 10):
 
 | Risk | Severity | Status |
 |---|---|---|
-| **Under-reported `faultCount`** cannot be verified from a final layout | Low - bounded at about 1062 points, under 13% of the cap | Documented, not fixed. Fixing needs in-play fault event streaming |
+| **Under-reported `faultCount`** cannot be verified from a final layout | Low - bounded at about 1166 points, under 15% of the cap | Documented, not fixed. Fixing needs in-play fault event streaming |
 | **Raw request body size** is not bounded before the Lambda parses it | Low | Pre-existing for all 23 games. Bounding it would be a global change on a straight-to-production Lambda |
 | **The leaderboard drops the Circuit Builder event until U7** adds the `GameType` | Expected | Deliberate, and the stated reason for the U6-before-U7 ordering. The invocation is async, so the score is still persisted and the player still sees the breakdown |
 | **Resubmission after rejection** is permitted | Low | Pre-existing for all games. With one generic message, a retry loop leaks nothing |
@@ -468,7 +468,7 @@ Three properties, each the answer to a way this combination can fail:
 - **Netted, so no fault is charged twice.** A fault present at submission necessarily also
   occurred during the attempt, so it is already inside whatever the client reported. Netting it
   out of the cleared count means reporting a fault honestly costs exactly what hiding it costs
-  - `faultCount: 1` with one unresolved fault scores the same 2040 as `faultCount: 0` with one.
+  - `faultCount: 1` with one unresolved fault scores the same 2239 as `faultCount: 0` with one.
 - **Summed, not maximised.** The first version of this pass took `max(historical, verified)`.
   That kept the *absolute* penalty honest but let the historical signal absorb the verified
   one: the marginal cost of leaving a fault in the layout was `0.30 - 0.05 * faultCount`,
@@ -488,7 +488,7 @@ count does either term absorb the other's marginal cost. Full reasoning in
 The historical signal is deliberately **kept** at 0.05. FR-CB-24 asks for a penalty per short
 incurred, and a short that was genuinely repaired leaves nothing in the final layout to
 re-derive. Section 5's residual-trust analysis is therefore preserved verbatim, including the
-1062-point figure - engine faults close the server-knowable half of the problem and cannot
+1166-point figure - engine faults close the server-knowable half of the problem and cannot
 close the other half. Claiming otherwise would be the dishonest version of this fix.
 
 ### Fix 2 - the protective-resistor exploit, with the numbers
@@ -498,13 +498,13 @@ ranking is decided by circuit quality alone:
 
 | | components | efficiency | unresolved faults | penalty | quality | accuracyBonus | score before | score after |
 |---|---|---|---|---|---|---|---|---|
-| protected: battery + 470 ohm resistor + LED | 3 | 0.80 | 0 | 0.00 | 0.80 | 1.30 | 2210 | **2210** |
-| unprotected: battery + LED | 2 | 1.00 | 1 `OVERCURRENT` | 0.30 | 0.70 | 1.20 | 2550 | **2040** |
+| protected: battery + 470 ohm resistor + LED | 3 | 0.80 | 0 | 0.00 | 0.80 | 1.30 | 2426 | **2426** |
+| unprotected: battery + LED | 2 | 1.00 | 1 `OVERCURRENT` | 0.30 | 0.70 | 1.20 | 2799 | **2239** |
 
 Before: the unprotected solve scored **15.4% more** than the protected one. After: the
 protected solve wins by 170 points, **8.3%**. Both rows are scored through the production path
 in the test - E1, then E2's engine re-evaluation, then E3 - so the fault count is the engine's
-own, not a hand-written metrics object. The old 2550 figure is also asserted, so the defect
+own, not a hand-written metrics object. The old 2799 figure is also asserted, so the defect
 cannot return unnoticed.
 
 Both rows above report `faultCount: 0`. The ranking also has to hold at every other reported
@@ -512,19 +512,19 @@ count, since the historical penalty applies to both layouts. Every integer here 
 
 | reported `faultCount` | protected | unprotected | margin |
 |---|---|---|---|
-| 0 | **2210** | 2040 | +170 |
-| 1 | **2125** | 2040 | +85 |
-| 2 | **2040** | 1955 | +85 |
-| 3 | **1955** | 1870 | +85 |
-| 6 | **1700** | 1615 | +85 |
-| 7 | **1700** | 1530 | +170 |
-| 12 | **1700** | 1530 | +170 |
-| 20 (the clamp) | **1700** | 1530 | +170 |
+| 0 | **2426** | 2239 | +187 |
+| 1 | **2333** | 2239 | +94 |
+| 2 | **2239** | 2146 | +93 |
+| 3 | **2146** | 2053 | +93 |
+| 6 | **1866** | 1773 | +93 |
+| 7 | **1866** | 1679 | +187 |
+| 12 | **1866** | 1679 | +187 |
+| 20 (the clamp) | **1866** | 1679 | +187 |
 
-The arithmetic behind the 85-point floor: one component is worth `1 / max(1, budget - 2)` of
+The arithmetic behind the ~93-point floor: one component is worth `1 / max(1, budget - 2)` of
 the quality factor, which is 0.20 on cb-01's budget of 7. The marginal cost of leaving the
 `OVERCURRENT` in the layout is `0.30 - 0.05 = 0.25` after netting. The 0.05 difference times
-the 1700 base is 85. Because that marginal cost is 0.25 rather than the bare 0.30, the
+the 1866 base is about 93. Because that marginal cost is 0.25 rather than the bare 0.30, the
 **contract for U4's level authoring** tightened from a budget of 6 to a budget of **7** - at 6
 the two solves tie, below 6 the unprotected one wins again. Written up in
 `functional-design.md`, section 4; `cb-01-closed-circuit` grants 7.
@@ -573,21 +573,21 @@ deleted and no other unit's work is involved.
 
 ### FR-CB-25's exact integers are unchanged
 
-2100, 1590, and 1005 all still hold, and the assertions were not edited. Each of those rows
+2305, 1745, and 1103 all still hold, and the assertions were not edited. Each of those rows
 submits a layout with **no** unresolved fault, so `cleared = faultCount` and the historical
 penalty is `min(0.30, 0.05 * faultCount)`, which equals `0.05 * faultCount` at 3 faults and at
-1. The arithmetic is identical to before. 765 and the sub-cap 7289 bound are also unchanged.
+1. The arithmetic is identical to before. (Figures here are as rebased to CB_BASE_SCORE 1866: worst case 840, best case 8000.)
 Nothing was silently re-baselined.
 
 ### One assertion was re-baselined, deliberately and not silently
 
-`charges the larger of the two signals, never their sum` asserted 2040 for
+`charges the larger of the two signals, never their sum` asserted 2239 for
 `metrics(componentCount: 2, faultCount: 6, unresolvedFaultCount: 1)` under the `max` rule. That
 test asserted the property that caused the inversion, so it was **replaced**, not re-numbered:
 `nets the verified faults out of the historical count, charging no fault twice` asserts the
-honesty-neutrality pair at 2040 each and the netted mixed case at **1615** - five cleared
+honesty-neutrality pair at 2239 each and the netted mixed case at **1773** - five cleared
 faults at 0.05 plus one verified at 0.30 is 0.55, where pricing all six as cleared would have
-charged 0.60 and scored 1530. No other existing assertion changed value.
+charged 0.60 and scored 1679. No other existing assertion changed value.
 
 ### Proof that no existing game's scoring moved
 
@@ -611,7 +611,7 @@ findings, all addressed inside the same four `src/` hunks:
 | Finding | Resolution |
 |---|---|
 | **Blocking.** `max` let the historical signal absorb the verified one, so the resistor exploit reopened at a reported fault count of 3 or more | The counts are netted and the two penalties are summed. Marginal cost flat at 0.25, asserted across the whole reported range |
-| **Blocking.** A single 0.60 ceiling flattened the same ranking at a reported count of 12 or more | The historical half is capped separately at `CB_MAX_HISTORICAL_FAULT_PENALTY = 0.30`, leaving one verified fault's room under the total. Asserted at the clamp: 2040 clean against 1530 faulted |
+| **Blocking.** A single 0.60 ceiling flattened the same ranking at a reported count of 12 or more | The historical half is capped separately at `CB_MAX_HISTORICAL_FAULT_PENALTY = 0.30`, leaving one verified fault's room under the total. Asserted at the clamp: 2239 clean against 1679 faulted |
 | `prePlaced` counted as allowance in E2 but not as budget in E3 | E3's budget now adds `level.prePlaced.length`. Zero change on both authored levels, which pre-place nothing; asserted on a synthetic level |
 | The engine fault's identity was never asserted | A test reads `evaluate`'s own result on the unprotected fixture and asserts the fault list is exactly `['OVERCURRENT']` on the `led` element |
 | The combination rationale omitted the regime where the ranking inverted | Both documents now carry the full reported-count table, including what the superseded `max` rule scored in each row |

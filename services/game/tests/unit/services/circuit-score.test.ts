@@ -101,7 +101,7 @@ describe('calculateCircuitBuilderBreakdown - worked cases', () => {
     expect(breakdown.accuracy).toBeCloseTo(0.8, 6);
     expect(breakdown.completionTime).toBe(120);
     expect(breakdown.difficulty).toBe('Easy');
-    expect(breakdown.finalScore).toBe(2100);
+    expect(breakdown.finalScore).toBe(2305);
   });
 
   it('scores a careless, faster circuit (6 components, 3 faults, 45 s)', () => {
@@ -109,7 +109,7 @@ describe('calculateCircuitBuilderBreakdown - worked cases', () => {
 
     expect(breakdown.speedBonus).toBeCloseTo(1.075, 6);
     expect(breakdown.accuracyBonus).toBeCloseTo(0.55, 6);
-    expect(breakdown.finalScore).toBe(1005);
+    expect(breakdown.finalScore).toBe(1103);
   });
 
   it('scores a careless, fastest-legal circuit (5 components, 1 fault, 30 s)', () => {
@@ -117,7 +117,7 @@ describe('calculateCircuitBuilderBreakdown - worked cases', () => {
 
     expect(breakdown.speedBonus).toBeCloseTo(1.1, 6);
     expect(breakdown.accuracyBonus).toBeCloseTo(0.85, 6);
-    expect(breakdown.finalScore).toBe(1590);
+    expect(breakdown.finalScore).toBe(1745);
   });
 
   // FR-CB-25: this is the requirement the whole weighting exists to satisfy.
@@ -142,22 +142,22 @@ describe('calculateCircuitBuilderBreakdown - the protective resistor must pay', 
     // Protected: 3 components, efficiency 0.80, no fault -> quality 0.80.
     expect(protectedSolve.componentCount).toBe(3);
     expect(protectedSolve.unresolvedFaultCount).toBe(0);
-    expect(protectedSolve.finalScore).toBe(2210);
+    expect(protectedSolve.finalScore).toBe(2426);
 
     // Unprotected: 2 components, efficiency 1.00, one OVERCURRENT -> quality 0.70.
     expect(unprotected.componentCount).toBe(2);
     expect(unprotected.unresolvedFaultCount).toBe(1);
-    expect(unprotected.finalScore).toBe(2040);
+    expect(unprotected.finalScore).toBe(2239);
 
     expect(protectedSolve.finalScore).toBeGreaterThan(unprotected.finalScore);
   });
 
   it('would have let the unprotected solve win on efficiency alone', () => {
     // The same two layouts with the fault penalty removed - what the score was before the
-    // engine's faults reached the scorer. 2550 against 2210 is the defect, kept as a test so
+    // engine's faults reached the scorer. 2799 against 2426 is the defect, kept as a test so
     // it cannot come back unnoticed.
-    expect(scoreOf(2, 0, 90)).toBe(2550);
-    expect(scoreOf(3, 0, 90)).toBe(2210);
+    expect(scoreOf(2, 0, 90)).toBe(2799);
+    expect(scoreOf(3, 0, 90)).toBe(2426);
   });
 
   // The ranking has to hold at EVERY historical count, not only at 0. While the two penalties
@@ -168,14 +168,14 @@ describe('calculateCircuitBuilderBreakdown - the protective resistor must pay', 
   it('keeps the protected solve ahead at every historical fault count', () => {
     // [historical faultCount, protected solve score, unprotected solve score]
     const expected: ReadonlyArray<readonly [number, number, number]> = [
-      [0, 2210, 2040],
-      [1, 2125, 2040],
-      [2, 2040, 1955],
-      [3, 1955, 1870],
-      [6, 1700, 1615],
-      [7, 1700, 1530],
-      [12, 1700, 1530],
-      [MAX_FAULT_COUNT_PER_LEVEL, 1700, 1530],
+      [0, 2426, 2239],
+      [1, 2333, 2239],
+      [2, 2239, 2146],
+      [3, 2146, 2053],
+      [6, 1866, 1773],
+      [7, 1866, 1679],
+      [12, 1866, 1679],
+      [MAX_FAULT_COUNT_PER_LEVEL, 1866, 1679],
     ];
 
     for (const [faultCount, protectedScore, unprotectedScore] of expected) {
@@ -202,14 +202,14 @@ describe('calculateCircuitBuilderBreakdown - fault signal combination (SECURITY-
     const clean = calculator.calculateCircuitBuilderBreakdown(metrics(2, 0, 90, 0), LEVEL, 1);
     const faulted = calculator.calculateCircuitBuilderBreakdown(metrics(2, 0, 90, 1), LEVEL, 1);
 
-    expect(clean.finalScore).toBe(2550);
+    expect(clean.finalScore).toBe(2799);
     expect(faulted.accuracy).toBeCloseTo(0.7, 6);
-    expect(faulted.finalScore).toBe(2040);
+    expect(faulted.finalScore).toBe(2239);
     expect(faulted.finalScore).toBeLessThan(clean.finalScore);
   });
 
   it('still charges the client-reported count when the final layout is clean', () => {
-    expect(scoreOf(2, 1, 90)).toBe(2465);
+    expect(scoreOf(2, 1, 90)).toBe(2706);
     expect(scoreOf(2, 1, 90)).toBeLessThan(scoreOf(2, 0, 90));
   });
 
@@ -220,15 +220,15 @@ describe('calculateCircuitBuilderBreakdown - fault signal combination (SECURITY-
     const honest = calculator.calculateCircuitBuilderBreakdown(metrics(2, 1, 90, 1), LEVEL, 1);
     const silent = calculator.calculateCircuitBuilderBreakdown(metrics(2, 0, 90, 1), LEVEL, 1);
 
-    expect(honest.finalScore).toBe(2040);
+    expect(honest.finalScore).toBe(2239);
     expect(honest.finalScore).toBe(silent.finalScore);
 
     // Six reported with one of them still present: five cleared at 0.05 plus one verified at
-    // 0.30 is 0.55. Pricing all six as cleared would have charged 0.60 and scored 1530.
+    // 0.30 is 0.55. Pricing all six as cleared would have charged 0.60 and scored 1679.
     const mixed = calculator.calculateCircuitBuilderBreakdown(metrics(2, 6, 90, 1), LEVEL, 1);
 
     expect(mixed.accuracy).toBeCloseTo(0.45, 6);
-    expect(mixed.finalScore).toBe(1615);
+    expect(mixed.finalScore).toBe(1773);
   });
 
   it('caps the historical half on its own, so the verified penalty survives the ceiling', () => {
@@ -238,17 +238,17 @@ describe('calculateCircuitBuilderBreakdown - fault signal combination (SECURITY-
     const faulted = calculator.calculateCircuitBuilderBreakdown(metrics(2, 20, 90, 1), LEVEL, 1);
 
     expect(clean.accuracy).toBeCloseTo(0.7, 6);
-    expect(clean.finalScore).toBe(2040);
+    expect(clean.finalScore).toBe(2239);
     expect(faulted.accuracy).toBeCloseTo(0.4, 6);
-    expect(faulted.finalScore).toBe(1530);
-    expect(clean.finalScore - faulted.finalScore).toBe(510);
+    expect(faulted.finalScore).toBe(1679);
+    expect(clean.finalScore - faulted.finalScore).toBe(560);
   });
 
   it('caps the combined penalty, so neither signal can drive the score negative', () => {
     const breakdown = calculator.calculateCircuitBuilderBreakdown(metrics(2, 20, 90, 2), LEVEL, 1);
 
     expect(breakdown.accuracy).toBeCloseTo(0.4, 6);
-    expect(breakdown.finalScore).toBe(1530);
+    expect(breakdown.finalScore).toBe(1679);
     expect(breakdown.finalScore).toBeGreaterThan(0);
   });
 
@@ -284,7 +284,7 @@ describe('calculateCircuitBuilderBreakdown - level budget composition', () => {
 
     // Budget 4, denominator 2, so a 3-element layout sits at (4 - 3) / 2 = 0.50.
     expect(breakdown.accuracy).toBeCloseTo(0.5, 6);
-    expect(breakdown.finalScore).toBe(1700);
+    expect(breakdown.finalScore).toBe(1866);
   });
 });
 
@@ -377,12 +377,29 @@ describe('calculateCircuitBuilderBreakdown - bounds', () => {
     }
   });
 
-  it('leaves the best legal submission below the cap, so the formula is never clipped', () => {
-    expect(scoreOf(2, 0, 8, 4)).toBeLessThan(CB_SCORE_CAP);
+  // Fastest legal times are 2 s per difficulty level (validateCompletionTime).
+  it('scores the best difficulty-4 submission (2 components, 0 faults, 8 s) exactly 8000', () => {
+    const breakdown = calculator.calculateCircuitBuilderBreakdown(metrics(2, 0, 8), LEVEL, 4);
+
+    expect(breakdown.speedBonus).toBeCloseTo(1 + (0.15 * 172) / 180, 6);
+    expect(breakdown.accuracyBonus).toBeCloseTo(1.5, 6);
+    expect(breakdown.finalScore).toBe(8000);
+    expect(breakdown.finalScore).toBe(CB_SCORE_CAP);
+  });
+
+  it('clamps a faster-than-legal difficulty-4 time to the cap rather than exceeding it', () => {
+    expect(scoreOf(2, 0, 1, 4)).toBe(CB_SCORE_CAP);
+  });
+
+  it('leaves the best difficulty-3 submission (6 s) below the cap', () => {
+    const best = scoreOf(2, 0, 6, 3);
+
+    expect(best).toBeLessThan(CB_SCORE_CAP);
+    expect(best).toBe(6404);
   });
 
   it('scores the worst successful submission above zero', () => {
-    expect(scoreOf(LEVEL_BUDGET, 20, CB_MAX_COMPLETION_TIME, 1)).toBe(765);
+    expect(scoreOf(LEVEL_BUDGET, 20, CB_MAX_COMPLETION_TIME, 1)).toBe(840);
   });
 });
 
