@@ -28,8 +28,8 @@ export default function BadgeShelf({ world, reducedMotion, justEarned, showHints
         const animate = isNew && !reducedMotion
         const state = t(badge.earned ? 'quest.badges.earned' : 'quest.badges.locked')
         const tone = badge.earned
-          ? 'border-amber-200 bg-amber-300 text-slate-950'
-          : 'border-dashed border-slate-500 bg-slate-800 text-slate-300'
+          ? 'border-amber-500 bg-amber-300 text-slate-900'
+          : 'border-dashed border-slate-400 bg-white text-slate-700'
         const body = (
           <>
             <span aria-hidden="true" className="text-lg">
@@ -49,7 +49,7 @@ export default function BadgeShelf({ world, reducedMotion, justEarned, showHints
             </span>
           </>
         )
-        const className = `flex min-h-[44px] items-center gap-2 rounded-lg border-2 px-3 py-1 ${tone}`
+        const className = `flex min-h-[44px] items-center gap-2 rounded-2xl border-2 px-3 py-1 shadow-sm ${tone}`
         return (
           <li key={badge.id} data-badge={badge.id} data-earned={badge.earned ? 'true' : 'false'}>
             {animate ? (

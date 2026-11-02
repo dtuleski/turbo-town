@@ -15,17 +15,17 @@ export interface QuestBannerViewProps {
 export function QuestBannerView({ nodeName, goal }: QuestBannerViewProps) {
   const { t } = useTranslation()
   return (
-    <div className="border-b border-cyan-500/40 bg-slate-950 text-slate-100">
+    <div className="border-b-2 border-violet-200 bg-gradient-to-r from-sky-100 to-violet-100 text-slate-800">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-2 px-4 py-2">
         <p className="text-sm">
           <span aria-hidden="true">🗺️ </span>
-          <span className="font-semibold text-cyan-100">{t('quest.banner.playing')}</span>
+          <span className="font-bold text-violet-800">{t('quest.banner.playing')}</span>
           {nodeName && <span>: {nodeName}</span>}
-          {goal !== undefined && <span className="text-amber-200"> · {t('quest.banner.goal', { points: goal.toLocaleString() })}</span>}
+          {goal !== undefined && <span className="font-semibold text-amber-800"> · {t('quest.banner.goal', { points: goal.toLocaleString() })}</span>}
         </p>
         <Link
           to={ROUTES.QUEST_MAP}
-          className="inline-flex min-h-[44px] items-center rounded-lg border border-cyan-300 px-3 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+          className="inline-flex min-h-[44px] items-center rounded-xl border-2 border-violet-600 bg-white px-3 py-2 text-sm font-semibold text-violet-800 hover:bg-violet-50 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-violet-700"
         >
           {t('quest.banner.back')}
         </Link>
