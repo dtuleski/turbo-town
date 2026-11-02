@@ -35,7 +35,7 @@ export interface QuestMapViewProps {
 }
 
 const LINK =
-  'inline-flex min-h-[44px] items-center rounded-lg border px-4 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300'
+  'inline-flex min-h-[44px] items-center rounded-lg border px-4 py-2 text-sm font-semibold focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-violet-700'
 
 /** Presentational Quest Map: everything the page shows, driven only by props. */
 export function QuestMapView({
@@ -58,32 +58,32 @@ export function QuestMapView({
   const selectedNode = selected ? selectedWorld?.nodes.find((node) => node.id === selected.nodeId) : undefined
 
   return (
-    <div className="mx-auto w-full max-w-4xl overflow-x-hidden rounded-2xl bg-slate-950 py-4 text-slate-100 sm:px-6">
-      <header className="flex flex-col gap-3 px-3 sm:flex-row sm:items-end sm:justify-between sm:px-0">
+    <div className="mx-auto w-full max-w-4xl overflow-x-hidden py-4 text-slate-800 sm:px-6">
+      <header className="mx-3 flex flex-col gap-3 rounded-2xl border-2 border-amber-200 bg-amber-50 p-4 shadow-md sm:mx-0 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-black text-white">{t('quest.title')}</h1>
-          <p className="text-sm text-slate-300">{t('quest.subtitle')}</p>
+          <h1 className="text-2xl font-black text-violet-800">{t('quest.title')}</h1>
+          <p className="text-sm text-slate-600">{t('quest.subtitle')}</p>
         </div>
         {data && <PlaysLeftBar rateLimit={data.rateLimit} />}
       </header>
 
       <div role="status" className="px-3 sm:px-0">
         {notice && (
-          <p className="mt-3 rounded-lg border border-amber-400/60 bg-amber-500/10 p-3 text-sm text-amber-100">{notice}</p>
+          <p className="mt-3 rounded-2xl border-2 border-amber-400 bg-amber-50 p-3 text-sm text-amber-900 shadow-sm">{notice}</p>
         )}
       </div>
 
       {loading && (
         <div aria-busy="true" className="mt-4 space-y-3 px-3 sm:px-0">
-          <p className="text-sm text-slate-300">{t('quest.loading')}</p>
-          <div className={`h-64 rounded-2xl bg-slate-800 ${reducedMotion ? '' : 'animate-pulse'}`} />
+          <p className="text-sm text-slate-600">{t('quest.loading')}</p>
+          <div className={`h-64 rounded-2xl bg-sky-100 ${reducedMotion ? '' : 'animate-pulse'}`} />
         </div>
       )}
 
       {!loading && error && (
         <div role="alert" className="mt-4 flex flex-wrap items-center gap-3 px-3 sm:px-0">
-          <p className="text-sm text-amber-100">{t('quest.error.title')}</p>
-          <button type="button" onClick={onRetry} className={`${LINK} border-amber-300 text-amber-100`}>
+          <p className="text-sm text-amber-900">{t('quest.error.title')}</p>
+          <button type="button" onClick={onRetry} className={`${LINK} border-amber-600 bg-white text-amber-900 hover:bg-amber-50`}>
             {t('quest.error.retry')}
           </button>
         </div>
@@ -93,22 +93,22 @@ export function QuestMapView({
         !error &&
         worlds.map((world) => (
           <section key={world.id} aria-labelledby={`quest-world-${world.id}`} className="mt-6">
-            <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2 px-3 sm:px-0">
-              <h2 id={`quest-world-${world.id}`} className="text-xl font-bold text-cyan-100">
+            <div className="mx-3 mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-white px-4 py-2 shadow-md sm:mx-0">
+              <h2 id={`quest-world-${world.id}`} className={`text-xl font-black ${world.id === 'science-island' ? 'text-teal-800' : 'text-violet-800'}`}>
                 {worldName(t, world.id)}
               </h2>
-              <p className="text-sm text-amber-200">
+              <p className="text-sm font-bold text-amber-800">
                 <span aria-hidden="true">★ </span>
                 {t('quest.worldStars', { stars: world.totalStars, max: world.maxStars })}
               </p>
             </div>
             {!world.accessible && (
-              <div className="mb-3 flex flex-wrap items-center gap-3 px-3 sm:px-0">
-                <span className="rounded bg-slate-700 px-2 py-1 text-sm font-semibold text-slate-100">
+              <div className="mx-3 mb-3 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-amber-300 bg-white p-3 shadow-md sm:mx-0">
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800">
                   <span aria-hidden="true">🔒 </span>
                   {t('quest.worldLocked.label')}
                 </span>
-                <Link to={ROUTES.SUBSCRIPTION} className={`${LINK} border-amber-300 bg-amber-400 text-slate-950`}>
+                <Link to={ROUTES.SUBSCRIPTION} className={`${LINK} border-amber-600 bg-amber-400 text-base font-black text-slate-900 shadow-[0_3px_0_rgba(180,83,9,0.6)] hover:bg-amber-300`}>
                   {t('quest.worldLocked.link')}
                 </Link>
               </div>

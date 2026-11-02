@@ -19,7 +19,7 @@ export default function PlaysLeftBar({ rateLimit }: { rateLimit: QuestRateLimitV
 
   return (
     <div className="w-full max-w-xs">
-      <p className="text-sm font-semibold text-cyan-100">{label}</p>
+      <p className="text-sm font-black text-violet-800">{label}</p>
       <div
         role="progressbar"
         aria-label={label}
@@ -27,11 +27,11 @@ export default function PlaysLeftBar({ rateLimit }: { rateLimit: QuestRateLimitV
         aria-valuemax={limit}
         aria-valuenow={used}
         aria-valuetext={t('quest.playsUsed', { used, limit })}
-        className="mt-1 h-2 w-full overflow-hidden rounded-full bg-slate-700"
+        className="mt-1 h-3 w-full overflow-hidden rounded-full bg-slate-200 ring-1 ring-slate-400"
       >
-        <div className="h-full rounded-full bg-cyan-400" style={{ width: `${percent}%` }} />
+        <div className="h-full rounded-full bg-violet-600" style={{ width: `${percent}%` }} />
       </div>
-      <p className="mt-1 text-xs text-slate-300">
+      <p className="mt-1 text-xs text-slate-600">
         {t('quest.playsUsed', { used, limit })}
         {reset !== null && <> · {t('quest.resetsAt', { time: reset })}</>}
       </p>

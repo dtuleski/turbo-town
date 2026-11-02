@@ -31,6 +31,20 @@ export default {
           info: '#3498DB',
         },
       },
+      keyframes: {
+        'quest-drift': {
+          '0%, 100%': { transform: 'translateX(-6%)' },
+          '50%': { transform: 'translateX(6%)' },
+        },
+        'quest-bob': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
+      },
+      animation: {
+        'quest-drift': 'quest-drift 14s ease-in-out infinite',
+        'quest-bob': 'quest-bob 3.5s ease-in-out infinite',
+      },
       fontFamily: {
         sans: ['Poppins', 'Comic Sans MS', 'sans-serif'],
       },

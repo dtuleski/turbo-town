@@ -11,17 +11,15 @@ import {
 import { nodeName } from './questText'
 
 const STATE_CLASSES: Record<NodeVisualState, string> = {
-  locked: 'border-slate-500 bg-slate-700 text-slate-200',
-  available: 'border-cyan-200 bg-cyan-500 text-slate-950',
-  earned1: 'border-amber-200 bg-amber-400 text-slate-950',
-  earned2: 'border-amber-200 bg-amber-400 text-slate-950',
-  earned3: 'border-amber-100 bg-amber-300 text-slate-950',
-  unavailable: 'border-dashed border-slate-400 bg-slate-800 text-slate-300',
+  locked: 'border-white bg-slate-200 text-slate-600',
+  available: 'border-white bg-orange-400 text-slate-900',
+  earned1: 'border-white bg-amber-300 text-slate-900',
+  earned2: 'border-white bg-amber-300 text-slate-900',
+  earned3: 'border-white bg-amber-300 text-slate-900 ring-4 ring-amber-500',
+  unavailable: 'border-dashed border-slate-500 bg-slate-100 text-slate-600',
 }
-
 const FOCUS =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300'
-
+  'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-slate-900'
 export interface QuestNodeButtonProps {
   node: QuestNodeView
   state: NodeVisualState
@@ -46,19 +44,19 @@ export default function QuestNodeButton({
   const isBoss = node.kind === 'BOSS'
   const isBonus = node.kind === 'BONUS'
 
-  const size = isBoss ? 'h-16 w-16 min-h-[64px] min-w-[64px] text-xl' : 'h-12 w-12 min-h-[48px] min-w-[48px] text-base'
+  const size = isBoss ? 'h-20 w-20 min-h-[64px] min-w-[64px] text-3xl' : 'h-14 w-14 min-h-[48px] min-w-[48px] text-xl'
   const shape = isBonus ? 'rotate-45 rounded-lg' : 'rounded-full'
-  const className = `relative flex items-center justify-center border-2 font-bold shadow-lg ${size} ${shape} ${STATE_CLASSES[state]} ${FOCUS}`
+  const className = `relative flex items-center justify-center border-4 font-bold shadow-[0_5px_0_rgba(15,23,42,0.25),0_8px_14px_rgba(15,23,42,0.25)] ${size} ${shape} ${STATE_CLASSES[state]} ${FOCUS}`
   const content = (
     <>
       {state === 'available' && !reducedMotion && (
-        <span aria-hidden="true" className="absolute -inset-1.5 animate-pulse rounded-full border-2 border-cyan-300" />
+        <span aria-hidden="true" className="absolute -inset-2 animate-pulse rounded-full border-4 border-orange-500" />
       )}
       {state === 'available' && reducedMotion && (
-        <span aria-hidden="true" className="absolute -inset-1.5 rounded-full border-2 border-cyan-300" />
+        <span aria-hidden="true" className="absolute -inset-2 rounded-full border-4 border-orange-500" />
       )}
       {justUnlocked && (
-        <span aria-hidden="true" className="absolute -inset-2.5 rounded-full border-2 border-dashed border-amber-200" />
+        <span aria-hidden="true" className="absolute -inset-2.5 rounded-full border-2 border-dashed border-amber-600" />
       )}
       <span aria-hidden="true" className={isBonus ? '-rotate-45' : undefined}>
         {state.startsWith('earned') ? '★' : getNodeIcon(state)}
@@ -70,7 +68,8 @@ export default function QuestNodeButton({
   }
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-2">
+      <div className={`relative ${state === 'available' && !reducedMotion ? 'motion-safe:animate-quest-bob' : ''}`}>
       {justUnlocked && !reducedMotion ? (
         <motion.button
           type="button"
@@ -89,16 +88,27 @@ export default function QuestNodeButton({
           {content}
         </button>
       )}
-      <span aria-hidden="true" className="flex max-w-[6rem] flex-col items-center text-center leading-tight">
+      {isBoss && (
+        <span aria-hidden="true" className="pointer-events-none absolute -top-6 left-1/2 z-10 -translate-x-1/2 text-3xl drop-shadow">
+          {'\u{1F451}'}
+        </span>
+      )}
+      {isBonus && (
+        <span aria-hidden="true" className="pointer-events-none absolute -right-3 -top-3 z-10 text-2xl drop-shadow">
+          {'\u{1F381}'}
+        </span>
+      )}
+      </div>
+      <span aria-hidden="true" className="flex max-w-[8rem] flex-col items-center rounded-2xl bg-white px-2.5 py-1 text-center leading-tight shadow-md">
         {state !== 'unavailable' && (
-          <span className="text-xs text-amber-200">
+          <span className="text-xs text-amber-600">
             {'★'.repeat(stars)}
             <span className="text-slate-500">{'☆'.repeat(3 - stars)}</span>
           </span>
         )}
-        <span className="block w-full truncate text-xs font-semibold text-slate-100">{name}</span>
+        <span className="block w-full truncate text-xs font-bold text-slate-800">{name}</span>
         {justUnlocked && (
-          <span className="rounded bg-amber-300 px-1 text-[0.625rem] font-bold uppercase text-slate-950">
+          <span className="mt-0.5 rounded-full bg-amber-300 px-1.5 text-[0.625rem] font-bold uppercase text-slate-900">
             {t('quest.node.new')}
           </span>
         )}
