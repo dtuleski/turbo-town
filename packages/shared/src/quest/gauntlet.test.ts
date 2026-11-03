@@ -241,6 +241,30 @@ describe('recordLeg', () => {
 });
 
 describe('duplicate completions (R-GAUNT-5, R-GAUNT-6)', () => {
+  it('a leg stored without a gameId is never matched by a missing gameId', () => {
+    const stale = { ...attemptAt(1), legs: [{ score: 1315 }] } as unknown as GauntletAttempt;
+    const out = recordLeg(stale, boss3, {
+      legIndex: 0,
+      gameId: undefined as unknown as string,
+      score: 4000,
+      nowIso: iso(T0_MS + 1000),
+    });
+    expect(out.attempt).not.toBe(stale); // recorded, not treated as a duplicate
+    expect(out.attempt?.legs).toHaveLength(1);
+    expect(out.attempt?.legs[0]?.score).toBe(4000);
+  });
+
+  it('a missing gameId on the next leg is not a duplicate of an absent leg', () => {
+    const out = recordLeg(attemptAt(1, T0, boss2.id), boss2, {
+      legIndex: 1,
+      gameId: undefined as unknown as string,
+      score: 3000,
+      nowIso: iso(T0_MS + 1000),
+    });
+    expect(out.status).toBe('COMPLETE');
+    expect(out.combinedScore).toBe(4000);
+  });
+
   it('duplicate non-final leg completion keeps the attempt', () => {
     const first = recordLeg(undefined, boss3, {
       legIndex: 0,
