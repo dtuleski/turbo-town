@@ -98,9 +98,15 @@ export default function QuestNodePanel({ node, world, rateLimit, onClose, onPlay
         {t('quest.panel.goals')}
         {isBoss && <span className="font-normal text-slate-600"> ({t('quest.panel.combinedScore')})</span>}
       </h3>
+      {isBoss && node.legs.length > 1 && (
+        <p className="mt-1 text-xs font-semibold text-slate-700">
+          {node.legs.length === 2 ? t('quest.panel.bossTotalBoth') : t('quest.panel.bossTotalAll', { count: node.legs.length })}
+        </p>
+      )}
       <ul className="mt-1 space-y-1 text-sm">
         {node.thresholds.map((points, index) => {
           const reached = stars > index
+          const perGame = Math.round(points / node.legs.length / 50) * 50
           return (
             <li key={index} className="flex items-center gap-2">
               <span aria-hidden="true" className={reached ? 'text-amber-600' : 'text-slate-500'}>
@@ -109,6 +115,11 @@ export default function QuestNodePanel({ node, world, rateLimit, onClose, onPlay
               <span>
                 {t(`quest.panel.goal${index + 1}`)}: {t('quest.panel.points', { points: points.toLocaleString() })}
               </span>
+              {isBoss && node.legs.length > 1 && (
+                <span className="text-xs text-slate-600">
+                  ({t('quest.panel.perGame', { points: perGame.toLocaleString() })})
+                </span>
+              )}
               {reached && <span className="text-xs font-semibold text-amber-800">({t('quest.panel.reached')})</span>}
             </li>
           )

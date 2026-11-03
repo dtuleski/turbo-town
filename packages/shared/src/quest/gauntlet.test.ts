@@ -362,7 +362,7 @@ describe('duplicate completions (R-GAUNT-5, R-GAUNT-6)', () => {
       3300,
       T0
     );
-    expect(firstRun.progress?.nodes[boss2.id]?.stars).toBe(1); // 6600 vs 5550/7000
+    expect(firstRun.progress?.nodes[boss2.id]?.stars).toBe(1); // 6600 vs 5550/8050
     // A lower-scoring replay: does not improve, but lastGameId is still set.
     const replay0 = recordLeg(undefined, boss2, {
       legIndex: 0,

@@ -164,7 +164,7 @@ Read-only prod checks found two content problems. Both were fixed in `config.ts`
 - **PL1: theme `OCEAN` does not exist in `memory-game-themes-prod`**, so `startGame` for `OCEAN` fails with "Theme not found". Published Memory Match themes in prod: ANIMALS, FRUITS, VEHICLES, SPACE, FORMULA1, SPORTS. Every other Quest Map themeId is published.
 - **PL2: catalog `traffic-lab` is COMING_SOON**, not ACTIVE. Every other `catalogGameId` used by the config is ACTIVE.
 
-**Change 1 - `bp-07-memory-hard` becomes `bp-07-memory-space`.** Memory Match difficulty 3 (10 pairs) with themeId `SPACE` instead of `OCEAN`. Same game, difficulty and pairs, so the formula inputs and the derivation in section 3 are unchanged; thresholds stay 2500 / 4000 / 5100. Display name "Space Memory" (es "Memoria del Espacio", pt "Memória do Espaço").
+**Change 1 - `bp-07-memory-hard` becomes `bp-07-memory-space`.** Memory Match difficulty 3 (10 pairs) with themeId `SPACE` instead of `OCEAN`. Same game, difficulty and pairs, so the formula inputs and the derivation in section 3 are unchanged; thresholds stay 2500 / 4000 / 5100. Display name "Space Memory" (es "Memoria del Espacio", pt "MemÃƒÂ³ria do EspaÃƒÂ§o").
 
 **Change 2a - `si-04-traffic-lab` becomes `si-04-circuit-branches`.** Circuit Builder `cb-04-parallel-branches`, difficulty 2 (the only other d2 guided level; `cb-03` is used by `si-03`). The leg difficulty equals the level's, as the validator requires. Thresholds 2200 / 2950 / 3900 are the section 5 W/M/B result for a d2 level (base 1700: 2192 / 2933 / 3919). Robustness at base 1866 (PR #25): W 2406 < 2950 and M 3219 < 3900, so no anchor moves up a tier; no change needed. The level's own budget was not re-derived; it is assumed comparable to `cb-03`.
 Order: to avoid two Circuit Builder nodes side by side, the new node sits after `si-05-scratch` and before `si-06-mini-golf` (path: bond, space, circuit, scratch, circuit, golf, circuit, boss). The node ids keep their original numbers, so array order is si-05-scratch then si-04-circuit-branches. `si-05-scratch` took the old Traffic Lab map slot (55, 62) and the new node took the old Scratch slot (82, 50). Boss and bonus did not move. The bonus is off the path.
@@ -174,3 +174,69 @@ Order: to avoid two Circuit Builder nodes side by side, the new node sits after 
 **Allowlist and launch table.** `TRAFFIC_LAB` was removed from `QUEST_GAME_THEME_IDS` (now 12 game ids, 18 known with the 6 card ids) and from the web launch table, because nothing in quest mode references it. The Traffic Lab page and its route are untouched. `PATTERN_RECALL` stays in both, as in section 4 F1.
 
 **Not fixed here (pre-existing):** the hub's Memory Match offers `OCEAN` (`GAME_THEMES` in `apps/web/src/config/constants.ts`), but prod has no `OCEAN` row, so that hub option fails today.
+---
+## 8. PL3 calibration, 2026-11-03
+
+**Trigger.** Owner report: the World 1 boss showed "5,550 points" for Math Challenge (Medium) + Bubble Pop (Medium), and was read as a single-game target. 5,550 is the **combined** total of both legs (about 2,775 per leg). Sections 1 to 7 above keep the seed table for history; the live values are the "Final" column below.
+
+**Data.** Read-only scan of `memory-game-games-prod` (status COMPLETED), full paginated scan, linear-interpolation percentiles. Aggregates only; no user ids are recorded. Level id is not stored on a game, so Circuit Builder levels cannot be separated; Circuit Builder d2 to d4 has no completions (n = 0) and keeps seed values. Circuit Builder scores before 2026-11-02T12:31Z were scaled x1866/1700 to the current base.
+
+| Game | Diff | n | p25 | p50 | p90 | Confidence |
+|---|---|---|---|---|---|---|
+| ANIMALS | 1 | 57 | 2385 | 2737 | 3012.2 | ok |
+| MATH_CHALLENGE | 1 | 11 | 2623 | 2690 | 2813 | low |
+| MATH_CHALLENGE | 2 | 17 | 3670 | 3857 | 4025.6 | low |
+| WORD_PUZZLE | 1 | 14 | 2434.5 | 2644 | 2854.9 | low |
+| SEQUENCE_MEMORY | 2 | 5 | 2076 | 2358 | 2804.6 | low |
+| SEQUENCE_MEMORY | 3 | 5 | 2975 | 3000 | 4384.6 | low |
+| GEO_QUIZ | 2 | 7 | 2719 | 3905 | 4154.8 | low |
+| MATH_MAZE | 2 | 7 | 2750 | 2943 | 4278.8 | low |
+| SPACE (Memory Match) | 3 | 18 | 4662.5 | 5157 | 5727 | low |
+| BUBBLE_POP | 2 | 2 | 4126.2 | 4213.5 | 4353.1 | low |
+| BOND_AND_BURN | 1 | 3 | 3315 | 3315 | 4391.8 | low |
+| BOND_AND_BURN | 3 | 8 | 3757 | 3978 | 7258 | low |
+| SPACE_ENTRY | 1 | 10 | 2847 | 2904 | 2985.3 | low |
+| SPACE_ENTRY | 2 | 5 | 3705 | 4018 | 4419.8 | low |
+| CIRCUIT_BUILDER | 2, 3, 4 | 0 | none | none | none | no data, seed kept |
+| SCRATCH_CODING | 1 | 3 | 3217 | 3487 | 4018.2 | low |
+| MINI_GOLF | 2 | 12 | 3117.8 | 4460 | 5029 | low |
+
+Medium Math Challenge (n = 17): 15 of 17 completions score 2,775 or more. Hypothetical independent pairs of Math d2 x Bubble Pop d2 (no real pairing exists, Bubble n = 2): 33 of 34 pairs reach 5,550.
+
+**Rule (revised after review of PR #28).** Seed = the formula values from before PR #28. Real = the percentile-derived values (star 1 = p25, star 2 = p50, star 3 = p90; boss from combined values). Most legs have n < 20, so raw percentiles were noise: tiers collapsed and several nodes became harder.
+1. If every leg has n >= 20: final = real, but star 1 never exceeds seed star 1 (it must stay reachable for a typical 8-year-old).
+2. If any leg has n < 20 (low confidence): each tier = min(seed, real). Data may only make a star easier, never harder. With no real value (n = 0, Circuit Builder), keep seed.
+3. Spacing: star 2 >= star 1 x 1.15 and star 3 >= star 2 x 1.08 (upper tier raised, rounded up to 50), strictly ascending, within the cap (free 6000 per leg, paid 8000 per leg).
+4. Bosses use the same rule on the node-level combined values.
+
+**Recalibrate again later, once every leg of a node has n >= 20.** Until then the final values are mostly the seed.
+
+The percentile table above is kept as is.
+
+### Seed, real and final
+| Node | Seed (before PR #28) | Real (percentiles) | Final | Note |
+|---|---|---|---|---|
+| `bp-01-memory` | 1450 / 2300 / 2650 | 2400 / 2750 / 3000 | 1450 / 2750 / 3000 | n = 57: real, star 1 capped at seed |
+| `bp-02-math` | 1800 / 2350 / 2650 | 1800 / 2700 / 2800 | 1800 / 2350 / 2650 | low n: min(seed, real) |
+| `bp-03-words` | 1600 / 2200 / 2600 | 1600 / 2650 / 2850 | 1600 / 2200 / 2600 | low n: seed kept |
+| `bp-04-sequence` | 2650 / 3450 / 3950 | 2100 / 2350 / 2800 | 2100 / 2450 / 2800 | low n; star 2 raised for 1.15 spacing |
+| `bp-05-geo` | 2700 / 3500 / 3950 | 2700 / 3900 / 4150 | 2700 / 3500 / 3950 | low n: seed kept |
+| `bp-06-maze` | 2500 / 3350 / 3900 | 2500 / 2950 / 4250 | 2500 / 2950 / 3900 | low n: min(seed, real) |
+| `bp-07-memory-space` | 2500 / 4000 / 5100 | 2500 / 5150 / 5700 | 2500 / 4000 / 5100 | n = 18: seed kept |
+| `bp-boss` | 5550 / 7000 / 7400 | 5550 / 8050 / 8100 | 5550 / 7000 / 7600 | low n; star 3 raised for 1.08 spacing |
+| `bp-bonus-sequence` | 3500 / 4600 / 5300 | 3000 / 3050 / 4350 | 3000 / 3450 / 4350 | n = 5; star 2 raised for 1.15 spacing |
+| `si-01-bond-burn` | 1550 / 2750 / 3300 | 1550 / 3300 / 4350 | 1550 / 2750 / 3300 | n = 3: seed kept |
+| `si-02-space-entry` | 2550 / 3600 / 4250 | 2550 / 2900 / 2950 | 2550 / 2950 / 3200 | n = 10; spacing raised stars 2 and 3 |
+| `si-03-circuit-series` | 2200 / 2950 / 3900 | none | 2200 / 2950 / 3900 | no data, seed kept |
+| `si-05-scratch` | 250 / 1500 / 3150 | 250 / 3500 / 4000 | 250 / 1500 / 3150 | n = 3: seed kept |
+| `si-04-circuit-branches` | 2200 / 2950 / 3900 | none | 2200 / 2950 / 3900 | no data, seed kept |
+| `si-06-mini-golf` | 250 / 1850 / 4150 | 250 / 4450 / 5000 | 250 / 1850 / 4150 | n = 12: seed kept |
+| `si-07-circuit-parallel` | 2900 / 3900 / 5200 | none | 2900 / 3900 / 5200 | no data, seed kept |
+| `si-boss` | 5950 / 9800 / 11150 | 6000 / 8000 / 10500 | 5950 / 8000 / 10500 | low n: min(seed, real) |
+| `si-bonus` | 3650 / 4900 / 6500 | none | 3650 / 4900 / 6500 | no data, seed kept |
+
+**Boss detail.** Real boss values come from PR #28 (stars 1 and 2 = sums of leg p25 / p50 with formula floor on star 1; star 3 = 0.9 x summed leg p90). Both bosses have low-confidence legs, so the final value is min(seed, real) per tier, then spacing. p-boss real star 3 was 8100 (above its raised star 2) and seed star 3 is 7400, raised to 7600 to satisfy star 3 >= star 2 x 1.08 (7000 x 1.08 = 7560). Star 1 stays 5550, about 2775 per game. si-boss star 1 returns to the seed 5950 (real 6000 was harder).
+
+**Caveats.** Most p50 and p90 values rest on 2 to 18 games, and the data mixes strong and weak players, so star 2 and 3 are still approximate. Re-run the scan once each node has 20 or more completions. Circuit Builder needs per-level data (level id is not stored on a game).
+
+**UI.** The boss panel now says "Total of both games" under Star goals and shows "about X per game" next to each goal (threshold / leg count, rounded to 50), so the combined score is not read as a single-game target.

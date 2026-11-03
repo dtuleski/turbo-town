@@ -4,8 +4,8 @@
  * Adding a node is a config entry plus locale keys only. Display names are not stored here:
  * locale keys derive from ids (`quest.worlds.<worldId>.name`, `quest.nodes.<nodeId>.name`).
  *
- * Thresholds are SEED values computed from the score formulas (see the QM1 functional design,
- * thresholds.md) and must be calibrated against real percentiles before launch (PL3).
+ * Thresholds were calibrated against real production percentiles (PL3, see the QM1 functional design,
+ * thresholds.md section 8). Because almost every (game, difficulty) has fewer than 20 completions, data may only make a star easier\n * (tier = min(seed, real)); tiers are then spaced at least 15% / 8% apart. Circuit Builder keeps the seed values.
  * Level ids and difficulties for Circuit Builder come from `../circuit/guided-levels`; the
  * config test checks they agree.
  */
@@ -46,7 +46,7 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
   order: 1,
   accessTier: 'FREE',
   nodes: Object.freeze([
-    node('bp-01-memory', 'GAME', [leg('ANIMALS', 'memory-match', 1)], [1450, 2300, 2650], 20, 92),
+    node('bp-01-memory', 'GAME', [leg('ANIMALS', 'memory-match', 1)], [1450, 2750, 3000], 20, 92),
     node(
       'bp-02-math',
       'GAME',
@@ -60,7 +60,7 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
       'bp-04-sequence',
       'GAME',
       [leg('SEQUENCE_MEMORY', 'sequence-memory', 2)],
-      [2650, 3450, 3950],
+      [2100, 2450, 2800],
       45,
       62
     ),
@@ -72,7 +72,7 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
       18,
       50
     ),
-    node('bp-06-maze', 'GAME', [leg('MATH_MAZE', 'math-maze', 2)], [2500, 3350, 3900], 42, 38),
+    node('bp-06-maze', 'GAME', [leg('MATH_MAZE', 'math-maze', 2)], [2500, 2950, 3900], 42, 38),
     node(
       'bp-07-memory-space',
       'GAME',
@@ -85,7 +85,7 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
       'bp-boss',
       'BOSS',
       [leg('MATH_CHALLENGE', 'math-challenge', 2), leg('BUBBLE_POP', 'bubble-pop', 2)],
-      [5550, 7000, 7400],
+      [5550, 7000, 7600],
       50,
       10
     ),
@@ -94,7 +94,7 @@ const BRAIN_PEAKS: QuestWorld = Object.freeze({
     'bp-bonus-sequence',
     'BONUS',
     [leg('SEQUENCE_MEMORY', 'sequence-memory', 3)],
-    [3500, 4600, 5300],
+    [3000, 3450, 4350],
     84,
     10
   ),
@@ -118,7 +118,7 @@ const SCIENCE_ISLAND: QuestWorld = Object.freeze({
       'si-02-space-entry',
       'GAME',
       [leg('SPACE_ENTRY', 'space-entry', 1)],
-      [2550, 3600, 4250],
+      [2550, 2950, 3200],
       40,
       84
     ),
@@ -162,7 +162,7 @@ const SCIENCE_ISLAND: QuestWorld = Object.freeze({
         leg('BOND_AND_BURN', 'bond-and-burn', 3),
         leg('SPACE_ENTRY', 'space-entry', 2),
       ],
-      [5950, 9800, 11150],
+      [5950, 8000, 10500],
       50,
       10
     ),

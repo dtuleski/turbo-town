@@ -219,6 +219,20 @@ describe('QuestNodePanel forms', () => {
     expect(html).toContain('Combined score')
   })
 
+  it('boss makes the combined rule explicit with per-game rough targets', () => {
+    const boss = byId('bp-boss')
+    const html = panel(boss, world)
+    expect(html).toContain('Total of both games')
+    const per = (p: number) => `about ${(Math.round(p / 2 / 50) * 50).toLocaleString()} per game`
+    for (const p of boss.thresholds) expect(html).toContain(per(p))
+  })
+
+  it('single-game nodes do not show the combined rule or per-game targets', () => {
+    const html = panel(byId('bp-02-math'), world)
+    expect(html).not.toContain('Total of both games')
+    expect(html).not.toContain('per game')
+  })
+
   it('boss with an active run shows the run and Continue run', () => {
     const runWorld = { ...world, activeGauntlet: { nodeId: 'bp-boss', legsDone: 1, legsTotal: 2, expiresAt: '2026-01-01T10:30:00.000Z' } }
     const html = panel(byId('bp-boss'), runWorld)
