@@ -180,31 +180,31 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
   it('computes stars from the given server score and saves version 1', async () => {
     const rig = questRig();
     rig.repo.seed(clearedWorld(BP, 1, ['bp-02-math', 'bp-03-words', 'bp-boss', 'bp-04-sequence', 'bp-05-geo', 'bp-06-maze', 'bp-07-memory-space']));
-    const result = await rig.service.applyCompletion(USER_ID, game('a'), 2700);
+    const result = await rig.service.applyCompletion(USER_ID, game('a'), 2350);
     expect(result).toMatchObject({
       worldId: BP,
       nodeId: 'bp-02-math',
       kind: 'GAME',
-      score: 2700,
+      score: 2350,
       stars: 2,
       bestStars: 2,
-      thresholds: [1800, 2700, 2800],
+      thresholds: [1800, 2350, 2650],
       newlyUnlocked: ['bp-03-words'],
       worldCleared: false,
     });
-    expect(rig.repo.stored(BP)!.nodes['bp-02-math']).toMatchObject({ stars: 2, bestScore: 2700, lastGameId: 'a' });
+    expect(rig.repo.stored(BP)!.nodes['bp-02-math']).toMatchObject({ stars: 2, bestScore: 2350, lastGameId: 'a' });
     expect(metric).toHaveBeenCalledWith('QuestNodeCleared', BP);
   });
 
   it('keeps the best result under a lower replay (monotonic)', async () => {
     const rig = questRig();
-    await rig.service.applyCompletion(USER_ID, game('a'), 2800); // 3 stars
+    await rig.service.applyCompletion(USER_ID, game('a'), 2650); // 3 stars
     const replay = await rig.service.applyCompletion(USER_ID, game('b'), 1900); // 1 star
     expect(replay).toMatchObject({ stars: 1, bestStars: 3, newlyUnlocked: [] });
     const saved = rig.repo.stored(BP)!.nodes['bp-02-math'];
-    expect(saved).toMatchObject({ stars: 3, bestScore: 2800, lastGameId: 'b' });
+    expect(saved).toMatchObject({ stars: 3, bestScore: 2650, lastGameId: 'b' });
     metric.mockClear();
-    await rig.service.applyCompletion(USER_ID, game('c'), 2800);
+    await rig.service.applyCompletion(USER_ID, game('c'), 2650);
     expect(metric).not.toHaveBeenCalledWith('QuestNodeCleared', BP); // already cleared before
   });
 
@@ -212,20 +212,20 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
     const rig = questRig();
     rig.repo.concurrentWriter = (repo) => {
       const other = clearedWorld(BP, 1, []);
-      other.nodes = { 'bp-02-math': nodeProgress(3, 2800, { lastGameId: 'other' }) };
+      other.nodes = { 'bp-02-math': nodeProgress(3, 2650, { lastGameId: 'other' }) };
       repo.seed({ ...other, version: 1 });
     };
     const result = await rig.service.applyCompletion(USER_ID, game('a'), 1900);
     expect(result).toMatchObject({ stars: 1, bestStars: 3 });
     expect(rig.repo.saveCalls.map((c) => c.expected)).toEqual([0, 1]);
     expect(rig.repo.stored(BP)).toMatchObject({ version: 2 });
-    expect(rig.repo.stored(BP)!.nodes['bp-02-math']).toMatchObject({ stars: 3, bestScore: 2800 });
+    expect(rig.repo.stored(BP)!.nodes['bp-02-math']).toMatchObject({ stars: 3, bestScore: 2650 });
   });
 
   it('is fail-soft after a second conflict: no quest result, logged metric', async () => {
     const rig = questRig();
     const save = jest.spyOn(rig.repo, 'saveWorld').mockRejectedValue(new QuestVersionConflictError());
-    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2700)).resolves.toBeUndefined();
+    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2350)).resolves.toBeUndefined();
     expect(save).toHaveBeenCalledTimes(2);
     expect(metric).toHaveBeenCalledWith('QuestProgressWriteFailed', BP);
   });
@@ -233,20 +233,20 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
   it('is fail-soft on a repository error (never throws)', async () => {
     const rig = questRig();
     rig.repo.failWith = new Error('dynamo down');
-    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2700)).resolves.toBeUndefined();
+    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2350)).resolves.toBeUndefined();
     expect(metric).toHaveBeenCalledWith('QuestProgressWriteFailed', BP);
   });
 
   it('is fail-soft when the catalog read fails', async () => {
     const rig = questRig();
     rig.catalog.listAvailableGames.mockRejectedValueOnce(new Error('catalog down'));
-    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2700)).resolves.toBeUndefined();
+    await expect(rig.service.applyCompletion(USER_ID, game('a'), 2350)).resolves.toBeUndefined();
   });
 
   it('a duplicate completion of the same gameId changes nothing', async () => {
     const rig = questRig();
-    await rig.service.applyCompletion(USER_ID, game('a'), 2700);
-    const again = await rig.service.applyCompletion(USER_ID, game('a'), 2700);
+    await rig.service.applyCompletion(USER_ID, game('a'), 2350);
+    const again = await rig.service.applyCompletion(USER_ID, game('a'), 2350);
     expect(rig.repo.saveCalls).toHaveLength(1);
     expect(again).toMatchObject({ stars: 2, bestStars: 2, newlyUnlocked: [], badgesAwarded: [] });
   });
@@ -254,7 +254,7 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
   it('returns undefined with no I/O when the game has no questContext', async () => {
     const rig = questRig();
     const plain = questGame('a', ctx(BP, 'bp-02-math'), 'MATH_CHALLENGE', 1, { questContext: undefined });
-    await expect(rig.service.applyCompletion(USER_ID, plain, 2700)).resolves.toBeUndefined();
+    await expect(rig.service.applyCompletion(USER_ID, plain, 2350)).resolves.toBeUndefined();
     expect(rig.repo.getCalls).toBe(0);
     expect(rig.catalog.listAvailableGames).not.toHaveBeenCalled();
   });
@@ -262,7 +262,7 @@ describe('applyCompletion - plain nodes (R-DONE-3, R-DONE-4)', () => {
   it('skips a game whose theme or difficulty drifted from the config (LEG_DRIFT)', async () => {
     const rig = questRig();
     const drifted = questGame('a', ctx(BP, 'bp-02-math'), 'MATH_CHALLENGE', 2);
-    await expect(rig.service.applyCompletion(USER_ID, drifted, 2700)).resolves.toBeUndefined();
+    await expect(rig.service.applyCompletion(USER_ID, drifted, 2350)).resolves.toBeUndefined();
     expect(rig.repo.saveCalls).toHaveLength(0);
     expect(metric).not.toHaveBeenCalledWith('QuestProgressWriteFailed', expect.anything());
   });
@@ -325,16 +325,16 @@ describe('applyCompletion - boss gauntlet (R-DONE-6, R-DONE-7)', () => {
     const rig = rigWithBossOpen();
     await rig.service.applyCompletion(USER_ID, leg('g0', 0), 3500);
     rig.clock.now += 5 * MIN;
-    const done = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4550); // 8050 -> 2 stars
+    const done = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4000); // 7500 -> 2 stars
     expect(done).toMatchObject({
-      score: 8050,
+      score: 7500,
       stars: 2,
       bestStars: 2,
       gauntlet: { status: 'COMPLETE', legIndex: 1, legsTotal: 2 },
     });
     const saved = rig.repo.stored(BP)!;
     expect(saved.activeGauntlet).toBeUndefined();
-    expect(saved.nodes['bp-boss']).toMatchObject({ stars: 2, bestScore: 8050, lastGameId: 'g1' });
+    expect(saved.nodes['bp-boss']).toMatchObject({ stars: 2, bestScore: 7500, lastGameId: 'g1' });
   });
 
   it('duplicate non-final leg completion keeps the attempt and writes nothing', async () => {
@@ -350,9 +350,9 @@ describe('applyCompletion - boss gauntlet (R-DONE-6, R-DONE-7)', () => {
   it('duplicate final leg completion changes nothing and reports COMPLETE', async () => {
     const rig = rigWithBossOpen();
     await rig.service.applyCompletion(USER_ID, leg('g0', 0), 3500);
-    await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4550);
+    await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4000);
     const before = rig.repo.saveCalls.length;
-    const dup = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4550);
+    const dup = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4000);
     expect(rig.repo.saveCalls).toHaveLength(before);
     expect(dup).toMatchObject({ stars: 2, bestStars: 2, gauntlet: { status: 'COMPLETE' } });
   });
@@ -375,7 +375,7 @@ describe('applyCompletion - boss gauntlet (R-DONE-6, R-DONE-7)', () => {
       rig.service.validateStart(USER_ID, SubscriptionTier.Free, ctx(BP, 'bp-boss', 1), 'BUBBLE_POP', 2)
     ).resolves.toBeDefined();
     rig.clock.now = T0 + 33 * MIN;
-    const done = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4550);
+    const done = await rig.service.applyCompletion(USER_ID, leg('g1', 1), 4000);
     expect(done).toMatchObject({ stars: 2, gauntlet: { status: 'COMPLETE' } });
   });
 
