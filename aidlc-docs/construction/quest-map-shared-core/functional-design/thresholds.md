@@ -174,3 +174,64 @@ Order: to avoid two Circuit Builder nodes side by side, the new node sits after 
 **Allowlist and launch table.** `TRAFFIC_LAB` was removed from `QUEST_GAME_THEME_IDS` (now 12 game ids, 18 known with the 6 card ids) and from the web launch table, because nothing in quest mode references it. The Traffic Lab page and its route are untouched. `PATTERN_RECALL` stays in both, as in section 4 F1.
 
 **Not fixed here (pre-existing):** the hub's Memory Match offers `OCEAN` (`GAME_THEMES` in `apps/web/src/config/constants.ts`), but prod has no `OCEAN` row, so that hub option fails today.
+---
+## 8. PL3 calibration, 2026-11-03
+
+**Trigger.** Owner report: the World 1 boss showed "5,550 points" for Math Challenge (Medium) + Bubble Pop (Medium), and was read as a single-game target. 5,550 is the **combined** total of both legs (about 2,775 per leg). Sections 1 to 7 above keep the seed table for history; the live values are the "After" column below.
+
+**Data.** Read-only scan of `memory-game-games-prod` (status COMPLETED), full paginated scan, linear-interpolation percentiles. Aggregates only; no user ids are recorded. Level id is not stored on a game, so Circuit Builder levels cannot be separated; Circuit Builder d2 to d4 has no completions (n = 0) and keeps seed values. Circuit Builder scores before 2026-11-02T12:31Z were scaled x1866/1700 to the current base.
+
+| Game | Diff | n | p25 | p50 | p90 | Confidence |
+|---|---|---|---|---|---|---|
+| ANIMALS | 1 | 57 | 2385 | 2737 | 3012.2 | ok |
+| MATH_CHALLENGE | 1 | 11 | 2623 | 2690 | 2813 | low |
+| MATH_CHALLENGE | 2 | 17 | 3670 | 3857 | 4025.6 | low |
+| WORD_PUZZLE | 1 | 14 | 2434.5 | 2644 | 2854.9 | low |
+| SEQUENCE_MEMORY | 2 | 5 | 2076 | 2358 | 2804.6 | low |
+| SEQUENCE_MEMORY | 3 | 5 | 2975 | 3000 | 4384.6 | low |
+| GEO_QUIZ | 2 | 7 | 2719 | 3905 | 4154.8 | low |
+| MATH_MAZE | 2 | 7 | 2750 | 2943 | 4278.8 | low |
+| SPACE (Memory Match) | 3 | 18 | 4662.5 | 5157 | 5727 | low |
+| BUBBLE_POP | 2 | 2 | 4126.2 | 4213.5 | 4353.1 | low |
+| BOND_AND_BURN | 1 | 3 | 3315 | 3315 | 4391.8 | low |
+| BOND_AND_BURN | 3 | 8 | 3757 | 3978 | 7258 | low |
+| SPACE_ENTRY | 1 | 10 | 2847 | 2904 | 2985.3 | low |
+| SPACE_ENTRY | 2 | 5 | 3705 | 4018 | 4419.8 | low |
+| CIRCUIT_BUILDER | 2, 3, 4 | 0 | none | none | none | no data, seed kept |
+| SCRATCH_CODING | 1 | 3 | 3217 | 3487 | 4018.2 | low |
+| MINI_GOLF | 2 | 12 | 3117.8 | 4460 | 5029 | low |
+
+Medium Math Challenge (n = 17): 15 of 17 completions score 2,775 or more. Hypothetical independent pairs of Math d2 x Bubble Pop d2 (no real pairing exists, Bubble n = 2): 33 of 34 pairs reach 5,550.
+
+**Method (as requested).** Round-to-50 uses half-up. Star 1 = round50(p25) when n >= 20; when n < 20 it is the formula value (sections 2 and 3, W anchor rounded to 50) lowered to round50(p25) if the real p25 is lower. Star 2 = round50(p50). Star 3 = p90 rounded down to 50. Boss: stars 1 and 2 are the sums of the legs' star 1 and star 2; star 3 = 0.9 x the summed leg p90, rounded down to 50. Ascending order is enforced by raising the higher value to the lower one + 50. Every value is at most the effective per-game cap (free 6000, paid 8000) x leg count. Every node except `bp-01-memory` has n < 20, so all of them except that one are low confidence, and star 1 is the formula value wherever the real p25 is higher than it.
+
+### Before and after
+
+| Node | Before | After | Note |
+|---|---|---|---|
+| `bp-01-memory` | 1450 / 2300 / 2650 | 2400 / 2750 / 3000 | n = 57 |
+| `bp-02-math` | 1800 / 2350 / 2650 | 1800 / 2700 / 2800 | low n; star 1 formula (p25 higher) |
+| `bp-03-words` | 1600 / 2200 / 2600 | 1600 / 2650 / 2850 | low n |
+| `bp-04-sequence` | 2650 / 3450 / 3950 | 2100 / 2350 / 2800 | low n; p25 2076 below formula |
+| `bp-05-geo` | 2700 / 3500 / 3950 | 2700 / 3900 / 4150 | low n; p25 2719 rounds to 2700 |
+| `bp-06-maze` | 2500 / 3350 / 3900 | 2500 / 2950 / 4250 | low n |
+| `bp-07-memory-space` | 2500 / 4000 / 5100 | 2500 / 5150 / 5700 | n = 18 |
+| `bp-boss` | 5550 / 7000 / 7400 | 5550 / 8050 / 8100 | see below |
+| `bp-bonus-sequence` | 3500 / 4600 / 5300 | 3000 / 3050 / 4350 | n = 5; star 2 raised from 3000 (p25 = p50 tie) |
+| `si-01-bond-burn` | 1550 / 2750 / 3300 | 1550 / 3300 / 4350 | n = 3 |
+| `si-02-space-entry` | 2550 / 3600 / 4250 | 2550 / 2900 / 2950 | n = 10; scores cluster tightly |
+| `si-03-circuit-series` | 2200 / 2950 / 3900 | unchanged | no data |
+| `si-05-scratch` | 250 / 1500 / 3150 | 250 / 3500 / 4000 | n = 3 |
+| `si-04-circuit-branches` | 2200 / 2950 / 3900 | unchanged | no data |
+| `si-06-mini-golf` | 250 / 1850 / 4150 | 250 / 4450 / 5000 | n = 12 |
+| `si-07-circuit-parallel` | 2900 / 3900 / 5200 | unchanged | no data |
+| `si-boss` | 5950 / 9800 / 11150 | 6000 / 8000 / 10500 | see below |
+| `si-bonus` | 3650 / 4900 / 6500 | unchanged | no data |
+
+**Boss detail.**
+- `bp-boss`: leg star 1 = Math d2 2600 (formula 2575; real p25 3670 is higher) + Bubble Pop d2 2950 (formula 2970); star 2 = 3850 + 4200; star 3 = 0.9 x (4025.6 + 4353.1) = 7541, rounded down to 7500, which is **below** star 2, so it was raised to 8100 (star 2 + 50). Star 1 stays 5550, about 2775 per game. Bubble Pop has only 2 completions, so the upper two stars here are the weakest numbers in the table and need a re-check once more Bubble Pop data exists.
+- `si-boss`: star 1 = 3000 (Bond and Burn d3 formula 2992) + 3000 (Space Entry d2 formula 2975); star 2 = 4000 + 4000; star 3 = 0.9 x (7258 + 4419.8) = 10510, rounded down to 10500. The Bond and Burn d3 p90 (7258) is pulled up by a few near-cap scores (max 8000).
+
+**Caveats.** Most p50 and p90 values rest on 2 to 18 games, and the data mixes strong and weak players, so star 2 and 3 are still approximate. Re-run the scan once each node has 20 or more completions. Circuit Builder needs per-level data (level id is not stored on a game).
+
+**UI.** The boss panel now says "Total of both games" under Star goals and shows "about X per game" next to each goal (threshold / leg count, rounded to 50), so the combined score is not read as a single-game target.

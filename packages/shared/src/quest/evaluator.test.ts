@@ -230,16 +230,16 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const out = applyNodeResult(
       w1,
       undefined,
-      { nodeId: 'bp-01-memory', score: 2100, nowIso: NOW, gameId: 'g1' },
+      { nodeId: 'bp-01-memory', score: 2450, nowIso: NOW, gameId: 'g1' },
       none
     );
     expect(out.stars).toBe(1);
     expect(out.bestStars).toBe(1);
-    expect(out.score).toBe(2100);
+    expect(out.score).toBe(2450);
     expect(out.newlyUnlocked).toEqual(['bp-02-math']);
     expect(out.progress.nodes['bp-01-memory']).toEqual({
       stars: 1,
-      bestScore: 2100,
+      bestScore: 2450,
       firstClearedAt: NOW,
       lastPlayedAt: NOW,
       lastGameId: 'g1',
@@ -271,7 +271,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const first = applyNodeResult(
       w1,
       undefined,
-      { nodeId: 'bp-01-memory', score: 2100, nowIso: NOW, gameId: 'g1' },
+      { nodeId: 'bp-01-memory', score: 2450, nowIso: NOW, gameId: 'g1' },
       none
     );
     const replay = applyNodeResult(
@@ -284,7 +284,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     expect(replay.bestStars).toBe(1);
     expect(replay.progress.nodes['bp-01-memory']).toEqual({
       stars: 1,
-      bestScore: 2100,
+      bestScore: 2450,
       firstClearedAt: NOW,
       lastPlayedAt: LATER,
       lastGameId: 'g2',
@@ -296,19 +296,19 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const first = applyNodeResult(
       w1,
       undefined,
-      { nodeId: 'bp-01-memory', score: 2100, nowIso: NOW },
+      { nodeId: 'bp-01-memory', score: 2450, nowIso: NOW },
       none
     );
     const better = applyNodeResult(
       w1,
       first.progress,
-      { nodeId: 'bp-01-memory', score: 2700, nowIso: LATER },
+      { nodeId: 'bp-01-memory', score: 3000, nowIso: LATER },
       none
     );
     expect(better.stars).toBe(3);
     expect(better.progress.nodes['bp-01-memory']).toMatchObject({
       stars: 3,
-      bestScore: 2700,
+      bestScore: 3000,
       firstClearedAt: NOW,
     });
     expect(better.progress.totalStars).toBe(3);
@@ -324,7 +324,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const one = applyNodeResult(
       w1,
       zero.progress,
-      { nodeId: 'bp-01-memory', score: 1500, nowIso: LATER },
+      { nodeId: 'bp-01-memory', score: 2450, nowIso: LATER },
       none
     );
     expect(one.progress.nodes['bp-01-memory']?.firstClearedAt).toBe(LATER);
@@ -346,14 +346,14 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
 
   it('the 14th path star makes the bonus newlyUnlocked', () => {
     const p = prog({ ...firstN(4, 3), 'bp-05-geo': 1 }); // 13 stars
-    const out = applyNodeResult(w1, p, { nodeId: 'bp-05-geo', score: 3500, nowIso: NOW }, none); // -> 2 stars = 14
+    const out = applyNodeResult(w1, p, { nodeId: 'bp-05-geo', score: 3900, nowIso: NOW }, none); // -> 2 stars = 14
     expect(out.progress.totalStars).toBe(14);
     expect(out.newlyUnlocked).toContain('bp-bonus-sequence');
   });
 
   it('playing the bonus changes no path total (R-BONUS-1)', () => {
     const p = prog(firstN(8, 3));
-    const out = applyNodeResult(w1, p, { nodeId: 'bp-bonus-sequence', score: 5300, nowIso: NOW }, none);
+    const out = applyNodeResult(w1, p, { nodeId: 'bp-bonus-sequence', score: 4350, nowIso: NOW }, none);
     expect(out.stars).toBe(3);
     expect(out.progress.totalStars).toBe(24);
   });
@@ -368,7 +368,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const again = applyNodeResult(
       w1,
       out.progress,
-      { nodeId: 'bp-boss', score: 7500, nowIso: LATER },
+      { nodeId: 'bp-boss', score: 8200, nowIso: LATER },
       none
     );
     expect(again.stars).toBe(3);
@@ -389,7 +389,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
 
   it('all 8 path nodes at 3 stars awards both badges, ignoring the bonus (R-BADGE-2)', () => {
     const p = prog({ ...firstN(7, 3), 'bp-boss': 1 }, { badges: ['WORLD_CLEARED'] });
-    const out = applyNodeResult(w1, p, { nodeId: 'bp-boss', score: 7400, nowIso: NOW }, none);
+    const out = applyNodeResult(w1, p, { nodeId: 'bp-boss', score: 8100, nowIso: NOW }, none);
     expect(out.progress.badges).toEqual(['WORLD_CLEARED', 'WORLD_MASTERED']);
     expect(out.badgesAwarded).toEqual(['WORLD_MASTERED']);
     expect(out.worldCleared).toBe(false);
@@ -429,7 +429,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
     const out = applyNodeResult(
       w1,
       p,
-      { nodeId: 'bp-01-memory', score: 2700, nowIso: NOW },
+      { nodeId: 'bp-01-memory', score: 3000, nowIso: NOW },
       without('bp-03-words')
     );
     expect(out.newlyUnlocked).toEqual([]);
@@ -467,7 +467,7 @@ describe('applyNodeResult (section 5 and worked examples)', () => {
   });
 
   it('applying the same result twice equals once; the second outcome reports nothing new (R-MONO-2)', () => {
-    const input = { nodeId: 'bp-01-memory', score: 2100, nowIso: NOW, gameId: 'g1' };
+    const input = { nodeId: 'bp-01-memory', score: 2450, nowIso: NOW, gameId: 'g1' };
     const once = applyNodeResult(w1, undefined, input, none);
     const twice = applyNodeResult(w1, once.progress, input, none);
     expect(twice.progress).toEqual(once.progress);
