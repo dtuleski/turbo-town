@@ -18,6 +18,14 @@ const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
 
 const TABLE_NAME = process.env.GAMES_TABLE_NAME!;
 
+/**
+ * The table's key attribute is `gameId`; `Game.id` is not stored. Callers (e.g. Quest Map
+ * idempotency) read `game.id`, so set it from the key on every item read back by key.
+ */
+function withId(item: Record<string, any> | undefined): Game {
+  return { ...item, id: item?.gameId } as Game;
+}
+
 export class GameRepository implements IGameRepository {
   /**
    * Create a new game
@@ -92,7 +100,7 @@ export class GameRepository implements IGameRepository {
         })
       );
 
-      return result.Item ? (result.Item as Game) : null;
+      return result.Item ? withId(result.Item) : null;
     } catch (error) {
       throw mapDynamoDBError(error as Error);
     }
@@ -140,7 +148,7 @@ export class GameRepository implements IGameRepository {
         })
       );
 
-      return result.Attributes as Game;
+      return withId(result.Attributes);
     } catch (error) {
       throw mapDynamoDBError(error as Error);
     }

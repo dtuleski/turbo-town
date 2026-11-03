@@ -106,7 +106,9 @@ export function recordLeg(
   const score = sanitizeScore(leg.score);
 
   // a. Idempotent on gameId (checked first): nothing is written.
-  if (attempt && attempt.nodeId === node.id && attempt.legs[legIndex]?.gameId === gameId) {
+  // A missing id never matches: `undefined === undefined` must not read as "already recorded".
+  const recorded = attempt?.legs[legIndex]?.gameId;
+  if (attempt && attempt.nodeId === node.id && typeof gameId === 'string' && recorded === gameId) {
     return { attempt, status: 'IN_PROGRESS' };
   }
   // b. Invalid index never throws.

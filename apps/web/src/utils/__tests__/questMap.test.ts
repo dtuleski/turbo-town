@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { QuestNodeView } from '@/types/quest'
+import type { QuestNodeView, QuestResultPayload, QuestWorldView } from '@/types/quest'
+import { ROUTES } from '@/config/constants'
 import { makeNode, makeWorld1 } from '@/test/questFixtures'
 import {
   buildPathD,
@@ -12,13 +13,62 @@ import {
   getNodeVisualState,
   getPhonePosition,
   getPlayLabelKey,
+  getPlayUrl,
   getShownStars,
   orderNodes,
   resolveStartFailed,
 } from '../questMap'
+import { getNextLegUrl } from '../questModal'
 import { QUEST_WORLDS } from '../questShared'
 
 type Row = [string, Partial<QuestNodeView>, boolean, string]
+
+describe('boss gauntlet launch after leg 0 (FR-QM-10, the reporting player)', () => {
+  const world = (activeGauntlet: QuestWorldView['activeGauntlet']): QuestWorldView => ({
+    ...makeWorld1(),
+    activeGauntlet,
+  })
+  const boss = (w: QuestWorldView) => w.nodes.find((n) => n.id === 'bp-boss') as QuestNodeView
+
+  it('Next leg launches BUBBLE_POP leg 1 with the world:node:leg quest param', () => {
+    const url = getNextLegUrl({
+      worldId: 'brain-peaks',
+      nodeId: 'bp-boss',
+      kind: 'BOSS',
+      score: 4117,
+      stars: 0,
+      bestStars: 0,
+      newlyUnlocked: [],
+      worldCleared: false,
+      badgesAwarded: [],
+      thresholds: [5550, 7000, 7400],
+      gauntlet: { legIndex: 0, legsTotal: 2, status: 'IN_PROGRESS', nextLeg: { themeId: 'BUBBLE_POP', difficulty: 2 } },
+    } as unknown as QuestResultPayload)
+    expect(url).toContain(ROUTES.BUBBLE_POP_GAME)
+    expect(url).toContain('difficulty=medium')
+    expect(new URLSearchParams(url!.split('?')[1]).get('quest')).toBe('brain-peaks:bp-boss:1')
+  })
+
+  it('Play on a boss with an active, unexpired attempt whose leg 0 is done launches leg 1', () => {
+    const w = world({ nodeId: 'bp-boss', legsDone: 1, legsTotal: 2, expiresAt: '2026-11-03T21:00:00.000Z' })
+    const url = getPlayUrl(boss(w), w)
+    expect(url).toContain(ROUTES.BUBBLE_POP_GAME)
+    expect(new URLSearchParams(url!.split('?')[1]).get('quest')).toBe('brain-peaks:bp-boss:1')
+    expect(getPlayLabelKey(boss(w), w.activeGauntlet)).toBe('quest.panel.continue')
+  })
+
+  it('Play after expiry (server sends no active attempt) launches leg 0', () => {
+    const w = world(null)
+    const url = getPlayUrl(boss(w), w)
+    expect(url).toContain(ROUTES.MATH_GAME)
+    expect(new URLSearchParams(url!.split('?')[1]).get('quest')).toBe('brain-peaks:bp-boss:0')
+  })
+
+  it('an attempt for another node does not change which leg runs', () => {
+    const w = world({ nodeId: 'bp-02-math', legsDone: 1, legsTotal: 2, expiresAt: '2026-11-03T21:00:00.000Z' })
+    expect(getPlayUrl(boss(w), w)).toContain('quest=brain-peaks%3Abp-boss%3A0')
+  })
+})
 
 describe('getNodeVisualState (FD section 1)', () => {
   const rows: Row[] = [
