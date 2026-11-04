@@ -256,3 +256,62 @@ export function checkRecipeComplete(chamber: string[], recipe: Recipe): boolean 
 export function getTotalIngredientsCount(recipe: Recipe): number {
   return recipe.ingredients.reduce((sum, ing) => sum + ing.count, 0)
 }
+
+// --- Periodic table (UI) -----------------------------------------------------
+
+export interface PeriodicTableEntry {
+  symbol: string
+  name: string
+  row: number
+  col: number
+  cat: string
+}
+
+export const PERIODIC_TABLE_FULL: PeriodicTableEntry[] = [
+  { symbol: 'H', name: 'Hydrogen', row: 1, col: 1, cat: 'nonmetal' },
+  { symbol: 'He', name: 'Helium', row: 1, col: 18, cat: 'noble' },
+  { symbol: 'Li', name: 'Lithium', row: 2, col: 1, cat: 'alkali' },
+  { symbol: 'Be', name: 'Beryllium', row: 2, col: 2, cat: 'alkaline' },
+  { symbol: 'B', name: 'Boron', row: 2, col: 13, cat: 'metalloid' },
+  { symbol: 'C', name: 'Carbon', row: 2, col: 14, cat: 'nonmetal' },
+  { symbol: 'N', name: 'Nitrogen', row: 2, col: 15, cat: 'nonmetal' },
+  { symbol: 'O', name: 'Oxygen', row: 2, col: 16, cat: 'nonmetal' },
+  { symbol: 'F', name: 'Fluorine', row: 2, col: 17, cat: 'halogen' },
+  { symbol: 'Ne', name: 'Neon', row: 2, col: 18, cat: 'noble' },
+  { symbol: 'Na', name: 'Sodium', row: 3, col: 1, cat: 'alkali' },
+  { symbol: 'Mg', name: 'Magnesium', row: 3, col: 2, cat: 'alkaline' },
+  { symbol: 'Al', name: 'Aluminum', row: 3, col: 13, cat: 'post-trans' },
+  { symbol: 'Si', name: 'Silicon', row: 3, col: 14, cat: 'metalloid' },
+  { symbol: 'P', name: 'Phosphorus', row: 3, col: 15, cat: 'nonmetal' },
+  { symbol: 'S', name: 'Sulfur', row: 3, col: 16, cat: 'nonmetal' },
+  { symbol: 'Cl', name: 'Chlorine', row: 3, col: 17, cat: 'halogen' },
+  { symbol: 'Ar', name: 'Argon', row: 3, col: 18, cat: 'noble' },
+  { symbol: 'K', name: 'Potassium', row: 4, col: 1, cat: 'alkali' },
+  { symbol: 'Ca', name: 'Calcium', row: 4, col: 2, cat: 'alkaline' },
+  { symbol: 'Ti', name: 'Titanium', row: 4, col: 4, cat: 'transition' },
+  { symbol: 'Cr', name: 'Chromium', row: 4, col: 6, cat: 'transition' },
+  { symbol: 'Mn', name: 'Manganese', row: 4, col: 7, cat: 'transition' },
+  { symbol: 'Fe', name: 'Iron', row: 4, col: 8, cat: 'transition' },
+  { symbol: 'Co', name: 'Cobalt', row: 4, col: 9, cat: 'transition' },
+  { symbol: 'Ni', name: 'Nickel', row: 4, col: 10, cat: 'transition' },
+  { symbol: 'Cu', name: 'Copper', row: 4, col: 11, cat: 'transition' },
+  { symbol: 'Zn', name: 'Zinc', row: 4, col: 12, cat: 'transition' },
+  { symbol: 'Ga', name: 'Gallium', row: 4, col: 13, cat: 'post-trans' },
+  { symbol: 'Ge', name: 'Germanium', row: 4, col: 14, cat: 'metalloid' },
+  { symbol: 'As', name: 'Arsenic', row: 4, col: 15, cat: 'metalloid' },
+  { symbol: 'Se', name: 'Selenium', row: 4, col: 16, cat: 'nonmetal' },
+  { symbol: 'Br', name: 'Bromine', row: 4, col: 17, cat: 'halogen' },
+  { symbol: 'Kr', name: 'Krypton', row: 4, col: 18, cat: 'noble' },
+]
+
+/**
+ * Last periodic-table row shown per difficulty. Na and Cl are period 3, so every difficulty
+ * whose recipes use them must show at least rows 1-3. (Easy used to stop at row 2, which hid
+ * Na and Cl and made Table Salt impossible.)
+ */
+export const PERIODIC_TABLE_MAX_ROW: Record<string, number> = { easy: 3, medium: 3, hard: 4 }
+
+export function getPeriodicTable(difficulty: string): PeriodicTableEntry[] {
+  const maxRow = PERIODIC_TABLE_MAX_ROW[difficulty] ?? PERIODIC_TABLE_MAX_ROW.easy
+  return PERIODIC_TABLE_FULL.filter(el => el.row <= maxRow)
+}

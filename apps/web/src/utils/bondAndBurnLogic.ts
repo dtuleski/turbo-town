@@ -11,6 +11,7 @@ import {
   getTotalIngredientsCount,
   getRandomElement,
   selectRecipes,
+  getPeriodicTable,
 } from './bondAndBurnData'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
@@ -120,6 +121,7 @@ export {
   getTotalIngredientsCount,
   getRandomElement,
   selectRecipes,
+  getPeriodicTable,
   ELEMENTS,
   RECIPES,
   DIFFICULTY_CONFIGS,
