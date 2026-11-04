@@ -16,6 +16,7 @@ import {
   selectRecipes,
   DIFFICULTY_CONFIGS,
   ELEMENTS,
+  getPeriodicTable,
 } from '@/utils/bondAndBurnLogic'
 
 const COMPOUND_VISUALS: Record<string, { emoji: string; color: string }> = {
@@ -37,8 +38,10 @@ export default function BondAndBurnGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { t } = useTranslation()
-  const difficulty = (searchParams.get('difficulty') as Difficulty) || 'easy'
-  const config = DIFFICULTY_CONFIGS[difficulty] || DIFFICULTY_CONFIGS.easy
+  const requestedDifficulty = searchParams.get('difficulty') as Difficulty | null
+  // Unknown values fall back to easy for the config AND the periodic table, so they stay in sync.
+  const difficulty: Difficulty = requestedDifficulty && DIFFICULTY_CONFIGS[requestedDifficulty] ? requestedDifficulty : 'easy'
+  const config = DIFFICULTY_CONFIGS[difficulty]
 
   const [gameId, setGameId] = useState('')
   const [phase, setPhase] = useState<GamePhase>('loading')
@@ -193,45 +196,7 @@ export default function BondAndBurnGamePage() {
 
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`
 
-  // Periodic table data
-  const PERIODIC_TABLE_FULL = [
-    { symbol: 'H', name: 'Hydrogen', row: 1, col: 1, cat: 'nonmetal' },
-    { symbol: 'He', name: 'Helium', row: 1, col: 18, cat: 'noble' },
-    { symbol: 'Li', name: 'Lithium', row: 2, col: 1, cat: 'alkali' },
-    { symbol: 'Be', name: 'Beryllium', row: 2, col: 2, cat: 'alkaline' },
-    { symbol: 'B', name: 'Boron', row: 2, col: 13, cat: 'metalloid' },
-    { symbol: 'C', name: 'Carbon', row: 2, col: 14, cat: 'nonmetal' },
-    { symbol: 'N', name: 'Nitrogen', row: 2, col: 15, cat: 'nonmetal' },
-    { symbol: 'O', name: 'Oxygen', row: 2, col: 16, cat: 'nonmetal' },
-    { symbol: 'F', name: 'Fluorine', row: 2, col: 17, cat: 'halogen' },
-    { symbol: 'Ne', name: 'Neon', row: 2, col: 18, cat: 'noble' },
-    { symbol: 'Na', name: 'Sodium', row: 3, col: 1, cat: 'alkali' },
-    { symbol: 'Mg', name: 'Magnesium', row: 3, col: 2, cat: 'alkaline' },
-    { symbol: 'Al', name: 'Aluminum', row: 3, col: 13, cat: 'post-trans' },
-    { symbol: 'Si', name: 'Silicon', row: 3, col: 14, cat: 'metalloid' },
-    { symbol: 'P', name: 'Phosphorus', row: 3, col: 15, cat: 'nonmetal' },
-    { symbol: 'S', name: 'Sulfur', row: 3, col: 16, cat: 'nonmetal' },
-    { symbol: 'Cl', name: 'Chlorine', row: 3, col: 17, cat: 'halogen' },
-    { symbol: 'Ar', name: 'Argon', row: 3, col: 18, cat: 'noble' },
-    { symbol: 'K', name: 'Potassium', row: 4, col: 1, cat: 'alkali' },
-    { symbol: 'Ca', name: 'Calcium', row: 4, col: 2, cat: 'alkaline' },
-    { symbol: 'Ti', name: 'Titanium', row: 4, col: 4, cat: 'transition' },
-    { symbol: 'Cr', name: 'Chromium', row: 4, col: 6, cat: 'transition' },
-    { symbol: 'Mn', name: 'Manganese', row: 4, col: 7, cat: 'transition' },
-    { symbol: 'Fe', name: 'Iron', row: 4, col: 8, cat: 'transition' },
-    { symbol: 'Co', name: 'Cobalt', row: 4, col: 9, cat: 'transition' },
-    { symbol: 'Ni', name: 'Nickel', row: 4, col: 10, cat: 'transition' },
-    { symbol: 'Cu', name: 'Copper', row: 4, col: 11, cat: 'transition' },
-    { symbol: 'Zn', name: 'Zinc', row: 4, col: 12, cat: 'transition' },
-    { symbol: 'Ga', name: 'Gallium', row: 4, col: 13, cat: 'post-trans' },
-    { symbol: 'Ge', name: 'Germanium', row: 4, col: 14, cat: 'metalloid' },
-    { symbol: 'As', name: 'Arsenic', row: 4, col: 15, cat: 'metalloid' },
-    { symbol: 'Se', name: 'Selenium', row: 4, col: 16, cat: 'nonmetal' },
-    { symbol: 'Br', name: 'Bromine', row: 4, col: 17, cat: 'halogen' },
-    { symbol: 'Kr', name: 'Krypton', row: 4, col: 18, cat: 'noble' },
-  ]
-  const PERIODIC_TABLE = difficulty === 'easy' ? PERIODIC_TABLE_FULL.filter(el => el.row <= 2)
-    : difficulty === 'medium' ? PERIODIC_TABLE_FULL.filter(el => el.row <= 3) : PERIODIC_TABLE_FULL
+  const PERIODIC_TABLE = getPeriodicTable(difficulty)
 
   const CAT_COLORS: Record<string, string> = {
     'nonmetal': 'bg-sky-700/80', 'noble': 'bg-violet-700/80', 'alkali': 'bg-rose-700/80',
@@ -371,7 +336,8 @@ export default function BondAndBurnGamePage() {
       {phase === 'playing' && currentRecipe && (
         <div className="px-2 pb-3">
           <div className="text-center text-slate-500 text-[9px] mb-1 uppercase tracking-wider">{t('bondAndBurn.pickElements')}</div>
-          <div className="max-w-2xl mx-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(18, 1fr)', gap: '2px' }}>
+          <div className="overflow-x-auto">
+          <div className="max-w-2xl mx-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(18, minmax(16px, 1fr))', gap: '2px', minWidth: '300px' }}>
             {PERIODIC_TABLE.map((el) => {
               const isGameElement = GAME_ELEMENTS.has(el.symbol)
               const isWrong = wrongPick === el.symbol
@@ -399,6 +365,7 @@ export default function BondAndBurnGamePage() {
                 </button>
               )
             })}
+          </div>
           </div>
         </div>
       )}
