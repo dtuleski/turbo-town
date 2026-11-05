@@ -132,7 +132,7 @@ function GuidedGame({ level }: { level: LevelDefinition }) {
         </p>
       )}
 
-      <CircuitBuilderSurface level={level} onFrame={session.observe} celebrate={solved} />
+      <CircuitBuilderSurface level={level} onFrame={session.observe} celebrate={solved} showCoach />
 
       {state.phase === 'submitted' && (
         <section className="mt-4 rounded-2xl border border-cyan-500/40 bg-slate-900 p-4 text-slate-100">

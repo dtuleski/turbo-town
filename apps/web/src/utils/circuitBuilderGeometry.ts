@@ -54,8 +54,10 @@ export const CIRCUIT_CANVAS_HEIGHT = 640
 /** Logical pixels kept clear around the grid. */
 export const CANVAS_PADDING = 16
 
-/** Terminal grab radius, as a fraction of `cellSize`. */
-export const TERMINAL_HIT_RATIO = 0.28
+/** Terminal grab radius, as a fraction of `cellSize`. Larger than the drawn dot so a finger can
+ * land on it; the nearest terminal still wins where two parts sit side by side, and the part body
+ * keeps a 0.2-cell strip in its middle for selecting and dragging. */
+export const TERMINAL_HIT_RATIO = 0.32
 
 /** Connection grab distance, as a fraction of `cellSize`. */
 export const CONNECTION_HIT_RATIO = 0.12

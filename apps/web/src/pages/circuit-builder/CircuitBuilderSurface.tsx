@@ -30,6 +30,7 @@ import {
 } from '@/utils/circuitBuilderState'
 import type { CircuitSubmissionDraft } from '@/utils/circuitBuilderState'
 import {
+  ELEMENT_KINDS,
   MAX_LIGHT_LEVEL,
   MAX_SOURCE_VOLTAGE,
   MIN_LIGHT_LEVEL,
@@ -42,8 +43,11 @@ import {
 } from '@/utils/circuitEngine'
 import type { CircuitResult, ElementKind, FaultCode, LevelDefinition } from '@/utils/circuitEngine'
 import { computeFaultOverlay } from '@/utils/circuitFaultOverlay'
-import { sliderValueText } from '@/utils/circuitSliderLabel'
+import { sliderLabel, sliderValueText, levelOffersSolar } from '@/utils/circuitSliderLabel'
+import { selectActionBar } from '@/utils/circuitBuilderAffordances'
+import { browserCoachStorage, markCoachSeen, shouldAutoOpenCoach } from '@/utils/circuitCoach'
 import { deriveRoverView } from '@/utils/marsRover'
+import CircuitCoach from './CircuitCoach'
 import CircuitReadout from './CircuitReadout'
 import ComponentTray from './ComponentTray'
 import EffectsCanvas from './EffectsCanvas'
@@ -75,6 +79,8 @@ interface CircuitBuilderSurfaceProps {
   /** Both default to true. */
   showRover?: boolean
   showReadout?: boolean
+  /** Guided levels turn this on: a first-visit how-to-play overlay and a button to reopen it. */
+  showCoach?: boolean
   className?: string
 }
 
@@ -88,6 +94,7 @@ interface CircuitSurfaceBodyProps {
   celebrate?: boolean
   showRover: boolean
   showReadout: boolean
+  showCoach: boolean
   className?: string
 }
 
@@ -118,9 +125,22 @@ function CircuitSurfaceBody({
   celebrate,
   showRover,
   showReadout,
+  showCoach,
   className,
 }: CircuitSurfaceBodyProps) {
   const { t } = useTranslation()
+  const [coachOpen, setCoachOpen] = useState(() => showCoach && shouldAutoOpenCoach(browserCoachStorage()))
+  const closeCoach = useCallback(() => {
+    markCoachSeen(browserCoachStorage())
+    setCoachOpen(false)
+  }, [])
+  const captions = useMemo(() => {
+    const names: Partial<Record<ElementKind, string>> = {}
+    for (const item of ELEMENT_KINDS) {
+      names[item] = t(`circuitBuilder.component.${item}.abbr`)
+    }
+    return names
+  }, [t])
 
   const [state, dispatch] = useReducer(circuitReducer, level, createInitialState)
   const [selection, setSelection] = useState<SelectionState>(createInitialSelection)
@@ -381,6 +401,22 @@ function CircuitSurfaceBody({
       apply({ selection: selectionRef.current, intent: { type: 'flipElement', elementId } }, selectionRef.current)
     }
   }, [apply, unlockAudio])
+  const actionBar = selectActionBar(state, selection)
+  const handleRemoveSelected = useCallback(() => {
+    const id = selectionRef.current.selectedElementId
+    if (id === null) {
+      return
+    }
+    dispatch({ type: 'remove', elementId: id })
+    const next: SelectionState = { ...selectionRef.current, selectedElementId: null }
+    setSelection(next)
+    selectionRef.current = next
+  }, [])
+  /** The on-screen Escape: drops an armed tray part and a half-made link. */
+  const handleCancel = useCallback(() => {
+    const previous = selectionRef.current
+    apply(resolveKeyIntent('Escape', false, previous, stateRef.current), previous)
+  }, [apply])
   const handleResetFuse = useCallback(() => {
     dispatch({ type: 'resetFuse' })
   }, [])
@@ -422,6 +458,7 @@ function CircuitSurfaceBody({
           viewport={viewport}
           selection={selection}
           reducedMotion={effectiveReducedMotion}
+          captions={captions}
           label={t('circuitBuilder.canvasLabel')}
           canvasRef={gridCanvasRef}
           onPointerEvent={handlePointerEvent}
@@ -462,6 +499,32 @@ function CircuitSurfaceBody({
           >
             {t('circuitBuilder.flip')}
           </button>
+        )}
+
+        {(showCoach || actionBar.removableElementId !== null || actionBar.canCancel) && (
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {showCoach && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCoachOpen(true)
+                }}
+                className={ACTION_BUTTON}
+              >
+                {t('circuitBuilder.coach.open')}
+              </button>
+            )}
+            {actionBar.removableElementId !== null && (
+              <button type="button" onClick={handleRemoveSelected} className={ACTION_BUTTON}>
+                {t('circuitBuilder.actions.removePart')}
+              </button>
+            )}
+            {actionBar.canCancel && (
+              <button type="button" onClick={handleCancel} className={ACTION_BUTTON}>
+                {t('circuitBuilder.actions.cancel')}
+              </button>
+            )}
+          </div>
         )}
 
         {/* `lg:hidden`, so desktop keeps rendering inside AppLayout's shell with no extra control. */}
@@ -553,6 +616,7 @@ function CircuitSurfaceBody({
             className="h-6 accent-cyan-400"
           />
         </label>
+        {levelOffersSolar(level) && (
         <label className="flex flex-col gap-1 text-xs text-slate-300">
           <span>
             {sliderLabel(t('circuitBuilder.status.lightLevel'), sliderValueText(level.numericDisclosure, 'light', state.environment.lightLevel))}
@@ -569,6 +633,7 @@ function CircuitSurfaceBody({
             className="h-6 accent-cyan-400"
           />
         </label>
+        )}
         {showRover && <RoverPanel view={roverView} reducedMotion={effectiveReducedMotion} />}
         {showReadout && (
           <CircuitReadout
@@ -579,9 +644,13 @@ function CircuitSurfaceBody({
           />
         )}
       </div>
+      {coachOpen && <CircuitCoach onClose={closeCoach} />}
     </div>
   )
 }
+
+const ACTION_BUTTON =
+  'min-h-[44px] rounded-lg border border-slate-500 px-3 py-2 text-xs text-slate-100 hover:border-cyan-500/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300'
 
 /**
  * The circuit building surface.
@@ -595,10 +664,6 @@ function CircuitSurfaceBody({
  * the player (SECURITY-09). There is deliberately no hard-coded fallback definition here — level
  * data has exactly one source, the engine.
  */
-function sliderLabel(name: string, valueText: string | null): string {
-  return valueText === null ? name : `: ${valueText}`
-}
-
 export default function CircuitBuilderSurface({
   level,
   reducedMotion,
@@ -607,6 +672,7 @@ export default function CircuitBuilderSurface({
   celebrate,
   showRover = true,
   showReadout = true,
+  showCoach = false,
   className,
 }: CircuitBuilderSurfaceProps) {
   const { t } = useTranslation()
@@ -625,6 +691,7 @@ export default function CircuitBuilderSurface({
       celebrate={celebrate}
       showRover={showRover}
       showReadout={showReadout}
+      showCoach={showCoach}
       className={className}
     />
   )

@@ -875,6 +875,19 @@
       "INVALID_VOLTAGE": "Essa tensão não pode ser usada",
       "INVALID_LIGHT_LEVEL": "Esse nível de luz não pode ser usado"
     },
+    "coach": {
+      "title": "Como jogar",
+      "open": "Como jogar",
+      "close": "Entendi",
+      "step1": "Escolha uma peça e toque em uma célula.",
+      "step2": "Pressione um ponto e arraste até outro ponto para ligá-los.",
+      "step3": "Faça um só circuito fechado do + de volta ao −. A lâmpada só funciona em um sentido.",
+      "keyboard": "Teclado: as setas movem o cursor, Enter coloca, C começa uma ligação, Enter termina (Shift+Enter para o segundo ponto), Delete apaga uma peça, Esc cancela."
+    },
+    "actions": {
+      "removePart": "Remover peça",
+      "cancel": "Cancelar"
+    },
     "layout": {
       "enterFullScreen": "Tela cheia",
       "exitFullScreen": "Sair da tela cheia"
@@ -939,19 +952,19 @@
       "cb-01-closed-circuit": {
         "title": "Feche o circuito",
         "goal": "Acenda o farol do rover.",
-        "hint": "Ligue a pilha, o resistor e a lâmpada LED formando um anel e volte com um fio até a pilha. Se a lâmpada continuar apagada, confira em qual sentido ela está ligada.",
+        "hint": "Arraste uma linha de um ponto de uma peça até um ponto da próxima, até que a pilha, o resistor e a lâmpada LED formem um só circuito. Você não precisa da peça Fio. A lâmpada tem um sentido: se continuar apagada, ligue-a ao contrário.",
         "learn": "A corrente só circula em um circuito fechado. O resistor protege a lâmpada LED do excesso de corrente."
       },
       "cb-02-switch-control": {
         "title": "Ligue com o interruptor",
         "goal": "Acenda o farol com o interruptor fechado e depois apague e acenda de novo.",
-        "hint": "O interruptor já está na bancada. Coloque-o no circuito junto com a pilha, o resistor e a lâmpada LED, e selecione-o para abrir ou fechar.",
+        "hint": "O interruptor já está na bancada. Arraste linhas entre os pontos para colocá-lo no circuito junto com a pilha, o resistor e a lâmpada LED, e toque no interruptor para abrir ou fechar.",
         "learn": "Um interruptor abre ou fecha o circuito. Quando está aberto, o circuito fica cortado, não passa corrente e a luz apaga."
       },
       "cb-03-series-loop": {
         "title": "Um circuito para dois",
         "goal": "Acenda o farol e faça a campainha tocar no mesmo circuito.",
-        "hint": "Coloque a lâmpada LED e a campainha uma depois da outra no mesmo circuito, com o resistor e o interruptor. Depois abra o interruptor e veja o que acontece com as duas.",
+        "hint": "Arraste linhas entre os pontos para colocar a lâmpada LED e a campainha uma depois da outra no mesmo circuito, com o resistor e o interruptor. Depois abra o interruptor e veja o que acontece com as duas.",
         "learn": "Em um circuito em série a mesma corrente passa por todas as peças, uma depois da outra. Se você abrir o interruptor, tudo para."
       },
       "cb-04-parallel-branches": {
@@ -969,7 +982,7 @@
       "cb-06-short-circuit-recovery": {
         "title": "Vença o curto-circuito",
         "goal": "Acenda o farol mesmo que um curto-circuito queime o fusível antes.",
-        "hint": "Um fio ligado direto na pilha queima o fusível. Religue o fusível, tire esse fio e coloque a carga de volta no circuito.",
+        "hint": "Uma peça Fio ligada direto na pilha queima o fusível. Religue o fusível, tire essa peça Fio e coloque a carga de volta no circuito.",
         "learn": "Um caminho quase sem resistência deixa passar uma corrente enorme. Mantenha sempre uma carga no circuito e religue o fusível depois de consertar a falha."
       },
       "cb-07-resistance-limits-current": {

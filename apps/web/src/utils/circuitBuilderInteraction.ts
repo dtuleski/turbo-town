@@ -50,6 +50,10 @@ export interface SelectionState {
   pendingTerminal: TerminalRef | null
   cursor: GridCell
   drag: DragState | null
+  /** Latest pointer position while a link is half made, for the rubber-band line. */
+  pointer?: Point | null
+  /** True once the pressed dot was released on itself: the link now waits for a second click. */
+  pendingSticky?: boolean
 }
 
 export type PointerPhase = 'down' | 'move' | 'up' | 'cancel'
@@ -83,6 +87,8 @@ export function createInitialSelection(): SelectionState {
     pendingTerminal: null,
     cursor: { col: 0, row: 0 },
     drag: null,
+    pointer: null,
+    pendingSticky: false,
   }
 }
 
@@ -109,11 +115,19 @@ function clearTransient(selection: SelectionState): SelectionState {
   if (
     selection.drag === null &&
     selection.pendingTerminal === null &&
-    selection.armedKind === null
+    selection.armedKind === null &&
+    (selection.pointer ?? null) === null
   ) {
     return selection
   }
-  return { ...selection, drag: null, pendingTerminal: null, armedKind: null }
+  return {
+    ...selection,
+    drag: null,
+    pendingTerminal: null,
+    armedKind: null,
+    pointer: null,
+    pendingSticky: false,
+  }
 }
 
 function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): IntentResult {
@@ -127,7 +141,13 @@ function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): I
         const sameTerminal =
           pending.elementId === hit.elementId && pending.terminalIndex === hit.terminalIndex
         return {
-          selection: { ...positioned, pendingTerminal: null, drag: null },
+          selection: {
+            ...positioned,
+            pendingTerminal: null,
+            drag: null,
+            pointer: null,
+            pendingSticky: false,
+          },
           intent: sameTerminal
             ? { type: 'cancel' }
             : {
@@ -141,6 +161,8 @@ function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): I
         selection: {
           ...positioned,
           pendingTerminal: { elementId: hit.elementId, terminalIndex: hit.terminalIndex },
+          pendingSticky: false,
+          pointer: point,
         },
         intent: {
           type: 'beginConnection',
@@ -172,6 +194,9 @@ function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): I
 function pointerMove(point: Point, hit: HitTarget, selection: SelectionState): IntentResult {
   const drag = selection.drag
   if (drag === null) {
+    if (selection.pendingTerminal !== null) {
+      return { selection: { ...selection, pointer: point }, intent: null }
+    }
     return { selection, intent: null }
   }
   const travelled = Math.hypot(point.x - drag.origin.x, point.y - drag.origin.y)
@@ -200,11 +225,18 @@ function pointerUpOnTerminal(
       pending.elementId === hit.elementId && pending.terminalIndex === hit.terminalIndex
     if (sameTerminal) {
       // A tap, not a drag: the wire stays half-drawn so the next tap on another dot finishes it.
-      // Escape, or a tap on empty space, abandons it.
-      return { selection: { ...positioned, drag: null }, intent: null }
+      // Escape, or a tap on empty space, abandons it. `pendingSticky` lets it outlive the pointer
+      // leaving the canvas.
+      return { selection: { ...positioned, drag: null, pendingSticky: true }, intent: null }
     }
     return {
-      selection: { ...positioned, pendingTerminal: null, drag: null },
+      selection: {
+        ...positioned,
+        pendingTerminal: null,
+        drag: null,
+        pointer: null,
+        pendingSticky: false,
+      },
       intent: {
         type: 'completeConnection',
         elementId: hit.elementId,
@@ -289,7 +321,13 @@ function pointerUp(hit: HitTarget, selection: SelectionState): IntentResult {
   // is the visible feedback for "press on a terminal and release on empty space".
   if (selection.pendingTerminal !== null) {
     return {
-      selection: { ...withCursor(selection, hit), pendingTerminal: null, drag: null },
+      selection: {
+        ...withCursor(selection, hit),
+        pendingTerminal: null,
+        drag: null,
+        pointer: null,
+        pendingSticky: false,
+      },
       intent: { type: 'cancel' },
     }
   }
@@ -326,6 +364,11 @@ export function resolvePointerIntent(
     case 'up':
       return pointerUp(hit, selection)
     default:
+      if (selection.pendingTerminal !== null && selection.pendingSticky === true) {
+        // The pointer only left the canvas (or a touch was interrupted). A click-click link stays
+        // open; only the rubber band is hidden.
+        return { selection: { ...selection, pointer: null }, intent: null }
+      }
       return { selection: clearTransient(selection), intent: { type: 'cancel' } }
   }
 }
@@ -458,7 +501,11 @@ export function resolveKeyIntent(
     }
     const terminalIndex: 0 | 1 = shift ? 1 : 0
     return {
-      selection: { ...selection, pendingTerminal: { elementId: element.id, terminalIndex } },
+      selection: {
+        ...selection,
+        pendingTerminal: { elementId: element.id, terminalIndex },
+        pendingSticky: false,
+      },
       intent: { type: 'beginConnection', elementId: element.id, terminalIndex },
     }
   }
