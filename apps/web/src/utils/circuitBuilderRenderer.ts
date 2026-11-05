@@ -86,6 +86,15 @@ export function loadGlow(intensity: number): {
   }
 }
 
+/**
+ * Whether an element is drawn lit. Glow is the engine's own verdict for that element and nothing
+ * else: a part touching a live node but carrying no current of its own (a bypassed or
+ * half-connected LED) is NOT lit. Never derive this from the nodes a part is attached to.
+ */
+export function isGlowing(result: ElementResult | undefined): boolean {
+  return result?.energized === true
+}
+
 /** True only when something is actually moving. The canvas host stops its animation loop on
  * false, so a settled circuit costs nothing per frame. */
 export function hasLiveAnimation(scene: RenderScene): boolean {
@@ -405,7 +414,7 @@ function drawElement(
     { col: element.position.col, row: element.position.row },
     viewport
   )
-  const energized = !suppressed && result?.energized === true
+  const energized = !suppressed && isGlowing(result)
   // Only kinds the engine rates get a ramp. Everything else is a binary treatment.
   const intensity =
     !suppressed && hasBrightnessRamp(element.kind) && result !== undefined ? result.intensity : 0
