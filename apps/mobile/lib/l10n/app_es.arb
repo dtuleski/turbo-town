@@ -1448,6 +1448,58 @@
   "quest_hub_title": "Mapa de Aventura",
   "quest_hub_body": "Sigue un camino de juegos, gana estrellas y vence al jefe.",
   "quest_hub_cta": "Abrir el Mapa de Aventura",
+  "mobileAuth_firstName": "Nombre",
+  "mobileAuth_lastName": "Apellido",
+  "mobileAuth_required": "Obligatorio",
+  "mobileAuth_invalidEmail": "Correo electrónico inválido",
+  "mobileAuth_usernameMin": "El nombre de usuario debe tener al menos 3 caracteres",
+  "mobileAuth_usernameMax": "El nombre de usuario debe tener como máximo 20 caracteres",
+  "mobileAuth_usernameChars": "El nombre de usuario solo puede contener letras, números y guiones bajos",
+  "mobileAuth_passwordMin": "La contraseña debe tener al menos 8 caracteres",
+  "mobileAuth_passwordUpper": "La contraseña debe contener al menos una letra mayúscula",
+  "mobileAuth_passwordLower": "La contraseña debe contener al menos una letra minúscula",
+  "mobileAuth_passwordNumber": "La contraseña debe contener al menos un número",
+  "mobileAuth_passwordsMismatch": "Las contraseñas no coinciden",
+  "mobileAuth_codeMin": "El código debe tener al menos 6 caracteres",
+  "mobileAuth_forgotSubtitle": "Ingresa tu correo y te enviaremos un código para restablecer tu contraseña",
+  "mobileAuth_sendResetCode": "Enviar código",
+  "mobileAuth_resetTitle": "Restablecer Contraseña",
+  "mobileAuth_resetSubtitle": "Ingresa el código de tu correo y tu nueva contraseña",
+  "mobileAuth_resetCode": "Código de Restablecimiento",
+  "mobileAuth_newPassword": "Nueva Contraseña",
+  "mobileAuth_resetButton": "Restablecer Contraseña",
+  "mobileAuth_resetCodeSentTo": "Si existe una cuenta para {email}, le enviamos un código de restablecimiento.",
+  "@mobileAuth_resetCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_haveResetCode": "¿Ya tienes un código? Ingrésalo",
+  "mobileAuth_passwordResetDone": "Tu contraseña fue restablecida. Inicia sesión con tu nueva contraseña.",
+  "mobileAuth_backToLogin": "Volver a Iniciar Sesión",
+  "mobileAuth_resendCode": "Reenviar código",
+  "mobileAuth_resendCodeIn": "Reenviar código ({seconds}s)",
+  "@mobileAuth_resendCodeIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_codeResent": "Enviamos un nuevo código a tu correo.",
+  "mobileAuth_enterEmailFirst": "Primero ingresa tu correo arriba.",
+  "mobileAuth_errNetwork": "Error de red. Revisa tu conexión e inténtalo de nuevo.",
+  "mobileAuth_errCodeMismatch": "El código es incorrecto. Revísalo e inténtalo de nuevo.",
+  "mobileAuth_errCodeExpired": "El código ha expirado. Solicita uno nuevo.",
+  "mobileAuth_errTooMany": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+  "mobileAuth_errInvalidPassword": "La contraseña no cumple los requisitos.",
+  "mobileAuth_errUserExists": "Ya existe una cuenta con este correo.",
+  "mobileAuth_errUnconfirmed": "Primero confirma tu cuenta (revisa tu correo para obtener el código).",
+  "mobileAuth_errNewPasswordRequired": "Esta cuenta requiere una nueva contraseña. Restablece tu contraseña.",
+  "mobileAuth_errGoogle": "Error al iniciar sesión con Google. Inténtalo de nuevo.",
+  "mobileAuth_errGeneric": "Algo salió mal. Inténtalo de nuevo.",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

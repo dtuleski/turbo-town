@@ -6003,6 +6003,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Quest Map'**
   String get quest_hub_cta;
+
+  /// No description provided for @mobileAuth_firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get mobileAuth_firstName;
+
+  /// No description provided for @mobileAuth_lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get mobileAuth_lastName;
+
+  /// No description provided for @mobileAuth_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get mobileAuth_required;
+
+  /// No description provided for @mobileAuth_invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address'**
+  String get mobileAuth_invalidEmail;
+
+  /// No description provided for @mobileAuth_usernameMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at least 3 characters'**
+  String get mobileAuth_usernameMin;
+
+  /// No description provided for @mobileAuth_usernameMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at most 20 characters'**
+  String get mobileAuth_usernameMax;
+
+  /// No description provided for @mobileAuth_usernameChars.
+  ///
+  /// In en, this message translates to:
+  /// **'Username can only contain letters, numbers, and underscores'**
+  String get mobileAuth_usernameChars;
+
+  /// No description provided for @mobileAuth_passwordMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get mobileAuth_passwordMin;
+
+  /// No description provided for @mobileAuth_passwordUpper.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get mobileAuth_passwordUpper;
+
+  /// No description provided for @mobileAuth_passwordLower.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get mobileAuth_passwordLower;
+
+  /// No description provided for @mobileAuth_passwordNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number'**
+  String get mobileAuth_passwordNumber;
+
+  /// No description provided for @mobileAuth_passwordsMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords don\'\'t match'**
+  String get mobileAuth_passwordsMismatch;
+
+  /// No description provided for @mobileAuth_codeMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Code must be at least 6 characters'**
+  String get mobileAuth_codeMin;
+
+  /// No description provided for @mobileAuth_forgotSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'\'ll send you a reset code'**
+  String get mobileAuth_forgotSubtitle;
+
+  /// No description provided for @mobileAuth_sendResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Code'**
+  String get mobileAuth_sendResetCode;
+
+  /// No description provided for @mobileAuth_resetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get mobileAuth_resetTitle;
+
+  /// No description provided for @mobileAuth_resetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code from your email and your new password'**
+  String get mobileAuth_resetSubtitle;
+
+  /// No description provided for @mobileAuth_resetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Code'**
+  String get mobileAuth_resetCode;
+
+  /// No description provided for @mobileAuth_newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get mobileAuth_newPassword;
+
+  /// No description provided for @mobileAuth_resetButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get mobileAuth_resetButton;
+
+  /// No description provided for @mobileAuth_resetCodeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for {email}, we sent a reset code to it.'**
+  String mobileAuth_resetCodeSentTo(String email);
+
+  /// No description provided for @mobileAuth_haveResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have a code? Enter it'**
+  String get mobileAuth_haveResetCode;
+
+  /// No description provided for @mobileAuth_passwordResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password was reset. Sign in with your new password.'**
+  String get mobileAuth_passwordResetDone;
+
+  /// No description provided for @mobileAuth_backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get mobileAuth_backToLogin;
+
+  /// No description provided for @mobileAuth_resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get mobileAuth_resendCode;
+
+  /// No description provided for @mobileAuth_resendCodeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code ({seconds}s)'**
+  String mobileAuth_resendCodeIn(String seconds);
+
+  /// No description provided for @mobileAuth_codeResent.
+  ///
+  /// In en, this message translates to:
+  /// **'A new code was sent to your email.'**
+  String get mobileAuth_codeResent;
+
+  /// No description provided for @mobileAuth_enterEmailFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email above first.'**
+  String get mobileAuth_enterEmailFirst;
+
+  /// No description provided for @mobileAuth_errNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Check your connection and try again.'**
+  String get mobileAuth_errNetwork;
+
+  /// No description provided for @mobileAuth_errCodeMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'That code is incorrect. Check it and try again.'**
+  String get mobileAuth_errCodeMismatch;
+
+  /// No description provided for @mobileAuth_errCodeExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'That code has expired. Request a new one.'**
+  String get mobileAuth_errCodeExpired;
+
+  /// No description provided for @mobileAuth_errTooMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a while and try again.'**
+  String get mobileAuth_errTooMany;
+
+  /// No description provided for @mobileAuth_errInvalidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'That password does not meet the requirements.'**
+  String get mobileAuth_errInvalidPassword;
+
+  /// No description provided for @mobileAuth_errUserExists.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists.'**
+  String get mobileAuth_errUserExists;
+
+  /// No description provided for @mobileAuth_errUnconfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your account first (check your email for a code).'**
+  String get mobileAuth_errUnconfirmed;
+
+  /// No description provided for @mobileAuth_errNewPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'A new password is required for this account. Please reset your password.'**
+  String get mobileAuth_errNewPasswordRequired;
+
+  /// No description provided for @mobileAuth_errGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in failed. Please try again.'**
+  String get mobileAuth_errGoogle;
+
+  /// No description provided for @mobileAuth_errGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get mobileAuth_errGeneric;
 }
 
 class _AppLocalizationsDelegate

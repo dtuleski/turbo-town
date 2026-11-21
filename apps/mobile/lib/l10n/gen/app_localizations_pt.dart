@@ -3319,4 +3319,141 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get quest_hub_cta => 'Abrir o Mapa de Aventura';
+
+  @override
+  String get mobileAuth_firstName => 'Nome';
+
+  @override
+  String get mobileAuth_lastName => 'Sobrenome';
+
+  @override
+  String get mobileAuth_required => 'Obrigatório';
+
+  @override
+  String get mobileAuth_invalidEmail => 'Endereço de e-mail inválido';
+
+  @override
+  String get mobileAuth_usernameMin =>
+      'O nome de usuário deve ter pelo menos 3 caracteres';
+
+  @override
+  String get mobileAuth_usernameMax =>
+      'O nome de usuário deve ter no máximo 20 caracteres';
+
+  @override
+  String get mobileAuth_usernameChars =>
+      'O nome de usuário só pode conter letras, números e sublinhados';
+
+  @override
+  String get mobileAuth_passwordMin =>
+      'A senha deve ter pelo menos 8 caracteres';
+
+  @override
+  String get mobileAuth_passwordUpper =>
+      'A senha deve conter pelo menos uma letra maiúscula';
+
+  @override
+  String get mobileAuth_passwordLower =>
+      'A senha deve conter pelo menos uma letra minúscula';
+
+  @override
+  String get mobileAuth_passwordNumber =>
+      'A senha deve conter pelo menos um número';
+
+  @override
+  String get mobileAuth_passwordsMismatch => 'As senhas não coincidem';
+
+  @override
+  String get mobileAuth_codeMin => 'O código deve ter pelo menos 6 caracteres';
+
+  @override
+  String get mobileAuth_forgotSubtitle =>
+      'Digite seu e-mail e enviaremos um código para redefinir sua senha';
+
+  @override
+  String get mobileAuth_sendResetCode => 'Enviar código';
+
+  @override
+  String get mobileAuth_resetTitle => 'Redefinir Senha';
+
+  @override
+  String get mobileAuth_resetSubtitle =>
+      'Digite o código do seu e-mail e sua nova senha';
+
+  @override
+  String get mobileAuth_resetCode => 'Código de Redefinição';
+
+  @override
+  String get mobileAuth_newPassword => 'Nova Senha';
+
+  @override
+  String get mobileAuth_resetButton => 'Redefinir Senha';
+
+  @override
+  String mobileAuth_resetCodeSentTo(String email) {
+    return 'Se existir uma conta para $email, enviamos um código de redefinição.';
+  }
+
+  @override
+  String get mobileAuth_haveResetCode => 'Já tem um código? Digite-o';
+
+  @override
+  String get mobileAuth_passwordResetDone =>
+      'Sua senha foi redefinida. Entre com sua nova senha.';
+
+  @override
+  String get mobileAuth_backToLogin => 'Voltar ao Login';
+
+  @override
+  String get mobileAuth_resendCode => 'Reenviar código';
+
+  @override
+  String mobileAuth_resendCodeIn(String seconds) {
+    return 'Reenviar código (${seconds}s)';
+  }
+
+  @override
+  String get mobileAuth_codeResent =>
+      'Enviamos um novo código para o seu e-mail.';
+
+  @override
+  String get mobileAuth_enterEmailFirst => 'Digite seu e-mail acima primeiro.';
+
+  @override
+  String get mobileAuth_errNetwork =>
+      'Erro de rede. Verifique sua conexão e tente novamente.';
+
+  @override
+  String get mobileAuth_errCodeMismatch =>
+      'Esse código está incorreto. Confira e tente novamente.';
+
+  @override
+  String get mobileAuth_errCodeExpired =>
+      'Esse código expirou. Solicite um novo.';
+
+  @override
+  String get mobileAuth_errTooMany =>
+      'Muitas tentativas. Aguarde um pouco e tente novamente.';
+
+  @override
+  String get mobileAuth_errInvalidPassword =>
+      'A senha não atende aos requisitos.';
+
+  @override
+  String get mobileAuth_errUserExists => 'Já existe uma conta com este e-mail.';
+
+  @override
+  String get mobileAuth_errUnconfirmed =>
+      'Confirme sua conta primeiro (verifique seu e-mail para obter o código).';
+
+  @override
+  String get mobileAuth_errNewPasswordRequired =>
+      'Esta conta exige uma nova senha. Redefina sua senha.';
+
+  @override
+  String get mobileAuth_errGoogle =>
+      'Falha no login com o Google. Tente novamente.';
+
+  @override
+  String get mobileAuth_errGeneric => 'Algo deu errado. Tente novamente.';
 }

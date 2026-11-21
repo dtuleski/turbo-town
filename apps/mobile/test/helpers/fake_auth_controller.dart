@@ -40,6 +40,20 @@ class FakeAuthController extends StateNotifier<AuthState>
   Future<bool> confirmSignUp(String email, String code) async => true;
 
   @override
+  Future<bool> resendSignUpCode(String email) async => true;
+
+  @override
+  Future<bool> forgotPassword(String email) async => true;
+
+  @override
+  Future<bool> confirmForgotPassword(
+    String email,
+    String code,
+    String newPassword,
+  ) async =>
+      true;
+
+  @override
   Future<void> signOut() async {
     state = const AuthState(status: AuthStatus.unauthenticated);
   }

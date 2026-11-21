@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../auth/auth_controller.dart';
+import '../../auth/validation.dart';
 import '../../config/env.dart';
+import '../../l10n/gen/app_localizations.dart';
+import '../auth_text.dart';
 import '../theme.dart';
+import '../widgets/auth_widgets.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -15,12 +19,21 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _username = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Drop an error left over from another auth screen.
+    Future.microtask(() {
+      if (mounted) ref.read(authControllerProvider.notifier).clearError();
+    });
+  }
+
+  @override
   void dispose() {
-    _username.dispose();
+    _email.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -29,13 +42,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (!_formKey.currentState!.validate()) return;
     await ref
         .read(authControllerProvider.notifier)
-        .signIn(_username.text.trim(), _password.text);
+        .signIn(_email.text.trim(), _password.text);
   }
 
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authControllerProvider);
-
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -52,53 +65,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     _Logo(),
                     const SizedBox(height: 8),
                     Text(
-                      'Welcome back',
+                      l10n.auth_welcomeBack,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const SizedBox(height: 24),
                     TextFormField(
-                      controller: _username,
+                      key: const Key('login-email'),
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
                       autofillHints: const [AutofillHints.username],
-                      decoration: const InputDecoration(
-                        labelText: 'Username or email',
-                        prefixIcon: Icon(Icons.person_outline),
+                      decoration: InputDecoration(
+                        labelText: l10n.auth_email,
+                        prefixIcon: const Icon(Icons.person_outline),
                       ),
-                      validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Required' : null,
+                      validator: fieldValidator(l10n, validateEmail),
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      key: const Key('login-password'),
                       controller: _password,
                       obscureText: true,
                       autofillHints: const [AutofillHints.password],
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock_outline),
+                      decoration: InputDecoration(
+                        labelText: l10n.auth_password,
+                        prefixIcon: const Icon(Icons.lock_outline),
                       ),
-                      validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Required' : null,
+                      validator: fieldValidator(l10n, validateLoginPassword),
                       onFieldSubmitted: (_) => _submit(),
                     ),
-                    if (auth.error != null) ...[
-                      const SizedBox(height: 16),
-                      Text(
-                        auth.error!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: TextButton(
+                        onPressed: () => context.push('/forgot-password'),
+                        child: Text(l10n.auth_forgotPassword),
                       ),
-                    ],
-                    const SizedBox(height: 24),
+                    ),
+                    AuthErrorText(authErrorText(l10n, auth)),
+                    const SizedBox(height: 8),
                     FilledButton(
                       onPressed: auth.isBusy ? null : _submit,
-                      child: auth.isBusy
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Text('Sign in'),
+                      child: AuthButtonLabel(
+                          busy: auth.isBusy, label: l10n.auth_login),
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -106,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const Expanded(child: Divider()),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text('or',
+                          child: Text(l10n.auth_or,
                               style: Theme.of(context).textTheme.bodySmall),
                         ),
                         const Expanded(child: Divider()),
@@ -128,12 +136,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       icon: const Text('G',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w800)),
-                      label: const Text('Continue with Google'),
+                      label: Text(l10n.auth_continueWithGoogle),
                     ),
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () => context.push('/register'),
-                      child: const Text("Don't have an account? Sign up"),
+                      child: Text(
+                          '${l10n.auth_dontHaveAccount} ${l10n.auth_signUp}'),
                     ),
                   ],
                 ),

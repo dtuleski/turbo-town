@@ -62,6 +62,13 @@ for (const locale of locales) {
   flats[locale] = {};
   flatten(src, '', flats[locale], locale);
 }
+
+// Mobile-only strings (not on the web) live in tools/mobile_locales.json as { en, es, pt } trees.
+// They are merged after the web strings; a key that exists on the web is a collision error.
+const mobileExtras = JSON.parse(readFileSync(join(here, 'mobile_locales.json'), 'utf8'));
+for (const locale of locales) {
+  flatten(mobileExtras[locale] ?? {}, '', flats[locale], locale);
+}
 // Mirror i18next fallbackLng 'en': keys missing from es/pt are filled from en so the mobile
 // locales always have identical key sets. Filled keys are listed so translators can follow up.
 for (const locale of locales.filter((l) => l !== 'en')) {

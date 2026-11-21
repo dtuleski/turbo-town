@@ -1449,5 +1449,57 @@
   "quest_notice_questUnavailable": "That node is not available right now.",
   "quest_hub_title": "Quest Map",
   "quest_hub_body": "Follow a path of games, earn stars and beat the boss.",
-  "quest_hub_cta": "Open Quest Map"
+  "quest_hub_cta": "Open Quest Map",
+  "mobileAuth_firstName": "First name",
+  "mobileAuth_lastName": "Last name",
+  "mobileAuth_required": "Required",
+  "mobileAuth_invalidEmail": "Invalid email address",
+  "mobileAuth_usernameMin": "Username must be at least 3 characters",
+  "mobileAuth_usernameMax": "Username must be at most 20 characters",
+  "mobileAuth_usernameChars": "Username can only contain letters, numbers, and underscores",
+  "mobileAuth_passwordMin": "Password must be at least 8 characters",
+  "mobileAuth_passwordUpper": "Password must contain at least one uppercase letter",
+  "mobileAuth_passwordLower": "Password must contain at least one lowercase letter",
+  "mobileAuth_passwordNumber": "Password must contain at least one number",
+  "mobileAuth_passwordsMismatch": "Passwords don''t match",
+  "mobileAuth_codeMin": "Code must be at least 6 characters",
+  "mobileAuth_forgotSubtitle": "Enter your email and we''ll send you a reset code",
+  "mobileAuth_sendResetCode": "Send Reset Code",
+  "mobileAuth_resetTitle": "Reset Password",
+  "mobileAuth_resetSubtitle": "Enter the code from your email and your new password",
+  "mobileAuth_resetCode": "Reset Code",
+  "mobileAuth_newPassword": "New Password",
+  "mobileAuth_resetButton": "Reset Password",
+  "mobileAuth_resetCodeSentTo": "If an account exists for {email}, we sent a reset code to it.",
+  "@mobileAuth_resetCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_haveResetCode": "Already have a code? Enter it",
+  "mobileAuth_passwordResetDone": "Your password was reset. Sign in with your new password.",
+  "mobileAuth_backToLogin": "Back to Login",
+  "mobileAuth_resendCode": "Resend code",
+  "mobileAuth_resendCodeIn": "Resend code ({seconds}s)",
+  "@mobileAuth_resendCodeIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_codeResent": "A new code was sent to your email.",
+  "mobileAuth_enterEmailFirst": "Enter your email above first.",
+  "mobileAuth_errNetwork": "Network error. Check your connection and try again.",
+  "mobileAuth_errCodeMismatch": "That code is incorrect. Check it and try again.",
+  "mobileAuth_errCodeExpired": "That code has expired. Request a new one.",
+  "mobileAuth_errTooMany": "Too many attempts. Please wait a while and try again.",
+  "mobileAuth_errInvalidPassword": "That password does not meet the requirements.",
+  "mobileAuth_errUserExists": "An account with this email already exists.",
+  "mobileAuth_errUnconfirmed": "Please confirm your account first (check your email for a code).",
+  "mobileAuth_errNewPasswordRequired": "A new password is required for this account. Please reset your password.",
+  "mobileAuth_errGoogle": "Google sign-in failed. Please try again.",
+  "mobileAuth_errGeneric": "Something went wrong. Please try again."
 }

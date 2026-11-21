@@ -3292,4 +3292,137 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quest_hub_cta => 'Open Quest Map';
+
+  @override
+  String get mobileAuth_firstName => 'First name';
+
+  @override
+  String get mobileAuth_lastName => 'Last name';
+
+  @override
+  String get mobileAuth_required => 'Required';
+
+  @override
+  String get mobileAuth_invalidEmail => 'Invalid email address';
+
+  @override
+  String get mobileAuth_usernameMin => 'Username must be at least 3 characters';
+
+  @override
+  String get mobileAuth_usernameMax => 'Username must be at most 20 characters';
+
+  @override
+  String get mobileAuth_usernameChars =>
+      'Username can only contain letters, numbers, and underscores';
+
+  @override
+  String get mobileAuth_passwordMin => 'Password must be at least 8 characters';
+
+  @override
+  String get mobileAuth_passwordUpper =>
+      'Password must contain at least one uppercase letter';
+
+  @override
+  String get mobileAuth_passwordLower =>
+      'Password must contain at least one lowercase letter';
+
+  @override
+  String get mobileAuth_passwordNumber =>
+      'Password must contain at least one number';
+
+  @override
+  String get mobileAuth_passwordsMismatch => 'Passwords don\'\'t match';
+
+  @override
+  String get mobileAuth_codeMin => 'Code must be at least 6 characters';
+
+  @override
+  String get mobileAuth_forgotSubtitle =>
+      'Enter your email and we\'\'ll send you a reset code';
+
+  @override
+  String get mobileAuth_sendResetCode => 'Send Reset Code';
+
+  @override
+  String get mobileAuth_resetTitle => 'Reset Password';
+
+  @override
+  String get mobileAuth_resetSubtitle =>
+      'Enter the code from your email and your new password';
+
+  @override
+  String get mobileAuth_resetCode => 'Reset Code';
+
+  @override
+  String get mobileAuth_newPassword => 'New Password';
+
+  @override
+  String get mobileAuth_resetButton => 'Reset Password';
+
+  @override
+  String mobileAuth_resetCodeSentTo(String email) {
+    return 'If an account exists for $email, we sent a reset code to it.';
+  }
+
+  @override
+  String get mobileAuth_haveResetCode => 'Already have a code? Enter it';
+
+  @override
+  String get mobileAuth_passwordResetDone =>
+      'Your password was reset. Sign in with your new password.';
+
+  @override
+  String get mobileAuth_backToLogin => 'Back to Login';
+
+  @override
+  String get mobileAuth_resendCode => 'Resend code';
+
+  @override
+  String mobileAuth_resendCodeIn(String seconds) {
+    return 'Resend code (${seconds}s)';
+  }
+
+  @override
+  String get mobileAuth_codeResent => 'A new code was sent to your email.';
+
+  @override
+  String get mobileAuth_enterEmailFirst => 'Enter your email above first.';
+
+  @override
+  String get mobileAuth_errNetwork =>
+      'Network error. Check your connection and try again.';
+
+  @override
+  String get mobileAuth_errCodeMismatch =>
+      'That code is incorrect. Check it and try again.';
+
+  @override
+  String get mobileAuth_errCodeExpired =>
+      'That code has expired. Request a new one.';
+
+  @override
+  String get mobileAuth_errTooMany =>
+      'Too many attempts. Please wait a while and try again.';
+
+  @override
+  String get mobileAuth_errInvalidPassword =>
+      'That password does not meet the requirements.';
+
+  @override
+  String get mobileAuth_errUserExists =>
+      'An account with this email already exists.';
+
+  @override
+  String get mobileAuth_errUnconfirmed =>
+      'Please confirm your account first (check your email for a code).';
+
+  @override
+  String get mobileAuth_errNewPasswordRequired =>
+      'A new password is required for this account. Please reset your password.';
+
+  @override
+  String get mobileAuth_errGoogle => 'Google sign-in failed. Please try again.';
+
+  @override
+  String get mobileAuth_errGeneric => 'Something went wrong. Please try again.';
 }

@@ -20,6 +20,7 @@ class AuthState {
     this.email,
     this.username,
     this.error,
+    this.errorCode,
     this.isBusy = false,
   });
 
@@ -27,6 +28,9 @@ class AuthState {
   final String? email;
   final String? username;
   final String? error;
+
+  /// Cognito/app error code behind [error], used to pick a localized message.
+  final String? errorCode;
   final bool isBusy;
 
   AuthState copyWith({
@@ -34,6 +38,7 @@ class AuthState {
     String? email,
     String? username,
     String? error,
+    String? errorCode,
     bool clearError = false,
     bool? isBusy,
   }) {
@@ -42,6 +47,7 @@ class AuthState {
       email: email ?? this.email,
       username: username ?? this.username,
       error: clearError ? null : (error ?? this.error),
+      errorCode: clearError ? null : (errorCode ?? this.errorCode),
       isBusy: isBusy ?? this.isBusy,
     );
   }
@@ -80,7 +86,7 @@ class AuthController extends StateNotifier<AuthState> {
         isBusy: false,
       );
     } on AuthException catch (e) {
-      state = state.copyWith(error: e.message, isBusy: false);
+      state = state.copyWith(error: e.message, errorCode: e.code, isBusy: false);
     }
   }
 
@@ -100,7 +106,7 @@ class AuthController extends StateNotifier<AuthState> {
       if (e.code == 'OAUTH_CANCELLED') {
         state = state.copyWith(isBusy: false);
       } else {
-        state = state.copyWith(error: e.message, isBusy: false);
+        state = state.copyWith(error: e.message, errorCode: e.code, isBusy: false);
       }
     }
   }
@@ -137,7 +143,7 @@ class AuthController extends StateNotifier<AuthState> {
         state = state.copyWith(isBusy: false, clearError: true);
         return SignUpOutcome.needsConfirmation;
       }
-      state = state.copyWith(error: e.message, isBusy: false);
+      state = state.copyWith(error: e.message, errorCode: e.code, isBusy: false);
       return SignUpOutcome.failed;
     }
   }
@@ -151,7 +157,37 @@ class AuthController extends StateNotifier<AuthState> {
       state = state.copyWith(isBusy: false);
       return true;
     } on AuthException catch (e) {
-      state = state.copyWith(error: e.message, isBusy: false);
+      state = state.copyWith(error: e.message, errorCode: e.code, isBusy: false);
+      return false;
+    }
+  }
+
+  /// Email a new sign-up confirmation code. Returns true on success.
+  Future<bool> resendSignUpCode(String email) =>
+      _run(() => _cognito.resendSignUpCode(email));
+
+  /// Start forgot-password: email a reset code. Returns true on success.
+  Future<bool> forgotPassword(String email) =>
+      _run(() => _cognito.forgotPassword(email));
+
+  /// Finish forgot-password with the emailed code. Returns true on success.
+  Future<bool> confirmForgotPassword(
+    String email,
+    String code,
+    String newPassword,
+  ) =>
+      _run(() => _cognito.confirmForgotPassword(email, code, newPassword));
+
+  /// Runs [action] with the busy flag; on [AuthException] sets the error and
+  /// returns false instead of throwing.
+  Future<bool> _run(Future<void> Function() action) async {
+    state = state.copyWith(isBusy: true, clearError: true);
+    try {
+      await action();
+      state = state.copyWith(isBusy: false);
+      return true;
+    } on AuthException catch (e) {
+      state = state.copyWith(error: e.message, errorCode: e.code, isBusy: false);
       return false;
     }
   }

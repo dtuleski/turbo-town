@@ -3335,4 +3335,141 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quest_hub_cta => 'Abrir el Mapa de Aventura';
+
+  @override
+  String get mobileAuth_firstName => 'Nombre';
+
+  @override
+  String get mobileAuth_lastName => 'Apellido';
+
+  @override
+  String get mobileAuth_required => 'Obligatorio';
+
+  @override
+  String get mobileAuth_invalidEmail => 'Correo electrónico inválido';
+
+  @override
+  String get mobileAuth_usernameMin =>
+      'El nombre de usuario debe tener al menos 3 caracteres';
+
+  @override
+  String get mobileAuth_usernameMax =>
+      'El nombre de usuario debe tener como máximo 20 caracteres';
+
+  @override
+  String get mobileAuth_usernameChars =>
+      'El nombre de usuario solo puede contener letras, números y guiones bajos';
+
+  @override
+  String get mobileAuth_passwordMin =>
+      'La contraseña debe tener al menos 8 caracteres';
+
+  @override
+  String get mobileAuth_passwordUpper =>
+      'La contraseña debe contener al menos una letra mayúscula';
+
+  @override
+  String get mobileAuth_passwordLower =>
+      'La contraseña debe contener al menos una letra minúscula';
+
+  @override
+  String get mobileAuth_passwordNumber =>
+      'La contraseña debe contener al menos un número';
+
+  @override
+  String get mobileAuth_passwordsMismatch => 'Las contraseñas no coinciden';
+
+  @override
+  String get mobileAuth_codeMin => 'El código debe tener al menos 6 caracteres';
+
+  @override
+  String get mobileAuth_forgotSubtitle =>
+      'Ingresa tu correo y te enviaremos un código para restablecer tu contraseña';
+
+  @override
+  String get mobileAuth_sendResetCode => 'Enviar código';
+
+  @override
+  String get mobileAuth_resetTitle => 'Restablecer Contraseña';
+
+  @override
+  String get mobileAuth_resetSubtitle =>
+      'Ingresa el código de tu correo y tu nueva contraseña';
+
+  @override
+  String get mobileAuth_resetCode => 'Código de Restablecimiento';
+
+  @override
+  String get mobileAuth_newPassword => 'Nueva Contraseña';
+
+  @override
+  String get mobileAuth_resetButton => 'Restablecer Contraseña';
+
+  @override
+  String mobileAuth_resetCodeSentTo(String email) {
+    return 'Si existe una cuenta para $email, le enviamos un código de restablecimiento.';
+  }
+
+  @override
+  String get mobileAuth_haveResetCode => '¿Ya tienes un código? Ingrésalo';
+
+  @override
+  String get mobileAuth_passwordResetDone =>
+      'Tu contraseña fue restablecida. Inicia sesión con tu nueva contraseña.';
+
+  @override
+  String get mobileAuth_backToLogin => 'Volver a Iniciar Sesión';
+
+  @override
+  String get mobileAuth_resendCode => 'Reenviar código';
+
+  @override
+  String mobileAuth_resendCodeIn(String seconds) {
+    return 'Reenviar código (${seconds}s)';
+  }
+
+  @override
+  String get mobileAuth_codeResent => 'Enviamos un nuevo código a tu correo.';
+
+  @override
+  String get mobileAuth_enterEmailFirst => 'Primero ingresa tu correo arriba.';
+
+  @override
+  String get mobileAuth_errNetwork =>
+      'Error de red. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get mobileAuth_errCodeMismatch =>
+      'El código es incorrecto. Revísalo e inténtalo de nuevo.';
+
+  @override
+  String get mobileAuth_errCodeExpired =>
+      'El código ha expirado. Solicita uno nuevo.';
+
+  @override
+  String get mobileAuth_errTooMany =>
+      'Demasiados intentos. Espera un momento e inténtalo de nuevo.';
+
+  @override
+  String get mobileAuth_errInvalidPassword =>
+      'La contraseña no cumple los requisitos.';
+
+  @override
+  String get mobileAuth_errUserExists =>
+      'Ya existe una cuenta con este correo.';
+
+  @override
+  String get mobileAuth_errUnconfirmed =>
+      'Primero confirma tu cuenta (revisa tu correo para obtener el código).';
+
+  @override
+  String get mobileAuth_errNewPasswordRequired =>
+      'Esta cuenta requiere una nueva contraseña. Restablece tu contraseña.';
+
+  @override
+  String get mobileAuth_errGoogle =>
+      'Error al iniciar sesión con Google. Inténtalo de nuevo.';
+
+  @override
+  String get mobileAuth_errGeneric => 'Algo salió mal. Inténtalo de nuevo.';
 }
