@@ -23,6 +23,14 @@ There are TWO AWS accounts. ALWAYS use the correct one:
 - Lambda handler: `dist/index.handler`
 - Region: `us-east-1`
 
+## Leaderboard Lambda Deployment (prod)
+- ALWAYS use `./scripts/deploy-leaderboard-lambda.sh` to deploy `MemoryGame-LeaderboardService-prod` (account `342278407349`, profile `dashden-new`, region `us-east-1`)
+- NEVER hand-roll the esbuild bundle or zip for this function
+- The script rebuilds from scratch every time: esbuild bundle (node20, cjs, `@aws-sdk/*` external), clean zip with only `dist/index.js`, backup of the deployed code, deploy, smoke test
+- `./scripts/deploy-leaderboard-lambda.sh --build-only` builds and verifies the zip without any AWS write calls
+- Lambda handler: `dist/index.handler`
+- The root `deploy-leaderboard.sh` is an interactive dev CDK script on the default profile. Do not use it for prod.
+
 ## Frontend Deployment
 - Dev frontend (dev.dashden.app): Vercel project `web`
   - Deploy: `npx vercel link --project web --yes && npx vercel --prod --yes` from `apps/web/`
