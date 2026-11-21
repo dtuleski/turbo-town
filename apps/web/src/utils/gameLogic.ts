@@ -1,4 +1,4 @@
-import type { Card, GameTheme, DifficultyLevel } from '@/types/game'
+import type { Card, GameTheme, DifficultyLevel, GameState } from '@/types/game'
 
 // Card values for each theme
 const THEME_VALUES: Record<GameTheme, string[]> = {
@@ -148,4 +148,41 @@ export const checkMatch = (card1: Card, card2: Card): boolean => {
 
 export const isGameComplete = (cards: Card[]): boolean => {
   return cards.every(card => card.isMatched)
+}
+
+export const countMatchedPairs = (cards: Card[]): number => {
+  return cards.filter(card => card.isMatched).length / 2
+}
+
+/**
+ * Resolve the second flip of a turn against the latest state. Pure and
+ * idempotent: the match count is derived from the cards, so running it twice
+ * (e.g. React StrictMode double-invoking an updater) cannot double count.
+ */
+export const resolvePair = (prev: GameState, firstId: string, secondId: string): GameState => {
+  const first = prev.cards.find(c => c.id === firstId)
+  const second = prev.cards.find(c => c.id === secondId)
+  if (!first || !second) return prev
+  const isPair = (c: Card) => c.id === firstId || c.id === secondId
+  if (checkMatch(first, second)) {
+    const cards = prev.cards.map(c => (isPair(c) ? { ...c, isFlipped: true, isMatched: true } : c))
+    const alreadyMatched = first.isMatched && second.isMatched
+    const next: GameState = {
+      ...prev,
+      cards,
+      matches: countMatchedPairs(cards),
+      attempts: alreadyMatched ? prev.attempts : prev.attempts + 1,
+    }
+    if (isGameComplete(cards) && !prev.endTime) {
+      next.score = 0
+      next.endTime = Date.now()
+    }
+    return next
+  }
+  const wasFlipped = first.isFlipped || second.isFlipped
+  return {
+    ...prev,
+    cards: prev.cards.map(c => (isPair(c) ? { ...c, isFlipped: false } : c)),
+    attempts: wasFlipped ? prev.attempts + 1 : prev.attempts,
+  }
 }
