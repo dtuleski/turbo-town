@@ -36,7 +36,7 @@ interface GridCanvasProps {
 /** Advertised to assistive technology, and the same vocabulary `resolveKeyIntent` implements.
  * `Tab` is deliberately absent from both, so focus always escapes the canvas. */
 const ARIA_KEY_SHORTCUTS =
-  'ArrowUp ArrowDown ArrowLeft ArrowRight Enter Shift+Enter C Shift+C Delete Escape'
+  'ArrowUp ArrowDown ArrowLeft ArrowRight Enter Shift+Enter C Shift+C R Delete Escape'
 
 /**
  * The circuit canvas: one fixed logical surface that CSS scales responsively.

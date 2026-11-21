@@ -814,7 +814,15 @@
   },
   "circuitBuilder": {
     "canvasLabel": "Circuit building grid",
-    "canvasHint": "Drag a component from the tray, or tap a component then tap a cell. Arrow keys move the cursor, Enter places or activates, C starts a connection, Enter finishes it on the first terminal and Shift+Enter on the second, Delete removes.",
+    "flip": "Flip",
+    "howTo": {
+      "title": "How to build",
+      "step1": "Pick a part, then tap a cell to place it.",
+      "step2": "Tap a part's dot, then another part's dot, to wire them.",
+      "step3": "Tap Flip if the LED shows backwards.",
+      "keyboardTitle": "Keyboard",
+      "keyboard": "Arrow keys move the cursor, Enter places or activates, C starts a wire, Enter or Shift+Enter finishes it on the first or second dot, R flips, Delete removes."
+    },
     "component": {
       "battery": { "name": "Battery", "abbr": "BAT" },
       "solar": { "name": "Solar panel", "abbr": "SOL" },

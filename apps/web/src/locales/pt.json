@@ -812,7 +812,15 @@
   },
   "circuitBuilder": {
     "canvasLabel": "Grade para montar circuitos",
-    "canvasHint": "Arraste um componente da bandeja, ou toque em um componente e depois em uma célula. As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter termina a ligação no primeiro terminal e Shift+Enter no segundo, Delete apaga.",
+    "flip": "Virar",
+    "howTo": {
+      "title": "Como montar",
+      "step1": "Escolha uma peça e toque em uma célula para colocá-la.",
+      "step2": "Toque no ponto de uma peça e depois no ponto de outra para ligá-las.",
+      "step3": "Toque em Virar se o LED aparecer ao contrário.",
+      "keyboardTitle": "Teclado",
+      "keyboard": "As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter ou Shift+Enter a termina no primeiro ou no segundo ponto, R vira, Delete apaga."
+    },
     "component": {
       "battery": { "name": "Pilha", "abbr": "PIL" },
       "solar": { "name": "Painel solar", "abbr": "SOL" },

@@ -812,7 +812,15 @@
   },
   "circuitBuilder": {
     "canvasLabel": "Cuadrícula para montar circuitos",
-    "canvasHint": "Arrastra un componente desde la bandeja, o toca un componente y luego una casilla. Las flechas mueven el cursor, Enter coloca o activa, C empieza una conexión, Enter la termina en el primer terminal y Shift+Enter en el segundo, Supr borra.",
+    "flip": "Girar",
+    "howTo": {
+      "title": "Cómo montar",
+      "step1": "Elige una pieza y toca una casilla para colocarla.",
+      "step2": "Toca el punto de una pieza y luego el de otra para conectarlas.",
+      "step3": "Toca Girar si el LED aparece al revés.",
+      "keyboardTitle": "Teclado",
+      "keyboard": "Las flechas mueven el cursor, Enter coloca o activa, C empieza una conexión, Enter o Shift+Enter la termina en el primer o segundo punto, R gira, Supr borra."
+    },
     "component": {
       "battery": { "name": "Pila", "abbr": "PIL" },
       "solar": { "name": "Panel solar", "abbr": "SOL" },
