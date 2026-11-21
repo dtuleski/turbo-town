@@ -14,7 +14,7 @@ const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 // SVG Hangman parts (drawn progressively)
 function HangmanSVG({ wrongCount }: { wrongCount: number }) {
   return (
-    <svg viewBox="0 0 200 220" className="w-40 h-44 md:w-48 md:h-52">
+    <svg viewBox="0 0 200 220" className="w-24 h-28 md:w-32 md:h-36">
       {/* Gallows */}
       <line x1="20" y1="210" x2="180" y2="210" stroke="#64748b" strokeWidth="4" />
       <line x1="60" y1="210" x2="60" y2="20" stroke="#64748b" strokeWidth="4" />
@@ -172,10 +172,10 @@ export default function HangmanGamePage() {
   }))
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 py-4 px-2 md:px-4 select-none">
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 py-2 px-2 md:px-4 select-none">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-3 px-2">
+        <div className="flex items-center justify-between mb-2 px-2">
           <button onClick={() => navigate(ROUTES.HANGMAN_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(timer)}</span>
@@ -185,25 +185,25 @@ export default function HangmanGamePage() {
         </div>
 
         {/* Progress */}
-        <div className="w-full bg-white/10 rounded-full h-2 mb-4 mx-2">
+        <div className="w-full bg-white/10 rounded-full h-2 mb-2 mx-2">
           <div className="bg-yellow-400 h-2 rounded-full transition-all" style={{ width: `${((currentRound + (roundPhase !== 'playing' ? 1 : 0)) / ROUNDS_PER_GAME) * 100}%` }} />
         </div>
 
         {/* Hint + Category */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-2">
           <span className="bg-white/10 text-white/60 text-xs font-bold px-3 py-1 rounded-full">{currentWord.category}</span>
           <p className="text-white/80 text-sm mt-2">💡 {currentWord.hint}</p>
         </div>
 
         {/* Hangman drawing */}
-        <div className="flex justify-center mb-4">
-          <div className="bg-white/5 rounded-2xl p-4">
+        <div className="flex justify-center mb-2">
+          <div className="bg-white/5 rounded-2xl p-2">
             <HangmanSVG wrongCount={wrongCount} />
           </div>
         </div>
 
         {/* Wrong guesses indicator */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-2">
           <div className="flex justify-center gap-1">
             {Array.from({ length: MAX_WRONG }).map((_, idx) => (
               <div key={idx} className={`w-4 h-4 rounded-full ${idx < wrongCount ? 'bg-red-500' : 'bg-white/20'}`} />
@@ -213,7 +213,7 @@ export default function HangmanGamePage() {
         </div>
 
         {/* Word display */}
-        <div className="flex justify-center gap-2 mb-6 flex-wrap">
+        <div className="flex justify-center gap-2 mb-3 flex-wrap">
           {wordDisplay.map((slot, i) => (
             <div key={i} className={`w-10 h-12 md:w-12 md:h-14 border-b-4 flex items-center justify-center text-2xl md:text-3xl font-black ${
               slot.revealed
