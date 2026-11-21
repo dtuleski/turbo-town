@@ -65,6 +65,9 @@ export default function MiniGolfGamePage() {
   const [dragEnd, setDragEnd] = useState<{ x: number; y: number } | null>(null)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // Latest drag state for the canvas render loop (its effect only re-runs on hole/phase change)
+  const dragRef = useRef({ isDragging, dragStart, dragEnd })
+  dragRef.current = { isDragging, dragStart, dragEnd }
   const animRef = useRef<number>(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const ballRef = useRef<BallState>(ball)
@@ -351,6 +354,7 @@ export default function MiniGolfGamePage() {
   }
 
   function drawAimLine(ctx: CanvasRenderingContext2D) {
+    const { isDragging, dragStart, dragEnd } = dragRef.current
     if (!isDragging || !dragStart || !dragEnd || phaseRef.current !== 'aiming') return
     const b = ballRef.current
     const dir = calculateDirection(b.pos, dragEnd)
@@ -367,6 +371,16 @@ export default function MiniGolfGamePage() {
     ctx.lineTo(b.pos.x + dir.x * lineLen, b.pos.y + dir.y * lineLen)
     ctx.stroke()
     ctx.setLineDash([])
+    // Arrowhead at the tip of the aim line
+    const tipX = b.pos.x + dir.x * lineLen, tipY = b.pos.y + dir.y * lineLen
+    const ang = Math.atan2(dir.y, dir.x)
+    ctx.beginPath()
+    ctx.moveTo(tipX + dir.x * 6, tipY + dir.y * 6)
+    ctx.lineTo(tipX - 10 * Math.cos(ang - 0.5), tipY - 10 * Math.sin(ang - 0.5))
+    ctx.lineTo(tipX - 10 * Math.cos(ang + 0.5), tipY - 10 * Math.sin(ang + 0.5))
+    ctx.closePath()
+    ctx.fillStyle = `rgba(255, 255, 80, ${0.5 + pn * 0.5})`
+    ctx.fill()
 
     // Power ring around ball
     const r = PHYSICS.BALL_RADIUS * S + 5 + pn * 12
