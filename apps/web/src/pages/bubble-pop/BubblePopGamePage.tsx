@@ -201,7 +201,7 @@ export default function BubblePopGamePage() {
         </div>
 
         {/* Bubble field */}
-        <div className="relative bg-gradient-to-b from-sky-200 to-sky-100 rounded-2xl shadow-inner overflow-hidden"
+        <div className="bubble-pop-field relative bg-gradient-to-b from-sky-200 to-sky-100 rounded-2xl shadow-inner overflow-hidden"
           style={{ height: '400px' }}
         >
           {bubbles.map((bubble) => {
@@ -246,7 +246,10 @@ export default function BubblePopGamePage() {
           <style>{`
             @keyframes float {
               0%, 100% { transform: translateY(0px); }
-              50% { transform: translateY(-10px); }
+              50% { transform: translateY(-4px); }
+            }
+            .bubble-pop-field button:hover {
+              animation-play-state: paused !important;
             }
             @keyframes shake {
               0%, 100% { transform: translateX(0); }
