@@ -26,6 +26,7 @@ export type InteractionIntent =
   | { type: 'removeElement'; elementId: ElementId }
   | { type: 'removeConnection'; connectionId: string }
   | { type: 'toggleSwitch'; elementId: ElementId }
+  | { type: 'flipElement'; elementId: ElementId }
   | { type: 'moveCursor'; direction: 'up' | 'down' | 'left' | 'right' }
   | { type: 'cancel' }
 
@@ -419,6 +420,8 @@ export const CONSUMED_KEYS: ReadonlySet<string> = new Set([
   'Escape',
   'c',
   'C',
+  'r',
+  'R',
 ])
 
 /**
@@ -460,6 +463,13 @@ export function resolveKeyIntent(
     }
   }
 
+  if (key === 'r' || key === 'R') {
+    const element = selectElementAt(state, selection.cursor)
+    if (element === undefined) {
+      return { selection, intent: null }
+    }
+    return { selection, intent: { type: 'flipElement', elementId: element.id } }
+  }
   if (key === 'Delete' || key === 'Backspace') {
     const element = selectElementAt(state, selection.cursor)
     if (element === undefined) {
@@ -558,6 +568,8 @@ export function intentToAction(
       return exists(intent.elementId)
         ? { type: 'toggleSwitch', elementId: intent.elementId }
         : null
+    case 'flipElement':
+      return exists(intent.elementId) ? { type: 'flip', elementId: intent.elementId } : null
     default:
       // selectTrayComponent, selectElement, beginConnection, moveCursor, cancel change the
       // selection only. They are not circuit edits.

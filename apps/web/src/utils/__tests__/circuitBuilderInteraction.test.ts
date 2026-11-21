@@ -254,6 +254,28 @@ describe('pointer and keyboard are the same model', () => {
 // The consumed-key vocabulary, and the no-focus-trap guard
 // ---------------------------------------------------------------------------
 
+describe('flip intent', () => {
+  const cell: GridCell = { col: 2, row: 2 }
+  const state = stateWith({ type: 'place', kind: 'led', cell })
+
+  it('r on the part under the cursor flips it, and R does the same', () => {
+    for (const key of ['r', 'R']) {
+      const resolved = resolveKeyIntent(key, false, selectionAt(cell), state)
+      expect(resolved.intent).toEqual({ type: 'flipElement', elementId: 'e1' })
+      expect(intentToAction(resolved.intent ?? { type: 'cancel' }, selectionAt(cell), state)).toEqual({
+        type: 'flip',
+        elementId: 'e1',
+      })
+    }
+  })
+
+  it('does nothing over an empty cell, and maps to no action for a vanished element', () => {
+    expect(resolveKeyIntent('r', false, selectionAt({ col: 0, row: 0 }), state).intent).toBeNull()
+    expect(
+      intentToAction({ type: 'flipElement', elementId: 'gone' }, selectionAt(cell), state)
+    ).toBeNull()
+  })
+})
 describe('CONSUMED_KEYS', () => {
   const cell: GridCell = { col: 2, row: 2 }
   const state = stateWith({ type: 'place', kind: 'switch', cell })
