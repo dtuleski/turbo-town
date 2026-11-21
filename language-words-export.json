@@ -1393,7 +1393,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/a8e2ef8dcc2c_photo-wikimedia-red-onions-san-francisco-ca.jpg"
             },
             "translations": {
                 "M": {
@@ -7081,7 +7081,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1557683311-eac922347aa1?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/36ba57f6ccb0_photo-1557682260-96773eb01377.jpg"
             },
             "translations": {
                 "M": {
@@ -7175,7 +7175,7 @@
                         "S": "https://images.unsplash.com/photo-1557683316-973673baf926?w=300&h=300&fit=crop"
                     },
                     {
-                        "S": "https://images.unsplash.com/photo-1557682233-43e671455dfa?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/e2ee7711b0d6_photo-1557682268-e3955ed5d83f.jpg"
                     }
                 ]
             },
@@ -13435,7 +13435,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/feea734a7c84_photo-wikimedia-double-rainbow-in-susice.jpg"
             },
             "translations": {
                 "M": {
@@ -17689,7 +17689,7 @@
             "distractorImages": {
                 "L": [
                     {
-                        "S": "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/271cfe3c787a_photo-1778169877507-ce2ea7dc9344.jpg"
                     },
                     {
                         "S": "https://images.unsplash.com/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop"
@@ -21838,7 +21838,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1550828520-4cb496926fc9?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/91a6e2cad815_photo-wikimedia-coconut-face.jpg"
             },
             "translations": {
                 "M": {
@@ -22898,7 +22898,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/c7c8e48396a7_photo-wikimedia-broccoli-flower.jpg"
             },
             "translations": {
                 "M": {
@@ -23219,7 +23219,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/363e0a419f35_photo-1590502593747-42a996133562.jpg"
             },
             "translations": {
                 "M": {
@@ -23326,7 +23326,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/8e7a707175e6_photo-wikimedia-18-8-stainless-steel-fork-1.jpg"
             },
             "translations": {
                 "M": {
@@ -24463,7 +24463,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/b16e77fd28b1_photo-1620416265040-cc777cad1883.jpg"
             },
             "translations": {
                 "M": {
@@ -25938,7 +25938,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1569974507005-6dc61f97fb5c?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/c89df4470041_photo-wikimedia-flag-of-the-united-states-waving-in-kent-wa-2025-0145.jpg"
             },
             "translations": {
                 "M": {

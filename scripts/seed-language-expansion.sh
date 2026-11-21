@@ -413,7 +413,7 @@ put_word "grape" "food" "beginner" \
   "σταφύλι" "/sta.ˈfi.li/"
 
 put_word "lemon" "food" "beginner" \
-  "$U/photo-1587486913049-53fc88980cfc?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/363e0a419f35_photo-1590502593747-42a996133562.jpg" \
   "$U/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop" \
   "$U/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop" \
   "lemon" "/ˈlem.ən/" \
@@ -437,7 +437,7 @@ put_word "potato" "food" "beginner" \
   "πατάτα" "/pa.ˈta.ta/"
 
 put_word "onion" "food" "beginner" \
-  "$U/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/a8e2ef8dcc2c_photo-wikimedia-red-onions-san-francisco-ca.jpg" \
   "$U/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" \
   "$U/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop" \
   "onion" "/ˈʌn.jən/" \
@@ -516,7 +516,7 @@ put_word "mango" "food" "intermediate" \
   "μάνγκο" "/ˈmaŋ.ɡo/"
 
 put_word "coconut" "food" "intermediate" \
-  "$U/photo-1550828520-4cb496926fc9?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/91a6e2cad815_photo-wikimedia-coconut-face.jpg" \
   "$U/photo-1553279768-865429fa0078?w=300&h=300&fit=crop" \
   "$U/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop" \
   "coconut" "/ˈkoʊ.kə.nʌt/" \
@@ -607,7 +607,7 @@ echo ""
 echo "=== 🍇 FOOD — Advanced ==="
 
 put_word "broccoli" "food" "advanced" \
-  "$U/photo-1459411552884-841db9b3cc2a?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/c7c8e48396a7_photo-wikimedia-broccoli-flower.jpg" \
   "$U/photo-1547592166-23ac45744acd?w=300&h=300&fit=crop" \
   "$U/photo-1551183053-bf91a1d81141?w=300&h=300&fit=crop" \
   "broccoli" "/ˈbrɒk.əl.i/" \
@@ -758,9 +758,9 @@ put_word "teal" "colors" "beginner" \
   "πετρόλ" "/pe.ˈtrol/"
 
 put_word "coral" "colors" "beginner" \
-  "$U/photo-1557683311-eac922347aa1?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/36ba57f6ccb0_photo-1557682260-96773eb01377.jpg" \
   "$U/photo-1557683316-973673baf926?w=300&h=300&fit=crop" \
-  "$U/photo-1557682233-43e671455dfa?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/e2ee7711b0d6_photo-1557682268-e3955ed5d83f.jpg" \
   "coral" "/ˈkɒr.əl/" \
   "coral" "/ko.ˈɾal/" \
   "corail" "/kɔ.ʁaj/" \
@@ -1011,7 +1011,7 @@ put_word "fifteen" "numbers" "intermediate" \
   "δεκαπέντε" "/ðe.ka.ˈpen.de/"
 
 put_word "double" "numbers" "intermediate" \
-  "$U/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/feea734a7c84_photo-wikimedia-double-rainbow-in-susice.jpg" \
   "$U/photo-1573997940776-d54954bc1f3a?w=300&h=300&fit=crop" \
   "$U/photo-1509228468518-180dd4864904?w=300&h=300&fit=crop" \
   "double" "/ˈdʌb.əl/" \
@@ -1024,7 +1024,7 @@ put_word "double" "numbers" "intermediate" \
 
 put_word "quarter" "numbers" "intermediate" \
   "$U/photo-1594322436404-5a0526db4d14?w=300&h=300&fit=crop" \
-  "$U/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/271cfe3c787a_photo-1778169877507-ce2ea7dc9344.jpg" \
   "$U/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop" \
   "quarter" "/ˈkwɔːr.tər/" \
   "cuarto" "/ˈkwaɾ.to/" \
@@ -1211,7 +1211,7 @@ echo ""
 echo "=== 🪑 OBJECTS — Intermediate ==="
 
 put_word "mirror" "objects" "intermediate" \
-  "$U/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/b16e77fd28b1_photo-1620416265040-cc777cad1883.jpg" \
   "$U/photo-1603400521630-9f2de124b33b?w=300&h=300&fit=crop" \
   "$U/photo-1602143407151-7111542de6e8?w=300&h=300&fit=crop" \
   "mirror" "/ˈmɪr.ər/" \
@@ -1259,7 +1259,7 @@ put_word "plate" "objects" "intermediate" \
   "πιάτο" "/ˈpja.to/"
 
 put_word "fork" "objects" "intermediate" \
-  "$U/photo-1584568694244-14fbdf83bd30?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/8e7a707175e6_photo-wikimedia-18-8-stainless-steel-fork-1.jpg" \
   "$U/photo-1578749556568-bc2c40e68b61?w=300&h=300&fit=crop" \
   "$U/photo-1584100936595-c0654b55a2e2?w=300&h=300&fit=crop" \
   "fork" "/fɔːrk/" \
@@ -1350,7 +1350,7 @@ put_word "bell" "objects" "advanced" \
   "καμπάνα" "/kam.ˈba.na/"
 
 put_word "flag" "objects" "advanced" \
-  "$U/photo-1569974507005-6dc61f97fb5c?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/c89df4470041_photo-wikimedia-flag-of-the-united-states-waving-in-kent-wa-2025-0145.jpg" \
   "$U/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop" \
   "$U/photo-1558317374-067fb5f30001?w=300&h=300&fit=crop" \
   "flag" "/flæɡ/" \
