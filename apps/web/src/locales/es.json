@@ -567,6 +567,8 @@
       "round": "Ronda {{current}}",
       "time": "Tiempo",
       "watchPattern": "¡Observa el patrón!",
+      "lives": "Vidas",
+      "livesLeft": "Vidas: {{count}}",
       "yourTurn": "¡Tu turno!",
       "correct": "¡Correcto!",
       "nextRound": "Siguiente ronda...",

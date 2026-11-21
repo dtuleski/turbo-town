@@ -569,6 +569,8 @@
       "round": "Round {{current}}",
       "time": "Time",
       "watchPattern": "Watch the pattern!",
+      "lives": "Lives",
+      "livesLeft": "Lives: {{count}}",
       "yourTurn": "Your turn!",
       "correct": "Correct!",
       "nextRound": "Next round...",
