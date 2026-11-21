@@ -7,6 +7,7 @@ import {
 import type { CircuitLayout, CircuitResult } from '../circuitEngine'
 import {
   formatQuantity,
+  isConnectionEnergized,
   positiveNodePotentials,
   presentCircuit,
   toDisplayMagnitude,
@@ -387,5 +388,33 @@ describe('formatQuantity', () => {
 
   it('falls back to English for an invalid locale tag', () => {
     expect(formatQuantity(3, 'V', 'not a locale!!')).toBe('3 V')
+  })
+})
+
+describe('isConnectionEnergized', () => {
+  function resultOf(recipe: Recipe, id: string) {
+    const { result } = build(recipe)
+    const found = result.elements.find((element) => element.elementId === id)
+    if (found === undefined) throw new Error(`no result for ${id}`)
+    return found
+  }
+
+  it('draws a wire live when both parts it joins carry current', () => {
+    expect(isConnectionEnergized(resultOf(SERIES, 'e1'), resultOf(SERIES, 'e2'), false)).toBe(true)
+  })
+
+  it('draws a wire idle when a part is missing or the circuit is suppressed', () => {
+    expect(isConnectionEnergized(resultOf(SERIES, 'e1'), undefined, false)).toBe(false)
+    expect(isConnectionEnergized(resultOf(SERIES, 'e1'), resultOf(SERIES, 'e2'), true)).toBe(false)
+  })
+
+  it('draws a wire idle when nothing flows', () => {
+    expect(isConnectionEnergized(resultOf(OPEN_SWITCH, 'e1'), resultOf(OPEN_SWITCH, 'e4'), false)).toBe(false)
+  })
+
+  it('keeps the wires around a backwards LED live, because current still passes through it', () => {
+    const led = resultOf(REVERSED_LED, 'e3')
+    expect(led.energized).toBe(false)
+    expect(isConnectionEnergized(resultOf(REVERSED_LED, 'e1'), led, false)).toBe(true)
   })
 })
