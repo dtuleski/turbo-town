@@ -666,6 +666,7 @@
     "hardDesc": "Advanced math & algebra, large maze, 5 min",
     "startGame": "Enter the Maze!",
     "selectLevel": "Select a Level",
+    "gateHint": "You don't have to open every gate. Pick a route to the exit; a wrong answer blocks that gate, so choose another way.",
     "gatePrompt": "Solve to open the gate:",
     "submitAnswer": "Submit",
     "correct": "Correct! Gate opened!",

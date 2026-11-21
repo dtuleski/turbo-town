@@ -664,6 +664,7 @@
     "hardDesc": "Matemáticas avanzadas y álgebra, laberinto grande, 5 min",
     "startGame": "¡Entrar al Laberinto!",
     "selectLevel": "Selecciona un Nivel",
+    "gateHint": "No tienes que abrir todas las puertas. Elige un camino hacia la salida; una respuesta incorrecta bloquea esa puerta, así que busca otro camino.",
     "gatePrompt": "Resuelve para abrir la puerta:",
     "submitAnswer": "Enviar",
     "correct": "¡Correcto! ¡Puerta abierta!",

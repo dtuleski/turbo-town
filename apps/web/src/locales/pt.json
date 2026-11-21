@@ -664,6 +664,7 @@
     "hardDesc": "Matemática avançada e álgebra, labirinto grande, 5 min",
     "startGame": "Entrar no Labirinto!",
     "selectLevel": "Selecione um Nível",
+    "gateHint": "Você não precisa abrir todos os portões. Escolha um caminho até a saída; uma resposta errada bloqueia aquele portão, então escolha outro caminho.",
     "gatePrompt": "Resolva para abrir o portão:",
     "submitAnswer": "Enviar",
     "correct": "Correto! Portão aberto!",
