@@ -722,9 +722,9 @@ put_word "beige" "colors" "beginner" \
   "μπεζ" "/bez/"
 
 put_word "ivory" "colors" "beginner" \
-  "$U/photo-1557682250-33bd709cbe85?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/40ce0a7d61fd_photo-generated-ivory-swatch.jpg" \
   "$U/photo-1597773150796-e5c14ebecbf5?w=300&h=300&fit=crop" \
-  "$U/photo-1558591710-4b4a1ae0f04d?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/e2ee7711b0d6_photo-1557682268-e3955ed5d83f.jpg" \
   "ivory" "/ˈaɪ.vər.i/" \
   "marfil" "/maɾ.ˈfil/" \
   "ivoire" "/i.vwaʁ/" \
@@ -897,7 +897,7 @@ echo ""
 echo "=== 🔢 NUMBERS — Beginner ==="
 
 put_word "eleven" "numbers" "beginner" \
-  "$U/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/f83f362fcc60_photo-wikimedia-sevilla-calle-lope-de-rueda-no-11.jpg" \
   "$U/photo-1593354322782-0550797adc47?w=300&h=300&fit=crop" \
   "$U/photo-1778169877507-ce2ea7dc9344?w=300&h=300&fit=crop" \
   "eleven" "/ɪ.ˈlev.ən/" \
@@ -975,8 +975,8 @@ echo ""
 echo "=== 🔢 NUMBERS — Intermediate ==="
 
 put_word "thirteen" "numbers" "intermediate" \
-  "$U/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop" \
-  "$U/photo-1509228468518-180dd4864904?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/3c0dae00e8e8_photo-wikimedia-bilbao-calle-elcano-no-13-2.jpg" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/bc0b09c4de96_photo-1517594422361-5eeb8ae275a9.jpg" \
   "$U/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop" \
   "thirteen" "/ˌθɜːrˈtiːn/" \
   "trece" "/ˈtɾe.θe/" \
@@ -1223,8 +1223,8 @@ put_word "mirror" "objects" "intermediate" \
   "καθρέφτης" "/ka.ˈθref.tis/"
 
 put_word "window" "objects" "intermediate" \
-  "$U/photo-1513694203232-719a280e022f?w=300&h=300&fit=crop" \
-  "$U/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/b4be2749d283_photo-1509644851169-2acc08aa25b5.jpg" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/8e7a707175e6_photo-wikimedia-18-8-stainless-steel-fork-1.jpg" \
   "$U/photo-1603400521630-9f2de124b33b?w=300&h=300&fit=crop" \
   "window" "/ˈwɪn.doʊ/" \
   "ventana" "/ben.ˈta.na/" \
@@ -1477,7 +1477,7 @@ put_word "ice" "nature" "beginner" \
   "πάγος" "/ˈpa.ɣos/"
 
 put_word "stone" "nature" "beginner" \
-  "$U/photo-1470071459604-3b5ec3a7fe05?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/85424d233bcd_photo-wikimedia-pebble-in-water-sainte-marie-de-re-re-island-charente-maritime-france.jpg" \
   "$U/photo-1489549132488-d00b7eee80f1?w=300&h=300&fit=crop" \
   "$U/photo-1475552113915-6fcb52652ba2?w=300&h=300&fit=crop" \
   "stone" "/stoʊn/" \
@@ -1568,7 +1568,7 @@ put_word "cave" "nature" "intermediate" \
   "σπηλιά" "/spi.ˈlja/"
 
 put_word "cliff" "nature" "intermediate" \
-  "$U/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/99a6b4912ad7_photo-wikimedia-cliffed-coast-with-resting-man-near-sunset.jpg" \
   "$U/photo-1500740516770-92bd004b996e?w=300&h=300&fit=crop" \
   "$U/photo-1517594422361-5eeb8ae275a9?w=300&h=300&fit=crop" \
   "cliff" "/klɪf/" \
@@ -1580,8 +1580,8 @@ put_word "cliff" "nature" "intermediate" \
   "γκρεμός" "/ɡre.ˈmos/"
 
 put_word "valley" "nature" "intermediate" \
-  "$U/photo-1501785888041-af3ef285b470?w=300&h=300&fit=crop" \
-  "$U/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/0c4d367b0f26_photo-wikimedia-view-of-the-neckar-valley-near-bad-wimpfen.jpg" \
+  "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/34cf67a60632_photo-1546026423-cc4642628d2b.jpg" \
   "$U/photo-1500740516770-92bd004b996e?w=300&h=300&fit=crop" \
   "valley" "/ˈvæl.i/" \
   "valle" "/ˈba.ʎe/" \
