@@ -2,14 +2,13 @@
 .dart_tool/
 .packages
 build/
+build
 .flutter-plugins
 .flutter-plugins-dependencies
-pubspec.lock
 *.iml
 .idea/
 
-# Generated platform folders (run `flutter create .` on the Mac to regenerate)
-# We commit lib/ and pubspec.yaml; platform folders are generated locally.
+# Platform folders (ios/, android/) and pubspec.lock are committed.
 /ios/Pods/
 /ios/.symlinks/
 /ios/Flutter/Flutter.framework
