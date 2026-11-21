@@ -16,9 +16,9 @@ export interface DriverCard {
 }
 
 export const DIFFICULTY_CONFIG: Record<SeqDifficulty, { cards: number; viewTime: number; label: string }> = {
-  easy: { cards: 5, viewTime: 5, label: 'Easy' },
-  medium: { cards: 10, viewTime: 3, label: 'Medium' },
-  hard: { cards: 15, viewTime: 2, label: 'Hard' },
+  easy: { cards: 5, viewTime: 6, label: 'Easy' },
+  medium: { cards: 10, viewTime: 4, label: 'Medium' },
+  hard: { cards: 15, viewTime: 3, label: 'Hard' },
 }
 
 const F1_2025_DRIVERS: DriverCard[] = [

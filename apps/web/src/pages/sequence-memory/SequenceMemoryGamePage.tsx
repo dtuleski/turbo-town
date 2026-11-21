@@ -261,7 +261,7 @@ export default function SequenceMemoryGamePage() {
         {phase === 'answering' && (
           <div className="text-center mb-3">
             <span className="inline-block bg-green-500 text-white font-black text-lg px-4 py-1 rounded-full">
-              SELECT CARD {answerIndex + 1} of {currentRound + 1}
+              {currentRound === 0 ? 'TAP THE CARD YOU SAW' : `TAP CARD ${answerIndex + 1} OF ${currentRound + 1} IN ORDER`}
             </span>
           </div>
         )}
