@@ -1098,7 +1098,8 @@
     "wordsFound": "Palavras",
     "time": "Tempo",
     "difficulty": "Dificuldade",
-    "wordsToFind": "Palavras para Encontrar"
+    "wordsToFind": "Palavras para Encontrar",
+    "dragHint": "Arraste sobre as letras para selecionar uma palavra"
   },
   "quest": {
     "title": "Mapa de Aventura",

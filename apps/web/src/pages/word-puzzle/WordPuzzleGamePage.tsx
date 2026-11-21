@@ -393,6 +393,7 @@ export default function WordPuzzleGamePage() {
           {/* Word Grid */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-3xl shadow-2xl p-6">
+              <p className="text-center text-gray-600 font-semibold mb-4">{t('wordPuzzle.dragHint')}</p>
               <div 
                 ref={gridRef}
                 className="grid gap-1 select-none touch-none"
@@ -461,7 +462,7 @@ export default function WordPuzzleGamePage() {
 
         {/* Feedback */}
         {feedback.show && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none">
             <div
               className={`
                 px-8 py-4 rounded-2xl text-2xl font-bold shadow-2xl

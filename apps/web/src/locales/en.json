@@ -1100,7 +1100,8 @@
     "wordsFound": "Words Found",
     "time": "Time",
     "difficulty": "Difficulty",
-    "wordsToFind": "Words to Find"
+    "wordsToFind": "Words to Find",
+    "dragHint": "Drag across the letters to select a word"
   },
   "quest": {
     "title": "Quest Map",
