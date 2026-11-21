@@ -2881,7 +2881,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/40ce0a7d61fd_photo-generated-ivory-swatch.jpg"
             },
             "translations": {
                 "M": {
@@ -2975,7 +2975,7 @@
                         "S": "https://images.unsplash.com/photo-1597773150796-e5c14ebecbf5?w=300&h=300&fit=crop"
                     },
                     {
-                        "S": "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/e2ee7711b0d6_photo-1557682268-e3955ed5d83f.jpg"
                     }
                 ]
             },
@@ -5710,7 +5710,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/b4be2749d283_photo-1509644851169-2acc08aa25b5.jpg"
             },
             "translations": {
                 "M": {
@@ -5801,7 +5801,7 @@
             "distractorImages": {
                 "L": [
                     {
-                        "S": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/8e7a707175e6_photo-wikimedia-18-8-stainless-steel-fork-1.jpg"
                     },
                     {
                         "S": "https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=300&h=300&fit=crop"
@@ -5817,7 +5817,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/0c4d367b0f26_photo-wikimedia-view-of-the-neckar-valley-near-bad-wimpfen.jpg"
             },
             "translations": {
                 "M": {
@@ -5908,7 +5908,7 @@
             "distractorImages": {
                 "L": [
                     {
-                        "S": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/34cf67a60632_photo-1546026423-cc4642628d2b.jpg"
                     },
                     {
                         "S": "https://images.unsplash.com/photo-1500740516770-92bd004b996e?w=300&h=300&fit=crop"
@@ -7509,7 +7509,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/3c0dae00e8e8_photo-wikimedia-bilbao-calle-elcano-no-13-2.jpg"
             },
             "translations": {
                 "M": {
@@ -7600,7 +7600,7 @@
             "distractorImages": {
                 "L": [
                     {
-                        "S": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=300&h=300&fit=crop"
+                        "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/bc0b09c4de96_photo-1517594422361-5eeb8ae275a9.jpg"
                     },
                     {
                         "S": "https://images.unsplash.com/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop"
@@ -14291,7 +14291,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/99a6b4912ad7_photo-wikimedia-cliffed-coast-with-resting-man-near-sunset.jpg"
             },
             "translations": {
                 "M": {
@@ -21945,7 +21945,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/f83f362fcc60_photo-wikimedia-sevilla-calle-lope-de-rueda-no-11.jpg"
             },
             "translations": {
                 "M": {
@@ -22159,7 +22159,7 @@
         },
         {
             "imageUrl": {
-                "S": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&h=300&fit=crop"
+                "S": "https://dashden-assets-prod.s3.us-east-1.amazonaws.com/language-images/85424d233bcd_photo-wikimedia-pebble-in-water-sainte-marie-de-re-re-island-charente-maritime-france.jpg"
             },
             "translations": {
                 "M": {
