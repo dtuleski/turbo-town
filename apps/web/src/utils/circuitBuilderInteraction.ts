@@ -26,6 +26,7 @@ export type InteractionIntent =
   | { type: 'removeElement'; elementId: ElementId }
   | { type: 'removeConnection'; connectionId: string }
   | { type: 'toggleSwitch'; elementId: ElementId }
+  | { type: 'flipElement'; elementId: ElementId }
   | { type: 'moveCursor'; direction: 'up' | 'down' | 'left' | 'right' }
   | { type: 'cancel' }
 
@@ -118,7 +119,24 @@ function clearTransient(selection: SelectionState): SelectionState {
 function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): IntentResult {
   const positioned = withCursor(selection, hit)
   switch (hit.kind) {
-    case 'terminal':
+    case 'terminal': {
+      // A wire already half-drawn by an earlier tap: this press is its second end. Pressing the
+      // same dot again drops it. Either way the release that follows has nothing left to do.
+      const pending = selection.pendingTerminal
+      if (pending !== null) {
+        const sameTerminal =
+          pending.elementId === hit.elementId && pending.terminalIndex === hit.terminalIndex
+        return {
+          selection: { ...positioned, pendingTerminal: null, drag: null },
+          intent: sameTerminal
+            ? { type: 'cancel' }
+            : {
+                type: 'completeConnection',
+                elementId: hit.elementId,
+                terminalIndex: hit.terminalIndex,
+              },
+        }
+      }
       return {
         selection: {
           ...positioned,
@@ -130,6 +148,7 @@ function pointerDown(point: Point, hit: HitTarget, selection: SelectionState): I
           terminalIndex: hit.terminalIndex,
         },
       }
+    }
     case 'element':
       return {
         selection: {
@@ -179,15 +198,18 @@ function pointerUpOnTerminal(
   if (pending !== null) {
     const sameTerminal =
       pending.elementId === hit.elementId && pending.terminalIndex === hit.terminalIndex
+    if (sameTerminal) {
+      // A tap, not a drag: the wire stays half-drawn so the next tap on another dot finishes it.
+      // Escape, or a tap on empty space, abandons it.
+      return { selection: { ...positioned, drag: null }, intent: null }
+    }
     return {
       selection: { ...positioned, pendingTerminal: null, drag: null },
-      intent: sameTerminal
-        ? { type: 'cancel' }
-        : {
-            type: 'completeConnection',
-            elementId: hit.elementId,
-            terminalIndex: hit.terminalIndex,
-          },
+      intent: {
+        type: 'completeConnection',
+        elementId: hit.elementId,
+        terminalIndex: hit.terminalIndex,
+      },
     }
   }
   if (selection.drag !== null) {
@@ -398,6 +420,8 @@ export const CONSUMED_KEYS: ReadonlySet<string> = new Set([
   'Escape',
   'c',
   'C',
+  'r',
+  'R',
 ])
 
 /**
@@ -439,6 +463,13 @@ export function resolveKeyIntent(
     }
   }
 
+  if (key === 'r' || key === 'R') {
+    const element = selectElementAt(state, selection.cursor)
+    if (element === undefined) {
+      return { selection, intent: null }
+    }
+    return { selection, intent: { type: 'flipElement', elementId: element.id } }
+  }
   if (key === 'Delete' || key === 'Backspace') {
     const element = selectElementAt(state, selection.cursor)
     if (element === undefined) {
@@ -537,6 +568,8 @@ export function intentToAction(
       return exists(intent.elementId)
         ? { type: 'toggleSwitch', elementId: intent.elementId }
         : null
+    case 'flipElement':
+      return exists(intent.elementId) ? { type: 'flip', elementId: intent.elementId } : null
     default:
       // selectTrayComponent, selectElement, beginConnection, moveCursor, cancel change the
       // selection only. They are not circuit edits.

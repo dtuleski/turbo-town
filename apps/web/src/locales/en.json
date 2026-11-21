@@ -569,6 +569,8 @@
       "round": "Round {{current}}",
       "time": "Time",
       "watchPattern": "Watch the pattern!",
+      "lives": "Lives",
+      "livesLeft": "Lives: {{count}}",
       "yourTurn": "Your turn!",
       "correct": "Correct!",
       "nextRound": "Next round...",
@@ -666,6 +668,7 @@
     "hardDesc": "Advanced math & algebra, large maze, 5 min",
     "startGame": "Enter the Maze!",
     "selectLevel": "Select a Level",
+    "gateHint": "You don't have to open every gate. Pick a route to the exit; a wrong answer blocks that gate, so choose another way.",
     "gatePrompt": "Solve to open the gate:",
     "submitAnswer": "Submit",
     "correct": "Correct! Gate opened!",
@@ -814,7 +817,15 @@
   },
   "circuitBuilder": {
     "canvasLabel": "Circuit building grid",
-    "canvasHint": "Drag a component from the tray, or tap a component then tap a cell. Arrow keys move the cursor, Enter places or activates, C starts a connection, Enter finishes it on the first terminal and Shift+Enter on the second, Delete removes.",
+    "flip": "Flip",
+    "howTo": {
+      "title": "How to build",
+      "step1": "Pick a part, then tap a cell to place it.",
+      "step2": "Tap a part's dot, then another part's dot, to wire them.",
+      "step3": "Tap Flip if the LED shows backwards.",
+      "keyboardTitle": "Keyboard",
+      "keyboard": "Arrow keys move the cursor, Enter places or activates, C starts a wire, Enter or Shift+Enter finishes it on the first or second dot, R flips, Delete removes."
+    },
     "component": {
       "battery": { "name": "Battery", "abbr": "BAT" },
       "solar": { "name": "Solar panel", "abbr": "SOL" },
@@ -1091,7 +1102,8 @@
     "wordsFound": "Words Found",
     "time": "Time",
     "difficulty": "Difficulty",
-    "wordsToFind": "Words to Find"
+    "wordsToFind": "Words to Find",
+    "dragHint": "Drag across the letters to select a word"
   },
   "quest": {
     "title": "Quest Map",

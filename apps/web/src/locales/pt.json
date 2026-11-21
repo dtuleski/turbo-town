@@ -567,6 +567,8 @@
       "round": "Rodada {{current}}",
       "time": "Tempo",
       "watchPattern": "Observe o padrão!",
+      "lives": "Vidas",
+      "livesLeft": "Vidas: {{count}}",
       "yourTurn": "Sua vez!",
       "correct": "Correto!",
       "nextRound": "Próxima rodada...",
@@ -664,6 +666,7 @@
     "hardDesc": "Matemática avançada e álgebra, labirinto grande, 5 min",
     "startGame": "Entrar no Labirinto!",
     "selectLevel": "Selecione um Nível",
+    "gateHint": "Você não precisa abrir todos os portões. Escolha um caminho até a saída; uma resposta errada bloqueia aquele portão, então escolha outro caminho.",
     "gatePrompt": "Resolva para abrir o portão:",
     "submitAnswer": "Enviar",
     "correct": "Correto! Portão aberto!",
@@ -812,7 +815,15 @@
   },
   "circuitBuilder": {
     "canvasLabel": "Grade para montar circuitos",
-    "canvasHint": "Arraste um componente da bandeja, ou toque em um componente e depois em uma célula. As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter termina a ligação no primeiro terminal e Shift+Enter no segundo, Delete apaga.",
+    "flip": "Virar",
+    "howTo": {
+      "title": "Como montar",
+      "step1": "Escolha uma peça e toque em uma célula para colocá-la.",
+      "step2": "Toque no ponto de uma peça e depois no ponto de outra para ligá-las.",
+      "step3": "Toque em Virar se o LED aparecer ao contrário.",
+      "keyboardTitle": "Teclado",
+      "keyboard": "As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter ou Shift+Enter a termina no primeiro ou no segundo ponto, R vira, Delete apaga."
+    },
     "component": {
       "battery": { "name": "Pilha", "abbr": "PIL" },
       "solar": { "name": "Painel solar", "abbr": "SOL" },
@@ -1089,7 +1100,8 @@
     "wordsFound": "Palavras",
     "time": "Tempo",
     "difficulty": "Dificuldade",
-    "wordsToFind": "Palavras para Encontrar"
+    "wordsToFind": "Palavras para Encontrar",
+    "dragHint": "Arraste sobre as letras para selecionar uma palavra"
   },
   "quest": {
     "title": "Mapa de Aventura",

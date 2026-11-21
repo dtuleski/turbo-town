@@ -12,6 +12,7 @@
 // and the localized copy stays in the DOM where the locale files can reach it.
 
 import { ELEMENT_SPECS } from './circuitEngine'
+import { isConnectionEnergized } from './circuitPresentation'
 import type {
   CircuitElement,
   CircuitLayout,
@@ -219,10 +220,11 @@ function drawConnections(
     }
     // A connection is live only when both of the elements it joins are live. A wire reports no
     // individually determined current under the model, so `energized` is the only usable signal.
-    const energized =
-      !suppressed &&
-      resultsById.get(from.element.id)?.energized === true &&
-      resultsById.get(to.element.id)?.energized === true
+    const energized = isConnectionEnergized(
+      resultsById.get(from.element.id),
+      resultsById.get(to.element.id),
+      suppressed
+    )
     drawTrace(
       ctx,
       terminalAnchor(from.element, from.index, scene.viewport),

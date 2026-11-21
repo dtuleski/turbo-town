@@ -17,6 +17,7 @@ import {
   MIN_SOURCE_VOLTAGE,
   SOURCE_VOLTAGE_STEP,
   ELEMENT_KINDS,
+  ELEMENT_SPECS,
   compareIdsLocal,
   connectTerminals,
   createElement,
@@ -99,6 +100,7 @@ export type CircuitAction =
   | { type: 'remove'; elementId: ElementId }
   | { type: 'connect'; from: TerminalRef; to: TerminalRef }
   | { type: 'disconnect'; connectionId: string }
+  | { type: 'flip'; elementId: ElementId }
   | { type: 'toggleSwitch'; elementId: ElementId }
   | { type: 'setVoltage'; volts: number }
   | { type: 'setLightLevel'; level: number }
@@ -474,6 +476,37 @@ function applyDisconnect(state: CircuitBuilderState, connectionId: string): Circ
   })
 }
 
+/**
+ * Swap which terminal plays the positive role on a polarized part (an LED).
+ *
+ * The wires' endpoints are swapped rather than the element's terminals, so every wire stays drawn
+ * where it was and only the direction the current passes through the part reverses. A part that is
+ * not polarized has no direction to reverse, so it comes back unchanged.
+ */
+function applyFlip(state: CircuitBuilderState, elementId: ElementId): CircuitBuilderState {
+  const element = elementById(state, elementId)
+  if (element === undefined) {
+    return reject(state, 'UNKNOWN_ELEMENT')
+  }
+  if (state.lockedElementIds.includes(elementId)) {
+    return reject(state, 'ELEMENT_LOCKED')
+  }
+  if (!ELEMENT_SPECS[element.kind].polarized) {
+    return state
+  }
+  const [first, second] = element.terminals
+  const swap = (node: string): string => (node === first ? second : node === second ? first : node)
+  return commit(state, {
+    layout: {
+      ...state.layout,
+      connections: state.layout.connections.map((connection) => ({
+        ...connection,
+        from: swap(connection.from),
+        to: swap(connection.to),
+      })),
+    },
+  })
+}
 function applyToggleSwitch(state: CircuitBuilderState, elementId: ElementId): CircuitBuilderState {
   const element = elementById(state, elementId)
   if (element === undefined) {
@@ -556,6 +589,8 @@ export function circuitReducer(
       return applyConnect(state, action.from, action.to)
     case 'disconnect':
       return applyDisconnect(state, action.connectionId)
+    case 'flip':
+      return applyFlip(state, action.elementId)
     case 'toggleSwitch':
       return applyToggleSwitch(state, action.elementId)
     case 'setVoltage':

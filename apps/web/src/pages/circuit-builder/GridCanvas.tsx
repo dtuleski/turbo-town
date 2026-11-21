@@ -36,7 +36,7 @@ interface GridCanvasProps {
 /** Advertised to assistive technology, and the same vocabulary `resolveKeyIntent` implements.
  * `Tab` is deliberately absent from both, so focus always escapes the canvas. */
 const ARIA_KEY_SHORTCUTS =
-  'ArrowUp ArrowDown ArrowLeft ArrowRight Enter Shift+Enter C Shift+C Delete Escape'
+  'ArrowUp ArrowDown ArrowLeft ArrowRight Enter Shift+Enter C Shift+C R Delete Escape'
 
 /**
  * The circuit canvas: one fixed logical surface that CSS scales responsively.
@@ -165,6 +165,11 @@ export default function GridCanvas({
 
   function handleTouch(phase: PointerPhase) {
     return (event: React.TouchEvent<HTMLCanvasElement>): void => {
+      // A browser follows a tap with emulated mouse events at the same spot. Those would run the
+      // press and release a second time and undo a tap-to-wire, so the release claims the tap.
+      if (phase === 'up' && event.cancelable) {
+        event.preventDefault()
+      }
       const touch = event.touches[0] ?? event.changedTouches[0]
       if (touch === undefined) {
         onPointerEvent(phase, { x: -1, y: -1 }, { kind: 'outside' })

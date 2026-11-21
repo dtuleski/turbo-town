@@ -879,3 +879,56 @@ describe('placement geometry contract', () => {
     }
   })
 })
+
+describe('flip', () => {
+  function ringWithBackwardsLed(): CircuitBuilderState {
+    // battery e1, resistor e2, led e3: the LED is wired 1 -> 0, so it reads backwards.
+    return run(
+      createInitialState(GUIDED),
+      place('battery', 1, 1),
+      place('resistor', 3, 1),
+      place('led', 5, 1),
+      { type: 'connect', from: { elementId: 'e1', terminalIndex: 0 }, to: { elementId: 'e2', terminalIndex: 0 } },
+      { type: 'connect', from: { elementId: 'e2', terminalIndex: 1 }, to: { elementId: 'e3', terminalIndex: 1 } },
+      { type: 'connect', from: { elementId: 'e3', terminalIndex: 0 }, to: { elementId: 'e1', terminalIndex: 1 } }
+    )
+  }
+  function ledEnergised(state: CircuitBuilderState): { reversed: boolean; lit: boolean } {
+    const outcome = evaluateMemoized(state.layout, state.switches, state.environment)
+    if (!isCircuitResult(outcome)) throw new Error('evaluation failed')
+    return {
+      reversed: outcome.faults.some((fault) => fault.code === 'REVERSED_POLARITY'),
+      lit: outcome.elements.find((item) => item.kind === 'led')?.energized === true,
+    }
+  }
+
+  it('turns a backwards LED around and keeps every wire attached', () => {
+    const backwards = ringWithBackwardsLed()
+    expect(ledEnergised(backwards)).toEqual({ reversed: true, lit: false })
+    const flipped = circuitReducer(backwards, { type: 'flip', elementId: 'e3' })
+    expect(flipped.lastRejection).toBeNull()
+    expect(flipped.layout.connections).toHaveLength(3)
+    expect(ledEnergised(flipped)).toEqual({ reversed: false, lit: true })
+    // Flipping twice restores the original wiring.
+    expect(circuitReducer(flipped, { type: 'flip', elementId: 'e3' }).layout.connections).toEqual(
+      backwards.layout.connections
+    )
+  })
+
+  it('leaves a part that is not polarized unchanged', () => {
+    const state = ringWithBackwardsLed()
+    expect(circuitReducer(state, { type: 'flip', elementId: 'e2' })).toBe(state)
+  })
+
+  it('refuses an unknown element and a locked one', () => {
+    const state = ringWithBackwardsLed()
+    expect(rejectionOf(circuitReducer(state, { type: 'flip', elementId: 'nope' }))).toBe('UNKNOWN_ELEMENT')
+    const locked = createInitialState({
+      ...SANDBOX,
+      id: 'fixture-locked-flip',
+      prePlaced: [createElement('led', { id: 'fixed', position: { col: 1, row: 1, rotation: 0 } })],
+      lockedElementIds: ['fixed'],
+    })
+    expect(rejectionOf(circuitReducer(locked, { type: 'flip', elementId: 'fixed' }))).toBe('ELEMENT_LOCKED')
+  })
+})

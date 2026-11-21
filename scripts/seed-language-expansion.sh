@@ -176,7 +176,7 @@ put_word "goat" "animals" "beginner" \
   "κατσίκα" "/ka.ˈtsi.ka/"
 
 put_word "frog" "animals" "beginner" \
-  "$U/photo-1474314005122-3c07c4df1224?w=300&h=300&fit=crop" \
+  "$U/photo-1496070242169-b672c576566b?w=300&h=300&fit=crop" \
   "$U/photo-1524024973431-2ad916746264?w=300&h=300&fit=crop" \
   "$U/photo-1484557985045-edf25e08da73?w=300&h=300&fit=crop" \
   "frog" "/frɒɡ/" \
@@ -197,7 +197,7 @@ echo "=== 🐻 ANIMALS — Intermediate ==="
 put_word "monkey" "animals" "intermediate" \
   "$U/photo-1540573133985-87b6da6d54a9?w=300&h=300&fit=crop" \
   "$U/photo-1437622368342-7a3d73a34c8f?w=300&h=300&fit=crop" \
-  "$U/photo-1474314005122-3c07c4df1224?w=300&h=300&fit=crop" \
+  "$U/photo-1496070242169-b672c576566b?w=300&h=300&fit=crop" \
   "monkey" "/ˈmʌŋ.ki/" \
   "mono" "/ˈmo.no/" \
   "singe" "/sɛ̃ʒ/" \
@@ -257,7 +257,7 @@ put_word "shark" "animals" "intermediate" \
 put_word "snake" "animals" "intermediate" \
   "$U/photo-1531386151447-fd76ad50012f?w=300&h=300&fit=crop" \
   "$U/photo-1560275619-4662e36fa65c?w=300&h=300&fit=crop" \
-  "$U/photo-1474314005122-3c07c4df1224?w=300&h=300&fit=crop" \
+  "$U/photo-1496070242169-b672c576566b?w=300&h=300&fit=crop" \
   "snake" "/sneɪk/" \
   "serpiente" "/seɾ.ˈpjen.te/" \
   "serpent" "/sɛʁ.pɑ̃/" \

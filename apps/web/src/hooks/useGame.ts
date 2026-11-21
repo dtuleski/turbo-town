@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import type { GameState, GameTheme, DifficultyLevel, Card } from '@/types/game'
-import { generateCards, checkMatch, isGameComplete } from '@/utils/gameLogic'
+import { generateCards, resolvePair } from '@/utils/gameLogic'
 import { startGame as startGameAPI, completeGame as completeGameAPI } from '@/api/game'
 
 export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
@@ -22,7 +22,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
   const [gameId, setGameId] = useState<string | null>(null)
   const [scoreBreakdown, setScoreBreakdown] = useState<any>(null)
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
-  const [gameGeneration, setGameGeneration] = useState(0)
+  const generationRef = useRef(0)
 
   // Timer effect
   useEffect(() => {
@@ -164,7 +164,7 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
 
   // Restart game
   const restartGame = useCallback(() => {
-    setGameGeneration(prev => prev + 1)
+    generationRef.current += 1
     setGameState({
       theme,
       difficulty,
@@ -209,69 +209,22 @@ export const useGame = (theme: GameTheme, difficulty: DifficultyLevel) => {
       // If this is the second card, check for match
       if (flippedCards.length === 1) {
         setIsChecking(true)
-        const currentGeneration = gameGeneration
-
+        const currentGeneration = generationRef.current
+        const firstId = flippedCards[0].id
+        const secondId = card.id
         setTimeout(() => {
           // Bail out if game was restarted while we were waiting
-          setGameGeneration(gen => {
-            if (gen !== currentGeneration) return gen
-            
-            const [firstCard] = flippedCards
-            const isMatch = checkMatch(firstCard, card)
-
-            if (isMatch) {
-              const matchedCards = newCards.map(c =>
-                c.id === firstCard.id || c.id === card.id ? { ...c, isMatched: true } : c
-              )
-
-              setGameState(prev => {
-                if (prev.status !== 'IN_PROGRESS') return prev
-                const newMatches = prev.matches + 1
-                const newAttempts = prev.attempts + 1
-                const allMatched = isGameComplete(matchedCards)
-
-                if (allMatched) {
-                  const endTime = Date.now()
-                  return {
-                    ...prev,
-                    cards: matchedCards,
-                    matches: newMatches,
-                    attempts: newAttempts,
-                    score: 0,
-                    status: 'IN_PROGRESS',
-                    endTime,
-                  }
-                }
-
-                return {
-                  ...prev,
-                  cards: matchedCards,
-                  matches: newMatches,
-                  attempts: newAttempts,
-                }
-              })
-            } else {
-              setGameState(prev => {
-                if (prev.status !== 'IN_PROGRESS') return prev
-                const unflippedCards = prev.cards.map(c =>
-                  c.id === firstCard.id || c.id === card.id ? { ...c, isFlipped: false } : c
-                )
-                return {
-                  ...prev,
-                  cards: unflippedCards,
-                  attempts: prev.attempts + 1,
-                }
-              })
-            }
-
-            setFlippedCards([])
-            setIsChecking(false)
-            return gen
-          })
+          if (generationRef.current !== currentGeneration) return
+          // Resolve while paused too, so a pending pair never stays stuck face-up
+          setGameState(prev =>
+            prev.status === 'IN_PROGRESS' || prev.status === 'PAUSED' ? resolvePair(prev, firstId, secondId) : prev
+          )
+          setFlippedCards([])
+          setIsChecking(false)
         }, 1000)
       }
     },
-    [gameState, flippedCards, isChecking, difficulty, gameGeneration]
+    [gameState, flippedCards, isChecking]
   )
 
   return {

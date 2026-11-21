@@ -35,6 +35,7 @@ const Card = ({ card, onClick }: CardProps) => {
           className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary-blue to-primary-purple flex items-center justify-center shadow-lg"
           style={{
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(0deg)',
           }}
         >
@@ -50,6 +51,7 @@ const Card = ({ card, onClick }: CardProps) => {
           }`}
           style={{
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
           }}
         >

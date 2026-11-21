@@ -24,6 +24,7 @@ export default function MathMazeSetupPage() {
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">🧮 {t('mathMaze.title')}</h1>
           <p className="text-2xl text-white font-bold drop-shadow">{t('mathMaze.subtitle')}</p>
+          <p className="text-lg text-white/90 mt-3 max-w-2xl mx-auto drop-shadow">{t('mathMaze.gateHint')}</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">

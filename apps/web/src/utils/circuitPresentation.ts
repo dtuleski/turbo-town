@@ -12,7 +12,7 @@
 // separator follows the locale (comma for pt and es); they are not words and so do not live in the
 // locale files.
 
-import { DEFAULT_RESISTOR_RESISTANCE, ELEMENT_SPECS } from './circuitEngine'
+import { CURRENT_EPSILON, DEFAULT_RESISTOR_RESISTANCE, ELEMENT_SPECS } from './circuitEngine'
 import type {
   CircuitLayout,
   CircuitResult,
@@ -245,4 +245,23 @@ export function presentCircuit(
     presented.totalCurrent = result.closedPathExists ? toDisplayMagnitude(result.totalCurrent) : 0
   }
   return presented
+}
+
+/** Whether an element is passing current, even in the wrong direction. A backwards LED reports
+ * `energized: false` because it stays dark, yet the circuit around it is still live. */
+function isCarryingCurrent(result: ElementResult | undefined): boolean {
+  return result !== undefined && (result.energized || Math.abs(result.current) > CURRENT_EPSILON)
+}
+/**
+ * Whether the wire between two elements should be drawn as live.
+ *
+ * A wire has no current of its own under the engine's model, so it is live when both parts it joins
+ * are carrying current. `fuseBlown` and a failed evaluation (`null` results) draw every wire idle.
+ */
+export function isConnectionEnergized(
+  from: ElementResult | undefined,
+  to: ElementResult | undefined,
+  suppressed: boolean
+): boolean {
+  return !suppressed && isCarryingCurrent(from) && isCarryingCurrent(to)
 }

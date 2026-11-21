@@ -253,7 +253,7 @@ export default function CodeABotGamePage() {
           </div>
           <div className="flex flex-wrap gap-1.5 min-h-[44px] bg-black/20 rounded-xl p-2">
             {instructions.length === 0 && (
-              <span className="text-white/30 text-sm italic px-2 py-1">Drag instructions here...</span>
+              <span className="text-white/30 text-sm italic px-2 py-1">Tap an instruction below to add it</span>
             )}
             {instructions.map((inst, i) => {
               const info = INSTRUCTIONS.find(x => x.id === inst)!
@@ -263,15 +263,20 @@ export default function CodeABotGamePage() {
                   key={i}
                   onClick={() => removeInstruction(i)}
                   disabled={phase !== 'building'}
+                  aria-label={phase === 'building' ? `Remove ${info.label}` : info.label}
                   className={`${info.color} text-white text-xs font-bold px-2 py-1 rounded-lg transition-all ${
                     isActive ? 'ring-2 ring-yellow-400 scale-110' : ''
                   } ${phase === 'building' ? 'hover:opacity-70 cursor-pointer' : ''}`}
                 >
                   {info.icon}
+                  {phase === 'building' && <span className="ml-1 opacity-70" aria-hidden="true">✕</span>}
                 </button>
               )
             })}
           </div>
+          {phase === 'building' && instructions.length > 0 && (
+            <p className="text-white/40 text-xs mt-2 px-1">Tap a step to remove it</p>
+          )}
         </div>
 
         {/* Instruction palette + Run button */}
@@ -292,7 +297,7 @@ export default function CodeABotGamePage() {
                   }`}
                 >
                   <span className="text-xl">{inst.icon}</span>
-                  <span className="text-sm hidden md:inline">{inst.label}</span>
+                  <span className="text-sm">{inst.label}</span>
                 </button>
               )
             })}

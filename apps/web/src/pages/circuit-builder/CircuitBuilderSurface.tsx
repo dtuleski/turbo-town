@@ -33,6 +33,7 @@ import {
   MAX_LIGHT_LEVEL,
   MAX_SOURCE_VOLTAGE,
   MIN_LIGHT_LEVEL,
+  ELEMENT_SPECS,
   MIN_SOURCE_VOLTAGE,
   SOURCE_VOLTAGE_STEP,
   evaluateMemoized,
@@ -370,6 +371,16 @@ function CircuitSurfaceBody({
     () => deriveRoverView(level, result, state.fuseBlown),
     [level, result, state.fuseBlown]
   )
+  const selectedElement = state.layout.elements.find(
+    (element) => element.id === selection.selectedElementId
+  )
+  const handleFlip = useCallback(() => {
+    unlockAudio()
+    const elementId = selectionRef.current.selectedElementId
+    if (elementId !== null) {
+      apply({ selection: selectionRef.current, intent: { type: 'flipElement', elementId } }, selectionRef.current)
+    }
+  }, [apply, unlockAudio])
   const handleResetFuse = useCallback(() => {
     dispatch({ type: 'resetFuse' })
   }, [])
@@ -431,9 +442,27 @@ function CircuitSurfaceBody({
           />
         </GridCanvas>
 
-        <p className="max-w-[min(94vw,960px)] text-center text-[11px] text-slate-400">
-          {t('circuitBuilder.canvasHint')}
-        </p>
+        <div className="w-full max-w-[min(94vw,960px)] text-xs text-slate-300">
+          <p className="mb-1 font-semibold text-cyan-300">{t('circuitBuilder.howTo.title')}</p>
+          <ol className="list-decimal space-y-0.5 pl-5">
+            <li>{t('circuitBuilder.howTo.step1')}</li>
+            <li>{t('circuitBuilder.howTo.step2')}</li>
+            <li>{t('circuitBuilder.howTo.step3')}</li>
+          </ol>
+          <details className="mt-1 text-[11px] text-slate-400">
+            <summary className="cursor-pointer">{t('circuitBuilder.howTo.keyboardTitle')}</summary>
+            <p className="mt-1">{t('circuitBuilder.howTo.keyboard')}</p>
+          </details>
+        </div>
+        {selectedElement !== undefined && ELEMENT_SPECS[selectedElement.kind].polarized && (
+          <button
+            type="button"
+            onClick={handleFlip}
+            className="min-h-[44px] rounded-lg border border-cyan-500/60 px-4 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-500/10"
+          >
+            {t('circuitBuilder.flip')}
+          </button>
+        )}
 
         {/* `lg:hidden`, so desktop keeps rendering inside AppLayout's shell with no extra control. */}
         <div className="lg:hidden">

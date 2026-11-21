@@ -63,12 +63,15 @@ export default function GeoQuizSetupPage() {
               <button
                 key={d.id}
                 onClick={() => handleDifficultyChange(d.id)}
-                className={`p-5 rounded-xl border-2 transition-all text-left ${
+                className={`relative p-5 rounded-xl border-2 transition-all text-left ${
                   difficulty === d.id
-                    ? 'border-yellow-400 bg-white/20 scale-105 shadow-lg'
+                    ? 'border-yellow-400 bg-yellow-400/25 ring-4 ring-yellow-400/70 scale-105 shadow-lg'
                     : 'border-white/20 bg-white/5 hover:border-white/40'
                 }`}
               >
+                {difficulty === d.id && (
+                  <span aria-hidden="true" className="absolute top-2 right-2 w-6 h-6 rounded-full bg-yellow-400 text-gray-900 text-sm font-black flex items-center justify-center">✓</span>
+                )}
                 <div className="text-3xl mb-2">{d.emoji}</div>
                 <div className="text-lg font-bold text-white">{d.label}</div>
               </button>
@@ -87,12 +90,15 @@ export default function GeoQuizSetupPage() {
                   <button
                     key={m}
                     onClick={() => setMode(m)}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                    className={`relative p-4 rounded-xl border-2 transition-all text-left ${
                       mode === m
-                        ? 'border-yellow-400 bg-white/20 scale-105'
+                        ? 'border-yellow-400 bg-yellow-400/25 ring-4 ring-yellow-400/70 scale-105'
                         : 'border-white/20 bg-white/5 hover:border-white/40'
                     }`}
                   >
+                    {mode === m && (
+                      <span aria-hidden="true" className="absolute top-2 right-2 w-5 h-5 rounded-full bg-yellow-400 text-gray-900 text-xs font-black flex items-center justify-center">✓</span>
+                    )}
                     <div className="text-2xl mb-1">{info.icon}</div>
                     <div className="font-bold text-white text-sm">{info.label}</div>
                   </button>

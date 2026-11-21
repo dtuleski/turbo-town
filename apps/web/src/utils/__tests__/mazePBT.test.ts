@@ -146,6 +146,21 @@ describe('Math Maze — Property-Based Tests', () => {
 
   // ── Property 3: Maze dimensions and content scale with difficulty ──────
   // **Validates: Requirements 2.3, 2.4, 2.5, 6.1**
+  describe('Gate wording: gates are optional on at least one route', () => {
+    it('exit stays reachable when any single gate is blocked (setup page says not every gate must be opened)', () => {
+      fc.assert(
+        fc.property(difficultyArb, (difficulty) => {
+          const maze = generateMaze(difficulty)
+          for (const gate of maze.gates) {
+            const blocked = new Set<string>([`${gate.position.row},${gate.position.col}`])
+            expect(hasPathToExit(maze.grid, maze.start, maze.exit, blocked)).toBe(true)
+          }
+        }),
+        { numRuns: 50 },
+      )
+    })
+  })
+
   describe('Property 3: Maze dimensions and content scale with difficulty', () => {
     it('grid size, gate count, collectible count match config', () => {
       fc.assert(

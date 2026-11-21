@@ -18,7 +18,9 @@ import {
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 
-type GamePhase = 'loading' | 'playback' | 'input' | 'correct' | 'game-over' | 'submitting' | 'completed'
+type GamePhase = 'loading' | 'playback' | 'input' | 'correct' | 'wrong' | 'game-over' | 'submitting' | 'completed'
+
+const MAX_LIVES = 3
 
 export default function PatternRecallGamePage() {
   const navigate = useNavigate()
@@ -35,6 +37,7 @@ export default function PatternRecallGamePage() {
   const [currentPlaybackIndex, setCurrentPlaybackIndex] = useState(-1)
   const [currentInputIndex, setCurrentInputIndex] = useState(0)
   const [roundNumber, setRoundNumber] = useState(1)
+  const [lives, setLives] = useState(MAX_LIVES)
   const [timer, setTimer] = useState(0)
   const [totalTaps, setTotalTaps] = useState(0)
   const [feedbackItem, setFeedbackItem] = useState<number | null>(null)
@@ -95,7 +98,7 @@ export default function PatternRecallGamePage() {
 
   // Timer
   useEffect(() => {
-    if (phase === 'playback' || phase === 'input' || phase === 'correct') {
+    if (phase === 'playback' || phase === 'input' || phase === 'correct' || phase === 'wrong') {
       if (!timerRef.current) {
         timerRef.current = setInterval(() => {
           setTimer((prev) => prev + 1)
@@ -202,17 +205,25 @@ export default function PatternRecallGamePage() {
           setCurrentInputIndex(nextInputIndex)
         }
       } else {
-        // Wrong tap — game over
+        // Wrong tap — lose a life; replay the same sequence, or game over at 0
+        const remainingLives = lives - 1
+        setLives(remainingLives)
         setFeedbackItem(index)
         setFeedbackType('wrong')
+        setPhase('wrong') // block further taps while feedback shows
         setTimeout(() => {
           setFeedbackItem(null)
           setFeedbackType(null)
-          setPhase('game-over')
+          if (remainingLives <= 0) {
+            setPhase('game-over')
+          } else {
+            setCurrentInputIndex(0)
+            setPhase('playback')
+          }
         }, 400)
       }
     },
-    [phase, sequence, currentInputIndex, items.length]
+    [phase, sequence, currentInputIndex, items.length, lives]
   )
 
   const handleSeeScore = useCallback(async () => {
@@ -326,10 +337,10 @@ export default function PatternRecallGamePage() {
           : ''
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 py-8 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 py-8 px-4 flex items-center justify-center">
+      <div className="max-w-3xl w-full mx-auto">
         {/* HUD */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
             <div className="text-sm text-gray-600">{t('game.round')}</div>
             <div className="text-2xl font-bold text-gray-800">
@@ -342,6 +353,16 @@ export default function PatternRecallGamePage() {
             <div className="text-2xl font-bold text-gray-800">{formatTime(timer)}</div>
           </div>
 
+          <div
+            className="bg-white rounded-2xl px-6 py-3 shadow-lg"
+            role="img"
+            aria-label={t('patternRecall.game.livesLeft', { count: lives })}
+          >
+            <div className="text-sm text-gray-600">{t('patternRecall.game.lives')}</div>
+            <div className="text-2xl">
+              {Array.from({ length: MAX_LIVES }, (_, i) => (i < lives ? '❤️' : '🖤')).join('')}
+            </div>
+          </div>
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg min-w-[120px] text-center">
             <div
               className={`text-lg font-bold ${
@@ -366,7 +387,7 @@ export default function PatternRecallGamePage() {
               const isActive = phase === 'playback' && currentPlaybackIndex >= 0 && sequence[currentPlaybackIndex] === index
               const isCorrectFeedback = feedbackItem === index && feedbackType === 'correct'
               const isWrongFeedback = feedbackItem === index && feedbackType === 'wrong'
-              const isDisabled = phase === 'playback' || phase === 'correct' || phase === 'game-over'
+              const isDisabled = phase === 'playback' || phase === 'correct' || phase === 'wrong' || phase === 'game-over'
 
               return (
                 <button

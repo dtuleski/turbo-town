@@ -15,6 +15,7 @@ import {
 } from '@/utils/puzzleUtils'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import Confetti from '@/components/game/Confetti'
 
 export default function PuzzleGamePage() {
   const { t } = useTranslation()
@@ -34,7 +35,11 @@ export default function PuzzleGamePage() {
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
   const [selectedPieceId, setSelectedPieceId] = useState<number | null>(null)
   const [showReference, setShowReference] = useState(true)
+  const [wrongCell, setWrongCell] = useState<string | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const timerValueRef = useRef(0)
+  const movesRef = useRef(0)
+  const completedRef = useRef(false)
 
   const imageInfo = PUZZLE_IMAGES.find(i => i.id === imageId) || PUZZLE_IMAGES[0]
   const fullImageSrc = generatePuzzleImageSVG(imageInfo.id, 400)
@@ -68,7 +73,7 @@ export default function PuzzleGamePage() {
   // Timer
   useEffect(() => {
     if (gameStatus === 'playing') {
-      timerRef.current = setInterval(() => setTimer(t => t + 1), 1000)
+      timerRef.current = setInterval(() => setTimer(t => { timerValueRef.current = t + 1; return t + 1 }), 1000)
     }
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [gameStatus])
@@ -79,75 +84,39 @@ export default function PuzzleGamePage() {
     setSelectedPieceId(prev => prev === pieceId ? null : pieceId)
   }, [gameStatus])
 
-  // Place selected piece onto a board cell
+  // Place selected piece onto a board cell. Wrong cells reject the piece (red flash) and it stays in the tray.
   const placePiece = useCallback((targetRow: number, targetCol: number) => {
-    if (gameStatus !== 'playing') return
-
-    // If no piece selected, check if there's a piece on this cell to select it
-    if (selectedPieceId === null) {
-      const occupant = pieces.find(p => p.currentRow === targetRow && p.currentCol === targetCol)
-      if (occupant) {
-        setSelectedPieceId(occupant.id)
-      }
+    if (gameStatus !== 'playing' || selectedPieceId === null) return
+    if (pieces.some(p => p.currentRow === targetRow && p.currentCol === targetCol)) return
+    const selected = pieces.find(p => p.id === selectedPieceId)
+    if (!selected) return
+    movesRef.current += 1
+    setMoves(movesRef.current)
+    setSelectedPieceId(null)
+    if (selected.row !== targetRow || selected.col !== targetCol) {
+      const key = `${targetRow},${targetCol}`
+      setWrongCell(key)
+      setTimeout(() => setWrongCell(c => (c === key ? null : c)), 600)
       return
     }
-
-    setPieces(prev => {
-      const next = prev.map(p => ({ ...p }))
-
-      // If there's already a piece in the target cell, send it back to tray
-      const occupant = next.find(p => p.currentRow === targetRow && p.currentCol === targetCol)
-      if (occupant && occupant.id !== selectedPieceId) {
-        occupant.currentRow = null
-        occupant.currentCol = null
-      }
-
-      // Place the selected piece
-      const selected = next.find(p => p.id === selectedPieceId)!
-      selected.currentRow = targetRow
-      selected.currentCol = targetCol
-
-      setMoves(m => m + 1)
-
-      // Check completion
-      if (isPuzzleComplete(next)) {
-        setTimeout(() => handleComplete(next), 300)
-      }
-
-      return next
-    })
-    setSelectedPieceId(null)
-  }, [selectedPieceId, pieces, gameStatus])
-
-  // Send selected piece back to tray
-  const returnToTray = useCallback(() => {
-    if (selectedPieceId === null) return
-    setPieces(prev => {
-      const next = prev.map(p => ({ ...p }))
-      const selected = next.find(p => p.id === selectedPieceId)!
-      selected.currentRow = null
-      selected.currentCol = null
-      return next
-    })
-    setSelectedPieceId(null)
-  }, [selectedPieceId])
-
+    const next = pieces.map(p => (p.id === selected.id ? { ...p, currentRow: targetRow, currentCol: targetCol } : p))
+    setPieces(next)
+    if (isPuzzleComplete(next) && !completedRef.current) {
+      completedRef.current = true
+      setTimeout(() => handleComplete(next), 300)
+    }
+  }, [selectedPieceId, pieces, gameStatus, gameId]) // eslint-disable-line react-hooks/exhaustive-deps
   const handleComplete = async (finalPieces: PuzzlePiece[]) => {
-    if (timerRef.current) clearInterval(timerRef.current)
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
     setGameStatus('submitting')
-
     try {
-      const totalPieces = finalPieces.length
-      const correctPieces = finalPieces.filter(isPieceCorrect).length
-
       const result = await completeGame({
         gameId,
-        completionTime: timer,
-        attempts: moves,
-        correctAnswers: correctPieces,
-        totalQuestions: totalPieces,
+        completionTime: Math.max(1, timerValueRef.current),
+        attempts: movesRef.current,
+        correctAnswers: finalPieces.filter(isPieceCorrect).length,
+        totalQuestions: finalPieces.length,
       })
-
       setScoreBreakdown(result.scoreBreakdown)
       setLeaderboardRank(result.leaderboardRank)
       setGameStatus('completed')
@@ -156,7 +125,6 @@ export default function PuzzleGamePage() {
       setGameStatus('completed')
     }
   }
-
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`
 
   const trayPieces = pieces.filter(p => p.currentRow === null)
@@ -196,18 +164,12 @@ export default function PuzzleGamePage() {
                 alt="Selected piece"
                 className="w-10 h-10 rounded border-2 border-teal-500"
               />
-              <span className="font-bold text-gray-700">Piece selected — tap a cell to place it</span>
+              <span className="font-bold text-gray-700">Piece selected — tap the cell where it belongs</span>
               <button
                 onClick={() => setSelectedPieceId(null)}
                 className="ml-2 px-2 py-1 bg-gray-200 rounded-lg text-sm font-bold hover:bg-gray-300"
               >
                 ✕
-              </button>
-              <button
-                onClick={returnToTray}
-                className="px-2 py-1 bg-red-100 text-red-600 rounded-lg text-sm font-bold hover:bg-red-200"
-              >
-                ↩ Tray
               </button>
             </div>
           </div>
@@ -215,7 +177,7 @@ export default function PuzzleGamePage() {
 
         <div className="flex flex-col lg:flex-row gap-4 items-start justify-center">
           {/* Reference Image */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 sticky top-2 z-10 self-start" style={{ ["--ref" as any]: `${boardSize}px` }}>
             <button
               onClick={() => setShowReference(r => !r)}
               className="mb-2 px-3 py-1 bg-white/80 rounded-lg text-sm font-bold text-gray-700 hover:bg-white transition-all"
@@ -224,7 +186,7 @@ export default function PuzzleGamePage() {
             </button>
             {showReference && (
               <div className="bg-white rounded-2xl shadow-xl p-2">
-                <img src={fullImageSrc} alt={imageInfo.name} className="rounded-xl" style={{ width: boardSize, height: boardSize }} />
+                <img src={fullImageSrc} alt={imageInfo.name} className="rounded-xl w-28 h-28 lg:w-[var(--ref)] lg:h-[var(--ref)]" />
                 <p className="text-center text-sm font-bold text-gray-600 mt-1">{imageInfo.emoji} {imageInfo.name}</p>
               </div>
             )}
@@ -246,6 +208,7 @@ export default function PuzzleGamePage() {
                   const placedPiece = pieces.find(p => p.currentRow === row && p.currentCol === col)
                   const isCorrect = placedPiece ? isPieceCorrect(placedPiece) : false
                   const isTarget = selectedPieceId !== null && !placedPiece
+                  const isWrong = wrongCell === `${row},${col}`
 
                   return (
                     <button
@@ -253,7 +216,7 @@ export default function PuzzleGamePage() {
                       type="button"
                       className={`relative transition-all ${
                         isCorrect ? 'ring-2 ring-green-400' : ''
-                      } ${isTarget ? 'bg-teal-100 ring-2 ring-teal-300' : 'bg-gray-100'}`}
+                      } ${isWrong ? 'bg-red-300 ring-2 ring-red-500 animate-pulse' : isTarget ? 'bg-teal-100 ring-2 ring-teal-300' : 'bg-gray-100'}`}
                       style={{ width: cellSize, height: cellSize }}
                       onClick={() => placePiece(row, col)}
                     >
@@ -264,9 +227,9 @@ export default function PuzzleGamePage() {
                           className={`w-full h-full ${selectedPieceId === placedPiece.id ? 'ring-2 ring-teal-500 brightness-110' : ''}`}
                           draggable={false}
                         />
-                      ) : (
-                        <span className="text-gray-300 text-xs">{row + 1},{col + 1}</span>
-                      )}
+                      ) : isWrong ? (
+                        <span className="text-red-600 text-2xl font-bold" aria-label="Wrong spot">✕</span>
+                      ) : null}
                     </button>
                   )
                 })}
@@ -305,10 +268,11 @@ export default function PuzzleGamePage() {
         </div>
 
         <p className="text-center text-white/80 text-sm mt-2">
-          Tap a piece to select it, then tap a cell to place it.
+          Tap a piece to select it, then tap the cell where it belongs. Wrong spots send it back to the tray.
         </p>
       </div>
 
+      {(gameStatus === 'submitting' || gameStatus === 'completed') && <Confetti />}
       {/* Score Modal */}
       {gameStatus === 'completed' && scoreBreakdown && (
         <ScoreBreakdownModal
@@ -321,6 +285,19 @@ export default function PuzzleGamePage() {
         />
       )}
 
+      {gameStatus === 'completed' && !scoreBreakdown && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center">
+            <div className="text-5xl mb-3">🎉</div>
+            <p className="text-2xl font-bold mb-1">Puzzle complete!</p>
+            <p className="text-gray-600 mb-4">⏱ {formatTime(timer)} · 🔄 {moves} moves</p>
+            <div className="flex gap-3 justify-center">
+              <button onClick={() => navigate(ROUTES.PUZZLE_SETUP)} className="px-4 py-2 rounded-xl bg-teal-500 text-white font-bold hover:bg-teal-600">Play Again</button>
+              <button onClick={() => navigate(ROUTES.HUB)} className="px-4 py-2 rounded-xl bg-gray-200 font-bold hover:bg-gray-300">Hub</button>
+            </div>
+          </div>
+        </div>
+      )}
       {gameStatus === 'submitting' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 text-center">

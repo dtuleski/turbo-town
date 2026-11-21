@@ -189,7 +189,7 @@ export default function SpaceEntryGamePage() {
     puzzle: MissionPuzzle, answer: string, submitted: boolean, correct: boolean | null,
     onAnswerChange: (v: string) => void, onSubmit: () => void, inputId: string,
   ) => (
-    <div key={inputId} className="bg-black/60 border border-green-500/20 rounded-lg p-2.5 space-y-1.5">
+    <div key={inputId} className="bg-gray-900 border border-green-500/30 rounded-lg p-2.5 space-y-1.5">
       <div className="flex items-center justify-between">
         <span className="text-green-400 font-mono text-xs uppercase tracking-wider">{puzzle.icon} {puzzle.label}</span>
         {submitted && (
@@ -221,7 +221,7 @@ export default function SpaceEntryGamePage() {
   )
 
   return (
-    <div className="min-h-screen bg-black flex flex-col overflow-hidden">
+    <div className="h-screen bg-black flex flex-col overflow-hidden">
       {/* ── CSS ──────────────────────────────────────────────────── */}
       <style>{`
         @keyframes landing-descent { 0%{transform:translate(0,-60px) rotate(-30deg);opacity:1} 50%{transform:translate(0,-20px) rotate(-15deg);opacity:1} 100%{transform:translate(0,0) rotate(0deg);opacity:1} }
@@ -233,7 +233,7 @@ export default function SpaceEntryGamePage() {
         @keyframes pulse-dot{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.5);opacity:.5}}
         .pulse-dot{animation:pulse-dot 2s ease-in-out infinite}
         @keyframes scanline{0%{top:-100%}100%{top:100%}}
-        .cockpit-scanline::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,100,0.03) 2px,rgba(0,255,100,0.03) 4px);z-index:1}
+        .cockpit-scanline::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,100,0.03) 2px,rgba(0,255,100,0.03) 4px);z-index:0}
       `}</style>
 
       {/* ═══════════════════════════════════════════════════════════ */}
@@ -309,8 +309,8 @@ export default function SpaceEntryGamePage() {
       {/* ═══════════════════════════════════════════════════════════ */}
       {/* ── CONSOLE PANEL: cockpit computer screen ───────────────── */}
       {/* ═══════════════════════════════════════════════════════════ */}
-      <div className="flex-1 bg-gray-950 border-t border-green-500/10 relative cockpit-scanline overflow-hidden">
-        <div className="h-full overflow-y-auto p-3 md:p-4 space-y-3">
+      <div className="flex-1 bg-gray-950 border-t border-green-500/10 relative cockpit-scanline overflow-hidden min-h-0">
+        <div className="relative z-10 h-full overflow-y-auto p-3 md:p-4 space-y-3">
           {/* status bar */}
           <div className="flex items-center justify-between">
             <span className="text-green-500 font-mono text-xs uppercase tracking-widest">

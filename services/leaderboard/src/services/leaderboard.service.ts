@@ -141,15 +141,11 @@ export class LeaderboardService {
   }
 
   /**
-   * Get OVERALL leaderboard for time-based queries (DAILY, WEEKLY, MONTHLY)
-   * Aggregates best scores across all game types for each user in the time period
+   * All concrete game types (excludes OVERALL). Entries are stored under their
+   * own game type, so OVERALL has to be computed by combining these.
    */
-  private async getOverallTimeBasedLeaderboard(
-    timeframe: Timeframe,
-    limit: number
-  ): Promise<LeaderboardEntry[]> {
-    // Get all game types (excluding OVERALL itself)
-    const gameTypes: GameType[] = [
+  private getConcreteGameTypes(): GameType[] {
+    return [
       GameType.MEMORY_MATCH,
       GameType.MATH_CHALLENGE,
       GameType.WORD_PUZZLE,
@@ -174,6 +170,17 @@ export class LeaderboardService {
       GameType.MINI_GOLF,
       GameType.CIRCUIT_BUILDER,
     ];
+  }
+
+  /**
+   * Get OVERALL leaderboard for time-based queries (DAILY, WEEKLY, MONTHLY)
+   * Aggregates best scores across all game types for each user in the time period
+   */
+  private async getOverallTimeBasedLeaderboard(
+    timeframe: Timeframe,
+    limit: number
+  ): Promise<LeaderboardEntry[]> {
+    const gameTypes = this.getConcreteGameTypes();
     
     // Fetch entries for all game types in parallel
     const allEntriesPromises = gameTypes.map(gt =>
@@ -242,12 +249,26 @@ export class LeaderboardService {
     gameType: GameType,
     timeframe: Timeframe
   ): Promise<UserRankResponse | null> {
-    // Get all entries for the timeframe
-    const entries = await this.leaderboardRepo.queryByGameTypeAndTimeframe({
-      gameType,
-      timeframe,
-      limit: 10000, // Get all entries to calculate accurate rank
-    });
+    // Get all entries for the timeframe. Entries are never stored with gameType
+    // OVERALL, so OVERALL ranks are computed across every concrete game type.
+    const entries =
+      gameType === GameType.OVERALL
+        ? (
+            await Promise.all(
+              this.getConcreteGameTypes().map((gt) =>
+                this.leaderboardRepo.queryByGameTypeAndTimeframe({
+                  gameType: gt,
+                  timeframe,
+                  limit: 10000,
+                })
+              )
+            )
+          ).flat()
+        : await this.leaderboardRepo.queryByGameTypeAndTimeframe({
+            gameType,
+            timeframe,
+            limit: 10000, // Get all entries to calculate accurate rank
+          });
 
     if (entries.length === 0) {
       return null;
@@ -261,8 +282,12 @@ export class LeaderboardService {
 
     const bestUserScore = Math.max(...userEntries.map((entry) => entry.score));
 
-    // Count entries with higher scores
-    const higherScores = entries.filter((entry) => entry.score > bestUserScore);
+    // Count distinct players whose best score is higher
+    const bestByUser = new Map<string, number>();
+    for (const entry of entries) {
+      bestByUser.set(entry.userId, Math.max(bestByUser.get(entry.userId) ?? 0, entry.score));
+    }
+    const higherScores = Array.from(bestByUser.values()).filter((score) => score > bestUserScore);
     const rank = higherScores.length + 1;
 
     // Calculate percentile
