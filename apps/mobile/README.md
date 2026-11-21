@@ -4,9 +4,10 @@ Cross-platform (iOS/Android) client for DashDen. This MVP ships the **app shell*
 (Cognito auth + navigation) and the **Memory Match** game, integrated with the
 existing GraphQL game-service backend.
 
-> This project's Dart source was authored on a Windows machine. The platform
-> folders (`ios/`, `android/`, etc.) and `pubspec.lock` are **not** committed —
-> generate them on your Mac with `flutter create .` (see below).
+> The platform folders (`ios/`, `android/`) and `pubspec.lock` are committed.
+> The native URL-scheme config for Google sign-in (below) is already applied.
+> **Android has not been built or tested** in the environment this was set up in
+> (no Android SDK, adb, emulator; Java on PATH is 1.8). iOS simulator builds are verified.
 
 ## Prerequisites (macOS)
 
@@ -15,29 +16,33 @@ existing GraphQL game-service backend.
 - An iOS Simulator or a connected device
 - Run `flutter doctor` and resolve any issues
 
-## First-time setup
-
+## Setup and commands
 From `apps/mobile/`:
-
 ```bash
-# 1. Generate the native platform folders around the existing lib/.
-#    This is safe: it won't overwrite lib/, pubspec.yaml, or analysis_options.yaml.
-flutter create --project-name dashden_mobile --org app.dashden .
-
-# 2. Fetch dependencies
 flutter pub get
-
-# 3. (iOS) install pods
-cd ios && pod install && cd ..
+flutter gen-l10n                  # only if you edit lib/l10n/*.arb by hand
+flutter analyze && flutter test
+flutter build ios --simulator --debug --no-codesign
+flutter run -d <simulator id>     # use this to run: unsigned builds installed with simctl cannot use the Keychain
 ```
+If the iOS build fails with "Failed to codesign ... Flutter.framework", the repo sits in a
+synced folder (iCloud Documents) that adds Finder xattrs. Point `build/` at a folder outside it:
+`mkdir -p /tmp/dashden_mobile_build && ln -s /tmp/dashden_mobile_build build`.
+
+### Localization
+`lib/l10n/app_{en,es,pt}.arb` are generated from `apps/web/src/locales/*.json`:
+```bash
+node tools/convert_locales.mjs && flutter gen-l10n
+```
+Keys are flattened (`a.b-c` -> `a_b_c`, arrays -> `name_0`), `{{x}}` -> `{x}`. Keys missing in
+es/pt on web are filled from en (same fallback as i18next). Do not edit the ARB files by hand.
+`tools/export_fixtures.mjs` is a skeleton for golden fixtures.
 
 ## Platform config for Google Sign-In (required after `flutter create`)
 
 Google (Cognito Hosted UI) sign-in uses an OAuth redirect back to the app via a
-custom URL scheme: **`dashdenmobile://callback`**. Because the platform folders
-are regenerated locally (not committed), you MUST re-apply the following native
-config after running `flutter create .`, or Google sign-in will fail to return
-to the app.
+custom URL scheme: **`dashdenmobile://callback`**. If you ever regenerate the platform
+folders with `flutter create .`, re-apply the following native config.
 
 The scheme/redirect are defined in `lib/config/env.dart`
 (`oauthRedirectScheme = 'dashdenmobile'`) and are already registered on the prod
@@ -152,5 +157,4 @@ lib/
   workstream — see the subscription design discussion).
 - Leaderboards, statistics, achievements screens.
 - Games other than Memory Match.
-- Localization (the web app supports en/es/pt).
 ```

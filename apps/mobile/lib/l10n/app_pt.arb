@@ -1,0 +1,1453 @@
+{
+  "@@locale": "pt",
+  "games_memory_match_title": "Jogo da Memória",
+  "games_memory_match_description": "Vire cartas e encontre os pares!",
+  "games_memory_match_category": "Quebra-cabeças & Lógica",
+  "games_math_challenge_title": "Desafio de Matemática",
+  "games_math_challenge_description": "Resolva problemas de matemática o mais rápido possível!",
+  "games_math_challenge_category": "Ciência & Matemática",
+  "games_word_puzzle_title": "Caça-Palavras",
+  "games_word_puzzle_description": "Encontre palavras escondidas na grade!",
+  "games_word_puzzle_category": "Quebra-cabeças & Lógica",
+  "games_language_learning_title": "Aprendizado de Idiomas",
+  "games_language_learning_description": "Aprenda novos idiomas com jogos divertidos!",
+  "games_language_learning_category": "Geografia & Idiomas",
+  "games_sudoku_title": "Sudoku",
+  "games_sudoku_description": "Preencha a grade com números — sem repetir!",
+  "games_sudoku_category": "Quebra-cabeças & Lógica",
+  "games_jigsaw_puzzle_title": "Quebra-Cabeça",
+  "games_jigsaw_puzzle_description": "Monte as peças para completar a imagem!",
+  "games_jigsaw_puzzle_category": "Quebra-cabeças & Lógica",
+  "games_bubble_pop_title": "Estoura Bolha",
+  "games_bubble_pop_description": "Estoure bolhas resolvendo desafios rápidos!",
+  "games_bubble_pop_category": "Quebra-cabeças & Lógica",
+  "games_sequence_memory_title": "Memória Sequencial",
+  "games_sequence_memory_description": "Memorize e repita sequências crescentes!",
+  "games_sequence_memory_category": "Quebra-cabeças & Lógica",
+  "games_code_a_bot_title": "Programe o Robô",
+  "games_code_a_bot_description": "Programe um robô para alcançar o objetivo!",
+  "games_code_a_bot_category": "Quebra-cabeças & Lógica",
+  "games_geo_quiz_title": "Quiz de Geografia",
+  "games_geo_quiz_description": "Teste seu conhecimento de geografia mundial!",
+  "games_geo_quiz_category": "Geografia & Idiomas",
+  "games_history_quiz_title": "Quiz de História",
+  "games_history_quiz_description": "Viaje no tempo com perguntas de história!",
+  "games_history_quiz_category": "História & Civismo",
+  "games_civics_quiz_title": "Quiz de Civismo",
+  "games_civics_quiz_description": "Aprenda sobre governo e cidadania!",
+  "games_civics_quiz_category": "História & Civismo",
+  "games_color_by_number_title": "Colorir por Números",
+  "games_color_by_number_description": "Pinte lindas imagens número por número!",
+  "games_color_by_number_category": "Quebra-cabeças & Lógica",
+  "games_hangman_title": "Forca",
+  "games_hangman_description": "Adivinhe a palavra letra por letra!",
+  "games_hangman_category": "Quebra-cabeças & Lógica",
+  "games_tic_tac_toe_title": "Jogo da Velha",
+  "games_tic_tac_toe_description": "Clássico jogo de estratégia X e O!",
+  "games_tic_tac_toe_category": "Quebra-cabeças & Lógica",
+  "games_scratch_coding_title": "Space Coder",
+  "games_scratch_coding_description": "Programe seu astronauta até a câmara de ar com menos blocos!",
+  "games_scratch_coding_category": "Quebra-cabeças & Lógica",
+  "games_math_maze_title": "Labirinto Matemático",
+  "games_math_maze_description": "Navegue por um labirinto resolvendo equações nos portões!",
+  "games_math_maze_category": "Ciência & Matemática",
+  "games_pattern_recall_title": "Memória de Padrões",
+  "games_pattern_recall_description": "Memorize e repita padrões neste jogo estilo Simon Says!",
+  "games_pattern_recall_category": "Quebra-cabeças & Lógica",
+  "games_space_entry_title": "Entrada Espacial",
+  "games_space_entry_description": "Calcule seu ângulo de reentrada e aterrisse com segurança na Terra!",
+  "games_space_entry_category": "Ciência & Matemática",
+  "games_bond_and_burn_title": "Bond & Burn",
+  "games_bond_and_burn_description": "Leia a fórmula, encontre elementos na tabela periódica e monte compostos antes que o lab superaqueça!",
+  "games_bond_and_burn_category": "Ciência & Matemática",
+  "games_circuit_builder_title": "Construtor de Circuitos",
+  "games_circuit_builder_description": "Ligue pilhas, lâmpadas e interruptores, veja a corrente fluir e conserte os defeitos!",
+  "games_circuit_builder_category": "Ciência & Matemática",
+  "nav_dashboard": "Painel",
+  "nav_leaderboard": "Classificação",
+  "nav_achievements": "Conquistas",
+  "nav_changePlan": "Mudar Plano",
+  "nav_logout": "Sair",
+  "nav_profile": "Perfil",
+  "nav_contact": "Contato",
+  "hub_title": "DashDen Central de Jogos",
+  "hub_greeting": "Olá {name}! Escolha um jogo!",
+  "@hub_greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hub_subtitle": "Jogos educativos que tornam o aprendizado divertido",
+  "hub_filter_all": "Todos",
+  "hub_filter_scienceMath": "Ciência e Matemática",
+  "hub_filter_historyCivics": "História e Civismo",
+  "hub_filter_geographyLanguage": "Geografia e Idiomas",
+  "hub_filter_puzzlesLogic": "Puzzles e Lógica",
+  "hub_noGames": "Nenhum jogo disponível agora. Volte em breve!",
+  "hub_noGamesFilter": "Nenhum jogo nesta categoria. Tente outro filtro!",
+  "hub_playNow": "Jogar! →",
+  "hub_comingSoon": "Em Breve!",
+  "hub_loadingGames": "Carregando jogos...",
+  "hub_oops": "Ops!",
+  "hub_failedToLoad": "Erro ao carregar os jogos. Tente novamente.",
+  "hub_dashboard": "Painel",
+  "hub_leaderboard": "Classificação",
+  "hub_ages": "Idades",
+  "game_back": "← Voltar",
+  "game_startQuiz": "Começar! 🚀",
+  "game_startGame": "Começar!",
+  "game_selectDifficulty": "Selecionar Dificuldade",
+  "game_chooseDifficulty": "Escolha a Dificuldade",
+  "game_chooseTopic": "Escolha um Tema",
+  "game_chooseGameMode": "Escolha o Modo de Jogo",
+  "game_chooseAIDifficulty": "Escolha a Dificuldade da IA",
+  "game_selectDifficultyAndMode": "Selecione Dificuldade e Modo",
+  "game_selectTopicAndDifficulty": "Selecione Tema e Dificuldade",
+  "game_easy": "Fácil",
+  "game_medium": "Médio",
+  "game_hard": "Difícil",
+  "game_correct": "Correto!",
+  "game_wrong": "Errado!",
+  "game_score": "Pontuação",
+  "game_time": "Tempo",
+  "game_round": "Rodada",
+  "game_streak": "sequência!",
+  "game_bonus": "bônus",
+  "game_nextRound": "Próxima Rodada →",
+  "game_seeResults": "Ver Resultados 🏆",
+  "game_calculating": "Calculando pontuação...",
+  "game_gameComplete": "Jogo Completo!",
+  "game_playAgain": "Jogar Novamente",
+  "game_close": "Fechar",
+  "game_rateGame": "Avalie este jogo",
+  "game_thanksFeedback": "✓ Obrigado pelo seu feedback!",
+  "game_totalScore": "Pontuação Total",
+  "game_baseScore": "Pontuação Base",
+  "game_difficulty": "Dificuldade",
+  "game_speed": "Velocidade",
+  "game_accuracy": "Precisão",
+  "game_leaderboardBtn": "🏆 Classificação",
+  "game_playAgainBtn": "🎮 Jogar Novamente",
+  "leaderboard_title": "Classificação",
+  "leaderboard_subtitle": "Compita com jogadores do mundo todo!",
+  "leaderboard_gameType": "Tipo de Jogo",
+  "leaderboard_daily": "Diário",
+  "leaderboard_weekly": "Semanal",
+  "leaderboard_monthly": "Mensal",
+  "leaderboard_allTime": "Histórico",
+  "leaderboard_yourRank": "Sua Posição",
+  "leaderboard_topPlayers": "Melhores Jogadores",
+  "leaderboard_rank": "Posição",
+  "leaderboard_player": "Jogador",
+  "leaderboard_date": "Data",
+  "leaderboard_clearAll": "Limpar Todos os Registros",
+  "leaderboard_players": "jogadores",
+  "leaderboard_keepPlaying": "Continue jogando para melhorar sua posição!",
+  "leaderboard_todaysTop": "Melhores Jogadores de Hoje",
+  "leaderboard_thisWeeksTop": "Melhores Jogadores da Semana",
+  "leaderboard_thisMonthsTop": "Melhores Jogadores do Mês",
+  "leaderboard_allTimeTop": "Melhores Jogadores de Todos os Tempos",
+  "leaderboard_ranked": "Você está na posição #{rank} de {total} jogadores",
+  "@leaderboard_ranked": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_showing": "Mostrando os {count} melhores jogadores",
+  "@leaderboard_showing": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_clearing": "⏳ Limpando...",
+  "leaderboard_failedToLoad": "Erro ao carregar a classificação. Tente novamente mais tarde.",
+  "profile_title": "Perfil",
+  "profile_accountTier": "Nível da Conta",
+  "profile_memberSince": "Membro Desde",
+  "profile_emailPrefs": "Preferências de Email",
+  "profile_dailyDigest": "Resumo Diário",
+  "profile_dailyDigestDesc": "Receba atualizações diárias de classificação e jogos",
+  "profile_dailyDigestOn": "✓ Você receberá atualizações diárias às 20h EST",
+  "auth_createAccount": "Criar Conta",
+  "auth_login": "Entrar",
+  "auth_email": "Email",
+  "auth_username": "Nome de Usuário",
+  "auth_password": "Senha",
+  "auth_confirmPassword": "Confirmar Senha",
+  "auth_forgotPassword": "Esqueceu sua senha?",
+  "auth_alreadyHaveAccount": "Já tem uma conta?",
+  "auth_dontHaveAccount": "Não tem uma conta?",
+  "auth_signUpGoogle": "Cadastrar com Google",
+  "auth_signInGoogle": "Entrar com Google",
+  "auth_emailOptIn": "Envie-me atualizações diárias de jogos, classificações e alertas de novos jogos",
+  "auth_or": "ou",
+  "auth_welcomeBack": "Bem-vindo de volta!",
+  "auth_rememberMe": "Lembrar de mim",
+  "auth_invalidCredentials": "Email ou senha inválidos",
+  "auth_continueWithGoogle": "Continuar com Google",
+  "auth_signUp": "Cadastrar",
+  "auth_confirmEmail": "Confirme seu Email",
+  "auth_confirmationCode": "Código de Confirmação",
+  "auth_sentCodeTo": "Enviamos um código de confirmação para {email}. Digite-o abaixo.",
+  "@auth_sentCodeTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "auth_confirmEmailBtn": "Confirmar Email",
+  "auth_backToRegistration": "Voltar ao cadastro",
+  "auth_checkEmailForCode": "Verifique seu email para obter o código de confirmação.",
+  "auth_registrationFailed": "Erro no cadastro. Tente novamente.",
+  "auth_confirmationFailed": "Erro na confirmação. Tente novamente.",
+  "common_loading": "Carregando...",
+  "common_error": "Error",
+  "common_retry": "Tentar Novamente",
+  "common_save": "Salvar",
+  "common_cancel": "Cancelar",
+  "common_confirm": "Confirmar",
+  "common_yes": "Sim",
+  "common_no": "Não",
+  "common_tryAgain": "Tentar Novamente",
+  "common_player": "Jogador",
+  "setup_mathChallenge_title": "Desafio Matemático",
+  "setup_mathChallenge_subtitle": "Teste suas habilidades matemáticas!",
+  "setup_mathChallenge_chooseLevel": "Escolha seu Nível",
+  "setup_mathChallenge_addSub": "Adição e Subtração",
+  "setup_mathChallenge_allBasic": "Todas as Operações Básicas",
+  "setup_mathChallenge_advanced": "Matemática Avançada",
+  "setup_mathChallenge_questions": "{count} perguntas",
+  "@setup_mathChallenge_questions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_minutes": "{count} minutos",
+  "@setup_mathChallenge_minutes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_startChallenge": "Começar! 🚀",
+  "setup_mathChallenge_selectLevel": "Selecione um Nível",
+  "setup_mathChallenge_question": "Pergunta",
+  "setup_mathChallenge_time": "Tempo",
+  "setup_mathChallenge_score": "Pontuação",
+  "setup_mathChallenge_level": "{emoji} Nível {name}",
+  "@setup_mathChallenge_level": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_yourAnswer": "Sua resposta...",
+  "setup_mathChallenge_submitAnswer": "Enviar Resposta",
+  "setup_mathChallenge_calculatingScore": "Calculando sua pontuação...",
+  "setup_mathChallenge_correct": "✅ Correto!",
+  "setup_mathChallenge_wrong": "❌ Errado! Resposta: {answer}",
+  "@setup_mathChallenge_wrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_amazing": "Incrível!",
+  "setup_mathChallenge_goodJob": "Bom Trabalho!",
+  "setup_mathChallenge_keepPracticing": "Continue Praticando!",
+  "setup_mathChallenge_playAgain": "Jogar Novamente",
+  "setup_mathChallenge_backToHub": "Voltar ao Hub",
+  "setup_memoryMatch_letsPlay": "Vamos Jogar! 🎮",
+  "setup_memoryMatch_chooseTheme": "Escolha seu Tema",
+  "setup_memoryMatch_chooseDifficulty": "Escolha a Dificuldade",
+  "setup_memoryMatch_startGame": "Começar! 🚀",
+  "setup_memoryMatch_animals": "Animais",
+  "setup_memoryMatch_fruits": "Frutas",
+  "setup_memoryMatch_vehicles": "Veículos",
+  "setup_memoryMatch_space": "Espaço",
+  "setup_memoryMatch_ocean": "Oceano",
+  "setup_memoryMatch_formula1": "Fórmula 1",
+  "setup_memoryMatch_easyDesc": "6 pares - Perfeito para iniciantes",
+  "setup_memoryMatch_mediumDesc": "8 pares - Um bom desafio",
+  "setup_memoryMatch_hardDesc": "10 pares - Para mestres da memória",
+  "setup_memoryMatch_readyToPlay": "Pronto para Jogar?",
+  "setup_memoryMatch_matchPairs": "Encontre todos os pares o mais rápido possível!",
+  "setup_memoryMatch_theme": "Tema",
+  "setup_memoryMatch_difficulty": "Dificuldade",
+  "setup_memoryMatch_time": "Tempo",
+  "setup_memoryMatch_attempts": "Tentativas",
+  "setup_memoryMatch_matches": "Acertos",
+  "setup_memoryMatch_pause": "Pausar",
+  "setup_memoryMatch_resume": "Continuar",
+  "setup_memoryMatch_restart": "Reiniciar",
+  "setup_memoryMatch_gamePaused": "Jogo Pausado",
+  "setup_contact_title": "Fale Conosco",
+  "setup_contact_subtitle": "Reporte um bug, solicite uma função ou apenas diga oi!",
+  "setup_contact_whatsAbout": "Sobre o que é?",
+  "setup_contact_bugReport": "Relato de Bug",
+  "setup_contact_featureRequest": "Solicitação de Função",
+  "setup_contact_question": "Pergunta",
+  "setup_contact_other": "Outro",
+  "setup_contact_from": "De:",
+  "setup_contact_subject": "Assunto",
+  "setup_contact_subjectPlaceholder": "Breve descrição...",
+  "setup_contact_message": "Mensagem",
+  "setup_contact_messagePlaceholder": "Conte-nos mais...",
+  "setup_contact_send": "📨 Enviar Mensagem",
+  "setup_contact_sending": "⏳ Enviando...",
+  "setup_contact_errorMsg": "Algo deu errado. Tente novamente.",
+  "setup_contact_sentTitle": "Mensagem Enviada!",
+  "setup_contact_sentMsg": "Obrigado por entrar em contato. Responderemos em breve.",
+  "setup_contact_backToGames": "Voltar aos Jogos",
+  "setup_civicsQuiz_title": "Quiz de Civismo",
+  "setup_civicsQuiz_subtitle": "Domine o teste oficial de cidadania dos EUA",
+  "setup_civicsQuiz_based": "Baseado nas 100 perguntas cívicas do USCIS",
+  "setup_civicsQuiz_allTopics": "Todos os Temas",
+  "setup_civicsQuiz_allTopicsDesc": "Todas as 100 perguntas misturadas",
+  "setup_civicsQuiz_americanGov": "Governo Americano",
+  "setup_civicsQuiz_americanGovDesc": "Princípios, sistema, direitos e responsabilidades",
+  "setup_civicsQuiz_americanHistory": "História Americana",
+  "setup_civicsQuiz_americanHistoryDesc": "Período colonial, 1800s e história recente",
+  "setup_civicsQuiz_integratedCivics": "Civismo Integrado",
+  "setup_civicsQuiz_integratedCivicsDesc": "Geografia, símbolos e feriados",
+  "setup_civicsQuiz_questions": "perguntas",
+  "setup_civicsQuiz_aboutQuiz": "Sobre este Quiz",
+  "setup_geoQuiz_title": "Quiz de Geografia",
+  "setup_geoQuiz_subtitle": "Teste seus conhecimentos de geografia!",
+  "setup_geoQuiz_info": "10 perguntas · Dicas progressivas · Curiosidades",
+  "setup_geoQuiz_howItWorks": "Como Funciona",
+  "setup_geoQuiz_questionsLabel": "Perguntas",
+  "setup_geoQuiz_timerPerQ": "Tempo por pergunta",
+  "setup_geoQuiz_hintsAfter": "Dicas após 5s e 10s",
+  "setup_geoQuiz_streakBonuses": "Bônus por sequência",
+  "setup_geoQuiz_funFacts": "Curiosidades após cada resposta",
+  "setup_geoModes_capitals": "Capitais",
+  "setup_geoModes_flags": "Bandeiras",
+  "setup_geoModes_usStates": "Estados dos EUA",
+  "setup_geoModes_silhouettes": "Silhuetas",
+  "setup_geoModes_continents": "Continentes",
+  "setup_historyQuiz_title": "Quiz de História",
+  "setup_historyQuiz_subtitle": "Frases famosas, eventos e personagens históricos",
+  "setup_historyQuiz_info": "10 perguntas · Imagens · Curiosidades",
+  "setup_hangman_title": "Forca",
+  "setup_hangman_subtitle": "Adivinhe a palavra antes que a forca se complete!",
+  "setup_hangman_info": "6 erros permitidos · Dicas incluídas · 5 rodadas",
+  "setup_hangman_hintInfo": "Cada palavra tem uma dica e categoria · Menos erros = mais pontos",
+  "setup_hangman_upTo5": "Até 5 letras",
+  "setup_hangman_upTo10": "6-10 letras",
+  "setup_hangman_moreThan10": "11+ letras",
+  "setup_hangman_rounds": "5 rodadas",
+  "setup_ticTacToe_title": "Jogo da Velha",
+  "setup_ticTacToe_subtitle": "Desafie a IA — Melhor de 5 rodadas!",
+  "setup_ticTacToe_youAreX": "Você é X · IA é O · Ganhe, empate ou perca cada rodada",
+  "setup_ticTacToe_randomAI": "IA Aleatória",
+  "setup_ticTacToe_smartAI": "IA Inteligente",
+  "setup_ticTacToe_perfectAI": "IA Perfeita",
+  "setup_ticTacToe_greatForBeginners": "Ótimo para iniciantes",
+  "setup_ticTacToe_blocksYourWins": "Bloqueia suas vitórias",
+  "setup_ticTacToe_impossibleToBeat": "Impossível de vencer — tente empatar!",
+  "setup_ticTacToe_scoring": "Vitória = 300pts · Empate = 100pts · Derrota = 0pts · Mais rápido = bônus",
+  "scratchCoding_title": "Programador Espacial",
+  "scratchCoding_subtitle": "Programe seu astronauta até a escotilha com o menor número de linhas de código!",
+  "scratchCoding_howToPlay": "Como Jogar",
+  "scratchCoding_chooseDifficulty": "Escolha a Dificuldade",
+  "scratchCoding_startCoding": "Começar a Programar! 🚀",
+  "scratchCoding_howToPlayStep1": "Clique nos botões de comando da paleta para adicionar linhas de código",
+  "scratchCoding_howToPlayStep2": "Construa seu programa no editor de código estilo terminal",
+  "scratchCoding_howToPlayStep3": "Pressione Executar e veja seu astronauta seguir as instruções!",
+  "scratchCoding_blocks_onStart": "Ao Iniciar",
+  "scratchCoding_blocks_moveForward": "Avançar",
+  "scratchCoding_blocks_turnLeft": "Virar Esquerda",
+  "scratchCoding_blocks_turnRight": "Virar Direita",
+  "scratchCoding_blocks_repeat": "Repetir",
+  "scratchCoding_blocks_ifWallAhead": "Se Há Asteroide",
+  "scratchCoding_blocks_ifOnGoal": "Se Na Eclusa",
+  "scratchCoding_categories_motion": "Movimento",
+  "scratchCoding_categories_control": "Controle",
+  "scratchCoding_categories_events": "Eventos",
+  "scratchCoding_game_blocks": "Comandos",
+  "scratchCoding_game_noMoreBlocks": "Máximo de linhas atingido!",
+  "scratchCoding_game_program": "Programa",
+  "scratchCoding_game_blocksUsed": "{used}/{max} linhas",
+  "@scratchCoding_game_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_dragHere": "Clique em comandos para adicionar código aqui...",
+  "scratchCoding_game_clearAll": "Limpar Tudo ✕",
+  "scratchCoding_game_clickToRemove": "clique para remover",
+  "scratchCoding_game_run": "Executar",
+  "scratchCoding_game_level": "Nível {current}/{total}",
+  "@scratchCoding_game_level": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_levelComplete": "Nível Completo!",
+  "scratchCoding_game_blocksUsedCount": "Resolvido em {count} linhas",
+  "@scratchCoding_game_blocksUsedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_optimalSolution": "Solução ótima!",
+  "scratchCoding_game_optimalHint": "Ótimo: {count} linhas",
+  "@scratchCoding_game_optimalHint": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_nextLevel": "Próximo Nível →",
+  "scratchCoding_game_seeScore": "Ver Pontuação 🏆",
+  "scratchCoding_game_tryAgain": "Tentar Novamente 🔄",
+  "scratchCoding_game_endGame": "Encerrar Jogo",
+  "scratchCoding_game_hitWall": "O astronauta bateu em um asteroide! ☄️",
+  "scratchCoding_game_offGrid": "O astronauta se perdeu no espaço! ☄️",
+  "scratchCoding_game_didntReachGoal": "O astronauta não chegou à eclusa 🤔",
+  "scratchCoding_game_tryDifferent": "Tente uma sequência diferente",
+  "scratchCoding_difficulty_easy_label": "Fácil",
+  "scratchCoding_difficulty_easy_desc": "Grade 6×6 · avançar, virar",
+  "scratchCoding_difficulty_easy_features": "forward() · turn-left() · turn-right()",
+  "scratchCoding_difficulty_medium_label": "Médio",
+  "scratchCoding_difficulty_medium_desc": "Grade 8×8 · loops!",
+  "scratchCoding_difficulty_medium_features": "forward() · viradas · loop(n)",
+  "scratchCoding_difficulty_hard_label": "Difícil",
+  "scratchCoding_difficulty_hard_desc": "Grade 12×12 · obstáculos e condicionais",
+  "scratchCoding_difficulty_hard_features": "Todos os comandos · jump() · if/while",
+  "scratchCoding_nesting_ifLabel": "Se",
+  "scratchCoding_nesting_elseLabel": "Senão",
+  "scratchCoding_nesting_dropHere": "Arraste blocos aqui",
+  "scratchCoding_nesting_maxDepthReached": "Profundidade máxima de aninhamento atingida!",
+  "scratchCoding_nesting_perfectEfficiency": "Código Perfeito ⚡",
+  "scratchCoding_nesting_goodEfficiency": "Código Limpo 👍",
+  "scratchCoding_nesting_canImprove": "Pode melhorar — use menos linhas!",
+  "scratchCoding_hints_easy1": "Mova para a direita para chegar à escotilha — use forward() cinco vezes",
+  "scratchCoding_hints_easy2": "Mova para a direita e para baixo para chegar à escotilha",
+  "scratchCoding_hints_easy3": "Contorne a parede — faça um retorno pelo corredor",
+  "scratchCoding_hints_easy4": "Navegue ao redor dos asteroides com curvas",
+  "scratchCoding_hints_easy5": "Zigzague pelo corredor em forma de S",
+  "scratchCoding_hints_medium1": "Vê o padrão de escada? Use loop() para repetir: forward + virar + forward + virar",
+  "scratchCoding_hints_medium2": "O caminho vai e volta em zigzag — use loop() para repetir o padrão",
+  "scratchCoding_hints_medium3": "Navegue a espiral — loops ajudam com padrões repetitivos",
+  "scratchCoding_hints_medium4": "Duas curvas em L idênticas — coloque a forma L dentro de um loop(2)",
+  "scratchCoding_hints_medium5": "Pequenos passos diagonais se repetem 6 vezes — perfeito para um loop()",
+  "scratchCoding_hints_hard1": "Obstáculos bloqueiam seu caminho! Use jump() para pular sobre eles",
+  "scratchCoding_hints_hard2": "Use if(obstacle-ahead) para decidir quando pular",
+  "scratchCoding_hints_hard3": "Obstáculos densos — combine jump() com if(obstacle-ahead) e seu ramo else",
+  "scratchCoding_hints_hard4": "Use if(obstacle-ahead) para navegar ao redor de obstáculos",
+  "scratchCoding_hints_hard5": "Use while(not-at-goal) para continuar se movendo até chegar à eclusa",
+  "spaceCoder_commands_forward": "forward()",
+  "spaceCoder_commands_turnLeft": "turn-left()",
+  "spaceCoder_commands_turnRight": "turn-right()",
+  "spaceCoder_commands_jump": "jump()",
+  "spaceCoder_commands_loop": "loop(n)",
+  "spaceCoder_commands_if": "se(...)",
+  "spaceCoder_commands_while": "enquanto(...)",
+  "spaceCoder_commands_varNumDecl": "var-num",
+  "spaceCoder_commands_varCharDecl": "var-char",
+  "spaceCoder_commands_varNumInc": "var-num++",
+  "spaceCoder_commands_varNumDec": "var-num--",
+  "spaceCoder_conditions_sensorMode": "Sensor",
+  "spaceCoder_conditions_comparisonMode": "Comparar",
+  "spaceCoder_conditions_obstacleAhead": "obstacle-ahead()",
+  "spaceCoder_conditions_atGoal": "at-goal()",
+  "spaceCoder_conditions_notAtGoal": "not-at-goal()",
+  "spaceCoder_conditions_edgeAhead": "edge-ahead()",
+  "spaceCoder_variables_sectionTitle": "Variáveis",
+  "spaceCoder_variables_numLabel": "Número",
+  "spaceCoder_variables_charLabel": "Caractere",
+  "spaceCoder_editor_lineNumbers": "Números de Linha",
+  "spaceCoder_editor_clearAll": "Limpar Tudo",
+  "spaceCoder_editor_insertionHint": "Clique em um comando para inseri-lo aqui",
+  "spaceCoder_editor_maxLinesReached": "Máximo de linhas atingido!",
+  "spaceCoder_errors_collision": "O astronauta bateu em um asteroide! ☄️",
+  "spaceCoder_errors_hitObstacle": "O astronauta bateu em uma rocha! Use jump() para pular obstáculos 🪨",
+  "spaceCoder_errors_outOfBounds": "O astronauta se perdeu no espaço! ☄️",
+  "spaceCoder_errors_noObstacleToJump": "Nada para pular! jump() precisa de um obstáculo à frente 🤔",
+  "spaceCoder_errors_jumpLandingBlocked": "Não pode pousar lá! O ponto de pouso está bloqueado ☄️",
+  "spaceCoder_errors_infiniteLoop": "O programa demorou demais! Verifique seus loops 🔄",
+  "spaceCoder_errors_undefinedVarNum": "Variável não definida! Adicione var-num = <valor> antes de usá-la.",
+  "spaceCoder_errors_undefinedVarChar": "Variável não definida! Adicione var-char = ''<valor>'' antes de usá-la.",
+  "spaceCoder_efficiency_perfectCode": "Código Perfeito ⚡",
+  "spaceCoder_efficiency_cleanCode": "Código Limpo 👍",
+  "gameplay_loadingQuestions": "Carregando perguntas...",
+  "gameplay_whichCountry": "Qual país é este?",
+  "gameplay_guessesLeft": "{count} tentativas restantes",
+  "@gameplay_guessesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theWordWas": "A palavra era: {word}",
+  "@gameplay_theWordWas": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theAnswerWas": "A resposta era: {answer}",
+  "@gameplay_theAnswerWas": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_answer": "Resposta: {answer}",
+  "@gameplay_answer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_englishOnlyBadge": "🌐 Conteúdo apenas em inglês",
+  "gameplay_nameEvent": "Nomeie o Evento",
+  "gameplay_whenHappened": "Quando Aconteceu?",
+  "gameplay_whoSaidIt": "Quem Disse?",
+  "gameplay_yourTurn": "Sua vez",
+  "gameplay_aiThinking": "IA pensando...",
+  "gameplay_wins": "Vitórias",
+  "gameplay_draws": "Empates",
+  "gameplay_losses": "Derrotas",
+  "gameplay_youWin": "Você Ganhou! +300",
+  "gameplay_draw": "Empate! +100",
+  "gameplay_aiWins": "IA Ganhou!",
+  "patternRecall_setup_title": "Lembre o Padrão",
+  "patternRecall_setup_subtitle": "Memorize e repita o padrão!",
+  "patternRecall_setup_chooseTheme": "Escolha um Tema",
+  "patternRecall_setup_chooseDifficulty": "Escolha a Dificuldade",
+  "patternRecall_setup_startGame": "Começar! 🧩",
+  "patternRecall_setup_selectBoth": "Selecione tema e dificuldade",
+  "patternRecall_themes_colors": "Cores",
+  "patternRecall_themes_animals": "Animais",
+  "patternRecall_themes_musicalNotes": "Notas Musicais",
+  "patternRecall_themes_emojis": "Emojis",
+  "patternRecall_difficulty_easy": "Fácil",
+  "patternRecall_difficulty_medium": "Médio",
+  "patternRecall_difficulty_hard": "Difícil",
+  "patternRecall_difficulty_easyDesc": "Reprodução lenta, 4 itens",
+  "patternRecall_difficulty_mediumDesc": "Velocidade média, 5 itens",
+  "patternRecall_difficulty_hardDesc": "Reprodução rápida, 6 itens",
+  "patternRecall_game_round": "Rodada {current}",
+  "@patternRecall_game_round": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_time": "Tempo",
+  "patternRecall_game_watchPattern": "Observe o padrão!",
+  "patternRecall_game_lives": "Vidas",
+  "patternRecall_game_livesLeft": "Vidas: {count}",
+  "@patternRecall_game_livesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_yourTurn": "Sua vez!",
+  "patternRecall_game_correct": "Correto!",
+  "patternRecall_game_nextRound": "Próxima rodada...",
+  "patternRecall_game_gameOver": "Fim de Jogo!",
+  "patternRecall_game_roundsCompleted": "Rodadas completadas: {count}",
+  "@patternRecall_game_roundsCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_totalTime": "Tempo total: {time}",
+  "@patternRecall_game_totalTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_seeScore": "Ver Pontuação 🏆",
+  "patternRecall_game_tryAgain": "Tentar Novamente",
+  "patternRecall_items_red": "Vermelho",
+  "patternRecall_items_blue": "Azul",
+  "patternRecall_items_green": "Verde",
+  "patternRecall_items_yellow": "Amarelo",
+  "patternRecall_items_purple": "Roxo",
+  "patternRecall_items_orange": "Laranja",
+  "patternRecall_items_dog": "Cachorro",
+  "patternRecall_items_cat": "Gato",
+  "patternRecall_items_rabbit": "Coelho",
+  "patternRecall_items_bear": "Urso",
+  "patternRecall_items_fox": "Raposa",
+  "patternRecall_items_penguin": "Pinguim",
+  "patternRecall_items_quarterNote": "Semínima",
+  "patternRecall_items_eighthNote": "Colcheia",
+  "patternRecall_items_trumpet": "Trompete",
+  "patternRecall_items_guitar": "Violão",
+  "patternRecall_items_drum": "Tambor",
+  "patternRecall_items_piano": "Piano",
+  "patternRecall_items_smile": "Sorriso",
+  "patternRecall_items_heart": "Coração",
+  "patternRecall_items_star": "Estrela",
+  "patternRecall_items_fire": "Fogo",
+  "patternRecall_items_rainbow": "Arco-íris",
+  "patternRecall_items_rocket": "Foguete",
+  "spaceEntry_title": "Entrada Espacial",
+  "spaceEntry_subtitle": "Pouse sua nave espacial com segurança na Terra!",
+  "spaceEntry_chooseDifficulty": "Escolha a Dificuldade da Missão",
+  "spaceEntry_easyDesc": "3 puzzles, maior tolerância de ângulo, escudo térmico mais forte",
+  "spaceEntry_mediumDesc": "5 puzzles, todas as variáveis ativas, tolerâncias moderadas",
+  "spaceEntry_hardDesc": "7 puzzles, tolerâncias apertadas, turbulência, escudo limitado",
+  "spaceEntry_startMission": "Lançar Missão",
+  "spaceEntry_selectDifficulty": "Selecione uma dificuldade para lançar",
+  "spaceEntry_missionControl": "Controle de Missão",
+  "spaceEntry_target": "Alvo",
+  "spaceEntry_entryAngle": "Ângulo de Entrada",
+  "spaceEntry_heatShield": "Escudo Térmico",
+  "spaceEntry_atmosphericDensity": "Densidade Atmosférica",
+  "spaceEntry_turbulenceWarning": "Turbulência Ativa",
+  "spaceEntry_initiateReentry": "Iniciar Reentrada",
+  "spaceEntry_landingAccuracy": "Precisão de Pouso",
+  "spaceEntry_successTitle": "Pouso Bem-sucedido!",
+  "spaceEntry_burnUpTitle": "Combustão Orbital",
+  "spaceEntry_burnUpMessage": "Ângulo de entrada muito íngreme — o escudo térmico falhou",
+  "spaceEntry_skipOffTitle": "Ricochete Atmosférico",
+  "spaceEntry_skipOffMessage": "Ângulo de entrada muito raso — a nave ricocheteou na atmosfera",
+  "spaceEntry_geographyFact": "Você Sabia?",
+  "spaceEntry_seeScore": "Ver Pontuação",
+  "spaceEntry_tryAgain": "Tentar Novamente",
+  "spaceEntry_heatShieldAtFailure": "Escudo Térmico na Falha",
+  "spaceEntry_angleUsed": "Ângulo de Entrada Usado",
+  "spaceEntry_remaining": "Restante",
+  "spaceEntry_hintEasy": "💡 Faixa segura: 5° - 12°",
+  "spaceEntry_hintMedium": "💡 Mire em torno de 7°",
+  "spaceEntry_countdown": "Tempo Restante",
+  "spaceEntry_autoFire": "Disparo automático em {seconds}s!",
+  "@spaceEntry_autoFire": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_thrusterPower": "Potência do Propulsor",
+  "spaceEntry_lateralCorrection": "Correção Lateral",
+  "spaceEntry_optimalThruster": "Ótimo: ~{value}%",
+  "@spaceEntry_optimalThruster": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_tutorialEasy": "🎯 Ajuste o ângulo de entrada para pousar com segurança. Observe a cor da trajetória!",
+  "spaceEntry_tutorialMedium": "🎯 Configure o ângulo de entrada E a potência do propulsor. Mais potência = pouso mais rápido mas mais dano ao escudo!",
+  "spaceEntry_tutorialHard": "🎯 Domine os 3 controles: ângulo, potência do propulsor e correção lateral. Sem dicas — confie nos seus instrumentos!",
+  "spaceEntry_predictedLanding": "Pouso Previsto",
+  "spaceEntry_accuracy": "Precisão",
+  "spaceEntry_distanceFromTarget": "Distância",
+  "spaceEntry_solveToCalculate": "Resolva para calcular:",
+  "spaceEntry_yourAnswer": "Sua resposta",
+  "spaceEntry_submit": "Enviar",
+  "spaceEntry_correctAnswer": "Correto!",
+  "spaceEntry_wrongAnswer": "Errado! A resposta era {answer}",
+  "@spaceEntry_wrongAnswer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_allPuzzlesSolved": "Todos os cálculos completos!",
+  "spaceEntry_puzzlesRemaining": "{count} cálculo(s) restante(s)",
+  "@spaceEntry_puzzlesRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_controlPuzzles": "Controles de Voo",
+  "spaceEntry_missionChecks": "Verificações da Missão",
+  "spaceEntry_puzzleScore": "Puzzles Corretos",
+  "mathMaze_title": "Labirinto Matemático",
+  "mathMaze_subtitle": "Resolva equações para encontrar o caminho!",
+  "mathMaze_chooseLevel": "Escolha seu Nível",
+  "mathMaze_easyDesc": "Adição e subtração, labirinto pequeno, 3 min",
+  "mathMaze_mediumDesc": "As 4 operações, labirinto médio, 4 min",
+  "mathMaze_hardDesc": "Matemática avançada e álgebra, labirinto grande, 5 min",
+  "mathMaze_startGame": "Entrar no Labirinto!",
+  "mathMaze_selectLevel": "Selecione um Nível",
+  "mathMaze_gateHint": "Você não precisa abrir todos os portões. Escolha um caminho até a saída; uma resposta errada bloqueia aquele portão, então escolha outro caminho.",
+  "mathMaze_gatePrompt": "Resolva para abrir o portão:",
+  "mathMaze_submitAnswer": "Enviar",
+  "mathMaze_correct": "Correto! Portão aberto!",
+  "mathMaze_incorrect": "Errado! A resposta era {answer}. Caminho bloqueado!",
+  "@mathMaze_incorrect": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mathMaze_timeUp": "Tempo Esgotado!",
+  "mathMaze_mazeComplete": "Labirinto Completo!",
+  "mathMaze_noPath": "Nenhum Caminho Disponível!",
+  "mathMaze_gatesLabel": "Portões",
+  "mathMaze_collectiblesLabel": "Estrelas",
+  "mathMaze_timerLabel": "Tempo",
+  "mathMaze_scoreLabel": "Pontuação",
+  "mathMaze_collected": "{collected} / {total}",
+  "@mathMaze_collected": {
+    "placeholders": {
+      "collected": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_title": "Escolha seu Plano",
+  "subscription_subtitle": "Faça upgrade para desbloquear mais jogadas e recursos!",
+  "subscription_rateLimitTitle": "Limite Diário Atingido!",
+  "subscription_rateLimitSubtitle": "Faça upgrade para continuar jogando!",
+  "subscription_premiumTitle": "Jogo Premium",
+  "subscription_premiumSubtitle": "Este jogo requer uma assinatura Premium!",
+  "subscription_currentPlan": "Plano Atual",
+  "subscription_upgradeTo": "Upgrade para {plan}",
+  "@subscription_upgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeTo": "Downgrade para {plan}",
+  "@subscription_downgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeToFree": "Downgrade para Grátis",
+  "subscription_popular": "POPULAR",
+  "subscription_playsPerDay": "{count} jogadas/dia",
+  "@subscription_playsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_perMonth": "mês",
+  "subscription_forever": "sempre",
+  "subscription_footer": "Jogadas gratuitas são renovadas a cada 24 horas. Você pode mudar de plano a qualquer momento.",
+  "subscription_footerPayment": "Se o pagamento não for aprovado, você será rebaixado para o plano Grátis.",
+  "subscription_plans_free_name": "Grátis",
+  "subscription_plans_free_features_0": "Acesso a todos os jogos",
+  "subscription_plans_free_features_1": "Dispositivo único",
+  "subscription_plans_free_features_2": "Renova a cada 24 horas",
+  "subscription_plans_light_name": "Light",
+  "subscription_plans_light_features_0": "Acesso a todos os jogos",
+  "subscription_plans_light_features_1": "Até 3 dispositivos",
+  "subscription_plans_light_features_2": "Renova a cada 24 horas",
+  "subscription_plans_light_features_3": "Estatísticas básicas",
+  "subscription_plans_standard_name": "Standard",
+  "subscription_plans_standard_features_0": "Acesso a todos os jogos",
+  "subscription_plans_standard_features_1": "Até 3 dispositivos",
+  "subscription_plans_standard_features_2": "Renova a cada 24 horas",
+  "subscription_plans_standard_features_3": "Estatísticas detalhadas",
+  "subscription_plans_standard_features_4": "Suporte prioritário",
+  "subscription_plans_premium_name": "Premium",
+  "subscription_plans_premium_features_0": "Acesso a todos os jogos",
+  "subscription_plans_premium_features_1": "Até 5 dispositivos",
+  "subscription_plans_premium_features_2": "1.000 jogadas/dia",
+  "subscription_plans_premium_features_3": "Análises avançadas",
+  "subscription_plans_premium_features_4": "Suporte prioritário",
+  "subscription_plans_premium_features_5": "Acesso antecipado a novos jogos",
+  "bondAndBurn_title": "Bond & Burn",
+  "bondAndBurn_subtitle": "O Laboratório de Reações",
+  "bondAndBurn_description": "Leia a fórmula, encontre os elementos na tabela periódica e monte compostos antes que o laboratório superaqueça!",
+  "bondAndBurn_chooseDifficulty": "Escolha o Nível do Lab",
+  "bondAndBurn_startMission": "Iniciar Missão",
+  "bondAndBurn_selectDifficulty": "Selecione um nível",
+  "bondAndBurn_howToPlay": "Como Jogar",
+  "bondAndBurn_step1": "Leia a fórmula do composto e encontre os elementos certos",
+  "bondAndBurn_step2": "Toque nos elementos da tabela periódica para adicioná-los ao béquer",
+  "bondAndBurn_step3": "Complete reações antes que o medidor de calor chegue a 100%",
+  "bondAndBurn_step4": "Escolhas erradas adicionam calor — seja preciso!",
+  "bondAndBurn_easyDesc": "Moléculas simples, calor sobe devagar",
+  "bondAndBurn_mediumDesc": "Compostos mais complexos, calor mais rápido",
+  "bondAndBurn_hardDesc": "Reações complexas, alta pressão, calor rigoroso!",
+  "bondAndBurn_makeCompound": "Faça: {name}",
+  "@bondAndBurn_makeCompound": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bondAndBurn_pickElements": "Escolha elementos da tabela periódica",
+  "bondAndBurn_labComplete": "Missão no Lab Completa!",
+  "bondAndBurn_meltdown": "FUSÃO!",
+  "bondAndBurn_preparingLab": "Preparando o laboratório...",
+  "bondAndBurn_make": "Faça:",
+  "bondAndBurn_round": "Rodada",
+  "bondAndBurn_recipes_water_name": "Água",
+  "bondAndBurn_recipes_water_hint": "Pegue 2 Hidrogênio e 1 Oxigênio",
+  "bondAndBurn_recipes_water_funFact": "A água cobre 71% da superfície da Terra! Todo ser vivo precisa dela.",
+  "bondAndBurn_recipes_salt_name": "Sal de Cozinha",
+  "bondAndBurn_recipes_salt_hint": "Pegue 1 Sódio e 1 Cloro",
+  "bondAndBurn_recipes_salt_funFact": "O sal era tão valioso na Roma Antiga que soldados eram pagos com ele!",
+  "bondAndBurn_recipes_co2_name": "Dióxido de Carbono",
+  "bondAndBurn_recipes_co2_hint": "Pegue 1 Carbono e 2 Oxigênio",
+  "bondAndBurn_recipes_co2_funFact": "As plantas respiram CO₂ e exalam oxigênio — o oposto de nós!",
+  "bondAndBurn_recipes_methane_name": "Metano",
+  "bondAndBurn_recipes_methane_hint": "Pegue 1 Carbono e 4 Hidrogênio",
+  "bondAndBurn_recipes_methane_funFact": "O metano é o principal ingrediente do gás natural usado para cozinhar!",
+  "bondAndBurn_recipes_ammonia_name": "Amônia",
+  "bondAndBurn_recipes_ammonia_hint": "Pegue 1 Nitrogênio e 3 Hidrogênio",
+  "bondAndBurn_recipes_ammonia_funFact": "A amônia é usada para fazer fertilizante que ajuda a alimentar bilhões!",
+  "bondAndBurn_recipes_ethane_name": "Etano",
+  "bondAndBurn_recipes_ethane_hint": "Pegue 2 Carbono e 6 Hidrogênio",
+  "bondAndBurn_recipes_ethane_funFact": "O etano é encontrado no gás natural e na superfície da lua Titã de Saturno!",
+  "bondAndBurn_recipes_hydrogen_peroxide_name": "Água Oxigenada",
+  "bondAndBurn_recipes_hydrogen_peroxide_hint": "Pegue 2 Hidrogênio e 2 Oxigênio",
+  "bondAndBurn_recipes_hydrogen_peroxide_funFact": "A água oxigenada é usada para limpar feridas e até descolorir cabelo!",
+  "bondAndBurn_recipes_hydrochloric_acid_name": "Ácido Clorídrico",
+  "bondAndBurn_recipes_hydrochloric_acid_hint": "Pegue 1 Hidrogênio e 1 Cloro",
+  "bondAndBurn_recipes_hydrochloric_acid_funFact": "Seu estômago produz ácido clorídrico para digerir alimentos!",
+  "bondAndBurn_recipes_sodium_hydroxide_name": "Hidróxido de Sódio",
+  "bondAndBurn_recipes_sodium_hydroxide_hint": "Pegue 1 Sódio, 1 Oxigênio e 1 Hidrogênio",
+  "bondAndBurn_recipes_sodium_hydroxide_funFact": "O hidróxido de sódio (soda cáustica) é usado para fazer sabão e desentupir ralos!",
+  "bondAndBurn_recipes_nitrous_oxide_name": "Gás Hilariante",
+  "bondAndBurn_recipes_nitrous_oxide_hint": "Pegue 2 Nitrogênio e 1 Oxigênio",
+  "bondAndBurn_recipes_nitrous_oxide_funFact": "Dentistas usam gás hilariante (N₂O) para ajudar pacientes a relaxar!",
+  "circuitBuilder_canvasLabel": "Grade para montar circuitos",
+  "circuitBuilder_flip": "Virar",
+  "circuitBuilder_howTo_title": "Como montar",
+  "circuitBuilder_howTo_step1": "Escolha uma peça e toque em uma célula para colocá-la.",
+  "circuitBuilder_howTo_step2": "Toque no ponto de uma peça e depois no ponto de outra para ligá-las.",
+  "circuitBuilder_howTo_step3": "Toque em Virar se o LED aparecer ao contrário.",
+  "circuitBuilder_howTo_keyboardTitle": "Teclado",
+  "circuitBuilder_howTo_keyboard": "As setas movem o cursor, Enter coloca ou ativa, C começa uma ligação, Enter ou Shift+Enter a termina no primeiro ou no segundo ponto, R vira, Delete apaga.",
+  "circuitBuilder_component_battery_name": "Pilha",
+  "circuitBuilder_component_battery_abbr": "PIL",
+  "circuitBuilder_component_solar_name": "Painel solar",
+  "circuitBuilder_component_solar_abbr": "SOL",
+  "circuitBuilder_component_wire_name": "Fio",
+  "circuitBuilder_component_wire_abbr": "FIO",
+  "circuitBuilder_component_switch_name": "Interruptor",
+  "circuitBuilder_component_switch_abbr": "INT",
+  "circuitBuilder_component_resistor_name": "Resistor",
+  "circuitBuilder_component_resistor_abbr": "RES",
+  "circuitBuilder_component_led_name": "Lâmpada LED",
+  "circuitBuilder_component_led_abbr": "LED",
+  "circuitBuilder_component_motor_name": "Motor",
+  "circuitBuilder_component_motor_abbr": "MOT",
+  "circuitBuilder_component_buzzer_name": "Campainha",
+  "circuitBuilder_component_buzzer_abbr": "CAM",
+  "circuitBuilder_tray_title": "Componentes",
+  "circuitBuilder_tray_remaining": "Restam {count}",
+  "@circuitBuilder_tray_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_tray_exhausted": "Não resta nenhum",
+  "circuitBuilder_tray_armed": "Selecionado — toque em uma célula para colocar",
+  "circuitBuilder_status_energized": "A corrente está passando",
+  "circuitBuilder_status_deEnergized": "Não passa corrente",
+  "circuitBuilder_status_fuseBlown": "O fusível queimou",
+  "circuitBuilder_status_resetFuse": "Religar o fusível",
+  "circuitBuilder_status_voltage": "Tensão da fonte",
+  "circuitBuilder_status_lightLevel": "Nível de luz",
+  "circuitBuilder_fault_SHORT_CIRCUIT": "Curto-circuito",
+  "circuitBuilder_fault_OVERCURRENT": "Corrente demais",
+  "circuitBuilder_fault_REVERSED_POLARITY": "Componente invertido",
+  "circuitBuilder_fault_SINGULAR_SYSTEM": "Este circuito não pode funcionar",
+  "circuitBuilder_faultHelp_SHORT_CIRCUIT": "A corrente achou um caminho direto de um polo da pilha até o outro, sem nada para segurá-la, então passou de uma vez e queimou o fusível. Coloque uma carga nesse caminho, como uma lâmpada LED com um resistor, ou um motor.",
+  "circuitBuilder_faultHelp_OVERCURRENT": "Passa mais corrente por esse caminho do que as peças aguentam com segurança. Aumente a resistência colocando um resistor, ou diminua a tensão da fonte.",
+  "circuitBuilder_faultHelp_REVERSED_POLARITY": "Um componente está ligado ao contrário, por isso ele barra a corrente em vez de usá-la. Troque as duas pontas dele de lugar e tente de novo.",
+  "circuitBuilder_faultHelp_SINGULAR_SYSTEM": "Este circuito não tem uma resposta única que o simulador consiga calcular, quase sempre porque uma peça está ligada nela mesma. Tire a ligação que junta os dois terminais de um mesmo componente.",
+  "circuitBuilder_rejection_OUT_OF_BOUNDS": "Esse lugar está fora da grade",
+  "circuitBuilder_rejection_CELL_OCCUPIED": "Já tem algo aí",
+  "circuitBuilder_rejection_OVER_BUDGET": "Não há mais desses disponíveis",
+  "circuitBuilder_rejection_ELEMENT_LIMIT": "A grade está cheia",
+  "circuitBuilder_rejection_CONNECTION_LIMIT": "Não é possível adicionar mais ligações",
+  "circuitBuilder_rejection_UNKNOWN_ELEMENT": "Esse componente não está mais aí",
+  "circuitBuilder_rejection_UNKNOWN_CONNECTION": "Essa ligação não está mais aí",
+  "circuitBuilder_rejection_ELEMENT_LOCKED": "Esse componente não pode ser movido",
+  "circuitBuilder_rejection_NOT_A_SWITCH": "Só um interruptor pode ser aberto e fechado",
+  "circuitBuilder_rejection_SELF_CONNECTION": "Um terminal não pode se ligar a si mesmo",
+  "circuitBuilder_rejection_DUPLICATE_CONNECTION": "Esses terminais já estão ligados",
+  "circuitBuilder_rejection_INVALID_VOLTAGE": "Essa tensão não pode ser usada",
+  "circuitBuilder_rejection_INVALID_LIGHT_LEVEL": "Esse nível de luz não pode ser usado",
+  "circuitBuilder_layout_enterFullScreen": "Tela cheia",
+  "circuitBuilder_layout_exitFullScreen": "Sair da tela cheia",
+  "circuitBuilder_audio_soundOn": "Som ligado",
+  "circuitBuilder_audio_soundOff": "Som desligado",
+  "circuitBuilder_error_evaluationUnavailable": "A simulação não está disponível agora. Tente mudar o seu circuito.",
+  "circuitBuilder_error_levelUnavailable": "Não foi possível abrir esta bancada de circuitos. Tente novamente.",
+  "circuitBuilder_setup_title": "Construtor de Circuitos",
+  "circuitBuilder_setup_subtitle": "Monte circuitos e dê vida ao rover",
+  "circuitBuilder_setup_description": "Ligue pilhas, interruptores e lâmpadas para fazer um rover de Marte funcionar. Cada nível ensina uma ideia sobre eletricidade.",
+  "circuitBuilder_setup_howToPlay": "Como Jogar",
+  "circuitBuilder_setup_step1": "Escolha um componente e coloque-o na grade",
+  "circuitBuilder_setup_step2": "Ligue os terminais com fios",
+  "circuitBuilder_setup_step3": "Olhe o rover: as peças acendem quando passa corrente",
+  "circuitBuilder_setup_step4": "Cumpra o objetivo para enviar seu circuito e ganhar pontos",
+  "circuitBuilder_setup_chooseDifficulty": "Escolha uma dificuldade",
+  "circuitBuilder_setup_chooseLevel": "Escolha um nível",
+  "circuitBuilder_setup_levelNumber": "Nível {n}",
+  "@circuitBuilder_setup_levelNumber": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_setup_concept": "Objetivo",
+  "circuitBuilder_setup_startLevel": "Começar nível",
+  "circuitBuilder_setup_selectDifficulty": "Selecione uma dificuldade",
+  "circuitBuilder_setup_sandboxTitle": "Área de testes",
+  "circuitBuilder_setup_sandboxDescription": "Jogo livre com todos os componentes. Sem objetivo, sem pontos e sem gastar uma partida diária.",
+  "circuitBuilder_setup_sandboxStart": "Abrir a área de testes",
+  "circuitBuilder_setup_startFailed": "Não foi possível começar a partida. Tente novamente.",
+  "circuitBuilder_setup_noLevels": "Não há níveis disponíveis agora.",
+  "circuitBuilder_setup_gateChecking": "Verificando seu acesso...",
+  "circuitBuilder_difficulty_1_name": "Fácil",
+  "circuitBuilder_difficulty_1_summary": "Aprenda o básico: circuitos fechados e interruptores. O rover mostra o que está ligado e o que está desligado.",
+  "circuitBuilder_difficulty_1_disclosure": "Sem números: só peças acesas ou apagadas.",
+  "circuitBuilder_difficulty_1_levels": "{count} níveis",
+  "@circuitBuilder_difficulty_1_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_2_name": "Médio",
+  "circuitBuilder_difficulty_2_summary": "Compare as ligações em série e em paralelo.",
+  "circuitBuilder_difficulty_2_disclosure": "Barras de brilho que comparam as peças, sem unidades.",
+  "circuitBuilder_difficulty_2_levels": "{count} níveis",
+  "@circuitBuilder_difficulty_2_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_3_name": "Difícil",
+  "circuitBuilder_difficulty_3_summary": "Alimente o rover inteiro e conserte um curto-circuito.",
+  "circuitBuilder_difficulty_3_disclosure": "Valores de tensão e resistência.",
+  "circuitBuilder_difficulty_3_levels": "{count} níveis",
+  "@circuitBuilder_difficulty_3_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_4_name": "Super Difícil",
+  "circuitBuilder_difficulty_4_summary": "Controle a corrente com resistores e mude a tensão da fonte.",
+  "circuitBuilder_difficulty_4_disclosure": "Tudo: volts, ohms, ampères e totais.",
+  "circuitBuilder_difficulty_4_levels": "{count} níveis",
+  "@circuitBuilder_difficulty_4_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_level_cb_01_closed_circuit_title": "Feche o circuito",
+  "circuitBuilder_level_cb_01_closed_circuit_goal": "Acenda o farol do rover.",
+  "circuitBuilder_level_cb_01_closed_circuit_hint": "Ligue a pilha, o resistor e a lâmpada LED formando um anel e volte com um fio até a pilha. Se a lâmpada continuar apagada, confira em qual sentido ela está ligada.",
+  "circuitBuilder_level_cb_01_closed_circuit_learn": "A corrente só circula em um circuito fechado. O resistor protege a lâmpada LED do excesso de corrente.",
+  "circuitBuilder_level_cb_02_switch_control_title": "Ligue com o interruptor",
+  "circuitBuilder_level_cb_02_switch_control_goal": "Acenda o farol com o interruptor fechado e depois apague e acenda de novo.",
+  "circuitBuilder_level_cb_02_switch_control_hint": "O interruptor já está na bancada. Coloque-o no circuito junto com a pilha, o resistor e a lâmpada LED, e selecione-o para abrir ou fechar.",
+  "circuitBuilder_level_cb_02_switch_control_learn": "Um interruptor abre ou fecha o circuito. Quando está aberto, o circuito fica cortado, não passa corrente e a luz apaga.",
+  "circuitBuilder_level_cb_03_series_loop_title": "Um circuito para dois",
+  "circuitBuilder_level_cb_03_series_loop_goal": "Acenda o farol e faça a campainha tocar no mesmo circuito.",
+  "circuitBuilder_level_cb_03_series_loop_hint": "Coloque a lâmpada LED e a campainha uma depois da outra no mesmo circuito, com o resistor e o interruptor. Depois abra o interruptor e veja o que acontece com as duas.",
+  "circuitBuilder_level_cb_03_series_loop_learn": "Em um circuito em série a mesma corrente passa por todas as peças, uma depois da outra. Se você abrir o interruptor, tudo para.",
+  "circuitBuilder_level_cb_04_parallel_branches_title": "Dois caminhos",
+  "circuitBuilder_level_cb_04_parallel_branches_goal": "Dê um caminho ao farol e outro à campainha, cada um com o seu próprio interruptor.",
+  "circuitBuilder_level_cb_04_parallel_branches_hint": "Ligue os dois caminhos aos mesmos terminais da pilha. Cada caminho tem o seu próprio interruptor. Abra um e veja o que o outro faz.",
+  "circuitBuilder_level_cb_04_parallel_branches_learn": "Em um circuito em paralelo cada caminho forma o seu próprio circuito. Desligar um deixa o outro funcionando.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_title": "Dê energia a todo o rover",
+  "circuitBuilder_level_cb_05_series_vs_parallel_goal": "Faça os motores, o farol e a campainha funcionarem ao mesmo tempo.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_hint": "Ligue as peças lado a lado, cada uma direto na pilha, com o resistor na frente da lâmpada LED. Se você puser os motores em um só circuito em série, eles giram bem devagar.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_learn": "As peças ligadas lado a lado recebem toda a tensão da pilha. Em série elas dividem essa tensão, então motores em série recebem menos e giram mais devagar.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_title": "Vença o curto-circuito",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_goal": "Acenda o farol mesmo que um curto-circuito queime o fusível antes.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_hint": "Um fio ligado direto na pilha queima o fusível. Religue o fusível, tire esse fio e coloque a carga de volta no circuito.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_learn": "Um caminho quase sem resistência deixa passar uma corrente enorme. Mantenha sempre uma carga no circuito e religue o fusível depois de consertar a falha.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_title": "Controle a corrente",
+  "circuitBuilder_level_cb_07_resistance_limits_current_goal": "Acenda o LED com uma corrente segura, usando a pilha e o LED que já estão na bancada.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_hint": "Coloque um resistor em série com o LED. Dois resistores em série se somam. Dois em paralelo dão menos resistência que um só, e por isso passa mais corrente.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_learn": "A corrente é a tensão dividida pela resistência. Mais resistência significa menos corrente, e resistores em paralelo diminuem a resistência total.",
+  "circuitBuilder_level_cb_08_variable_voltage_title": "Descubra a tensão certa",
+  "circuitBuilder_level_cb_08_variable_voltage_goal": "Alimente o motor, a campainha e o farol com uma só pilha e descubra quais tensões da fonte funcionam.",
+  "circuitBuilder_level_cb_08_variable_voltage_hint": "Feche o interruptor geral e o do farol. Mude a tensão da fonte com o controle deslizante: o motor precisa de tensão suficiente para girar, e o LED pode receber corrente demais se ela for alta.",
+  "circuitBuilder_level_cb_08_variable_voltage_learn": "A tensão empurra a corrente pela resistência. Se for baixa demais, o motor não gira. Se for alta demais, o LED recebe mais corrente do que aguenta.",
+  "circuitBuilder_rover_title": "Rover de Marte",
+  "circuitBuilder_rover_alt": "Desenho de um rover de Marte. As rodas, o farol, a campainha e o painel solar mostram quais peças recebem energia.",
+  "circuitBuilder_rover_on": "Ligado",
+  "circuitBuilder_rover_off": "Desligado",
+  "circuitBuilder_rover_unused": "Não é usado neste nível",
+  "circuitBuilder_rover_allPowered": "O rover inteiro está com energia!",
+  "circuitBuilder_machine_marsRover_driveMotor": "Motores de tração",
+  "circuitBuilder_machine_marsRover_headlight": "Farol",
+  "circuitBuilder_machine_marsRover_buzzerAlert": "Alarme da campainha",
+  "circuitBuilder_machine_marsRover_solarCharging": "Carga solar",
+  "circuitBuilder_readout_title": "Leitura do circuito",
+  "circuitBuilder_readout_supply": "Fonte",
+  "circuitBuilder_readout_voltage": "Tensão",
+  "circuitBuilder_readout_resistance": "Resistência",
+  "circuitBuilder_readout_current": "Corrente",
+  "circuitBuilder_readout_totalResistance": "Resistência total",
+  "circuitBuilder_readout_totalCurrent": "Corrente total",
+  "circuitBuilder_readout_relative": "Brilho",
+  "circuitBuilder_readout_noPath": "Ainda não há um circuito fechado",
+  "circuitBuilder_readout_state_lit": "Funcionando",
+  "circuitBuilder_readout_state_dim": "Fraco",
+  "circuitBuilder_readout_state_dark": "Desligado",
+  "circuitBuilder_readout_state_spark": "Falha",
+  "circuitBuilder_readout_brightness_off": "Apagado",
+  "circuitBuilder_readout_brightness_dim": "Fraco",
+  "circuitBuilder_readout_brightness_medium": "Médio",
+  "circuitBuilder_readout_brightness_bright": "Forte",
+  "circuitBuilder_readout_noneHint": "Olhe o rover: cada peça está ligada ou desligada.",
+  "circuitBuilder_readout_qualitativeHint": "As barras comparam o brilho de cada peça, sem unidades.",
+  "circuitBuilder_game_loading": "Começando sua partida...",
+  "circuitBuilder_game_level": "Nível",
+  "circuitBuilder_game_goal": "Objetivo",
+  "circuitBuilder_game_showHint": "Mostrar dica",
+  "circuitBuilder_game_hideHint": "Ocultar dica",
+  "circuitBuilder_game_solved": "O rover está funcionando! Verificando seu circuito...",
+  "circuitBuilder_game_solvedTitle": "Circuito completo",
+  "circuitBuilder_game_submitting": "O servidor está verificando seu circuito...",
+  "circuitBuilder_game_submitFailed": "Não conseguimos enviar seu circuito. Seu trabalho está salvo. Tente novamente.",
+  "circuitBuilder_game_rejected": "O servidor não conseguiu verificar esse circuito. Mude-o e tente novamente.",
+  "circuitBuilder_game_retry": "Tentar novamente",
+  "circuitBuilder_game_nextLevel": "Próximo nível",
+  "circuitBuilder_game_backToSetup": "Voltar aos níveis",
+  "circuitBuilder_game_quit": "Sair",
+  "circuitBuilder_game_noLevel": "Esse nível não foi encontrado.",
+  "circuitBuilder_game_learnTitle": "O que você aprendeu",
+  "circuitBuilder_faultOverlay_label": "Falha no circuito",
+  "circuitBuilder_faultOverlay_dismiss": "Fechar",
+  "circuitBuilder_sandbox_badge": "Área de testes: nada aqui vale pontos",
+  "circuitBuilder_sandbox_note": "Jogo livre com todos os componentes. Não há pontos e nenhuma partida diária é gasta.",
+  "circuitBuilder_sandbox_back": "Voltar aos níveis",
+  "circuitBuilder_result_serverScoreNote": "O servidor verificou esta pontuação.",
+  "circuitBuilder_result_rankLabel": "Posição no ranking",
+  "miniGolf_title": "Mini Golf",
+  "miniGolf_subtitle": "Física de Tacadas",
+  "miniGolf_description": "Mire, ajuste a força e acerte a bola nos obstáculos para afundá-la no menor número de tacadas!",
+  "miniGolf_chooseCourse": "Escolha Seu Percurso",
+  "miniGolf_teeOff": "Começar",
+  "miniGolf_selectCourse": "Selecione um percurso",
+  "miniGolf_howToPlay": "Como Jogar",
+  "miniGolf_step1": "Arraste a partir da bola para mirar",
+  "miniGolf_step2": "Puxe mais para trás para mais força",
+  "miniGolf_step3": "Solte para tacada — ricocheteie nas paredes!",
+  "miniGolf_step4": "Acerte o buraco com menos tacadas",
+  "miniGolf_easyDesc": "Campos abertos, ângulos simples",
+  "miniGolf_mediumDesc": "Obstáculos, areia e água",
+  "miniGolf_hardDesc": "Moinhos, labirintos, caos!",
+  "miniGolf_loading": "Preparando o campo...",
+  "wordPuzzle_title": "Caça Palavras",
+  "wordPuzzle_subtitle": "Encontre todas as palavras escondidas na grade!",
+  "wordPuzzle_howToPlay": "Como Jogar",
+  "wordPuzzle_selectLetters": "Selecione Letras",
+  "wordPuzzle_selectLettersDesc": "Clique e arraste para selecionar letras na grade",
+  "wordPuzzle_findWords": "Encontre Palavras",
+  "wordPuzzle_findWordsDesc": "As palavras podem ser horizontais, verticais ou diagonais",
+  "wordPuzzle_beatTheClock": "Bata o Relógio",
+  "wordPuzzle_beatTheClockDesc": "Encontre todas as palavras antes que o tempo acabe!",
+  "wordPuzzle_easy": "Fácil",
+  "wordPuzzle_easyDesc": "Perfeito para iniciantes",
+  "wordPuzzle_medium": "Médio",
+  "wordPuzzle_mediumDesc": "Um bom desafio",
+  "wordPuzzle_hard": "Difícil",
+  "wordPuzzle_hardDesc": "Para mestres de palavras",
+  "wordPuzzle_gridSize": "Tamanho",
+  "wordPuzzle_words": "Palavras",
+  "wordPuzzle_timeLimit": "Tempo",
+  "wordPuzzle_minutes": "minutos",
+  "wordPuzzle_start": "Iniciar",
+  "wordPuzzle_backToGames": "← Voltar aos Jogos",
+  "wordPuzzle_wordsFound": "Palavras",
+  "wordPuzzle_time": "Tempo",
+  "wordPuzzle_difficulty": "Dificuldade",
+  "wordPuzzle_wordsToFind": "Palavras para Encontrar",
+  "wordPuzzle_dragHint": "Arraste sobre as letras para selecionar uma palavra",
+  "quest_title": "Mapa de Aventura",
+  "quest_subtitle": "Supere cada nó para abrir o próximo. Ganhe até 3 estrelas por nó.",
+  "quest_playsLeft": "Restam {count} partidas hoje",
+  "@quest_playsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_playsUsed": "{used} de {limit} partidas usadas",
+  "@quest_playsUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_resetsAt": "Reinicia às {time}",
+  "@quest_resetsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_loading": "Carregando seu Mapa de Aventura...",
+  "quest_error_title": "Não conseguimos carregar o Mapa de Aventura.",
+  "quest_error_retry": "Tentar novamente",
+  "quest_worldStars": "{stars} de {max} estrelas",
+  "@quest_worldStars": {
+    "placeholders": {
+      "stars": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_shelfLabel": "Insígnias de {world}",
+  "@quest_badges_shelfLabel": {
+    "placeholders": {
+      "world": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_earned": "Conquistada",
+  "quest_badges_locked": "Bloqueada",
+  "quest_badges_new": "Nova",
+  "quest_badges_WORLD_CLEARED_name": "Mundo concluído",
+  "quest_badges_WORLD_CLEARED_hint": "Derrote o chefe com pelo menos 1 estrela.",
+  "quest_badges_WORLD_MASTERED_name": "Mundo dominado",
+  "quest_badges_WORLD_MASTERED_hint": "Ganhe 3 estrelas em cada nó do caminho.",
+  "quest_achievements_title": "Insígnias do Quest Map",
+  "quest_achievements_summary": "{earned} de {total} insígnias conquistadas",
+  "@quest_achievements_summary": {
+    "placeholders": {
+      "earned": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_achievements_error": "As insígnias do Quest Map não estão disponíveis agora.",
+  "quest_worlds_brain_peaks_name": "Picos do Cérebro",
+  "quest_worlds_science_island_name": "Ilha da Ciência",
+  "quest_nodes_bp_01_memory_name": "Memória Animal",
+  "quest_nodes_bp_02_math_name": "Aquecimento de Matemática",
+  "quest_nodes_bp_03_words_name": "Caça às Palavras",
+  "quest_nodes_bp_04_sequence_name": "Passos em Sequência",
+  "quest_nodes_bp_05_geo_name": "Passagem Geográfica",
+  "quest_nodes_bp_06_maze_name": "Labirinto de Números",
+  "quest_nodes_bp_07_memory_space_name": "Memória do Espaço",
+  "quest_nodes_bp_boss_name": "Chefe do Pico",
+  "quest_nodes_bp_bonus_sequence_name": "Bônus: Sequência Longa",
+  "quest_nodes_si_01_bond_burn_name": "Laboratório de Química",
+  "quest_nodes_si_02_space_entry_name": "Pouso do Foguete",
+  "quest_nodes_si_03_circuit_series_name": "Circuito em Série",
+  "quest_nodes_si_04_circuit_branches_name": "Ramos em Paralelo",
+  "quest_nodes_si_05_scratch_name": "Cantinho do Código",
+  "quest_nodes_si_06_mini_golf_name": "Enseada do Golfe",
+  "quest_nodes_si_07_circuit_parallel_name": "Circuito em Paralelo",
+  "quest_nodes_si_boss_name": "Chefe da Ilha",
+  "quest_nodes_si_bonus_name": "Bônus: Circuito Especialista",
+  "quest_games_ANIMALS": "Jogo da Memória: Animais",
+  "quest_games_FRUITS": "Jogo da Memória: Frutas",
+  "quest_games_VEHICLES": "Jogo da Memória: Veículos",
+  "quest_games_SPACE": "Jogo da Memória: Espaço",
+  "quest_games_OCEAN": "Jogo da Memória: Oceano",
+  "quest_games_FORMULA1": "Jogo da Memória: Fórmula 1",
+  "quest_games_MATH_CHALLENGE": "Desafio de Matemática",
+  "quest_games_WORD_PUZZLE": "Caça-Palavras",
+  "quest_games_SEQUENCE_MEMORY": "Memória Sequencial",
+  "quest_games_PATTERN_RECALL": "Memória de Padrões",
+  "quest_games_GEO_QUIZ": "Quiz de Geografia",
+  "quest_games_MATH_MAZE": "Labirinto Matemático",
+  "quest_games_BUBBLE_POP": "Estoura Bolha",
+  "quest_games_BOND_AND_BURN": "Bond & Burn",
+  "quest_games_SPACE_ENTRY": "Entrada Espacial",
+  "quest_games_TRAFFIC_LAB": "Laboratório de Trânsito",
+  "quest_games_MINI_GOLF": "Minigolfe",
+  "quest_games_SCRATCH_CODING": "Space Coder",
+  "quest_games_CIRCUIT_BUILDER": "Construtor de Circuitos",
+  "quest_difficulty_1": "Fácil",
+  "quest_difficulty_2": "Médio",
+  "quest_difficulty_3": "Difícil",
+  "quest_difficulty_4": "Especialista",
+  "quest_node_aria_locked": "{name}, bloqueado",
+  "@quest_node_aria_locked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_available": "{name}, pronto para jogar",
+  "@quest_node_aria_available": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_earned": "{name}, {count} de 3 estrelas",
+  "@quest_node_aria_earned": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_unavailable": "{name}, indisponível",
+  "@quest_node_aria_unavailable": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_boss": "chefe",
+  "quest_node_aria_bonus": "bônus",
+  "quest_node_aria_new": "recém-desbloqueado",
+  "quest_node_boss": "Chefe",
+  "quest_node_bonus": "Bônus",
+  "quest_node_new": "Novo",
+  "quest_panel_goals": "Metas de estrelas",
+  "quest_panel_goal1": "1 estrela",
+  "quest_panel_goal2": "2 estrelas",
+  "quest_panel_goal3": "3 estrelas",
+  "quest_panel_points": "{points} pontos",
+  "@quest_panel_points": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_combinedScore": "Pontuação combinada",
+  "quest_panel_bossTotalBoth": "Total dos dois jogos",
+  "quest_panel_bossTotalAll": "Total dos {count} jogos",
+  "@quest_panel_bossTotalAll": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_perGame": "cerca de {points} por jogo",
+  "@quest_panel_perGame": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_reached": "Alcançada",
+  "quest_panel_best": "Melhor: {score}",
+  "@quest_panel_best": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_legs": "Jogos",
+  "quest_panel_legOf": "Etapa {k} de {n}",
+  "@quest_panel_legOf": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_order": "Jogue as etapas em ordem em até 30 minutos.",
+  "quest_panel_runInProgress": "Tentativa em andamento: {done} de {total} etapas, expira às {time}",
+  "@quest_panel_runInProgress": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_play": "Jogar",
+  "quest_panel_replay": "Jogar de novo",
+  "quest_panel_continue": "Continuar tentativa",
+  "quest_panel_notAvailableNow": "Este nó não está disponível no momento.",
+  "quest_panel_locked": "Ganhe uma estrela no nó anterior para desbloquear.",
+  "quest_panel_bonusLocked": "Junte estrelas neste mundo para desbloquear.",
+  "quest_panel_unavailable": "Este jogo não está disponível agora. Pular conta como concluído.",
+  "quest_panel_paywall": "Assine para desbloquear o Mundo 2",
+  "quest_panel_noPlaysLeft": "Você não tem mais partidas hoje. Jogar agora leva à página de limite.",
+  "quest_panel_close": "Fechar",
+  "quest_worldLocked_label": "Bloqueado: só para assinantes",
+  "quest_worldLocked_link": "Assine para desbloquear o Mundo 2",
+  "quest_banner_playing": "Jogando pelo Mapa de Aventura",
+  "quest_banner_goal": "Meta de 3 estrelas: {points} pontos",
+  "@quest_banner_goal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_banner_back": "Voltar ao mapa",
+  "quest_result_stars": "Estrelas nesta partida: {count} de 3",
+  "@quest_result_stars": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_best": "Melhor: {count} de 3 estrelas",
+  "@quest_result_best": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_goals": "Metas",
+  "quest_result_score": "Sua pontuação: {score}",
+  "@quest_result_score": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextGoal": "Próxima estrela com {points} pontos",
+  "@quest_result_nextGoal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_allGoals": "Todas as metas alcançadas",
+  "quest_result_legDone": "Etapa {k} de {n} concluída",
+  "@quest_result_legDone": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_legScore": "Pontuação da etapa: {score}",
+  "@quest_result_legScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextLeg": "Próxima etapa",
+  "quest_result_combined": "Pontuação combinada: {score}",
+  "@quest_result_combined": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_expired": "Esta tentativa expirou. Comece o chefe de novo pela etapa 1.",
+  "quest_result_unlocked": "Desbloqueado: {names}",
+  "@quest_result_unlocked": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_worldCleared": "Mundo concluído!",
+  "quest_result_notSaved": "Não foi possível salvar o progresso, jogue de novo para tentar outra vez.",
+  "quest_result_backToMap": "Voltar ao mapa",
+  "quest_notice_questUnavailable": "Esse nó não está disponível no momento.",
+  "quest_hub_title": "Mapa de Aventura",
+  "quest_hub_body": "Siga um caminho de jogos, ganhe estrelas e vença o chefe.",
+  "quest_hub_cta": "Abrir o Mapa de Aventura",
+  "game_superHard": "Super Hard",
+  "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
+}
