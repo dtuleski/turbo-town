@@ -142,7 +142,7 @@ put_word "deer" "animals" "beginner" \
 put_word "pig" "animals" "beginner" \
   "$U/photo-1516467508483-a7212febe31a?w=300&h=300&fit=crop" \
   "$U/photo-1484406566174-9da000fda645?w=300&h=300&fit=crop" \
-  "$U/photo-1535338454528-1b22dc446882?w=300&h=300&fit=crop" \
+  "$U/photo-1564349683136-77e08dba1ef7?w=300&h=300&fit=crop" \
   "pig" "/pɪɡ/" \
   "cerdo" "/ˈθeɾ.ðo/" \
   "cochon" "/kɔ.ʃɔ̃/" \
@@ -177,7 +177,7 @@ put_word "goat" "animals" "beginner" \
 
 put_word "frog" "animals" "beginner" \
   "$U/photo-1496070242169-b672c576566b?w=300&h=300&fit=crop" \
-  "$U/photo-1524024973431-2ad916746264?w=300&h=300&fit=crop" \
+  "$U/photo-1531884070720-875c7622d4c6?w=300&h=300&fit=crop" \
   "$U/photo-1484557985045-edf25e08da73?w=300&h=300&fit=crop" \
   "frog" "/frɒɡ/" \
   "rana" "/ˈra.na/" \
@@ -233,7 +233,7 @@ put_word "eagle" "animals" "intermediate" \
 put_word "whale" "animals" "intermediate" \
   "$U/photo-1568430462989-44163eb1752f?w=300&h=300&fit=crop" \
   "$U/photo-1437622368342-7a3d73a34c8f?w=300&h=300&fit=crop" \
-  "$U/photo-1611689342806-0863700ce8e4?w=300&h=300&fit=crop" \
+  "$U/photo-1544923408-75c5cef46f14?w=300&h=300&fit=crop" \
   "whale" "/weɪl/" \
   "ballena" "/ba.ˈʎe.na/" \
   "baleine" "/ba.lɛn/" \
@@ -300,7 +300,7 @@ echo "=== 🐻 ANIMALS — Advanced ==="
 put_word "butterfly" "animals" "advanced" \
   "$U/photo-1452570053594-1b985d6ea890?w=300&h=300&fit=crop" \
   "$U/photo-1437622368342-7a3d73a34c8f?w=300&h=300&fit=crop" \
-  "$U/photo-1505322022379-7c3353ee6291?w=300&h=300&fit=crop" \
+  "$U/photo-1484557985045-edf25e08da73?w=300&h=300&fit=crop" \
   "butterfly" "/ˈbʌt.ər.flaɪ/" \
   "mariposa" "/ma.ɾi.ˈpo.sa/" \
   "papillon" "/pa.pi.jɔ̃/" \
@@ -371,7 +371,7 @@ put_word "bat" "animals" "advanced" \
 
 put_word "bee" "animals" "advanced" \
   "$U/photo-1558642452-9d2a7deb7f62?w=300&h=300&fit=crop" \
-  "$U/photo-1593085260707-5377ba37f868?w=300&h=300&fit=crop" \
+  "$U/photo-1588466585717-f8041aec7875?w=300&h=300&fit=crop" \
   "$U/photo-1452570053594-1b985d6ea890?w=300&h=300&fit=crop" \
   "bee" "/biː/" \
   "abeja" "/a.ˈβe.xa/" \
@@ -383,8 +383,8 @@ put_word "bee" "animals" "advanced" \
 
 put_word "ant" "animals" "advanced" \
   "$U/photo-1563387852-e109c8e0d6b9?w=300&h=300&fit=crop" \
-  "$U/photo-1558642452-9d2a7deb7f62?w=300&h=300&fit=crop" \
-  "$U/photo-1593085260707-5377ba37f868?w=300&h=300&fit=crop" \
+  "$U/photo-1618075254478-850bc1729c17?w=300&h=300&fit=crop" \
+  "$U/photo-1484406566174-9da000fda645?w=300&h=300&fit=crop" \
   "ant" "/ænt/" \
   "hormiga" "/oɾ.ˈmi.ɣa/" \
   "fourmi" "/fuʁ.mi/" \
@@ -403,7 +403,7 @@ echo "=== 🍇 FOOD — Beginner ==="
 put_word "grape" "food" "beginner" \
   "$U/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop" \
   "$U/photo-1587486913049-53fc88980cfc?w=300&h=300&fit=crop" \
-  "$U/photo-1518977676601-b28d4e90e5a4?w=300&h=300&fit=crop" \
+  "$U/photo-1497034825429-c343d7c6a68f?w=300&h=300&fit=crop" \
   "grape" "/ɡreɪp/" \
   "uva" "/ˈu.βa/" \
   "raisin" "/ʁɛ.zɛ̃/" \
@@ -438,7 +438,7 @@ put_word "potato" "food" "beginner" \
 
 put_word "onion" "food" "beginner" \
   "$U/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop" \
-  "$U/photo-1518977676601-b28d4e90e5a4?w=300&h=300&fit=crop" \
+  "$U/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" \
   "$U/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop" \
   "onion" "/ˈʌn.jən/" \
   "cebolla" "/θe.ˈβo.ʎa/" \
@@ -451,7 +451,7 @@ put_word "onion" "food" "beginner" \
 put_word "corn" "food" "beginner" \
   "$U/photo-1551754655-cd27e38d2076?w=300&h=300&fit=crop" \
   "$U/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop" \
-  "$U/photo-1518977676601-b28d4e90e5a4?w=300&h=300&fit=crop" \
+  "$U/photo-1497034825429-c343d7c6a68f?w=300&h=300&fit=crop" \
   "corn" "/kɔːrn/" \
   "maíz" "/ma.ˈiθ/" \
   "maïs" "/ma.is/" \
@@ -475,7 +475,7 @@ put_word "pepper" "food" "beginner" \
 put_word "cherry" "food" "beginner" \
   "$U/photo-1528821128474-27f963b062bf?w=300&h=300&fit=crop" \
   "$U/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop" \
-  "$U/photo-1563565375-04db58801981?w=300&h=300&fit=crop" \
+  "$U/photo-1551183053-bf91a1d81141?w=300&h=300&fit=crop" \
   "cherry" "/ˈtʃer.i/" \
   "cereza" "/θe.ˈɾe.θa/" \
   "cerise" "/sə.ʁiz/" \
@@ -505,7 +505,7 @@ echo "=== 🍇 FOOD — Intermediate ==="
 
 put_word "mango" "food" "intermediate" \
   "$U/photo-1553279768-865429fa0078?w=300&h=300&fit=crop" \
-  "$U/photo-1595124216650-1dead4736357?w=300&h=300&fit=crop" \
+  "$U/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" \
   "$U/photo-1528821128474-27f963b062bf?w=300&h=300&fit=crop" \
   "mango" "/ˈmæŋ.ɡoʊ/" \
   "mango" "/ˈmaŋ.ɡo/" \
@@ -518,7 +518,7 @@ put_word "mango" "food" "intermediate" \
 put_word "coconut" "food" "intermediate" \
   "$U/photo-1550828520-4cb496926fc9?w=300&h=300&fit=crop" \
   "$U/photo-1553279768-865429fa0078?w=300&h=300&fit=crop" \
-  "$U/photo-1595124216650-1dead4736357?w=300&h=300&fit=crop" \
+  "$U/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop" \
   "coconut" "/ˈkoʊ.kə.nʌt/" \
   "coco" "/ˈko.ko/" \
   "noix de coco" "/nwa.də.ko.ko/" \
@@ -541,8 +541,8 @@ put_word "garlic" "food" "intermediate" \
 
 put_word "lettuce" "food" "intermediate" \
   "$U/photo-1622206151226-18ca2c9ab4a1?w=300&h=300&fit=crop" \
-  "$U/photo-1540148426945-6cf22a6b2851?w=300&h=300&fit=crop" \
-  "$U/photo-1563565375-04db58801981?w=300&h=300&fit=crop" \
+  "$U/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop" \
+  "$U/photo-1565299624946-b28f40a0ae38?w=300&h=300&fit=crop" \
   "lettuce" "/ˈlet.ɪs/" \
   "lechuga" "/le.ˈtʃu.ɣa/" \
   "laitue" "/lɛ.ty/" \
@@ -554,7 +554,7 @@ put_word "lettuce" "food" "intermediate" \
 put_word "cucumber" "food" "intermediate" \
   "$U/photo-1604977042946-1eecc30f269e?w=300&h=300&fit=crop" \
   "$U/photo-1622206151226-18ca2c9ab4a1?w=300&h=300&fit=crop" \
-  "$U/photo-1540148426945-6cf22a6b2851?w=300&h=300&fit=crop" \
+  "$U/photo-1481391319762-47dff72954d9?w=300&h=300&fit=crop" \
   "cucumber" "/ˈkjuː.kʌm.bər/" \
   "pepino" "/pe.ˈpi.no/" \
   "concombre" "/kɔ̃.kɔ̃bʁ/" \
@@ -723,7 +723,7 @@ put_word "beige" "colors" "beginner" \
 
 put_word "ivory" "colors" "beginner" \
   "$U/photo-1557682250-33bd709cbe85?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1597773150796-e5c14ebecbf5?w=300&h=300&fit=crop" \
   "$U/photo-1558591710-4b4a1ae0f04d?w=300&h=300&fit=crop" \
   "ivory" "/ˈaɪ.vər.i/" \
   "marfil" "/maɾ.ˈfil/" \
@@ -735,7 +735,7 @@ put_word "ivory" "colors" "beginner" \
 
 put_word "olive" "colors" "beginner" \
   "$U/photo-1558591710-4b4a1ae0f04d?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1531723492606-bb53948b6c09?w=300&h=300&fit=crop" \
   "$U/photo-1557682250-33bd709cbe85?w=300&h=300&fit=crop" \
   "olive" "/ˈɒl.ɪv/" \
   "oliva" "/o.ˈli.βa/" \
@@ -748,7 +748,7 @@ put_word "olive" "colors" "beginner" \
 put_word "teal" "colors" "beginner" \
   "$U/photo-1557683316-973673baf926?w=300&h=300&fit=crop" \
   "$U/photo-1558591710-4b4a1ae0f04d?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1557682233-43e671455dfa?w=300&h=300&fit=crop" \
   "teal" "/tiːl/" \
   "verde azulado" "/ˈbeɾ.ðe a.θu.ˈla.ðo/" \
   "sarcelle" "/saʁ.sɛl/" \
@@ -760,7 +760,7 @@ put_word "teal" "colors" "beginner" \
 put_word "coral" "colors" "beginner" \
   "$U/photo-1557683311-eac922347aa1?w=300&h=300&fit=crop" \
   "$U/photo-1557683316-973673baf926?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1557682233-43e671455dfa?w=300&h=300&fit=crop" \
   "coral" "/ˈkɒr.əl/" \
   "coral" "/ko.ˈɾal/" \
   "corail" "/kɔ.ʁaj/" \
@@ -879,8 +879,8 @@ put_word "scarlet" "colors" "advanced" \
 
 put_word "bronze" "colors" "advanced" \
   "$U/photo-1557682220-e7c4a5e8174d?w=300&h=300&fit=crop" \
-  "$U/photo-1557682196-a0d3e4e52c53?w=300&h=300&fit=crop" \
-  "$U/photo-1557682204-e53c2b876ef4?w=300&h=300&fit=crop" \
+  "$U/photo-1597773150796-e5c14ebecbf5?w=300&h=300&fit=crop" \
+  "$U/photo-1531723492606-bb53948b6c09?w=300&h=300&fit=crop" \
   "bronze" "/brɒnz/" \
   "bronce" "/ˈbɾon.θe/" \
   "bronze" "/bʁɔ̃z/" \
@@ -898,8 +898,8 @@ echo "=== 🔢 NUMBERS — Beginner ==="
 
 put_word "eleven" "numbers" "beginner" \
   "$U/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578065-6e0d4d7b7e4e?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578281-5b8590cd9ec5?w=300&h=300&fit=crop" \
+  "$U/photo-1593354322782-0550797adc47?w=300&h=300&fit=crop" \
+  "$U/photo-1778169877507-ce2ea7dc9344?w=300&h=300&fit=crop" \
   "eleven" "/ɪ.ˈlev.ən/" \
   "once" "/ˈon.θe/" \
   "onze" "/ɔ̃z/" \
@@ -911,7 +911,7 @@ put_word "eleven" "numbers" "beginner" \
 put_word "twelve" "numbers" "beginner" \
   "$U/photo-1596495578065-6e0d4d7b7e4e?w=300&h=300&fit=crop" \
   "$U/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578281-5b8590cd9ec5?w=300&h=300&fit=crop" \
+  "$U/photo-1593354322782-0550797adc47?w=300&h=300&fit=crop" \
   "twelve" "/twelv/" \
   "doce" "/ˈdo.θe/" \
   "douze" "/duz/" \
@@ -923,7 +923,7 @@ put_word "twelve" "numbers" "beginner" \
 put_word "twenty" "numbers" "beginner" \
   "$U/photo-1596495578281-5b8590cd9ec5?w=300&h=300&fit=crop" \
   "$U/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578065-6e0d4d7b7e4e?w=300&h=300&fit=crop" \
+  "$U/photo-1778169877507-ce2ea7dc9344?w=300&h=300&fit=crop" \
   "twenty" "/ˈtwen.ti/" \
   "veinte" "/ˈbejn.te/" \
   "vingt" "/vɛ̃/" \
@@ -934,7 +934,7 @@ put_word "twenty" "numbers" "beginner" \
 
 put_word "thirty" "numbers" "beginner" \
   "$U/photo-1635070041078-e363dbe005cb?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578281-5b8590cd9ec5?w=300&h=300&fit=crop" \
+  "$U/photo-1573997940776-d54954bc1f3a?w=300&h=300&fit=crop" \
   "$U/photo-1596495577886-d920f1fb7238?w=300&h=300&fit=crop" \
   "thirty" "/ˈθɜːr.ti/" \
   "treinta" "/ˈtɾejn.ta/" \
@@ -947,7 +947,7 @@ put_word "thirty" "numbers" "beginner" \
 put_word "fifty" "numbers" "beginner" \
   "$U/photo-1635070041409-e363dbe005cb?w=300&h=300&fit=crop" \
   "$U/photo-1635070041078-e363dbe005cb?w=300&h=300&fit=crop" \
-  "$U/photo-1596495578281-5b8590cd9ec5?w=300&h=300&fit=crop" \
+  "$U/photo-1778169877507-ce2ea7dc9344?w=300&h=300&fit=crop" \
   "fifty" "/ˈfɪf.ti/" \
   "cincuenta" "/θiŋ.ˈkwen.ta/" \
   "cinquante" "/sɛ̃.kɑ̃t/" \
@@ -977,7 +977,7 @@ echo "=== 🔢 NUMBERS — Intermediate ==="
 put_word "thirteen" "numbers" "intermediate" \
   "$U/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop" \
   "$U/photo-1509228468518-180dd4864904?w=300&h=300&fit=crop" \
-  "$U/photo-1635070041409-e363dbe005cb?w=300&h=300&fit=crop" \
+  "$U/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop" \
   "thirteen" "/ˌθɜːrˈtiːn/" \
   "trece" "/ˈtɾe.θe/" \
   "treize" "/tʁɛz/" \
@@ -1000,7 +1000,7 @@ put_word "fourteen" "numbers" "intermediate" \
 
 put_word "fifteen" "numbers" "intermediate" \
   "$U/photo-1611532736597-de2d4265fba5?w=300&h=300&fit=crop" \
-  "$U/photo-1611532736597-de2d4265fba4?w=300&h=300&fit=crop" \
+  "$U/photo-1593354322782-0550797adc47?w=300&h=300&fit=crop" \
   "$U/photo-1611532736597-de2d4265fba3?w=300&h=300&fit=crop" \
   "fifteen" "/ˌfɪfˈtiːn/" \
   "quince" "/ˈkin.θe/" \
@@ -1012,7 +1012,7 @@ put_word "fifteen" "numbers" "intermediate" \
 
 put_word "double" "numbers" "intermediate" \
   "$U/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop" \
-  "$U/photo-1611532736597-de2d4265fba5?w=300&h=300&fit=crop" \
+  "$U/photo-1573997940776-d54954bc1f3a?w=300&h=300&fit=crop" \
   "$U/photo-1509228468518-180dd4864904?w=300&h=300&fit=crop" \
   "double" "/ˈdʌb.əl/" \
   "doble" "/ˈdo.βle/" \
@@ -1025,7 +1025,7 @@ put_word "double" "numbers" "intermediate" \
 put_word "quarter" "numbers" "intermediate" \
   "$U/photo-1594322436404-5a0526db4d14?w=300&h=300&fit=crop" \
   "$U/photo-1594322436404-5a0526db4d13?w=300&h=300&fit=crop" \
-  "$U/photo-1611532736597-de2d4265fba5?w=300&h=300&fit=crop" \
+  "$U/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop" \
   "quarter" "/ˈkwɔːr.tər/" \
   "cuarto" "/ˈkwaɾ.to/" \
   "quart" "/kaʁ/" \
@@ -1078,7 +1078,7 @@ put_word "second" "numbers" "advanced" \
 
 put_word "third" "numbers" "advanced" \
   "$U/photo-1533228876829-65c94e7b5027?w=300&h=300&fit=crop" \
-  "$U/photo-1533228876829-65c94e7b5026?w=300&h=300&fit=crop" \
+  "$U/photo-1719305352176-b0f646081759?w=300&h=300&fit=crop" \
   "$U/photo-1533228876829-65c94e7b5025?w=300&h=300&fit=crop" \
   "third" "/θɜːrd/" \
   "tercero" "/teɾ.ˈθe.ɾo/" \
@@ -1169,7 +1169,7 @@ put_word "door" "objects" "beginner" \
 
 put_word "bed" "objects" "beginner" \
   "$U/photo-1505693416388-ac5ce068fe85?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1542377281-73d08e3a10aa?w=300&h=300&fit=crop" \
   "$U/photo-1521369909029-2afed882baee?w=300&h=300&fit=crop" \
   "bed" "/bed/" \
   "cama" "/ˈka.ma/" \
@@ -1182,7 +1182,7 @@ put_word "bed" "objects" "beginner" \
 put_word "bottle" "objects" "beginner" \
   "$U/photo-1602143407151-7111542de6e8?w=300&h=300&fit=crop" \
   "$U/photo-1505693416388-ac5ce068fe85?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82e?w=300&h=300&fit=crop" \
+  "$U/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop" \
   "bottle" "/ˈbɒt.əl/" \
   "botella" "/bo.ˈte.ʎa/" \
   "bouteille" "/bu.tɛj/" \
@@ -1340,7 +1340,7 @@ put_word "brush" "objects" "advanced" \
 put_word "bell" "objects" "advanced" \
   "$U/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop" \
   "$U/photo-1558317374-067fb5f30001?w=300&h=300&fit=crop" \
-  "$U/photo-1585336261022-680e295ce3ff?w=300&h=300&fit=crop" \
+  "$U/photo-1602523961358-f9f03dd557db?w=300&h=300&fit=crop" \
   "bell" "/bel/" \
   "campana" "/kam.ˈpa.na/" \
   "cloche" "/klɔʃ/" \
@@ -1387,7 +1387,7 @@ put_word "wheel" "objects" "advanced" \
 
 put_word "rope" "objects" "advanced" \
   "$U/photo-1558618666-fcd25c85f830?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f82f?w=300&h=300&fit=crop" \
+  "$U/photo-1634225109865-7a7b6e4ef85c?w=300&h=300&fit=crop" \
   "$U/photo-1567538096630-e0c55bd6374c?w=300&h=300&fit=crop" \
   "rope" "/roʊp/" \
   "cuerda" "/ˈkweɾ.ða/" \
@@ -1400,7 +1400,7 @@ put_word "rope" "objects" "advanced" \
 put_word "pencil" "objects" "advanced" \
   "$U/photo-1513542789411-b6a5d4f31634?w=300&h=300&fit=crop" \
   "$U/photo-1585336261022-680e295ce3fe?w=300&h=300&fit=crop" \
-  "$U/photo-1558618666-fcd25c85f830?w=300&h=300&fit=crop" \
+  "$U/photo-1656543802898-41c8c46683a7?w=300&h=300&fit=crop" \
   "pencil" "/ˈpen.səl/" \
   "lápiz" "/ˈla.piθ/" \
   "crayon" "/kʁɛ.jɔ̃/" \
@@ -1557,7 +1557,7 @@ put_word "waterfall" "nature" "intermediate" \
 
 put_word "cave" "nature" "intermediate" \
   "$U/photo-1500740516770-92bd004b996e?w=300&h=300&fit=crop" \
-  "$U/photo-1432405972618-c6b0252f2aec?w=300&h=300&fit=crop" \
+  "$U/photo-1517594422361-5eeb8ae275a9?w=300&h=300&fit=crop" \
   "$U/photo-1509316785289-025f5b846b35?w=300&h=300&fit=crop" \
   "cave" "/keɪv/" \
   "cueva" "/ˈkwe.βa/" \
@@ -1570,7 +1570,7 @@ put_word "cave" "nature" "intermediate" \
 put_word "cliff" "nature" "intermediate" \
   "$U/photo-1464822759023-fed622ff2c3b?w=300&h=300&fit=crop" \
   "$U/photo-1500740516770-92bd004b996e?w=300&h=300&fit=crop" \
-  "$U/photo-1432405972618-c6b0252f2aec?w=300&h=300&fit=crop" \
+  "$U/photo-1517594422361-5eeb8ae275a9?w=300&h=300&fit=crop" \
   "cliff" "/klɪf/" \
   "acantilado" "/a.kan.ti.ˈla.ðo/" \
   "falaise" "/fa.lɛz/" \
@@ -1696,7 +1696,7 @@ put_word "desert_oasis" "nature" "advanced" \
 
 put_word "aurora" "nature" "advanced" \
   "$U/photo-1483347756197-71ef80e95f73?w=300&h=300&fit=crop" \
-  "$U/photo-1509316785289-025f5b846b36?w=300&h=300&fit=crop" \
+  "$U/photo-1507525428034-b723cf961d3e?w=300&h=300&fit=crop" \
   "$U/photo-1562095241-8c6714fd4178?w=300&h=300&fit=crop" \
   "aurora" "/ɔː.ˈrɔːr.ə/" \
   "aurora" "/a.u.ˈɾo.ɾa/" \
@@ -1709,7 +1709,7 @@ put_word "aurora" "nature" "advanced" \
 put_word "horizon" "nature" "advanced" \
   "$U/photo-1470252649378-9c29740c9fa8?w=300&h=300&fit=crop" \
   "$U/photo-1483347756197-71ef80e95f73?w=300&h=300&fit=crop" \
-  "$U/photo-1509316785289-025f5b846b36?w=300&h=300&fit=crop" \
+  "$U/photo-1505118380757-91f5f5632de0?w=300&h=300&fit=crop" \
   "horizon" "/hə.ˈraɪ.zən/" \
   "horizonte" "/o.ɾi.ˈθon.te/" \
   "horizon" "/ɔ.ʁi.zɔ̃/" \
