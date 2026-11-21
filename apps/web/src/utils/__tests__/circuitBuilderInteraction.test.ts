@@ -380,7 +380,7 @@ describe('drawing a connection', () => {
     expect(up.selection.pendingTerminal).toBeNull()
   })
 
-  it('reports a cancel when released on the terminal it started from', () => {
+  it('keeps the wire half-drawn when released on the terminal it started from (a tap)', () => {
     const { sourceId } = twoElements()
     const down = resolvePointerIntent(
       'down',
@@ -394,8 +394,18 @@ describe('drawing a connection', () => {
       terminalHit(sourceId, fromCell, 'battery', 1),
       down.selection
     )
-    expect(up.intent).toEqual({ type: 'cancel' })
-    expect(up.selection.pendingTerminal).toBeNull()
+    expect(up.intent).toBeNull()
+    expect(up.selection.pendingTerminal).toEqual({ elementId: sourceId, terminalIndex: 1 })
+  })
+  it('cancels a half-drawn wire when its own dot is pressed again', () => {
+    const { sourceId } = twoElements()
+    const hit = terminalHit(sourceId, fromCell, 'battery', 1)
+    const point = cellToPoint(fromCell, VIEWPORT)
+    const first = resolvePointerIntent('down', point, hit, createInitialSelection())
+    const tapped = resolvePointerIntent('up', point, hit, first.selection)
+    const again = resolvePointerIntent('down', point, hit, tapped.selection)
+    expect(again.intent).toEqual({ type: 'cancel' })
+    expect(again.selection.pendingTerminal).toBeNull()
   })
 
   it('arms a connection from the keyboard, with shift picking the second terminal', () => {
