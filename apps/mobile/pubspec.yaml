@@ -27,7 +27,7 @@ dependencies:
   go_router: ^14.2.0
 
   # Hosted UI OAuth (Google federated sign-in) via an in-app browser tab
-  flutter_web_auth_2: ^3.1.2
+  flutter_web_auth_2: ^5.0.0
 
   # PKCE code challenge (SHA-256) + token-exchange HTTP calls
   crypto: ^3.0.3
