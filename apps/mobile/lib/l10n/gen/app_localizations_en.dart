@@ -4680,4 +4680,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String mobileCircuit_partSelected(String name) {
     return 'Selected: $name';
   }
+
+  @override
+  String mobileSpaceCoder_goal(String count) {
+    return '🎯 Reach the airlock with the fewest lines! Target: $count lines';
+  }
+
+  @override
+  String get mobileSpaceCoder_cursorHere => 'New lines go here';
+
+  @override
+  String get mobileSpaceCoder_dragHint =>
+      'Tap a command to add it at the green line, or drag it onto a line. Tap a line to move the green line there.';
+
+  @override
+  String mobileSpaceCoder_removeLine(String line) {
+    return 'Remove line $line';
+  }
+
+  @override
+  String get mobileSpaceCoder_loopCount => 'Loop count';
+
+  @override
+  String get mobileSpaceCoder_conditionMode => 'Condition mode';
+
+  @override
+  String get mobileSpaceCoder_running => 'Running…';
 }

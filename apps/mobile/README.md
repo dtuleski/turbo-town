@@ -45,6 +45,11 @@ evaluator over every level and seeded random layouts and writes
 against it. Re-run it (with `tsx`, e.g. `../web/node_modules/.bin/tsx`) after any change to the
 shared engine. The server stays authoritative: it re-evaluates every submitted layout.
 
+Space Coder (`lib/game/space_coder/logic.dart`) ports the command interpreter of
+`apps/web/src/utils/scratchCodingUtils.ts`; `tools/export_space_coder_golden.mjs` writes
+`test/fixtures/space_coder_golden.json` (levels, seeded obstacles, 305 program runs, 120 editing
+sequences) for `test/game/space_coder_golden_test.dart`.
+
 ## Platform config for Google Sign-In (required after `flutter create`)
 
 Google (Cognito Hosted UI) sign-in uses an OAuth redirect back to the app via a

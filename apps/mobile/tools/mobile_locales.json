@@ -441,6 +441,15 @@
       "wiring": "Now tap another dot to finish the wire.",
       "zoomHint": "Pinch to zoom and drag to pan the grid.",
       "partSelected": "Selected: {{name}}"
+    },
+    "mobileSpaceCoder": {
+      "goal": "🎯 Reach the airlock with the fewest lines! Target: {{count}} lines",
+      "cursorHere": "New lines go here",
+      "dragHint": "Tap a command to add it at the green line, or drag it onto a line. Tap a line to move the green line there.",
+      "removeLine": "Remove line {{line}}",
+      "loopCount": "Loop count",
+      "conditionMode": "Condition mode",
+      "running": "Running…"
     }
   },
   "es": {
@@ -885,6 +894,15 @@
       "wiring": "Ahora toca otro punto para terminar el cable.",
       "zoomHint": "Pellizca para hacer zoom y arrastra para mover la cuadrícula.",
       "partSelected": "Seleccionado: {{name}}"
+    },
+    "mobileSpaceCoder": {
+      "goal": "🎯 ¡Llega a la esclusa con la menor cantidad de líneas! Meta: {{count}} líneas",
+      "cursorHere": "Las nuevas líneas van aquí",
+      "dragHint": "Toca un comando para añadirlo en la línea verde o arrástralo sobre una línea. Toca una línea para mover allí la línea verde.",
+      "removeLine": "Quitar la línea {{line}}",
+      "loopCount": "Repeticiones",
+      "conditionMode": "Tipo de condición",
+      "running": "Ejecutando…"
     }
   },
   "pt": {
@@ -1329,6 +1347,15 @@
       "wiring": "Agora toque em outro ponto para terminar o fio.",
       "zoomHint": "Belisque para ampliar e arraste para mover a grade.",
       "partSelected": "Selecionado: {{name}}"
+    },
+    "mobileSpaceCoder": {
+      "goal": "🎯 Chegue à câmara de ar com o menor número de linhas! Meta: {{count}} linhas",
+      "cursorHere": "As novas linhas entram aqui",
+      "dragHint": "Toque em um comando para adicioná-lo na linha verde ou arraste-o até uma linha. Toque em uma linha para mover a linha verde para lá.",
+      "removeLine": "Remover a linha {{line}}",
+      "loopCount": "Repetições",
+      "conditionMode": "Tipo de condição",
+      "running": "Executando…"
     }
   }
 }

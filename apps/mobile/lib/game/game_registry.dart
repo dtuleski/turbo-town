@@ -154,6 +154,7 @@ const List<GameEntry> kGameRegistry = [
     emoji: '👩‍🚀',
     category: GameCategory.puzzlesLogic,
     themeId: 'SCRATCH_CODING',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'math-maze',

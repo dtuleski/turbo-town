@@ -89,7 +89,8 @@ void main() {
     expect(gameById('bond-and-burn')?.reviewType, 'BOND_AND_BURN');
     expect(gameById('memory-match')?.setupRoute, '/memory-match/setup');
     // Memory Match, the quiz and word games (FEAT-005), the board and grid
-    // games (FEAT-006), the physics games (FEAT-007) and Circuit Builder (FEAT-008).
+    // games (FEAT-006), the physics games (FEAT-007), Circuit Builder and Space Coder
+    // (FEAT-008): every registry game.
     expect(
       kGameRegistry.where((g) => g.implemented).map((g) => g.gameId).toSet(),
       {
@@ -113,6 +114,7 @@ void main() {
         'bond-and-burn',
         'mini-golf',
         'circuit-builder',
+        'scratch-coding',
       },
     );
   });

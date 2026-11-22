@@ -36,6 +36,7 @@ import 'screens/games/pattern_screens.dart';
 import 'screens/games/quiz_game_screen.dart';
 import 'screens/games/quiz_setup_screens.dart';
 import 'screens/games/sequence_screens.dart';
+import 'screens/games/space_coder_screens.dart';
 import 'screens/games/space_entry_screens.dart';
 import 'screens/games/sudoku_screens.dart';
 import 'screens/games/tic_tac_toe_screens.dart';
@@ -307,6 +308,20 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) {
           final query = state.uri.queryParameters;
           return BondAndBurnGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/scratch-coding/setup',
+        builder: (_, __) => const SpaceCoderSetupScreen(),
+      ),
+      GoRoute(
+        path: '/scratch-coding/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return SpaceCoderGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
           );

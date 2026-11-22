@@ -36,15 +36,17 @@ bool isFreeTier(String tier) => tier.toUpperCase() == 'FREE';
 ///
 /// Games the registry does not know (color-by-number, traffic-lab, anything
 /// new) are left out. The tier comes from the backend (`canStartGame`).
+/// [registry] is the app's game list; tests pass their own.
 List<HubTile> buildHubTiles({
   required List<GameCatalogItem> catalog,
   required String tier,
   PaidGamePresentation presentation = kPaidGamePresentation,
+  List<GameEntry> registry = kGameRegistry,
 }) {
   final byId = {for (final c in catalog) c.gameId: c};
   final free = isFreeTier(tier);
   final tiles = <HubTile>[];
-  for (final entry in kGameRegistry) {
+  for (final entry in registry) {
     final item = byId[entry.gameId];
     if (item == null) continue;
     final blockedPaid = entry.isPaid &&

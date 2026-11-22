@@ -8391,6 +8391,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected: {name}'**
   String mobileCircuit_partSelected(String name);
+
+  /// No description provided for @mobileSpaceCoder_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Reach the airlock with the fewest lines! Target: {count} lines'**
+  String mobileSpaceCoder_goal(String count);
+
+  /// No description provided for @mobileSpaceCoder_cursorHere.
+  ///
+  /// In en, this message translates to:
+  /// **'New lines go here'**
+  String get mobileSpaceCoder_cursorHere;
+
+  /// No description provided for @mobileSpaceCoder_dragHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a command to add it at the green line, or drag it onto a line. Tap a line to move the green line there.'**
+  String get mobileSpaceCoder_dragHint;
+
+  /// No description provided for @mobileSpaceCoder_removeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove line {line}'**
+  String mobileSpaceCoder_removeLine(String line);
+
+  /// No description provided for @mobileSpaceCoder_loopCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop count'**
+  String get mobileSpaceCoder_loopCount;
+
+  /// No description provided for @mobileSpaceCoder_conditionMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition mode'**
+  String get mobileSpaceCoder_conditionMode;
+
+  /// No description provided for @mobileSpaceCoder_running.
+  ///
+  /// In en, this message translates to:
+  /// **'Running…'**
+  String get mobileSpaceCoder_running;
 }
 
 class _AppLocalizationsDelegate

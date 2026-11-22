@@ -2343,6 +2343,27 @@
       }
     }
   },
+  "mobileSpaceCoder_goal": "🎯 Chegue à câmara de ar com o menor número de linhas! Meta: {count} linhas",
+  "@mobileSpaceCoder_goal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_cursorHere": "As novas linhas entram aqui",
+  "mobileSpaceCoder_dragHint": "Toque em um comando para adicioná-lo na linha verde ou arraste-o até uma linha. Toque em uma linha para mover a linha verde para lá.",
+  "mobileSpaceCoder_removeLine": "Remover a linha {line}",
+  "@mobileSpaceCoder_removeLine": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_loopCount": "Repetições",
+  "mobileSpaceCoder_conditionMode": "Tipo de condição",
+  "mobileSpaceCoder_running": "Executando…",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

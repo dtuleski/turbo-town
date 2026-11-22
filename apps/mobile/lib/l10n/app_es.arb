@@ -2343,6 +2343,27 @@
       }
     }
   },
+  "mobileSpaceCoder_goal": "🎯 ¡Llega a la esclusa con la menor cantidad de líneas! Meta: {count} líneas",
+  "@mobileSpaceCoder_goal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_cursorHere": "Las nuevas líneas van aquí",
+  "mobileSpaceCoder_dragHint": "Toca un comando para añadirlo en la línea verde o arrástralo sobre una línea. Toca una línea para mover allí la línea verde.",
+  "mobileSpaceCoder_removeLine": "Quitar la línea {line}",
+  "@mobileSpaceCoder_removeLine": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_loopCount": "Repeticiones",
+  "mobileSpaceCoder_conditionMode": "Tipo de condición",
+  "mobileSpaceCoder_running": "Ejecutando…",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

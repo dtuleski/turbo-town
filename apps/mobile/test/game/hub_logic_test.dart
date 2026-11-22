@@ -90,27 +90,37 @@ void main() {
         presentation: PaidGamePresentation.openForAll,
       );
       expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.playable);
-      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
+      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.playable);
     });
 
     test('a paid tier is not blocked', () {
       final tiles = buildHubTiles(catalog: fullCatalog(), tier: 'STANDARD');
       expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.playable);
-      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
+      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.playable);
     });
   });
 
+  test('every registry game has app screens (FEAT-008 finished the list)', () {
+    final tiles = buildHubTiles(catalog: fullCatalog(), tier: 'PREMIUM');
+    expect(tiles.every((t) => t.availability == TileAvailability.playable), isTrue);
+  });
+
   test('availability: playable, server Coming Soon, not in the app yet', () {
+    // A registry entry without screens: none is left in the app, so the test
+    // passes its own registry to keep the "not in the app yet" path covered.
+    const registry = [
+      ...kGameRegistry,
+      GameEntry(gameId: 'future-game', emoji: '🧪', category: GameCategory.other),
+    ];
     final catalog = [
       item('memory-match'),
-      item('scratch-coding'),
+      item('future-game'),
       item('hangman', status: 'COMING_SOON'),
       item('tic-tac-toe', status: 'MAINTENANCE'),
     ];
-    // A paid tier, so the not-yet-built paid game reads as "not in the app".
-    final tiles = buildHubTiles(catalog: catalog, tier: 'PREMIUM');
+    final tiles = buildHubTiles(catalog: catalog, tier: 'PREMIUM', registry: registry);
     expect(tileFor(tiles, 'memory-match').availability, TileAvailability.playable);
-    expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
+    expect(tileFor(tiles, 'future-game').availability, TileAvailability.notInApp);
     expect(tileFor(tiles, 'hangman').availability, TileAvailability.comingSoon);
     expect(tileFor(tiles, 'tic-tac-toe').availability, TileAvailability.comingSoon);
   });

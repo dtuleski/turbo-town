@@ -2344,5 +2344,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "mobileSpaceCoder_goal": "🎯 Reach the airlock with the fewest lines! Target: {count} lines",
+  "@mobileSpaceCoder_goal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_cursorHere": "New lines go here",
+  "mobileSpaceCoder_dragHint": "Tap a command to add it at the green line, or drag it onto a line. Tap a line to move the green line there.",
+  "mobileSpaceCoder_removeLine": "Remove line {line}",
+  "@mobileSpaceCoder_removeLine": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_loopCount": "Loop count",
+  "mobileSpaceCoder_conditionMode": "Condition mode",
+  "mobileSpaceCoder_running": "Running…"
 }

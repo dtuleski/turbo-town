@@ -4740,4 +4740,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String mobileCircuit_partSelected(String name) {
     return 'Seleccionado: $name';
   }
+
+  @override
+  String mobileSpaceCoder_goal(String count) {
+    return '🎯 ¡Llega a la esclusa con la menor cantidad de líneas! Meta: $count líneas';
+  }
+
+  @override
+  String get mobileSpaceCoder_cursorHere => 'Las nuevas líneas van aquí';
+
+  @override
+  String get mobileSpaceCoder_dragHint =>
+      'Toca un comando para añadirlo en la línea verde o arrástralo sobre una línea. Toca una línea para mover allí la línea verde.';
+
+  @override
+  String mobileSpaceCoder_removeLine(String line) {
+    return 'Quitar la línea $line';
+  }
+
+  @override
+  String get mobileSpaceCoder_loopCount => 'Repeticiones';
+
+  @override
+  String get mobileSpaceCoder_conditionMode => 'Tipo de condición';
+
+  @override
+  String get mobileSpaceCoder_running => 'Ejecutando…';
 }

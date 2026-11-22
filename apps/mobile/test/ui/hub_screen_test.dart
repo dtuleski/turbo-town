@@ -95,20 +95,16 @@ void main() {
     expect(find.byKey(const Key('game-start-button')), findsNothing);
   });
 
-  testWidgets('games without app screens yet say so and do not navigate',
+  testWidgets('every game has app screens: no tile says "coming to the app" and Space Coder opens',
       (tester) async {
     useTallSurface(tester);
     await pumpRouterApp(tester, location: '/', api: _api(tier: 'PREMIUM'));
     await tester.pump(const Duration(milliseconds: 300));
-
-    expect(
-      tester.widget<Text>(find.byKey(const Key('tile-label-scratch-coding'))).data,
-      'Coming to the app soon',
-    );
+    expect(find.text('Coming to the app soon'), findsNothing);
     await tester.tap(_tile('scratch-coding'));
-    await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('DashDen Game Hub'), findsOneWidget);
-    expect(find.byKey(const Key('game-start-button')), findsNothing);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const Key('game-start-button')), findsOneWidget);
   });
 
   testWidgets('tapping Memory Match opens its setup page', (tester) async {

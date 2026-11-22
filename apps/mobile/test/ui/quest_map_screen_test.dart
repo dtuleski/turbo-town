@@ -46,11 +46,11 @@ QuestProgressView _progress({bool scienceOpen = false}) => QuestProgressView(
                 y: 84,
                 legs: const [LegView(themeId: 'MATH_CHALLENGE', difficulty: 1)]),
             _node('bp-03-words', status: 'LOCKED', x: 80, y: 70),
-            // Space Coder (Scratch Coding) has no screens in the app yet.
+            // A game the app does not know (for example one the server adds later).
             _node('bp-05-sequence',
                 x: 40,
                 y: 60,
-                legs: const [LegView(themeId: 'SCRATCH_CODING', difficulty: 1)]),
+                legs: const [LegView(themeId: 'TRAFFIC_LAB', difficulty: 1)]),
             _node('bp-boss', kind: 'BOSS', status: 'LOCKED', x: 50, y: 20),
             _node('bp-bonus-sequence', kind: 'BONUS', status: 'LOCKED', x: 20, y: 10),
           ],
@@ -147,7 +147,7 @@ void main() {
     expect(h.api.calls, contains('startGame:MATH_CHALLENGE:1:brain-peaks:bp-02-math:0'));
     await tester.pumpWidget(const SizedBox());
   });
-  testWidgets('a node whose game has no app screens yet cannot be launched',
+  testWidgets('a node whose game the app does not know cannot be launched',
       (tester) async {
     useTallSurface(tester);
     await pumpRouterApp(
@@ -160,7 +160,9 @@ void main() {
     await tester.tap(find.byKey(const Key('node-bp-05-sequence')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
-    expect(find.byKey(const Key('node-not-in-app')), findsOneWidget);
+    // Every known game has screens now (FEAT-008), so the "not in the app yet"
+    // note cannot appear; an unknown game simply has no Play.
+    expect(find.byKey(const Key('node-not-in-app')), findsNothing);
     final play = tester.widget<FilledButton>(find.byKey(const Key('node-play')));
     expect(play.onPressed, isNull);
   });
