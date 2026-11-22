@@ -22,6 +22,7 @@ class GameSessionFrame extends ConsumerStatefulWidget {
     required this.onPlayAgain,
     this.autoStart = true,
     this.replacePlayAgain,
+    this.resultExtras,
   });
 
   final GameSessionArgs args;
@@ -39,6 +40,9 @@ class GameSessionFrame extends ConsumerStatefulWidget {
   /// When set, Play Again calls this instead of resetting and restarting the
   /// round here (a game that must go back to its own setup first).
   final VoidCallback? replacePlayAgain;
+
+  /// Extra content for the result page (see [GameResultScreen.extras]).
+  final Widget Function(BuildContext context, GameResult result)? resultExtras;
 
   @override
   ConsumerState<GameSessionFrame> createState() => _GameSessionFrameState();
@@ -172,6 +176,7 @@ class _GameSessionFrameState extends ConsumerState<GameSessionFrame> {
           onHome: () => context.go('/'),
           onBackToMap: quest || result.quest != null ? _backToMap : null,
           onNextLeg: nextLeg == null ? null : () => context.pushReplacement(nextLeg),
+          extras: widget.resultExtras?.call(context, result),
         );
       case SessionPhase.playing:
       case SessionPhase.completing:

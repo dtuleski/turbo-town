@@ -4720,4 +4720,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String mobilePhysics_golfStrokeCounter(String current, String max) {
     return '$current/$max';
   }
+
+  @override
+  String get mobileCircuit_remove => 'Quitar';
+
+  @override
+  String get mobileCircuit_moveHint =>
+      'Mantén pulsada una pieza y arrástrala para moverla. Toca un cable para quitarlo.';
+
+  @override
+  String get mobileCircuit_wiring =>
+      'Ahora toca otro punto para terminar el cable.';
+
+  @override
+  String get mobileCircuit_zoomHint =>
+      'Pellizca para hacer zoom y arrastra para mover la cuadrícula.';
+
+  @override
+  String mobileCircuit_partSelected(String name) {
+    return 'Seleccionado: $name';
+  }
 }

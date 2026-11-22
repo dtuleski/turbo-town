@@ -32,6 +32,16 @@ enum BlockReason {
   questFailed,
 }
 
+/// Why a recoverable submit did not finish the round (see
+/// [GameSessionController.completeOrRecover]).
+enum SubmitFailure {
+  /// The server re-checked the submission and refused it.
+  rejected,
+
+  /// The server could not be reached or failed; the same payload can be resent.
+  unavailable,
+}
+
 /// What a finished round produced. The score always comes from the server.
 class GameResult {
   const GameResult({
@@ -306,6 +316,57 @@ class GameSessionController extends StateNotifier<GameSessionState> {
     if (!mounted || generation != _generation) return result;
     state = state.copyWith(phase: SessionPhase.completed, result: result);
     return result;
+  }
+
+  /// Like [complete] for a game whose server can refuse the submission (Circuit
+  /// Builder re-evaluates the layout): when the call fails the round goes back to
+  /// playing, with its clock still running, and the reason is returned so the
+  /// board can say what happened. Null means the round is completed.
+  Future<SubmitFailure?> completeOrRecover({
+    Map<String, dynamic>? extra,
+    int? attempts,
+    int? completionSeconds,
+  }) async {
+    final gameId = state.gameId;
+    if (gameId == null || !state.isActive) {
+      // Offline rounds have nothing to refuse; they finish like any other.
+      await complete(extra: extra, attempts: attempts, completionSeconds: completionSeconds);
+      return null;
+    }
+    final generation = _generation;
+    final seconds = completionSeconds ?? state.elapsedSeconds;
+    final tries = attempts ?? state.attempts;
+    state = state.copyWith(phase: SessionPhase.completing, attempts: tries);
+    try {
+      final response = await _api.completeGame(
+        gameId: gameId,
+        completionTime: seconds < 1 ? 1 : seconds,
+        attempts: tries < 1 ? 1 : tries,
+        extra: extra,
+      );
+      if (!mounted || generation != _generation) return null;
+      _timer?.cancel();
+      _onQuestResult?.call(response.quest);
+      state = state.copyWith(
+        phase: SessionPhase.completed,
+        result: GameResult(
+          score: response.score,
+          completionTime: seconds,
+          attempts: tries,
+          scoreBreakdown: response.scoreBreakdown,
+          leaderboardRank: response.leaderboardRank,
+          achievements: response.achievements,
+          quest: response.quest,
+        ),
+      );
+      return null;
+    } catch (e) {
+      if (!mounted || generation != _generation) return SubmitFailure.unavailable;
+      state = state.copyWith(phase: SessionPhase.playing);
+      return e is GameApiException && e.isRejected
+          ? SubmitFailure.rejected
+          : SubmitFailure.unavailable;
+    }
   }
 
   /// Back to a fresh idle round (same theme and difficulty).

@@ -18,6 +18,7 @@ class GameResultScreen extends StatelessWidget {
     this.reviewType,
     this.onBackToMap,
     this.onNextLeg,
+    this.extras,
   });
 
   final GameResult result;
@@ -32,6 +33,10 @@ class GameResultScreen extends StatelessWidget {
 
   /// Set when the quest run has another leg to play.
   final VoidCallback? onNextLeg;
+
+  /// Game specific content shown under the score rows (Circuit Builder: what
+  /// the level taught, and the next level).
+  final Widget? extras;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +100,7 @@ class GameResultScreen extends StatelessWidget {
                   child: Text('🏆 ${_prettyAchievement(a.type)}'),
                 ),
             ],
+            if (extras != null) extras!,
             if (quest != null) _QuestSection(quest: quest, saved: result.saved),
             if (reviewType != null) ...[
               const SizedBox(height: 16),

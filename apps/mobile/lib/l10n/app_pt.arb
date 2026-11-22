@@ -2331,6 +2331,18 @@
       }
     }
   },
+  "mobileCircuit_remove": "Remover",
+  "mobileCircuit_moveHint": "Toque e segure uma peça e arraste para movê-la. Toque em um fio para removê-lo.",
+  "mobileCircuit_wiring": "Agora toque em outro ponto para terminar o fio.",
+  "mobileCircuit_zoomHint": "Belisque para ampliar e arraste para mover a grade.",
+  "mobileCircuit_partSelected": "Selecionado: {name}",
+  "@mobileCircuit_partSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

@@ -8361,6 +8361,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{current}/{max}'**
   String mobilePhysics_golfStrokeCounter(String current, String max);
+
+  /// No description provided for @mobileCircuit_remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get mobileCircuit_remove;
+
+  /// No description provided for @mobileCircuit_moveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Touch and hold a part, then drag it to move it. Tap a wire to remove it.'**
+  String get mobileCircuit_moveHint;
+
+  /// No description provided for @mobileCircuit_wiring.
+  ///
+  /// In en, this message translates to:
+  /// **'Now tap another dot to finish the wire.'**
+  String get mobileCircuit_wiring;
+
+  /// No description provided for @mobileCircuit_zoomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinch to zoom and drag to pan the grid.'**
+  String get mobileCircuit_zoomHint;
+
+  /// No description provided for @mobileCircuit_partSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {name}'**
+  String mobileCircuit_partSelected(String name);
 }
 
 class _AppLocalizationsDelegate

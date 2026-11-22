@@ -89,26 +89,28 @@ void main() {
         tier: 'FREE',
         presentation: PaidGamePresentation.openForAll,
       );
-      expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.notInApp);
+      expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.playable);
+      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
     });
 
     test('a paid tier is not blocked', () {
       final tiles = buildHubTiles(catalog: fullCatalog(), tier: 'STANDARD');
-      expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.notInApp);
+      expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.playable);
+      expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
     });
   });
 
   test('availability: playable, server Coming Soon, not in the app yet', () {
     final catalog = [
       item('memory-match'),
-      item('circuit-builder'),
+      item('scratch-coding'),
       item('hangman', status: 'COMING_SOON'),
       item('tic-tac-toe', status: 'MAINTENANCE'),
     ];
     // A paid tier, so the not-yet-built paid game reads as "not in the app".
     final tiles = buildHubTiles(catalog: catalog, tier: 'PREMIUM');
     expect(tileFor(tiles, 'memory-match').availability, TileAvailability.playable);
-    expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.notInApp);
+    expect(tileFor(tiles, 'scratch-coding').availability, TileAvailability.notInApp);
     expect(tileFor(tiles, 'hangman').availability, TileAvailability.comingSoon);
     expect(tileFor(tiles, 'tic-tac-toe').availability, TileAvailability.comingSoon);
   });

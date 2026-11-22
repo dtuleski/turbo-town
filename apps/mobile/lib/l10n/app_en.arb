@@ -2332,5 +2332,17 @@
         "type": "String"
       }
     }
+  },
+  "mobileCircuit_remove": "Remove",
+  "mobileCircuit_moveHint": "Touch and hold a part, then drag it to move it. Tap a wire to remove it.",
+  "mobileCircuit_wiring": "Now tap another dot to finish the wire.",
+  "mobileCircuit_zoomHint": "Pinch to zoom and drag to pan the grid.",
+  "mobileCircuit_partSelected": "Selected: {name}",
+  "@mobileCircuit_partSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

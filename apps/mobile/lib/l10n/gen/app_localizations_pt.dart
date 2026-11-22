@@ -4702,4 +4702,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String mobilePhysics_golfStrokeCounter(String current, String max) {
     return '$current/$max';
   }
+
+  @override
+  String get mobileCircuit_remove => 'Remover';
+
+  @override
+  String get mobileCircuit_moveHint =>
+      'Toque e segure uma peça e arraste para movê-la. Toque em um fio para removê-lo.';
+
+  @override
+  String get mobileCircuit_wiring =>
+      'Agora toque em outro ponto para terminar o fio.';
+
+  @override
+  String get mobileCircuit_zoomHint =>
+      'Belisque para ampliar e arraste para mover a grade.';
+
+  @override
+  String mobileCircuit_partSelected(String name) {
+    return 'Selecionado: $name';
+  }
 }

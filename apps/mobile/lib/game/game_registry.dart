@@ -188,6 +188,7 @@ const List<GameEntry> kGameRegistry = [
     emoji: '🔌',
     category: GameCategory.scienceMath,
     themeId: 'CIRCUIT_BUILDER',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'mini-golf',

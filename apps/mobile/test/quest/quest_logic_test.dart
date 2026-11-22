@@ -130,7 +130,7 @@ void main() {
       expect(isLegPlayableInApp(const LegView(themeId: 'SPACE_ENTRY', difficulty: 2)), isTrue);
       expect(isLegPlayableInApp(const LegView(themeId: 'MINI_GOLF', difficulty: 2)), isTrue);
       expect(isLegPlayableInApp(const LegView(themeId: 'SCRATCH_CODING', difficulty: 1)), isFalse);
-      expect(isLegPlayableInApp(const LegView(themeId: 'CIRCUIT_BUILDER', difficulty: 1)), isFalse);
+      expect(isLegPlayableInApp(const LegView(themeId: 'CIRCUIT_BUILDER', difficulty: 1)), isTrue);
       expect(isLegPlayableInApp(const LegView(themeId: 'NOPE', difficulty: 1)), isFalse);
     });
   });

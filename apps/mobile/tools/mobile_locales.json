@@ -434,6 +434,13 @@
       "golfDoubleBogey": "Double Bogey",
       "golfTripleBogey": "Triple Bogey+",
       "golfStrokeCounter": "{{current}}/{{max}}"
+    },
+    "mobileCircuit": {
+      "remove": "Remove",
+      "moveHint": "Touch and hold a part, then drag it to move it. Tap a wire to remove it.",
+      "wiring": "Now tap another dot to finish the wire.",
+      "zoomHint": "Pinch to zoom and drag to pan the grid.",
+      "partSelected": "Selected: {{name}}"
     }
   },
   "es": {
@@ -871,6 +878,13 @@
       "golfDoubleBogey": "Doble bogey",
       "golfTripleBogey": "Triple bogey o más",
       "golfStrokeCounter": "{{current}}/{{max}}"
+    },
+    "mobileCircuit": {
+      "remove": "Quitar",
+      "moveHint": "Mantén pulsada una pieza y arrástrala para moverla. Toca un cable para quitarlo.",
+      "wiring": "Ahora toca otro punto para terminar el cable.",
+      "zoomHint": "Pellizca para hacer zoom y arrastra para mover la cuadrícula.",
+      "partSelected": "Seleccionado: {{name}}"
     }
   },
   "pt": {
@@ -1308,6 +1322,13 @@
       "golfDoubleBogey": "Duplo bogey",
       "golfTripleBogey": "Triplo bogey ou mais",
       "golfStrokeCounter": "{{current}}/{{max}}"
+    },
+    "mobileCircuit": {
+      "remove": "Remover",
+      "moveHint": "Toque e segure uma peça e arraste para movê-la. Toque em um fio para removê-lo.",
+      "wiring": "Agora toque em outro ponto para terminar o fio.",
+      "zoomHint": "Belisque para ampliar e arraste para mover a grade.",
+      "partSelected": "Selecionado: {{name}}"
     }
   }
 }

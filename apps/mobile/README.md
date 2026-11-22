@@ -38,6 +38,13 @@ Keys are flattened (`a.b-c` -> `a_b_c`, arrays -> `name_0`), `{{x}}` -> `{x}`. K
 es/pt on web are filled from en (same fallback as i18next). Do not edit the ARB files by hand.
 `tools/export_fixtures.mjs` is a skeleton for golden fixtures.
 
+The Circuit Builder engine (`lib/game/circuit/engine/`) is a Dart port of
+`packages/shared/src/circuit`. `tools/export_circuit_golden.mjs` runs the shared TypeScript
+evaluator over every level and seeded random layouts and writes
+`test/fixtures/circuit_golden.json`; `test/game/circuit_golden_test.dart` checks the Dart engine
+against it. Re-run it (with `tsx`, e.g. `../web/node_modules/.bin/tsx`) after any change to the
+shared engine. The server stays authoritative: it re-evaluates every submitted layout.
+
 ## Platform config for Google Sign-In (required after `flutter create`)
 
 Google (Cognito Hosted UI) sign-in uses an OAuth redirect back to the app via a

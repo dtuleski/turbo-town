@@ -200,6 +200,11 @@ class GameApiException implements Exception {
       code == 'PAID_FEATURE_REQUIRED' ||
       message.toLowerCase().contains('paid subscription');
 
+  /// The server re-checked a Circuit Builder layout and refused it (web
+  /// `isRejection` in circuitGameSession.ts).
+  bool get isRejected =>
+      code == 'VALIDATION_ERROR' || message.toLowerCase().contains('could not be verified');
+
   @override
   String toString() => message;
 }

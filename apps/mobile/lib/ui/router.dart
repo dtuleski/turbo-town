@@ -24,6 +24,7 @@ import 'screens/hub_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/games/bond_and_burn_screens.dart';
 import 'screens/games/bubble_pop_screens.dart';
+import 'screens/games/circuit_builder_screens.dart';
 import 'screens/games/code_a_bot_screens.dart';
 import 'screens/games/hangman_screens.dart';
 import 'screens/games/jigsaw_screens.dart';
@@ -307,6 +308,28 @@ final routerProvider = Provider<GoRouter>((ref) {
           final query = state.uri.queryParameters;
           return BondAndBurnGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/circuit-builder/setup',
+        builder: (_, __) => const CircuitBuilderSetupScreen(),
+      ),
+      GoRoute(
+        path: '/circuit-builder/sandbox',
+        builder: (_, __) => const CircuitBuilderSandboxScreen(),
+      ),
+      GoRoute(
+        path: '/circuit-builder/play',
+        // Anything that is not a guided level of that difficulty goes back to
+        // the level list (web), so no URL is a dead screen.
+        redirect: (_, state) =>
+            parseCircuitLevel(state.uri.queryParameters) == null ? '/circuit-builder/setup' : null,
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return CircuitBuilderGameScreen(
+            level: parseCircuitLevel(query)!,
             questContext: QuestContext.parse(query['quest']),
           );
         },
