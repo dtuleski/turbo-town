@@ -46,6 +46,11 @@ QuestProgressView _progress({bool scienceOpen = false}) => QuestProgressView(
                 y: 84,
                 legs: const [LegView(themeId: 'MATH_CHALLENGE', difficulty: 1)]),
             _node('bp-03-words', status: 'LOCKED', x: 80, y: 70),
+            // Sequence Memory has no screens in the app yet.
+            _node('bp-05-sequence',
+                x: 40,
+                y: 60,
+                legs: const [LegView(themeId: 'SEQUENCE_MEMORY', difficulty: 1)]),
             _node('bp-boss', kind: 'BOSS', status: 'LOCKED', x: 50, y: 20),
             _node('bp-bonus-sequence', kind: 'BONUS', status: 'LOCKED', x: 20, y: 10),
           ],
@@ -122,6 +127,26 @@ void main() {
     expect(h.api.calls, contains('startGame:ANIMALS:1:brain-peaks:bp-01-memory:0'));
   });
 
+  testWidgets('a node whose game has app screens can be launched with its quest context',
+      (tester) async {
+    useTallSurface(tester);
+    final h = await pumpRouterApp(
+      tester,
+      location: '/quest-map',
+      api: FakeGameApi(questProgress: _progress()),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('node-bp-02-math')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const Key('node-not-in-app')), findsNothing);
+    await tester.tap(find.byKey(const Key('node-play')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(h.api.calls, contains('startGame:MATH_CHALLENGE:1:brain-peaks:bp-02-math:0'));
+    await tester.pumpWidget(const SizedBox());
+  });
   testWidgets('a node whose game has no app screens yet cannot be launched',
       (tester) async {
     useTallSurface(tester);
@@ -132,7 +157,7 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 300));
 
-    await tester.tap(find.byKey(const Key('node-bp-02-math')));
+    await tester.tap(find.byKey(const Key('node-bp-05-sequence')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
     expect(find.byKey(const Key('node-not-in-app')), findsOneWidget);

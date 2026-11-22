@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../auth/auth_controller.dart';
 import '../api/quest_models.dart';
 import '../config/constants.dart';
+import '../game/language/language_data.dart';
+import '../game/quiz/quiz_providers.dart';
+import '../game/quiz/quiz_questions.dart';
 import '../quest/quest_launch.dart';
 import 'main_shell.dart';
 import 'screens/achievements_screen.dart';
@@ -15,6 +18,12 @@ import 'screens/history_screen.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/hub_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/games/hangman_screens.dart';
+import 'screens/games/language_screens.dart';
+import 'screens/games/math_screens.dart';
+import 'screens/games/quiz_game_screen.dart';
+import 'screens/games/quiz_setup_screens.dart';
+import 'screens/games/word_puzzle_screens.dart';
 import 'screens/memory_game_screen.dart';
 import 'screens/memory_setup_screen.dart';
 import 'screens/profile_screen.dart';
@@ -108,6 +117,102 @@ final routerProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
+      GoRoute(
+        path: '/math-challenge/setup',
+        builder: (_, __) => const MathSetupScreen(),
+      ),
+      GoRoute(
+        path: '/math-challenge/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return MathGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/word-puzzle/setup',
+        builder: (_, __) => const WordPuzzleSetupScreen(),
+      ),
+      GoRoute(
+        path: '/word-puzzle/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return WordPuzzleGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/geo-quiz/setup',
+        builder: (_, __) => const GeoQuizSetupScreen(),
+      ),
+      GoRoute(
+        path: '/geo-quiz/play',
+        builder: (_, state) =>
+            QuizGameScreen(args: _quizArgs('geo-quiz', state.uri.queryParameters)),
+      ),
+      GoRoute(
+        path: '/history-quiz/setup',
+        builder: (_, __) => const HistoryQuizSetupScreen(),
+      ),
+      GoRoute(
+        path: '/history-quiz/play',
+        builder: (_, state) =>
+            QuizGameScreen(args: _quizArgs('history-quiz', state.uri.queryParameters)),
+      ),
+      GoRoute(
+        path: '/civics-quiz/setup',
+        builder: (_, __) => const CivicsQuizSetupScreen(),
+      ),
+      GoRoute(
+        path: '/civics-quiz/play',
+        builder: (_, state) =>
+            QuizGameScreen(args: _quizArgs('civics-quiz', state.uri.queryParameters)),
+      ),
+      GoRoute(
+        path: '/hangman/setup',
+        builder: (_, __) => const HangmanSetupScreen(),
+      ),
+      GoRoute(
+        path: '/hangman/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return HangmanGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/language-learning/setup',
+        builder: (_, __) => const LanguageSelectionScreen(),
+      ),
+      GoRoute(
+        path: '/language-learning/setup/:code',
+        builder: (_, state) =>
+            LanguageSetupScreen(languageCode: state.pathParameters['code'] ?? ''),
+      ),
+      GoRoute(
+        path: '/language-learning/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          final lang = languageByCode(query['lang']);
+          if (lang == null || !isLanguageCategory(query['category'])) {
+            return const LanguageSelectionScreen();
+          }
+          return LanguagePlayScreen(
+            args: (
+              lang: lang.code,
+              category: query['category']!,
+              difficulty: languageDifficultyById(query['difficulty']).id,
+              mode: languageModeFromId(query['mode']),
+            ),
+          );
+        },
+      ),
     ],
     errorBuilder: (_, state) => Scaffold(
       body: Center(child: Text('Route not found: ${state.uri}')),
@@ -128,4 +233,20 @@ final routerProvider = Provider<GoRouter>((ref) {
     orElse: () => Difficulty.easy,
   );
   return (themeId: themeId, difficulty: difficulty);
+}
+
+/// Quiz play settings from a setup page or a quest launch URL. Missing or
+/// invalid values fall back to the first option, as the web pages do.
+QuizArgs _quizArgs(String gameId, Map<String, String> query) {
+  final isCivics = gameId == 'civics-quiz';
+  final difficulty = quizDifficultyParam(isCivics ? query['level'] : query['difficulty']);
+  final asked = int.tryParse(query['questions'] ?? '') ?? 0;
+  return (
+    gameId: gameId,
+    difficulty: difficulty,
+    mode: isCivics ? '' : (query['mode'] ?? ''),
+    category: isCivics ? (query['category'] ?? 'all') : '',
+    count: isCivics ? (asked < 1 ? kCivicsLevelQuestions[difficulty]! : asked) : 0,
+    quest: QuestContext.parse(query['quest']),
+  );
 }

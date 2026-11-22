@@ -118,9 +118,12 @@ void main() {
       );
     });
 
-    test('only Memory Match legs can be played in the app today', () {
+    test('legs of games with app screens can be played, others cannot', () {
       expect(isLegPlayableInApp(const LegView(themeId: 'FRUITS', difficulty: 1)), isTrue);
-      expect(isLegPlayableInApp(const LegView(themeId: 'GEO_QUIZ', difficulty: 1)), isFalse);
+      expect(isLegPlayableInApp(const LegView(themeId: 'GEO_QUIZ', difficulty: 1)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'MATH_CHALLENGE', difficulty: 2)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'WORD_PUZZLE', difficulty: 3)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'SEQUENCE_MEMORY', difficulty: 1)), isFalse);
       expect(isLegPlayableInApp(const LegView(themeId: 'NOPE', difficulty: 1)), isFalse);
     });
   });

@@ -88,10 +88,20 @@ void main() {
     expect(gameByThemeId('MATH_CHALLENGE')?.gameId, 'math-challenge');
     expect(gameById('bond-and-burn')?.reviewType, 'BOND_AND_BURN');
     expect(gameById('memory-match')?.setupRoute, '/memory-match/setup');
-    // Only Memory Match has screens so far; later features flip the others.
+    // Memory Match plus the quiz and word games (FEAT-005); later features
+    // flip the others.
     expect(
-      kGameRegistry.where((g) => g.implemented).map((g) => g.gameId),
-      ['memory-match'],
+      kGameRegistry.where((g) => g.implemented).map((g) => g.gameId).toSet(),
+      {
+        'memory-match',
+        'math-challenge',
+        'word-puzzle',
+        'language-learning',
+        'geo-quiz',
+        'history-quiz',
+        'civics-quiz',
+        'hangman',
+      },
     );
   });
 }
