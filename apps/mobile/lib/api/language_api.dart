@@ -159,7 +159,7 @@ class LanguageApi {
         'difficulty': difficulty,
         'count': count,
       },
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     final list = result.data?['getLanguageWords'] as List?;
@@ -185,7 +185,7 @@ class LanguageApi {
   Future<List<LanguageProgress>> getUserLanguageProgress() async {
     final result = await _client.query(QueryOptions(
       document: gql(_progressQuery),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     final list = result.data?['getUserLanguageProgress'] as List?;

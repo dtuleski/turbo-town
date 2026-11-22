@@ -49,7 +49,7 @@ class StatsApi {
   Future<UserStatistics> getUserStatistics() async {
     final result = await _client.query(QueryOptions(
       document: gql(_statisticsQuery),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     return UserStatistics.fromJson(
@@ -82,7 +82,7 @@ class StatsApi {
     final result = await _client.query(QueryOptions(
       document: gql(_historyQuery),
       variables: {'input': input},
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     return GameHistoryPage.fromJson(

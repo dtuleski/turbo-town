@@ -28,7 +28,7 @@ class ProfileApi {
   Future<EmailPrefs> getEmailPrefs() async {
     final result = await _client.query(QueryOptions(
       document: gql(_getPrefs),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     return EmailPrefs.fromJson(

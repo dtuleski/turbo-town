@@ -51,7 +51,7 @@ class LeaderboardApi {
         'timeframe': timeframe.wire,
         'limit': limit,
       },
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     return LeaderboardResult.fromJson(
@@ -67,7 +67,7 @@ class LeaderboardApi {
     final result = await _client.query(QueryOptions(
       document: gql(_rankQuery),
       variables: {'gameType': gameType.wire, 'timeframe': timeframe.wire},
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     final data = result.data?['getUserRank'];
@@ -85,7 +85,7 @@ class LeaderboardApi {
         if (gameType != null) 'gameType': gameType.wire,
         'limit': limit,
       },
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     throwIfGraphQLError(result);
     return ((result.data?['getUserScoreHistory'] as List?) ?? const [])

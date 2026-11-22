@@ -205,7 +205,7 @@ class GameApi {
     final result = await _client.query(
       QueryOptions(
         document: gql(_canStartGameQuery),
-        fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
     _throwIfError(result);
@@ -217,7 +217,7 @@ class GameApi {
   Future<List<GameCatalogItem>> listAvailableGames() async {
     final result = await _client.query(QueryOptions(
       document: gql(_listAvailableGamesQuery),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     _throwIfError(result);
     return ((result.data!['listAvailableGames'] as List?) ?? const [])
@@ -229,7 +229,7 @@ class GameApi {
   Future<QuestProgressView> getQuestProgress() async {
     final result = await _client.query(QueryOptions(
       document: gql(_questProgressQuery),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     _throwIfError(result);
     return QuestProgressView.fromJson(
@@ -254,7 +254,7 @@ class GameApi {
     final result = await _client.query(QueryOptions(
       document: gql(_userReviewQuery),
       variables: {'gameType': gameType},
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     _throwIfError(result);
     final data = result.data?['getUserReview'] as Map<String, dynamic>?;
@@ -264,7 +264,7 @@ class GameApi {
   Future<ReviewStatsResult> getReviewStats() async {
     final result = await _client.query(QueryOptions(
       document: gql(_reviewStatsQuery),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     _throwIfError(result);
     return ReviewStatsResult.fromJson(
