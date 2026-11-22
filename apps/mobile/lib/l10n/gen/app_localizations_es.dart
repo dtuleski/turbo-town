@@ -1349,7 +1349,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get spaceCoder_errors_undefinedVarChar =>
-      '¡Variable no definida! Agrega var-char = \'\'<valor>\'\' antes de usarla.';
+      '¡Variable no definida! Agrega var-char = \'<valor>\' antes de usarla.';
 
   @override
   String get spaceCoder_efficiency_perfectCode => 'Código Perfecto ⚡';
@@ -3977,4 +3977,247 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get mobileStats_ach_hardMode_desc =>
       'Completa un juego en dificultad Difícil';
+
+  @override
+  String get mobileLanguage_chooseLanguage => 'Elige un idioma para aprender';
+
+  @override
+  String mobileLanguage_levelLabel(String level) {
+    return 'Nivel $level';
+  }
+
+  @override
+  String mobileLanguage_wordsLearnedLabel(String count) {
+    return '$count palabras';
+  }
+
+  @override
+  String mobileLanguage_learnTitle(String language) {
+    return 'Aprende $language';
+  }
+
+  @override
+  String get mobileLanguage_configure => 'Configura tu sesión de aprendizaje';
+
+  @override
+  String get mobileLanguage_chooseMode => 'Elige el modo';
+
+  @override
+  String get mobileLanguage_modeImageMatch => 'Emparejar imagen';
+
+  @override
+  String get mobileLanguage_modeImageMatchDesc =>
+      'Mira la palabra y elige la imagen correcta';
+
+  @override
+  String get mobileLanguage_modePronunciation => 'Pronunciación';
+
+  @override
+  String get mobileLanguage_modePronunciationDesc =>
+      'Mira una imagen y di la palabra correctamente';
+
+  @override
+  String get mobileLanguage_accuracyVaries =>
+      'La precisión del reconocimiento puede variar en este idioma';
+
+  @override
+  String get mobileLanguage_diffBeginner => 'Principiante';
+
+  @override
+  String get mobileLanguage_diffIntermediate => 'Intermedio';
+
+  @override
+  String get mobileLanguage_diffAdvanced => 'Avanzado';
+
+  @override
+  String mobileLanguage_diffBeginnerDesc(String count) {
+    return 'Vocabulario básico, $count palabras';
+  }
+
+  @override
+  String mobileLanguage_diffIntermediateDesc(String count) {
+    return 'Palabras comunes, $count palabras';
+  }
+
+  @override
+  String mobileLanguage_diffAdvancedDesc(String count) {
+    return 'Vocabulario complejo, $count palabras';
+  }
+
+  @override
+  String get mobileLanguage_chooseCategory => 'Elige una categoría';
+
+  @override
+  String get mobileLanguage_catAnimals => 'Animales';
+
+  @override
+  String get mobileLanguage_catAnimalsDesc => 'Perros, gatos, aves y más';
+
+  @override
+  String get mobileLanguage_catFood => 'Comida y bebidas';
+
+  @override
+  String get mobileLanguage_catFoodDesc => 'Frutas, verduras, comidas';
+
+  @override
+  String get mobileLanguage_catColors => 'Colores';
+
+  @override
+  String get mobileLanguage_catColorsDesc => 'Colores básicos y avanzados';
+
+  @override
+  String get mobileLanguage_catNumbers => 'Números';
+
+  @override
+  String get mobileLanguage_catNumbersDesc => 'Números del 1 al 20 y más';
+
+  @override
+  String get mobileLanguage_catObjects => 'Objetos';
+
+  @override
+  String get mobileLanguage_catObjectsDesc =>
+      'Cosas y herramientas de todos los días';
+
+  @override
+  String get mobileLanguage_catNature => 'Naturaleza';
+
+  @override
+  String get mobileLanguage_catNatureDesc => 'Árboles, flores, clima';
+
+  @override
+  String get mobileLanguage_startLearning => 'Empezar a aprender';
+
+  @override
+  String get mobileLanguage_languageNotFound => 'Idioma no encontrado';
+
+  @override
+  String get mobileLanguage_backToLanguages =>
+      'Volver a la selección de idioma';
+
+  @override
+  String get mobileLanguage_loadingWords => 'Cargando palabras...';
+
+  @override
+  String get mobileLanguage_noWords =>
+      'No hay vocabulario disponible para este idioma y categoría. Prueba con otra categoría.';
+
+  @override
+  String get mobileLanguage_loadFailed =>
+      'No se pudieron cargar las palabras. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get mobileLanguage_retryLoad => 'Reintentar';
+
+  @override
+  String mobileLanguage_questionOf(String current, String total) {
+    return 'Pregunta $current de $total';
+  }
+
+  @override
+  String mobileLanguage_correctCount(String count) {
+    return '$count correctas';
+  }
+
+  @override
+  String get mobileLanguage_hearWord => 'Escuchar la palabra';
+
+  @override
+  String get mobileLanguage_whichImage =>
+      '¿Qué imagen corresponde a esta palabra?';
+
+  @override
+  String get mobileLanguage_imageUnavailable => 'Imagen no disponible';
+
+  @override
+  String mobileLanguage_attempt(String current, String max) {
+    return 'Intento $current/$max';
+  }
+
+  @override
+  String get mobileLanguage_record => 'Grabar';
+
+  @override
+  String get mobileLanguage_stopRecording => 'Detener grabación';
+
+  @override
+  String get mobileLanguage_tapToRecord => 'Toca el micrófono y di la palabra';
+
+  @override
+  String get mobileLanguage_listening => 'Escuchando... ¡habla ahora!';
+
+  @override
+  String get mobileLanguage_processing => 'Procesando...';
+
+  @override
+  String mobileLanguage_heard(String text) {
+    return 'Se oyó: \"$text\"';
+  }
+
+  @override
+  String get mobileLanguage_recognized => '✓ Reconocida';
+
+  @override
+  String get mobileLanguage_notRecognized => '✗ No reconocida';
+
+  @override
+  String get mobileLanguage_niceHeard => '¡Bien! Oímos la palabra correcta.';
+
+  @override
+  String get mobileLanguage_didntCatch =>
+      'No captamos la palabra correcta. ¡Inténtalo de nuevo!';
+
+  @override
+  String mobileLanguage_retryLeft(String count) {
+    return 'Reintentar ($count restantes)';
+  }
+
+  @override
+  String get mobileLanguage_nextWord => 'Siguiente palabra';
+
+  @override
+  String get mobileLanguage_finish => 'Terminar';
+
+  @override
+  String get mobileLanguage_fbTryAgain => 'Inténtalo de nuevo';
+
+  @override
+  String get mobileLanguage_fbGoodEffort => 'Buen esfuerzo';
+
+  @override
+  String get mobileLanguage_fbGreat => '¡Muy bien!';
+
+  @override
+  String get mobileLanguage_fbPerfect => '¡Perfecto!';
+
+  @override
+  String get mobileLanguage_errNotAllowed =>
+      '¡Necesito oírte! Permite el acceso al micrófono y al reconocimiento de voz en Ajustes e inténtalo de nuevo.';
+
+  @override
+  String get mobileLanguage_errNoSpeech =>
+      'No oí nada. ¡Toca el micrófono y habla con claridad!';
+
+  @override
+  String get mobileLanguage_errAudio =>
+      'No puedo usar el micrófono. Comprueba que esté libre e inténtalo de nuevo.';
+
+  @override
+  String get mobileLanguage_errNetwork =>
+      '¡Ups! Revisa tu conexión a internet e inténtalo de nuevo.';
+
+  @override
+  String get mobileLanguage_errAborted =>
+      'Se detuvo la grabación. ¡Toca el micrófono para intentarlo de nuevo!';
+
+  @override
+  String get mobileLanguage_errNotSupported =>
+      'El reconocimiento de voz no está disponible en este dispositivo.';
+
+  @override
+  String get mobileLanguage_errUnknown =>
+      'Algo salió mal. ¡Inténtalo de nuevo!';
+
+  @override
+  String get mobileLanguage_pronUnavailable =>
+      'Todavía no disponible en la app';
 }

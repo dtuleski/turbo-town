@@ -21,6 +21,7 @@ class GameSessionFrame extends ConsumerStatefulWidget {
     required this.boardBuilder,
     required this.onPlayAgain,
     this.autoStart = true,
+    this.replacePlayAgain,
   });
 
   final GameSessionArgs args;
@@ -34,6 +35,10 @@ class GameSessionFrame extends ConsumerStatefulWidget {
   final VoidCallback onPlayAgain;
 
   final bool autoStart;
+
+  /// When set, Play Again calls this instead of resetting and restarting the
+  /// round here (a game that must go back to its own setup first).
+  final VoidCallback? replacePlayAgain;
 
   @override
   ConsumerState<GameSessionFrame> createState() => _GameSessionFrameState();
@@ -54,6 +59,11 @@ class _GameSessionFrameState extends ConsumerState<GameSessionFrame> {
       ref.read(gameSessionProvider(widget.args).notifier);
 
   void _playAgain() {
+    final replace = widget.replacePlayAgain;
+    if (replace != null) {
+      replace();
+      return;
+    }
     widget.onPlayAgain();
     _session
       ..reset()

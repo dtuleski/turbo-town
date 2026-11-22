@@ -1829,6 +1829,157 @@
   "mobileStats_ach_elite_desc": "Consigue más de 7.000 en cualquier juego",
   "mobileStats_ach_hardMode_name": "Dificultad Desbloqueada",
   "mobileStats_ach_hardMode_desc": "Completa un juego en dificultad Difícil",
+  "mobileLanguage_chooseLanguage": "Elige un idioma para aprender",
+  "mobileLanguage_levelLabel": "Nivel {level}",
+  "@mobileLanguage_levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_wordsLearnedLabel": "{count} palabras",
+  "@mobileLanguage_wordsLearnedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_learnTitle": "Aprende {language}",
+  "@mobileLanguage_learnTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_configure": "Configura tu sesión de aprendizaje",
+  "mobileLanguage_chooseMode": "Elige el modo",
+  "mobileLanguage_modeImageMatch": "Emparejar imagen",
+  "mobileLanguage_modeImageMatchDesc": "Mira la palabra y elige la imagen correcta",
+  "mobileLanguage_modePronunciation": "Pronunciación",
+  "mobileLanguage_modePronunciationDesc": "Mira una imagen y di la palabra correctamente",
+  "mobileLanguage_accuracyVaries": "La precisión del reconocimiento puede variar en este idioma",
+  "mobileLanguage_diffBeginner": "Principiante",
+  "mobileLanguage_diffIntermediate": "Intermedio",
+  "mobileLanguage_diffAdvanced": "Avanzado",
+  "mobileLanguage_diffBeginnerDesc": "Vocabulario básico, {count} palabras",
+  "@mobileLanguage_diffBeginnerDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffIntermediateDesc": "Palabras comunes, {count} palabras",
+  "@mobileLanguage_diffIntermediateDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffAdvancedDesc": "Vocabulario complejo, {count} palabras",
+  "@mobileLanguage_diffAdvancedDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_chooseCategory": "Elige una categoría",
+  "mobileLanguage_catAnimals": "Animales",
+  "mobileLanguage_catAnimalsDesc": "Perros, gatos, aves y más",
+  "mobileLanguage_catFood": "Comida y bebidas",
+  "mobileLanguage_catFoodDesc": "Frutas, verduras, comidas",
+  "mobileLanguage_catColors": "Colores",
+  "mobileLanguage_catColorsDesc": "Colores básicos y avanzados",
+  "mobileLanguage_catNumbers": "Números",
+  "mobileLanguage_catNumbersDesc": "Números del 1 al 20 y más",
+  "mobileLanguage_catObjects": "Objetos",
+  "mobileLanguage_catObjectsDesc": "Cosas y herramientas de todos los días",
+  "mobileLanguage_catNature": "Naturaleza",
+  "mobileLanguage_catNatureDesc": "Árboles, flores, clima",
+  "mobileLanguage_startLearning": "Empezar a aprender",
+  "mobileLanguage_languageNotFound": "Idioma no encontrado",
+  "mobileLanguage_backToLanguages": "Volver a la selección de idioma",
+  "mobileLanguage_loadingWords": "Cargando palabras...",
+  "mobileLanguage_noWords": "No hay vocabulario disponible para este idioma y categoría. Prueba con otra categoría.",
+  "mobileLanguage_loadFailed": "No se pudieron cargar las palabras. Revisa tu conexión e inténtalo de nuevo.",
+  "mobileLanguage_retryLoad": "Reintentar",
+  "mobileLanguage_questionOf": "Pregunta {current} de {total}",
+  "@mobileLanguage_questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_correctCount": "{count} correctas",
+  "@mobileLanguage_correctCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_hearWord": "Escuchar la palabra",
+  "mobileLanguage_whichImage": "¿Qué imagen corresponde a esta palabra?",
+  "mobileLanguage_imageUnavailable": "Imagen no disponible",
+  "mobileLanguage_attempt": "Intento {current}/{max}",
+  "@mobileLanguage_attempt": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_record": "Grabar",
+  "mobileLanguage_stopRecording": "Detener grabación",
+  "mobileLanguage_tapToRecord": "Toca el micrófono y di la palabra",
+  "mobileLanguage_listening": "Escuchando... ¡habla ahora!",
+  "mobileLanguage_processing": "Procesando...",
+  "mobileLanguage_heard": "Se oyó: \"{text}\"",
+  "@mobileLanguage_heard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_recognized": "✓ Reconocida",
+  "mobileLanguage_notRecognized": "✗ No reconocida",
+  "mobileLanguage_niceHeard": "¡Bien! Oímos la palabra correcta.",
+  "mobileLanguage_didntCatch": "No captamos la palabra correcta. ¡Inténtalo de nuevo!",
+  "mobileLanguage_retryLeft": "Reintentar ({count} restantes)",
+  "@mobileLanguage_retryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_nextWord": "Siguiente palabra",
+  "mobileLanguage_finish": "Terminar",
+  "mobileLanguage_fbTryAgain": "Inténtalo de nuevo",
+  "mobileLanguage_fbGoodEffort": "Buen esfuerzo",
+  "mobileLanguage_fbGreat": "¡Muy bien!",
+  "mobileLanguage_fbPerfect": "¡Perfecto!",
+  "mobileLanguage_errNotAllowed": "¡Necesito oírte! Permite el acceso al micrófono y al reconocimiento de voz en Ajustes e inténtalo de nuevo.",
+  "mobileLanguage_errNoSpeech": "No oí nada. ¡Toca el micrófono y habla con claridad!",
+  "mobileLanguage_errAudio": "No puedo usar el micrófono. Comprueba que esté libre e inténtalo de nuevo.",
+  "mobileLanguage_errNetwork": "¡Ups! Revisa tu conexión a internet e inténtalo de nuevo.",
+  "mobileLanguage_errAborted": "Se detuvo la grabación. ¡Toca el micrófono para intentarlo de nuevo!",
+  "mobileLanguage_errNotSupported": "El reconocimiento de voz no está disponible en este dispositivo.",
+  "mobileLanguage_errUnknown": "Algo salió mal. ¡Inténtalo de nuevo!",
+  "mobileLanguage_pronUnavailable": "Todavía no disponible en la app",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

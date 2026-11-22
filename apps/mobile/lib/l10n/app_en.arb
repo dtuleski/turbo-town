@@ -1830,5 +1830,156 @@
   "mobileStats_ach_elite_name": "Elite",
   "mobileStats_ach_elite_desc": "Score over 7,000 in any game",
   "mobileStats_ach_hardMode_name": "Difficulty Unlocked",
-  "mobileStats_ach_hardMode_desc": "Complete a game on Hard difficulty"
+  "mobileStats_ach_hardMode_desc": "Complete a game on Hard difficulty",
+  "mobileLanguage_chooseLanguage": "Choose a language to learn",
+  "mobileLanguage_levelLabel": "Level {level}",
+  "@mobileLanguage_levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_wordsLearnedLabel": "{count} words",
+  "@mobileLanguage_wordsLearnedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_learnTitle": "Learn {language}",
+  "@mobileLanguage_learnTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_configure": "Configure your learning session",
+  "mobileLanguage_chooseMode": "Choose Mode",
+  "mobileLanguage_modeImageMatch": "Image Match",
+  "mobileLanguage_modeImageMatchDesc": "See the word, pick the correct image",
+  "mobileLanguage_modePronunciation": "Pronunciation",
+  "mobileLanguage_modePronunciationDesc": "See an image, speak the word correctly",
+  "mobileLanguage_accuracyVaries": "Recognition accuracy may vary for this language",
+  "mobileLanguage_diffBeginner": "Beginner",
+  "mobileLanguage_diffIntermediate": "Intermediate",
+  "mobileLanguage_diffAdvanced": "Advanced",
+  "mobileLanguage_diffBeginnerDesc": "Basic vocabulary, {count} words",
+  "@mobileLanguage_diffBeginnerDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffIntermediateDesc": "Common words, {count} words",
+  "@mobileLanguage_diffIntermediateDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffAdvancedDesc": "Complex vocabulary, {count} words",
+  "@mobileLanguage_diffAdvancedDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_chooseCategory": "Choose Category",
+  "mobileLanguage_catAnimals": "Animals",
+  "mobileLanguage_catAnimalsDesc": "Dogs, cats, birds, and more",
+  "mobileLanguage_catFood": "Food & Drinks",
+  "mobileLanguage_catFoodDesc": "Fruits, vegetables, meals",
+  "mobileLanguage_catColors": "Colors",
+  "mobileLanguage_catColorsDesc": "Basic and advanced colors",
+  "mobileLanguage_catNumbers": "Numbers",
+  "mobileLanguage_catNumbersDesc": "Numbers 1-20 and beyond",
+  "mobileLanguage_catObjects": "Objects",
+  "mobileLanguage_catObjectsDesc": "Everyday items and tools",
+  "mobileLanguage_catNature": "Nature",
+  "mobileLanguage_catNatureDesc": "Trees, flowers, weather",
+  "mobileLanguage_startLearning": "Start Learning",
+  "mobileLanguage_languageNotFound": "Language not found",
+  "mobileLanguage_backToLanguages": "Back to language selection",
+  "mobileLanguage_loadingWords": "Loading words...",
+  "mobileLanguage_noWords": "No vocabulary is available for this language and category. Please try a different category.",
+  "mobileLanguage_loadFailed": "The words could not be loaded. Check your connection and try again.",
+  "mobileLanguage_retryLoad": "Try again",
+  "mobileLanguage_questionOf": "Question {current} of {total}",
+  "@mobileLanguage_questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_correctCount": "{count} correct",
+  "@mobileLanguage_correctCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_hearWord": "Hear the word",
+  "mobileLanguage_whichImage": "Which image matches this word?",
+  "mobileLanguage_imageUnavailable": "Image unavailable",
+  "mobileLanguage_attempt": "Attempt {current}/{max}",
+  "@mobileLanguage_attempt": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_record": "Record",
+  "mobileLanguage_stopRecording": "Stop Recording",
+  "mobileLanguage_tapToRecord": "Tap the microphone and say the word",
+  "mobileLanguage_listening": "Listening... speak now!",
+  "mobileLanguage_processing": "Processing...",
+  "mobileLanguage_heard": "Heard: \"{text}\"",
+  "@mobileLanguage_heard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_recognized": "✓ Recognized",
+  "mobileLanguage_notRecognized": "✗ Not recognized",
+  "mobileLanguage_niceHeard": "Nice! We heard the right word.",
+  "mobileLanguage_didntCatch": "We didn''t catch the right word. Try again!",
+  "mobileLanguage_retryLeft": "Retry ({count} left)",
+  "@mobileLanguage_retryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_nextWord": "Next Word",
+  "mobileLanguage_finish": "Finish",
+  "mobileLanguage_fbTryAgain": "Try Again",
+  "mobileLanguage_fbGoodEffort": "Good Effort",
+  "mobileLanguage_fbGreat": "Great!",
+  "mobileLanguage_fbPerfect": "Perfect!",
+  "mobileLanguage_errNotAllowed": "I need to hear you! Please allow microphone and speech access in Settings and try again.",
+  "mobileLanguage_errNoSpeech": "I didn''t hear anything. Tap the microphone and speak clearly!",
+  "mobileLanguage_errAudio": "I can''t use the microphone. Make sure it is free and try again.",
+  "mobileLanguage_errNetwork": "Oops! Check your internet connection and try again.",
+  "mobileLanguage_errAborted": "Recording was stopped. Tap the microphone to try again!",
+  "mobileLanguage_errNotSupported": "Speech recognition is not available on this device.",
+  "mobileLanguage_errUnknown": "Something went wrong. Please try again!",
+  "mobileLanguage_pronUnavailable": "Not available in the app yet"
 }

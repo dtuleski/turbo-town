@@ -1829,6 +1829,157 @@
   "mobileStats_ach_elite_desc": "Faça mais de 7.000 em qualquer jogo",
   "mobileStats_ach_hardMode_name": "Dificuldade Desbloqueada",
   "mobileStats_ach_hardMode_desc": "Conclua um jogo na dificuldade Difícil",
+  "mobileLanguage_chooseLanguage": "Escolha um idioma para aprender",
+  "mobileLanguage_levelLabel": "Nível {level}",
+  "@mobileLanguage_levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_wordsLearnedLabel": "{count} palavras",
+  "@mobileLanguage_wordsLearnedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_learnTitle": "Aprenda {language}",
+  "@mobileLanguage_learnTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_configure": "Configure sua sessão de aprendizado",
+  "mobileLanguage_chooseMode": "Escolha o modo",
+  "mobileLanguage_modeImageMatch": "Combinar imagem",
+  "mobileLanguage_modeImageMatchDesc": "Veja a palavra e escolha a imagem correta",
+  "mobileLanguage_modePronunciation": "Pronúncia",
+  "mobileLanguage_modePronunciationDesc": "Veja uma imagem e diga a palavra corretamente",
+  "mobileLanguage_accuracyVaries": "A precisão do reconhecimento pode variar neste idioma",
+  "mobileLanguage_diffBeginner": "Iniciante",
+  "mobileLanguage_diffIntermediate": "Intermediário",
+  "mobileLanguage_diffAdvanced": "Avançado",
+  "mobileLanguage_diffBeginnerDesc": "Vocabulário básico, {count} palavras",
+  "@mobileLanguage_diffBeginnerDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffIntermediateDesc": "Palavras comuns, {count} palavras",
+  "@mobileLanguage_diffIntermediateDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffAdvancedDesc": "Vocabulário complexo, {count} palavras",
+  "@mobileLanguage_diffAdvancedDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_chooseCategory": "Escolha uma categoria",
+  "mobileLanguage_catAnimals": "Animais",
+  "mobileLanguage_catAnimalsDesc": "Cães, gatos, aves e mais",
+  "mobileLanguage_catFood": "Comidas e bebidas",
+  "mobileLanguage_catFoodDesc": "Frutas, legumes, refeições",
+  "mobileLanguage_catColors": "Cores",
+  "mobileLanguage_catColorsDesc": "Cores básicas e avançadas",
+  "mobileLanguage_catNumbers": "Números",
+  "mobileLanguage_catNumbersDesc": "Números de 1 a 20 e além",
+  "mobileLanguage_catObjects": "Objetos",
+  "mobileLanguage_catObjectsDesc": "Itens e ferramentas do dia a dia",
+  "mobileLanguage_catNature": "Natureza",
+  "mobileLanguage_catNatureDesc": "Árvores, flores, clima",
+  "mobileLanguage_startLearning": "Começar a aprender",
+  "mobileLanguage_languageNotFound": "Idioma não encontrado",
+  "mobileLanguage_backToLanguages": "Voltar à seleção de idioma",
+  "mobileLanguage_loadingWords": "Carregando palavras...",
+  "mobileLanguage_noWords": "Não há vocabulário disponível para este idioma e categoria. Tente outra categoria.",
+  "mobileLanguage_loadFailed": "Não foi possível carregar as palavras. Verifique sua conexão e tente de novo.",
+  "mobileLanguage_retryLoad": "Tentar de novo",
+  "mobileLanguage_questionOf": "Pergunta {current} de {total}",
+  "@mobileLanguage_questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_correctCount": "{count} corretas",
+  "@mobileLanguage_correctCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_hearWord": "Ouvir a palavra",
+  "mobileLanguage_whichImage": "Qual imagem corresponde a esta palavra?",
+  "mobileLanguage_imageUnavailable": "Imagem indisponível",
+  "mobileLanguage_attempt": "Tentativa {current}/{max}",
+  "@mobileLanguage_attempt": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_record": "Gravar",
+  "mobileLanguage_stopRecording": "Parar gravação",
+  "mobileLanguage_tapToRecord": "Toque no microfone e diga a palavra",
+  "mobileLanguage_listening": "Ouvindo... fale agora!",
+  "mobileLanguage_processing": "Processando...",
+  "mobileLanguage_heard": "Ouvido: \"{text}\"",
+  "@mobileLanguage_heard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_recognized": "✓ Reconhecida",
+  "mobileLanguage_notRecognized": "✗ Não reconhecida",
+  "mobileLanguage_niceHeard": "Boa! Ouvimos a palavra certa.",
+  "mobileLanguage_didntCatch": "Não captamos a palavra certa. Tente de novo!",
+  "mobileLanguage_retryLeft": "Tentar de novo ({count} restantes)",
+  "@mobileLanguage_retryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_nextWord": "Próxima palavra",
+  "mobileLanguage_finish": "Concluir",
+  "mobileLanguage_fbTryAgain": "Tente de novo",
+  "mobileLanguage_fbGoodEffort": "Bom esforço",
+  "mobileLanguage_fbGreat": "Ótimo!",
+  "mobileLanguage_fbPerfect": "Perfeito!",
+  "mobileLanguage_errNotAllowed": "Preciso ouvir você! Permita o acesso ao microfone e ao reconhecimento de voz nos Ajustes e tente de novo.",
+  "mobileLanguage_errNoSpeech": "Não ouvi nada. Toque no microfone e fale com clareza!",
+  "mobileLanguage_errAudio": "Não consigo usar o microfone. Verifique se ele está livre e tente de novo.",
+  "mobileLanguage_errNetwork": "Ops! Verifique sua conexão com a internet e tente de novo.",
+  "mobileLanguage_errAborted": "A gravação foi interrompida. Toque no microfone para tentar de novo!",
+  "mobileLanguage_errNotSupported": "O reconhecimento de voz não está disponível neste dispositivo.",
+  "mobileLanguage_errUnknown": "Algo deu errado. Tente de novo!",
+  "mobileLanguage_pronUnavailable": "Ainda não disponível no app",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

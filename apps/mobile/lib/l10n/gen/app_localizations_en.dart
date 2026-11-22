@@ -448,20 +448,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get leaderboard_keepPlaying => 'Keep playing to improve your rank!';
 
   @override
-  String get leaderboard_todaysTop => 'Today\'\'s Top Players';
+  String get leaderboard_todaysTop => 'Today\'s Top Players';
 
   @override
-  String get leaderboard_thisWeeksTop => 'This Week\'\'s Top Players';
+  String get leaderboard_thisWeeksTop => 'This Week\'s Top Players';
 
   @override
-  String get leaderboard_thisMonthsTop => 'This Month\'\'s Top Players';
+  String get leaderboard_thisMonthsTop => 'This Month\'s Top Players';
 
   @override
   String get leaderboard_allTimeTop => 'All-Time Top Players';
 
   @override
   String leaderboard_ranked(String rank, String total) {
-    return 'You\'\'re ranked #$rank out of $total players';
+    return 'You\'re ranked #$rank out of $total players';
   }
 
   @override
@@ -497,7 +497,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_dailyDigestOn =>
-      '✓ You\'\'ll receive daily updates at 8pm EST';
+      '✓ You\'ll receive daily updates at 8pm EST';
 
   @override
   String get auth_createAccount => 'Create Account';
@@ -524,7 +524,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auth_alreadyHaveAccount => 'Already have an account?';
 
   @override
-  String get auth_dontHaveAccount => 'Don\'\'t have an account?';
+  String get auth_dontHaveAccount => 'Don\'t have an account?';
 
   @override
   String get auth_signUpGoogle => 'Sign up with Google';
@@ -562,7 +562,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String auth_sentCodeTo(String email) {
-    return 'We\'\'ve sent a confirmation code to $email. Please enter it below.';
+    return 'We\'ve sent a confirmation code to $email. Please enter it below.';
   }
 
   @override
@@ -696,7 +696,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setup_mathChallenge_backToHub => 'Back to Hub';
 
   @override
-  String get setup_memoryMatch_letsPlay => 'Let\'\'s Play! 🎮';
+  String get setup_memoryMatch_letsPlay => 'Let\'s Play! 🎮';
 
   @override
   String get setup_memoryMatch_chooseTheme => 'Choose Your Theme';
@@ -780,7 +780,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Report a bug, request a feature, or just say hi!';
 
   @override
-  String get setup_contact_whatsAbout => 'What\'\'s this about?';
+  String get setup_contact_whatsAbout => 'What\'s this about?';
 
   @override
   String get setup_contact_bugReport => 'Bug Report';
@@ -824,7 +824,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setup_contact_sentMsg =>
-      'Thanks for reaching out. We\'\'ll get back to you soon.';
+      'Thanks for reaching out. We\'ll get back to you soon.';
 
   @override
   String get setup_contact_backToGames => 'Back to Games';
@@ -1114,7 +1114,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scratchCoding_game_didntReachGoal =>
-      'Astronaut didn\'\'t reach the airlock 🤔';
+      'Astronaut didn\'t reach the airlock 🤔';
 
   @override
   String get scratchCoding_game_tryDifferent => 'Try a different sequence';
@@ -1323,7 +1323,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spaceCoder_errors_jumpLandingBlocked =>
-      'Can\'\'t land there! The landing spot is blocked ☄️';
+      'Can\'t land there! The landing spot is blocked ☄️';
 
   @override
   String get spaceCoder_errors_infiniteLoop =>
@@ -1335,7 +1335,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spaceCoder_errors_undefinedVarChar =>
-      'Variable not defined! Add var-char = \'\'<value>\'\' before using it.';
+      'Variable not defined! Add var-char = \'<value>\' before using it.';
 
   @override
   String get spaceCoder_efficiency_perfectCode => 'Perfect Code ⚡';
@@ -1764,7 +1764,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mathMaze_gateHint =>
-      'You don\'\'t have to open every gate. Pick a route to the exit; a wrong answer blocks that gate, so choose another way.';
+      'You don\'t have to open every gate. Pick a route to the exit; a wrong answer blocks that gate, so choose another way.';
 
   @override
   String get mathMaze_gatePrompt => 'Solve to open the gate:';
@@ -1781,7 +1781,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get mathMaze_timeUp => 'Time\'\'s Up!';
+  String get mathMaze_timeUp => 'Time\'s Up!';
 
   @override
   String get mathMaze_mazeComplete => 'Maze Complete!';
@@ -1862,7 +1862,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscription_footerPayment =>
-      'If payment doesn\'\'t clear, you\'\'ll be downgraded to the Free plan.';
+      'If payment doesn\'t clear, you\'ll be downgraded to the Free plan.';
 
   @override
   String get subscription_plans_free_name => 'Free';
@@ -2010,7 +2010,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bondAndBurn_recipes_water_funFact =>
-      'Water covers 71% of Earth\'\'s surface! Every living thing needs it.';
+      'Water covers 71% of Earth\'s surface! Every living thing needs it.';
 
   @override
   String get bondAndBurn_recipes_salt_name => 'Table Salt';
@@ -2061,7 +2061,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bondAndBurn_recipes_ethane_funFact =>
-      'Ethane is found in natural gas and on the surface of Saturn\'\'s moon Titan!';
+      'Ethane is found in natural gas and on the surface of Saturn\'s moon Titan!';
 
   @override
   String get bondAndBurn_recipes_hydrogen_peroxide_name => 'Hydrogen Peroxide';
@@ -2122,7 +2122,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get circuitBuilder_howTo_step2 =>
-      'Tap a part\'\'s dot, then another part\'\'s dot, to wire them.';
+      'Tap a part\'s dot, then another part\'s dot, to wire them.';
 
   @override
   String get circuitBuilder_howTo_step3 =>
@@ -2241,7 +2241,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get circuitBuilder_faultHelp_SINGULAR_SYSTEM =>
-      'This circuit has no single answer the simulator can work out, usually because a part is wired across itself. Remove the connection that joins a component\'\'s two terminals together.';
+      'This circuit has no single answer the simulator can work out, usually because a part is wired across itself. Remove the connection that joins a component\'s two terminals together.';
 
   @override
   String get circuitBuilder_rejection_OUT_OF_BOUNDS =>
@@ -3331,14 +3331,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Password must contain at least one number';
 
   @override
-  String get mobileAuth_passwordsMismatch => 'Passwords don\'\'t match';
+  String get mobileAuth_passwordsMismatch => 'Passwords don\'t match';
 
   @override
   String get mobileAuth_codeMin => 'Code must be at least 6 characters';
 
   @override
   String get mobileAuth_forgotSubtitle =>
-      'Enter your email and we\'\'ll send you a reset code';
+      'Enter your email and we\'ll send you a reset code';
 
   @override
   String get mobileAuth_sendResetCode => 'Send Reset Code';
@@ -3926,4 +3926,244 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mobileStats_ach_hardMode_desc =>
       'Complete a game on Hard difficulty';
+
+  @override
+  String get mobileLanguage_chooseLanguage => 'Choose a language to learn';
+
+  @override
+  String mobileLanguage_levelLabel(String level) {
+    return 'Level $level';
+  }
+
+  @override
+  String mobileLanguage_wordsLearnedLabel(String count) {
+    return '$count words';
+  }
+
+  @override
+  String mobileLanguage_learnTitle(String language) {
+    return 'Learn $language';
+  }
+
+  @override
+  String get mobileLanguage_configure => 'Configure your learning session';
+
+  @override
+  String get mobileLanguage_chooseMode => 'Choose Mode';
+
+  @override
+  String get mobileLanguage_modeImageMatch => 'Image Match';
+
+  @override
+  String get mobileLanguage_modeImageMatchDesc =>
+      'See the word, pick the correct image';
+
+  @override
+  String get mobileLanguage_modePronunciation => 'Pronunciation';
+
+  @override
+  String get mobileLanguage_modePronunciationDesc =>
+      'See an image, speak the word correctly';
+
+  @override
+  String get mobileLanguage_accuracyVaries =>
+      'Recognition accuracy may vary for this language';
+
+  @override
+  String get mobileLanguage_diffBeginner => 'Beginner';
+
+  @override
+  String get mobileLanguage_diffIntermediate => 'Intermediate';
+
+  @override
+  String get mobileLanguage_diffAdvanced => 'Advanced';
+
+  @override
+  String mobileLanguage_diffBeginnerDesc(String count) {
+    return 'Basic vocabulary, $count words';
+  }
+
+  @override
+  String mobileLanguage_diffIntermediateDesc(String count) {
+    return 'Common words, $count words';
+  }
+
+  @override
+  String mobileLanguage_diffAdvancedDesc(String count) {
+    return 'Complex vocabulary, $count words';
+  }
+
+  @override
+  String get mobileLanguage_chooseCategory => 'Choose Category';
+
+  @override
+  String get mobileLanguage_catAnimals => 'Animals';
+
+  @override
+  String get mobileLanguage_catAnimalsDesc => 'Dogs, cats, birds, and more';
+
+  @override
+  String get mobileLanguage_catFood => 'Food & Drinks';
+
+  @override
+  String get mobileLanguage_catFoodDesc => 'Fruits, vegetables, meals';
+
+  @override
+  String get mobileLanguage_catColors => 'Colors';
+
+  @override
+  String get mobileLanguage_catColorsDesc => 'Basic and advanced colors';
+
+  @override
+  String get mobileLanguage_catNumbers => 'Numbers';
+
+  @override
+  String get mobileLanguage_catNumbersDesc => 'Numbers 1-20 and beyond';
+
+  @override
+  String get mobileLanguage_catObjects => 'Objects';
+
+  @override
+  String get mobileLanguage_catObjectsDesc => 'Everyday items and tools';
+
+  @override
+  String get mobileLanguage_catNature => 'Nature';
+
+  @override
+  String get mobileLanguage_catNatureDesc => 'Trees, flowers, weather';
+
+  @override
+  String get mobileLanguage_startLearning => 'Start Learning';
+
+  @override
+  String get mobileLanguage_languageNotFound => 'Language not found';
+
+  @override
+  String get mobileLanguage_backToLanguages => 'Back to language selection';
+
+  @override
+  String get mobileLanguage_loadingWords => 'Loading words...';
+
+  @override
+  String get mobileLanguage_noWords =>
+      'No vocabulary is available for this language and category. Please try a different category.';
+
+  @override
+  String get mobileLanguage_loadFailed =>
+      'The words could not be loaded. Check your connection and try again.';
+
+  @override
+  String get mobileLanguage_retryLoad => 'Try again';
+
+  @override
+  String mobileLanguage_questionOf(String current, String total) {
+    return 'Question $current of $total';
+  }
+
+  @override
+  String mobileLanguage_correctCount(String count) {
+    return '$count correct';
+  }
+
+  @override
+  String get mobileLanguage_hearWord => 'Hear the word';
+
+  @override
+  String get mobileLanguage_whichImage => 'Which image matches this word?';
+
+  @override
+  String get mobileLanguage_imageUnavailable => 'Image unavailable';
+
+  @override
+  String mobileLanguage_attempt(String current, String max) {
+    return 'Attempt $current/$max';
+  }
+
+  @override
+  String get mobileLanguage_record => 'Record';
+
+  @override
+  String get mobileLanguage_stopRecording => 'Stop Recording';
+
+  @override
+  String get mobileLanguage_tapToRecord =>
+      'Tap the microphone and say the word';
+
+  @override
+  String get mobileLanguage_listening => 'Listening... speak now!';
+
+  @override
+  String get mobileLanguage_processing => 'Processing...';
+
+  @override
+  String mobileLanguage_heard(String text) {
+    return 'Heard: \"$text\"';
+  }
+
+  @override
+  String get mobileLanguage_recognized => '✓ Recognized';
+
+  @override
+  String get mobileLanguage_notRecognized => '✗ Not recognized';
+
+  @override
+  String get mobileLanguage_niceHeard => 'Nice! We heard the right word.';
+
+  @override
+  String get mobileLanguage_didntCatch =>
+      'We didn\'t catch the right word. Try again!';
+
+  @override
+  String mobileLanguage_retryLeft(String count) {
+    return 'Retry ($count left)';
+  }
+
+  @override
+  String get mobileLanguage_nextWord => 'Next Word';
+
+  @override
+  String get mobileLanguage_finish => 'Finish';
+
+  @override
+  String get mobileLanguage_fbTryAgain => 'Try Again';
+
+  @override
+  String get mobileLanguage_fbGoodEffort => 'Good Effort';
+
+  @override
+  String get mobileLanguage_fbGreat => 'Great!';
+
+  @override
+  String get mobileLanguage_fbPerfect => 'Perfect!';
+
+  @override
+  String get mobileLanguage_errNotAllowed =>
+      'I need to hear you! Please allow microphone and speech access in Settings and try again.';
+
+  @override
+  String get mobileLanguage_errNoSpeech =>
+      'I didn\'t hear anything. Tap the microphone and speak clearly!';
+
+  @override
+  String get mobileLanguage_errAudio =>
+      'I can\'t use the microphone. Make sure it is free and try again.';
+
+  @override
+  String get mobileLanguage_errNetwork =>
+      'Oops! Check your internet connection and try again.';
+
+  @override
+  String get mobileLanguage_errAborted =>
+      'Recording was stopped. Tap the microphone to try again!';
+
+  @override
+  String get mobileLanguage_errNotSupported =>
+      'Speech recognition is not available on this device.';
+
+  @override
+  String get mobileLanguage_errUnknown =>
+      'Something went wrong. Please try again!';
+
+  @override
+  String get mobileLanguage_pronUnavailable => 'Not available in the app yet';
 }

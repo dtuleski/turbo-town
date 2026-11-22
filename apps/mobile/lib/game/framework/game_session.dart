@@ -269,8 +269,10 @@ class GameSessionController extends StateNotifier<GameSessionState> {
       try {
         final response = await _api.completeGame(
           gameId: gameId,
-          completionTime: seconds,
-          attempts: tries,
+          // The server requires positive values (a round that ends at once
+          // or with no attempts would otherwise be rejected).
+          completionTime: seconds < 1 ? 1 : seconds,
+          attempts: tries < 1 ? 1 : tries,
           extra: extra,
         );
         result = GameResult(

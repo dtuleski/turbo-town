@@ -7095,6 +7095,414 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Complete a game on Hard difficulty'**
   String get mobileStats_ach_hardMode_desc;
+
+  /// No description provided for @mobileLanguage_chooseLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a language to learn'**
+  String get mobileLanguage_chooseLanguage;
+
+  /// No description provided for @mobileLanguage_levelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String mobileLanguage_levelLabel(String level);
+
+  /// No description provided for @mobileLanguage_wordsLearnedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} words'**
+  String mobileLanguage_wordsLearnedLabel(String count);
+
+  /// No description provided for @mobileLanguage_learnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn {language}'**
+  String mobileLanguage_learnTitle(String language);
+
+  /// No description provided for @mobileLanguage_configure.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure your learning session'**
+  String get mobileLanguage_configure;
+
+  /// No description provided for @mobileLanguage_chooseMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Mode'**
+  String get mobileLanguage_chooseMode;
+
+  /// No description provided for @mobileLanguage_modeImageMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Image Match'**
+  String get mobileLanguage_modeImageMatch;
+
+  /// No description provided for @mobileLanguage_modeImageMatchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See the word, pick the correct image'**
+  String get mobileLanguage_modeImageMatchDesc;
+
+  /// No description provided for @mobileLanguage_modePronunciation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pronunciation'**
+  String get mobileLanguage_modePronunciation;
+
+  /// No description provided for @mobileLanguage_modePronunciationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See an image, speak the word correctly'**
+  String get mobileLanguage_modePronunciationDesc;
+
+  /// No description provided for @mobileLanguage_accuracyVaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognition accuracy may vary for this language'**
+  String get mobileLanguage_accuracyVaries;
+
+  /// No description provided for @mobileLanguage_diffBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get mobileLanguage_diffBeginner;
+
+  /// No description provided for @mobileLanguage_diffIntermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get mobileLanguage_diffIntermediate;
+
+  /// No description provided for @mobileLanguage_diffAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get mobileLanguage_diffAdvanced;
+
+  /// No description provided for @mobileLanguage_diffBeginnerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic vocabulary, {count} words'**
+  String mobileLanguage_diffBeginnerDesc(String count);
+
+  /// No description provided for @mobileLanguage_diffIntermediateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Common words, {count} words'**
+  String mobileLanguage_diffIntermediateDesc(String count);
+
+  /// No description provided for @mobileLanguage_diffAdvancedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complex vocabulary, {count} words'**
+  String mobileLanguage_diffAdvancedDesc(String count);
+
+  /// No description provided for @mobileLanguage_chooseCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Category'**
+  String get mobileLanguage_chooseCategory;
+
+  /// No description provided for @mobileLanguage_catAnimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Animals'**
+  String get mobileLanguage_catAnimals;
+
+  /// No description provided for @mobileLanguage_catAnimalsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Dogs, cats, birds, and more'**
+  String get mobileLanguage_catAnimalsDesc;
+
+  /// No description provided for @mobileLanguage_catFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food & Drinks'**
+  String get mobileLanguage_catFood;
+
+  /// No description provided for @mobileLanguage_catFoodDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruits, vegetables, meals'**
+  String get mobileLanguage_catFoodDesc;
+
+  /// No description provided for @mobileLanguage_catColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Colors'**
+  String get mobileLanguage_catColors;
+
+  /// No description provided for @mobileLanguage_catColorsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic and advanced colors'**
+  String get mobileLanguage_catColorsDesc;
+
+  /// No description provided for @mobileLanguage_catNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers'**
+  String get mobileLanguage_catNumbers;
+
+  /// No description provided for @mobileLanguage_catNumbersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers 1-20 and beyond'**
+  String get mobileLanguage_catNumbersDesc;
+
+  /// No description provided for @mobileLanguage_catObjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Objects'**
+  String get mobileLanguage_catObjects;
+
+  /// No description provided for @mobileLanguage_catObjectsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday items and tools'**
+  String get mobileLanguage_catObjectsDesc;
+
+  /// No description provided for @mobileLanguage_catNature.
+  ///
+  /// In en, this message translates to:
+  /// **'Nature'**
+  String get mobileLanguage_catNature;
+
+  /// No description provided for @mobileLanguage_catNatureDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Trees, flowers, weather'**
+  String get mobileLanguage_catNatureDesc;
+
+  /// No description provided for @mobileLanguage_startLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Learning'**
+  String get mobileLanguage_startLearning;
+
+  /// No description provided for @mobileLanguage_languageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Language not found'**
+  String get mobileLanguage_languageNotFound;
+
+  /// No description provided for @mobileLanguage_backToLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to language selection'**
+  String get mobileLanguage_backToLanguages;
+
+  /// No description provided for @mobileLanguage_loadingWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading words...'**
+  String get mobileLanguage_loadingWords;
+
+  /// No description provided for @mobileLanguage_noWords.
+  ///
+  /// In en, this message translates to:
+  /// **'No vocabulary is available for this language and category. Please try a different category.'**
+  String get mobileLanguage_noWords;
+
+  /// No description provided for @mobileLanguage_loadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The words could not be loaded. Check your connection and try again.'**
+  String get mobileLanguage_loadFailed;
+
+  /// No description provided for @mobileLanguage_retryLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get mobileLanguage_retryLoad;
+
+  /// No description provided for @mobileLanguage_questionOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}'**
+  String mobileLanguage_questionOf(String current, String total);
+
+  /// No description provided for @mobileLanguage_correctCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} correct'**
+  String mobileLanguage_correctCount(String count);
+
+  /// No description provided for @mobileLanguage_hearWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Hear the word'**
+  String get mobileLanguage_hearWord;
+
+  /// No description provided for @mobileLanguage_whichImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Which image matches this word?'**
+  String get mobileLanguage_whichImage;
+
+  /// No description provided for @mobileLanguage_imageUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Image unavailable'**
+  String get mobileLanguage_imageUnavailable;
+
+  /// No description provided for @mobileLanguage_attempt.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt {current}/{max}'**
+  String mobileLanguage_attempt(String current, String max);
+
+  /// No description provided for @mobileLanguage_record.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get mobileLanguage_record;
+
+  /// No description provided for @mobileLanguage_stopRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Recording'**
+  String get mobileLanguage_stopRecording;
+
+  /// No description provided for @mobileLanguage_tapToRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the microphone and say the word'**
+  String get mobileLanguage_tapToRecord;
+
+  /// No description provided for @mobileLanguage_listening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening... speak now!'**
+  String get mobileLanguage_listening;
+
+  /// No description provided for @mobileLanguage_processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get mobileLanguage_processing;
+
+  /// No description provided for @mobileLanguage_heard.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard: \"{text}\"'**
+  String mobileLanguage_heard(String text);
+
+  /// No description provided for @mobileLanguage_recognized.
+  ///
+  /// In en, this message translates to:
+  /// **'✓ Recognized'**
+  String get mobileLanguage_recognized;
+
+  /// No description provided for @mobileLanguage_notRecognized.
+  ///
+  /// In en, this message translates to:
+  /// **'✗ Not recognized'**
+  String get mobileLanguage_notRecognized;
+
+  /// No description provided for @mobileLanguage_niceHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice! We heard the right word.'**
+  String get mobileLanguage_niceHeard;
+
+  /// No description provided for @mobileLanguage_didntCatch.
+  ///
+  /// In en, this message translates to:
+  /// **'We didn\'\'t catch the right word. Try again!'**
+  String get mobileLanguage_didntCatch;
+
+  /// No description provided for @mobileLanguage_retryLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry ({count} left)'**
+  String mobileLanguage_retryLeft(String count);
+
+  /// No description provided for @mobileLanguage_nextWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Word'**
+  String get mobileLanguage_nextWord;
+
+  /// No description provided for @mobileLanguage_finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get mobileLanguage_finish;
+
+  /// No description provided for @mobileLanguage_fbTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get mobileLanguage_fbTryAgain;
+
+  /// No description provided for @mobileLanguage_fbGoodEffort.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Effort'**
+  String get mobileLanguage_fbGoodEffort;
+
+  /// No description provided for @mobileLanguage_fbGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'Great!'**
+  String get mobileLanguage_fbGreat;
+
+  /// No description provided for @mobileLanguage_fbPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect!'**
+  String get mobileLanguage_fbPerfect;
+
+  /// No description provided for @mobileLanguage_errNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'I need to hear you! Please allow microphone and speech access in Settings and try again.'**
+  String get mobileLanguage_errNotAllowed;
+
+  /// No description provided for @mobileLanguage_errNoSpeech.
+  ///
+  /// In en, this message translates to:
+  /// **'I didn\'\'t hear anything. Tap the microphone and speak clearly!'**
+  String get mobileLanguage_errNoSpeech;
+
+  /// No description provided for @mobileLanguage_errAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'I can\'\'t use the microphone. Make sure it is free and try again.'**
+  String get mobileLanguage_errAudio;
+
+  /// No description provided for @mobileLanguage_errNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Check your internet connection and try again.'**
+  String get mobileLanguage_errNetwork;
+
+  /// No description provided for @mobileLanguage_errAborted.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording was stopped. Tap the microphone to try again!'**
+  String get mobileLanguage_errAborted;
+
+  /// No description provided for @mobileLanguage_errNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition is not available on this device.'**
+  String get mobileLanguage_errNotSupported;
+
+  /// No description provided for @mobileLanguage_errUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again!'**
+  String get mobileLanguage_errUnknown;
+
+  /// No description provided for @mobileLanguage_pronUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available in the app yet'**
+  String get mobileLanguage_pronUnavailable;
 }
 
 class _AppLocalizationsDelegate

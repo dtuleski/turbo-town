@@ -4,6 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../auth/auth_controller.dart';
 import 'game_providers.dart';
 import 'graphql_client.dart';
+import 'language_api.dart';
 import 'leaderboard_api.dart';
 import 'profile_api.dart';
 import 'stats_api.dart';
@@ -19,6 +20,10 @@ final statsApiProvider = Provider<StatsApi>(
 
 final leaderboardApiProvider = Provider<LeaderboardApi>(
   (ref) => LeaderboardApi(ref.watch(leaderboardGraphQLClientProvider)),
+);
+
+final languageApiProvider = Provider<LanguageApi>(
+  (ref) => LanguageApi(ref.watch(gameGraphQLClientProvider)),
 );
 
 final profileApiProvider = Provider<ProfileApi>(

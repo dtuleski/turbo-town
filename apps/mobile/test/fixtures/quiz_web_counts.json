@@ -1,0 +1,95 @@
+{
+  "geo": {
+    "countries": 46,
+    "states": 34,
+    "silhouettes": 20,
+    "modes": [
+      "capitals",
+      "flags",
+      "states",
+      "silhouettes",
+      "continents"
+    ],
+    "difficultyModes": {
+      "easy": [
+        "capitals",
+        "flags",
+        "continents"
+      ],
+      "medium": [
+        "states"
+      ],
+      "hard": [
+        "silhouettes"
+      ]
+    }
+  },
+  "history": {
+    "events": 100,
+    "byDifficulty": {
+      "easy": 22,
+      "medium": 49,
+      "hard": 29
+    },
+    "withPerson": 94,
+    "withImage": 17,
+    "difficultyModes": {
+      "easy": [
+        "name-event"
+      ],
+      "medium": [
+        "name-event",
+        "when-happened"
+      ],
+      "hard": [
+        "name-event",
+        "when-happened",
+        "who-said"
+      ]
+    }
+  },
+  "civics": {
+    "questions": 90,
+    "byCategory": {
+      "government": 47,
+      "history": 30,
+      "civics": 13
+    }
+  },
+  "hangman": {
+    "en": {
+      "easy": 40,
+      "medium": 40,
+      "hard": 40
+    },
+    "es": {
+      "easy": 21,
+      "medium": 20,
+      "hard": 20
+    },
+    "pt": {
+      "easy": 20,
+      "medium": 20,
+      "hard": 20
+    }
+  },
+  "hangmanMaxWrong": 6,
+  "hangmanRounds": 5,
+  "wordPuzzle": {
+    "en": {
+      "easy": 48,
+      "medium": 48,
+      "hard": 36
+    },
+    "es": {
+      "easy": 48,
+      "medium": 48,
+      "hard": 36
+    },
+    "pt": {
+      "easy": 48,
+      "medium": 48,
+      "hard": 36
+    }
+  }
+}
