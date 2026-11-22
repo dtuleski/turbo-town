@@ -6,14 +6,22 @@ import '../auth/auth_controller.dart';
 import '../api/quest_models.dart';
 import '../config/constants.dart';
 import '../quest/quest_launch.dart';
+import 'main_shell.dart';
+import 'screens/achievements_screen.dart';
+import 'screens/contact_screen.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/forgot_password_screen.dart';
+import 'screens/history_screen.dart';
+import 'screens/leaderboard_screen.dart';
 import 'screens/hub_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/memory_game_screen.dart';
 import 'screens/memory_setup_screen.dart';
+import 'screens/profile_screen.dart';
 import 'screens/quest_map_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/reset_password_screen.dart';
+import 'screens/statistics_screen.dart';
 
 /// Screens reachable while logged out. A logged-in user is sent home from them.
 const _publicRoutes = {
@@ -43,19 +51,33 @@ final routerProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (_, __) => const HubScreen(),
+      // The five main tabs share the bottom navigation bar.
+      ShellRoute(
+        builder: (_, __, child) => MainShell(child: child),
         routes: [
-          // Nested so that go('/quest-map') keeps the hub underneath.
+          GoRoute(path: '/', builder: (_, __) => const HubScreen()),
           GoRoute(
-            path: 'quest-map',
+            path: '/quest-map',
             builder: (_, state) => QuestMapScreen(
               startFailed: state.uri.queryParameters['startFailed'],
             ),
           ),
+          GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
+          GoRoute(
+            path: '/leaderboard',
+            builder: (_, __) => const LeaderboardScreen(),
+          ),
+          GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
         ],
       ),
+      // Detail screens open full screen above the tabs.
+      GoRoute(path: '/statistics', builder: (_, __) => const StatisticsScreen()),
+      GoRoute(path: '/history', builder: (_, __) => const HistoryScreen()),
+      GoRoute(
+        path: '/achievements',
+        builder: (_, __) => const AchievementsScreen(),
+      ),
+      GoRoute(path: '/contact', builder: (_, __) => const ContactScreen()),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
       GoRoute(

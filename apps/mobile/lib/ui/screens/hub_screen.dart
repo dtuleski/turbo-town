@@ -125,7 +125,7 @@ class _HubScreenState extends ConsumerState<HubScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                _QuestCard(onTap: () => context.push('/quest-map')),
+                _QuestCard(onTap: () => context.go('/quest-map')),
                 const SizedBox(height: 12),
                 if (all.isEmpty)
                   Padding(

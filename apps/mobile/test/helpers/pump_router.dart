@@ -37,8 +37,10 @@ Future<RouterHarness> pumpRouterApp(
   WidgetTester tester, {
   required String location,
   FakeGameApi? api,
+  Locale locale = const Locale('en'),
+  List<Override> overrides = const [],
 }) async {
-  SharedPreferences.setMockInitialValues({kLocalePrefKey: 'en'});
+  SharedPreferences.setMockInitialValues({kLocalePrefKey: locale.languageCode});
   final fake = api ?? FakeGameApi();
   late GoRouter router;
   await tester.pumpWidget(ProviderScope(
@@ -46,12 +48,13 @@ Future<RouterHarness> pumpRouterApp(
       authControllerProvider.overrideWith((ref) => FakeAuthController()),
       gameApiProvider.overrideWithValue(fake as GameApi),
       gameFeedbackProvider.overrideWithValue(const NoopGameFeedback()),
+      ...overrides,
     ],
     child: Consumer(builder: (context, ref, _) {
       router = ref.watch(routerProvider);
       return MaterialApp.router(
         theme: AppTheme.light(),
-        locale: const Locale('en'),
+        locale: locale,
         supportedLocales: kSupportedLocales,
         localizationsDelegates: const [
           AppLocalizations.delegate,
