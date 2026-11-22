@@ -1538,5 +1538,297 @@
     }
   },
   "mobileGame_questNodePlayUnavailable": "This game is not available in the app yet.",
-  "mobileGame_worldLockedApp": "This world is not available in the app yet."
+  "mobileGame_worldLockedApp": "This world is not available in the app yet.",
+  "mobileStats_tabHub": "Hub",
+  "mobileStats_tabQuest": "Quest",
+  "mobileStats_tabDashboard": "Dashboard",
+  "mobileStats_tabLeaderboard": "Leaderboard",
+  "mobileStats_tabProfile": "Profile",
+  "mobileStats_overall": "Overall",
+  "mobileStats_totalGames": "Total Games",
+  "mobileStats_bestScore": "Best Score",
+  "mobileStats_completedGames": "Completed Games",
+  "mobileStats_yourPerformance": "Your Performance",
+  "mobileStats_ofPlayers": "of {count} players",
+  "@mobileStats_ofPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_points": "points",
+  "mobileStats_topTen": "Top 10%! 🌟",
+  "mobileStats_topQuarter": "Top 25%! 🎯",
+  "mobileStats_topHalf": "Top 50%! 💪",
+  "mobileStats_keepPlaying": "Keep playing! 🎮",
+  "mobileStats_playToRank": "Play games to get ranked!",
+  "mobileStats_viewLeaderboard": "View Leaderboard →",
+  "mobileStats_trendTitle": "Score Trend",
+  "mobileStats_trendUp": "Up {percent}%!",
+  "@mobileStats_trendUp": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendDown": "Down {percent}%",
+  "@mobileStats_trendDown": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendStable": "Stable",
+  "mobileStats_trendNoData": "Play more games to see your trend.",
+  "mobileStats_statisticsTitle": "Statistics",
+  "mobileStats_statisticsDesc": "View your detailed game statistics",
+  "mobileStats_historyTitle": "Game History",
+  "mobileStats_historyDesc": "See all your past games",
+  "mobileStats_achievementsDesc": "Track your progress and unlock badges",
+  "mobileStats_contactDesc": "Report a bug or send feedback",
+  "mobileStats_noData": "No Data Yet",
+  "mobileStats_noDataBody": "Play some games to see your statistics here!",
+  "mobileStats_errorTitle": "Something went wrong",
+  "mobileStats_statsLoadFailed": "Failed to load statistics. Please try again.",
+  "mobileStats_allGames": "All Games",
+  "mobileStats_gamesPlayed": "Games Played",
+  "mobileStats_avgScore": "Avg Score",
+  "mobileStats_avgAccuracy": "Avg Accuracy",
+  "mobileStats_totalPlayTime": "Total Play Time",
+  "mobileStats_gamesPerWeek": "Games Per Week",
+  "mobileStats_gamesBreakdown": "Games Played by Game",
+  "mobileStats_distinctGames": "{count} different games played",
+  "@mobileStats_distinctGames": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_scoreProgression": "Score Progression",
+  "mobileStats_progressionHelp": "Each bar shows your score as a % of your personal best for that game. The line shows your rolling average.",
+  "mobileStats_progressionEmpty": "Play more games to see your progression!",
+  "mobileStats_accuracyTrend": "Accuracy Trend",
+  "mobileStats_speedTrend": "Speed Trend",
+  "mobileStats_avgLabel": "Avg: {value}",
+  "@mobileStats_avgLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_personalBests": "Personal Bests",
+  "mobileStats_bestLine": "{difficulty} · {time} · {accuracy}% accuracy",
+  "@mobileStats_bestLine": {
+    "placeholders": {
+      "difficulty": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noGames": "No Games Yet",
+  "mobileStats_noGamesBody": "Play some games and your history will appear here!",
+  "mobileStats_historyLoadFailed": "Failed to load game history. Please try again.",
+  "mobileStats_gamesCount": "{count} games",
+  "@mobileStats_gamesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_rangeOf": "{from}–{to} of {total}",
+  "@mobileStats_rangeOf": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_allDifficulties": "All Difficulties",
+  "mobileStats_easy": "Easy",
+  "mobileStats_medium": "Medium",
+  "mobileStats_hard": "Hard",
+  "mobileStats_sortDate": "Date",
+  "mobileStats_sortScore": "Score",
+  "mobileStats_sortAccuracy": "Accuracy",
+  "mobileStats_sortTime": "Time",
+  "mobileStats_prev": "Previous",
+  "mobileStats_next": "Next",
+  "mobileStats_pageOf": "Page {page} of {pages}",
+  "@mobileStats_pageOf": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noMatch": "No games match your filters. Try adjusting them.",
+  "mobileStats_pb": "PB",
+  "mobileStats_unlockedCount": "{unlocked}/{total} unlocked",
+  "@mobileStats_unlockedCount": {
+    "placeholders": {
+      "unlocked": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_overallProgress": "Overall Progress",
+  "mobileStats_earnedCount": "{count} earned",
+  "@mobileStats_earnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_remainingCount": "{count} remaining",
+  "@mobileStats_remainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_all": "All",
+  "mobileStats_catGettingStarted": "Getting Started",
+  "mobileStats_catDedication": "Dedication",
+  "mobileStats_catMastery": "Mastery",
+  "mobileStats_catGameSpecific": "Game Mastery",
+  "mobileStats_earnedOn": "Earned {date}",
+  "@mobileStats_earnedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressBest": "Best: {value}",
+  "@mobileStats_progressBest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressFastest": "Fastest: {value}",
+  "@mobileStats_progressFastest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressGames": "{current}/{target} games",
+  "@mobileStats_progressGames": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressCount": "{current}/{target}",
+  "@mobileStats_progressCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterName": "{game} Master",
+  "@mobileStats_masterName": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterDesc": "Score 5,000+ in {game}",
+  "@mobileStats_masterDesc": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noEntries": "No Entries Yet",
+  "mobileStats_noEntriesBody": "Be the first to play and claim the top spot!",
+  "mobileStats_you": "You",
+  "mobileStats_language": "Language",
+  "mobileStats_signOut": "Sign out",
+  "mobileStats_prefsLoadFailed": "Could not load your email preferences.",
+  "mobileStats_prefsSaveFailed": "Could not save your choice. Try again.",
+  "mobileStats_tierValue": "{tier}",
+  "@mobileStats_tierValue": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_contactTitleSubject": "Subject",
+  "mobileStats_contactValidation": "Enter a subject and a message.",
+  "mobileStats_ach_firstGame_name": "First Game",
+  "mobileStats_ach_firstGame_desc": "Play your first game",
+  "mobileStats_ach_sharpShooter_name": "Sharp Shooter",
+  "mobileStats_ach_sharpShooter_desc": "Get 90%+ accuracy on any game",
+  "mobileStats_ach_speedDemon_name": "Speed Demon",
+  "mobileStats_ach_speedDemon_desc": "Complete any game under 30 seconds",
+  "mobileStats_ach_explorer_name": "Explorer",
+  "mobileStats_ach_explorer_desc": "Try 3 different games",
+  "mobileStats_ach_highRoller_name": "High Roller",
+  "mobileStats_ach_highRoller_desc": "Score over 5,000 in any game",
+  "mobileStats_ach_onFire_name": "On Fire",
+  "mobileStats_ach_onFire_desc": "Play 10 games",
+  "mobileStats_ach_committed_name": "Committed",
+  "mobileStats_ach_committed_desc": "Play 25 games",
+  "mobileStats_ach_veteran_name": "Veteran",
+  "mobileStats_ach_veteran_desc": "Play 50 games",
+  "mobileStats_ach_legend_name": "Legend",
+  "mobileStats_ach_legend_desc": "Play 100 games",
+  "mobileStats_ach_brainPower_name": "Brain Power",
+  "mobileStats_ach_brainPower_desc": "Score 5,000+ on 3 different games",
+  "mobileStats_ach_perfectionist_name": "Perfectionist",
+  "mobileStats_ach_perfectionist_desc": "Get 100% accuracy on any game",
+  "mobileStats_ach_worldTraveler_name": "World Traveler",
+  "mobileStats_ach_worldTraveler_desc": "Play all {count} games",
+  "@mobileStats_ach_worldTraveler_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_ach_elite_name": "Elite",
+  "mobileStats_ach_elite_desc": "Score over 7,000 in any game",
+  "mobileStats_ach_hardMode_name": "Difficulty Unlocked",
+  "mobileStats_ach_hardMode_desc": "Complete a game on Hard difficulty"
 }

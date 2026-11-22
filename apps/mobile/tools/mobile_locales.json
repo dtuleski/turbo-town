@@ -64,6 +64,159 @@
       "questStarsLabel": "{{count}} of 3 stars",
       "questNodePlayUnavailable": "This game is not available in the app yet.",
       "worldLockedApp": "This world is not available in the app yet."
+    },
+    "mobileStats": {
+      "tabHub": "Hub",
+      "tabQuest": "Quest",
+      "tabDashboard": "Dashboard",
+      "tabLeaderboard": "Leaderboard",
+      "tabProfile": "Profile",
+      "overall": "Overall",
+      "totalGames": "Total Games",
+      "bestScore": "Best Score",
+      "completedGames": "Completed Games",
+      "yourPerformance": "Your Performance",
+      "ofPlayers": "of {{count}} players",
+      "points": "points",
+      "topTen": "Top 10%! 🌟",
+      "topQuarter": "Top 25%! 🎯",
+      "topHalf": "Top 50%! 💪",
+      "keepPlaying": "Keep playing! 🎮",
+      "playToRank": "Play games to get ranked!",
+      "viewLeaderboard": "View Leaderboard →",
+      "trendTitle": "Score Trend",
+      "trendUp": "Up {{percent}}%!",
+      "trendDown": "Down {{percent}}%",
+      "trendStable": "Stable",
+      "trendNoData": "Play more games to see your trend.",
+      "statisticsTitle": "Statistics",
+      "statisticsDesc": "View your detailed game statistics",
+      "historyTitle": "Game History",
+      "historyDesc": "See all your past games",
+      "achievementsDesc": "Track your progress and unlock badges",
+      "contactDesc": "Report a bug or send feedback",
+      "noData": "No Data Yet",
+      "noDataBody": "Play some games to see your statistics here!",
+      "errorTitle": "Something went wrong",
+      "statsLoadFailed": "Failed to load statistics. Please try again.",
+      "allGames": "All Games",
+      "gamesPlayed": "Games Played",
+      "avgScore": "Avg Score",
+      "avgAccuracy": "Avg Accuracy",
+      "totalPlayTime": "Total Play Time",
+      "gamesPerWeek": "Games Per Week",
+      "gamesBreakdown": "Games Played by Game",
+      "distinctGames": "{{count}} different games played",
+      "scoreProgression": "Score Progression",
+      "progressionHelp": "Each bar shows your score as a % of your personal best for that game. The line shows your rolling average.",
+      "progressionEmpty": "Play more games to see your progression!",
+      "accuracyTrend": "Accuracy Trend",
+      "speedTrend": "Speed Trend",
+      "avgLabel": "Avg: {{value}}",
+      "personalBests": "Personal Bests",
+      "bestLine": "{{difficulty}} · {{time}} · {{accuracy}}% accuracy",
+      "noGames": "No Games Yet",
+      "noGamesBody": "Play some games and your history will appear here!",
+      "historyLoadFailed": "Failed to load game history. Please try again.",
+      "gamesCount": "{{count}} games",
+      "rangeOf": "{{from}}–{{to}} of {{total}}",
+      "allDifficulties": "All Difficulties",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "sortDate": "Date",
+      "sortScore": "Score",
+      "sortAccuracy": "Accuracy",
+      "sortTime": "Time",
+      "prev": "Previous",
+      "next": "Next",
+      "pageOf": "Page {{page}} of {{pages}}",
+      "noMatch": "No games match your filters. Try adjusting them.",
+      "pb": "PB",
+      "unlockedCount": "{{unlocked}}/{{total}} unlocked",
+      "overallProgress": "Overall Progress",
+      "earnedCount": "{{count}} earned",
+      "remainingCount": "{{count}} remaining",
+      "all": "All",
+      "catGettingStarted": "Getting Started",
+      "catDedication": "Dedication",
+      "catMastery": "Mastery",
+      "catGameSpecific": "Game Mastery",
+      "earnedOn": "Earned {{date}}",
+      "progressBest": "Best: {{value}}",
+      "progressFastest": "Fastest: {{value}}",
+      "progressGames": "{{current}}/{{target}} games",
+      "progressCount": "{{current}}/{{target}}",
+      "masterName": "{{game}} Master",
+      "masterDesc": "Score 5,000+ in {{game}}",
+      "noEntries": "No Entries Yet",
+      "noEntriesBody": "Be the first to play and claim the top spot!",
+      "you": "You",
+      "language": "Language",
+      "signOut": "Sign out",
+      "prefsLoadFailed": "Could not load your email preferences.",
+      "prefsSaveFailed": "Could not save your choice. Try again.",
+      "tierValue": "{{tier}}",
+      "contactTitleSubject": "Subject",
+      "contactValidation": "Enter a subject and a message.",
+      "ach": {
+        "firstGame": {
+          "name": "First Game",
+          "desc": "Play your first game"
+        },
+        "sharpShooter": {
+          "name": "Sharp Shooter",
+          "desc": "Get 90%+ accuracy on any game"
+        },
+        "speedDemon": {
+          "name": "Speed Demon",
+          "desc": "Complete any game under 30 seconds"
+        },
+        "explorer": {
+          "name": "Explorer",
+          "desc": "Try 3 different games"
+        },
+        "highRoller": {
+          "name": "High Roller",
+          "desc": "Score over 5,000 in any game"
+        },
+        "onFire": {
+          "name": "On Fire",
+          "desc": "Play 10 games"
+        },
+        "committed": {
+          "name": "Committed",
+          "desc": "Play 25 games"
+        },
+        "veteran": {
+          "name": "Veteran",
+          "desc": "Play 50 games"
+        },
+        "legend": {
+          "name": "Legend",
+          "desc": "Play 100 games"
+        },
+        "brainPower": {
+          "name": "Brain Power",
+          "desc": "Score 5,000+ on 3 different games"
+        },
+        "perfectionist": {
+          "name": "Perfectionist",
+          "desc": "Get 100% accuracy on any game"
+        },
+        "worldTraveler": {
+          "name": "World Traveler",
+          "desc": "Play all {{count}} games"
+        },
+        "elite": {
+          "name": "Elite",
+          "desc": "Score over 7,000 in any game"
+        },
+        "hardMode": {
+          "name": "Difficulty Unlocked",
+          "desc": "Complete a game on Hard difficulty"
+        }
+      }
     }
   },
   "es": {
@@ -131,6 +284,159 @@
       "questStarsLabel": "{{count}} de 3 estrellas",
       "questNodePlayUnavailable": "Este juego aún no está disponible en la app.",
       "worldLockedApp": "Este mundo aún no está disponible en la app."
+    },
+    "mobileStats": {
+      "tabHub": "Inicio",
+      "tabQuest": "Aventura",
+      "tabDashboard": "Panel",
+      "tabLeaderboard": "Clasificación",
+      "tabProfile": "Perfil",
+      "overall": "General",
+      "totalGames": "Juegos Totales",
+      "bestScore": "Mejor Puntuación",
+      "completedGames": "Juegos Completados",
+      "yourPerformance": "Tu Rendimiento",
+      "ofPlayers": "de {{count}} jugadores",
+      "points": "puntos",
+      "topTen": "¡Top 10%! 🌟",
+      "topQuarter": "¡Top 25%! 🎯",
+      "topHalf": "¡Top 50%! 💪",
+      "keepPlaying": "¡Sigue jugando! 🎮",
+      "playToRank": "¡Juega para entrar en la clasificación!",
+      "viewLeaderboard": "Ver Clasificación →",
+      "trendTitle": "Tendencia de Puntuación",
+      "trendUp": "¡Subió {{percent}}%!",
+      "trendDown": "Bajó {{percent}}%",
+      "trendStable": "Estable",
+      "trendNoData": "Juega más partidas para ver tu tendencia.",
+      "statisticsTitle": "Estadísticas",
+      "statisticsDesc": "Mira tus estadísticas detalladas de juego",
+      "historyTitle": "Historial de Juegos",
+      "historyDesc": "Mira todas tus partidas anteriores",
+      "achievementsDesc": "Sigue tu progreso y desbloquea insignias",
+      "contactDesc": "Reporta un error o envía comentarios",
+      "noData": "Aún No Hay Datos",
+      "noDataBody": "¡Juega algunas partidas para ver tus estadísticas aquí!",
+      "errorTitle": "Algo salió mal",
+      "statsLoadFailed": "No se pudieron cargar las estadísticas. Inténtalo de nuevo.",
+      "allGames": "Todos los Juegos",
+      "gamesPlayed": "Partidas Jugadas",
+      "avgScore": "Puntuación Media",
+      "avgAccuracy": "Precisión Media",
+      "totalPlayTime": "Tiempo Total de Juego",
+      "gamesPerWeek": "Partidas por Semana",
+      "gamesBreakdown": "Partidas por Juego",
+      "distinctGames": "{{count}} juegos distintos jugados",
+      "scoreProgression": "Progreso de Puntuación",
+      "progressionHelp": "Cada barra muestra tu puntuación como % de tu mejor marca en ese juego. La línea muestra el promedio móvil.",
+      "progressionEmpty": "¡Juega más partidas para ver tu progreso!",
+      "accuracyTrend": "Tendencia de Precisión",
+      "speedTrend": "Tendencia de Velocidad",
+      "avgLabel": "Prom.: {{value}}",
+      "personalBests": "Mejores Marcas Personales",
+      "bestLine": "{{difficulty}} · {{time}} · {{accuracy}}% de precisión",
+      "noGames": "Aún No Hay Partidas",
+      "noGamesBody": "¡Juega algunas partidas y tu historial aparecerá aquí!",
+      "historyLoadFailed": "No se pudo cargar el historial. Inténtalo de nuevo.",
+      "gamesCount": "{{count}} partidas",
+      "rangeOf": "{{from}}–{{to}} de {{total}}",
+      "allDifficulties": "Todas las Dificultades",
+      "easy": "Fácil",
+      "medium": "Medio",
+      "hard": "Difícil",
+      "sortDate": "Fecha",
+      "sortScore": "Puntuación",
+      "sortAccuracy": "Precisión",
+      "sortTime": "Tiempo",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "pageOf": "Página {{page}} de {{pages}}",
+      "noMatch": "Ninguna partida coincide con tus filtros. Prueba a cambiarlos.",
+      "pb": "MP",
+      "unlockedCount": "{{unlocked}}/{{total}} desbloqueados",
+      "overallProgress": "Progreso General",
+      "earnedCount": "{{count}} obtenidos",
+      "remainingCount": "{{count}} restantes",
+      "all": "Todos",
+      "catGettingStarted": "Primeros Pasos",
+      "catDedication": "Dedicación",
+      "catMastery": "Maestría",
+      "catGameSpecific": "Maestría por Juego",
+      "earnedOn": "Obtenido el {{date}}",
+      "progressBest": "Mejor: {{value}}",
+      "progressFastest": "Más rápido: {{value}}",
+      "progressGames": "{{current}}/{{target}} juegos",
+      "progressCount": "{{current}}/{{target}}",
+      "masterName": "Maestro de {{game}}",
+      "masterDesc": "Consigue 5.000+ en {{game}}",
+      "noEntries": "Aún No Hay Entradas",
+      "noEntriesBody": "¡Sé el primero en jugar y ocupa el primer lugar!",
+      "you": "Tú",
+      "language": "Idioma",
+      "signOut": "Cerrar sesión",
+      "prefsLoadFailed": "No se pudieron cargar tus preferencias de correo.",
+      "prefsSaveFailed": "No se pudo guardar tu elección. Inténtalo de nuevo.",
+      "tierValue": "{{tier}}",
+      "contactTitleSubject": "Asunto",
+      "contactValidation": "Escribe un asunto y un mensaje.",
+      "ach": {
+        "firstGame": {
+          "name": "Primer Juego",
+          "desc": "Juega tu primera partida"
+        },
+        "sharpShooter": {
+          "name": "Tirador Certero",
+          "desc": "Consigue 90%+ de precisión en cualquier juego"
+        },
+        "speedDemon": {
+          "name": "Demonio de la Velocidad",
+          "desc": "Completa cualquier juego en menos de 30 segundos"
+        },
+        "explorer": {
+          "name": "Explorador",
+          "desc": "Prueba 3 juegos distintos"
+        },
+        "highRoller": {
+          "name": "Gran Apostador",
+          "desc": "Consigue más de 5.000 en cualquier juego"
+        },
+        "onFire": {
+          "name": "En Racha",
+          "desc": "Juega 10 partidas"
+        },
+        "committed": {
+          "name": "Comprometido",
+          "desc": "Juega 25 partidas"
+        },
+        "veteran": {
+          "name": "Veterano",
+          "desc": "Juega 50 partidas"
+        },
+        "legend": {
+          "name": "Leyenda",
+          "desc": "Juega 100 partidas"
+        },
+        "brainPower": {
+          "name": "Poder Mental",
+          "desc": "Consigue 5.000+ en 3 juegos distintos"
+        },
+        "perfectionist": {
+          "name": "Perfeccionista",
+          "desc": "Consigue 100% de precisión en cualquier juego"
+        },
+        "worldTraveler": {
+          "name": "Viajero del Mundo",
+          "desc": "Juega los {{count}} juegos"
+        },
+        "elite": {
+          "name": "Élite",
+          "desc": "Consigue más de 7.000 en cualquier juego"
+        },
+        "hardMode": {
+          "name": "Dificultad Desbloqueada",
+          "desc": "Completa un juego en dificultad Difícil"
+        }
+      }
     }
   },
   "pt": {
@@ -198,6 +504,159 @@
       "questStarsLabel": "{{count}} de 3 estrelas",
       "questNodePlayUnavailable": "Este jogo ainda não está disponível no app.",
       "worldLockedApp": "Este mundo ainda não está disponível no app."
+    },
+    "mobileStats": {
+      "tabHub": "Início",
+      "tabQuest": "Missão",
+      "tabDashboard": "Painel",
+      "tabLeaderboard": "Ranking",
+      "tabProfile": "Perfil",
+      "overall": "Geral",
+      "totalGames": "Total de Jogos",
+      "bestScore": "Melhor Pontuação",
+      "completedGames": "Jogos Concluídos",
+      "yourPerformance": "Seu Desempenho",
+      "ofPlayers": "de {{count}} jogadores",
+      "points": "pontos",
+      "topTen": "Top 10%! 🌟",
+      "topQuarter": "Top 25%! 🎯",
+      "topHalf": "Top 50%! 💪",
+      "keepPlaying": "Continue jogando! 🎮",
+      "playToRank": "Jogue para entrar no ranking!",
+      "viewLeaderboard": "Ver Ranking →",
+      "trendTitle": "Tendência de Pontuação",
+      "trendUp": "Subiu {{percent}}%!",
+      "trendDown": "Caiu {{percent}}%",
+      "trendStable": "Estável",
+      "trendNoData": "Jogue mais partidas para ver sua tendência.",
+      "statisticsTitle": "Estatísticas",
+      "statisticsDesc": "Veja suas estatísticas detalhadas de jogo",
+      "historyTitle": "Histórico de Jogos",
+      "historyDesc": "Veja todas as suas partidas anteriores",
+      "achievementsDesc": "Acompanhe seu progresso e desbloqueie medalhas",
+      "contactDesc": "Relate um problema ou envie sugestões",
+      "noData": "Ainda Sem Dados",
+      "noDataBody": "Jogue algumas partidas para ver suas estatísticas aqui!",
+      "errorTitle": "Algo deu errado",
+      "statsLoadFailed": "Não foi possível carregar as estatísticas. Tente novamente.",
+      "allGames": "Todos os Jogos",
+      "gamesPlayed": "Partidas Jogadas",
+      "avgScore": "Pontuação Média",
+      "avgAccuracy": "Precisão Média",
+      "totalPlayTime": "Tempo Total de Jogo",
+      "gamesPerWeek": "Partidas por Semana",
+      "gamesBreakdown": "Partidas por Jogo",
+      "distinctGames": "{{count}} jogos diferentes jogados",
+      "scoreProgression": "Progressão de Pontuação",
+      "progressionHelp": "Cada barra mostra sua pontuação como % do seu recorde nesse jogo. A linha mostra a média móvel.",
+      "progressionEmpty": "Jogue mais partidas para ver sua progressão!",
+      "accuracyTrend": "Tendência de Precisão",
+      "speedTrend": "Tendência de Velocidade",
+      "avgLabel": "Méd.: {{value}}",
+      "personalBests": "Recordes Pessoais",
+      "bestLine": "{{difficulty}} · {{time}} · {{accuracy}}% de precisão",
+      "noGames": "Ainda Sem Partidas",
+      "noGamesBody": "Jogue algumas partidas e seu histórico aparecerá aqui!",
+      "historyLoadFailed": "Não foi possível carregar o histórico. Tente novamente.",
+      "gamesCount": "{{count}} partidas",
+      "rangeOf": "{{from}}–{{to}} de {{total}}",
+      "allDifficulties": "Todas as Dificuldades",
+      "easy": "Fácil",
+      "medium": "Médio",
+      "hard": "Difícil",
+      "sortDate": "Data",
+      "sortScore": "Pontuação",
+      "sortAccuracy": "Precisão",
+      "sortTime": "Tempo",
+      "prev": "Anterior",
+      "next": "Próxima",
+      "pageOf": "Página {{page}} de {{pages}}",
+      "noMatch": "Nenhuma partida corresponde aos filtros. Tente ajustá-los.",
+      "pb": "RP",
+      "unlockedCount": "{{unlocked}}/{{total}} desbloqueadas",
+      "overallProgress": "Progresso Geral",
+      "earnedCount": "{{count}} conquistadas",
+      "remainingCount": "{{count}} restantes",
+      "all": "Todas",
+      "catGettingStarted": "Primeiros Passos",
+      "catDedication": "Dedicação",
+      "catMastery": "Maestria",
+      "catGameSpecific": "Maestria por Jogo",
+      "earnedOn": "Conquistada em {{date}}",
+      "progressBest": "Melhor: {{value}}",
+      "progressFastest": "Mais rápido: {{value}}",
+      "progressGames": "{{current}}/{{target}} jogos",
+      "progressCount": "{{current}}/{{target}}",
+      "masterName": "Mestre de {{game}}",
+      "masterDesc": "Faça 5.000+ em {{game}}",
+      "noEntries": "Ainda Sem Entradas",
+      "noEntriesBody": "Seja o primeiro a jogar e conquiste o topo!",
+      "you": "Você",
+      "language": "Idioma",
+      "signOut": "Sair",
+      "prefsLoadFailed": "Não foi possível carregar suas preferências de e-mail.",
+      "prefsSaveFailed": "Não foi possível salvar sua escolha. Tente novamente.",
+      "tierValue": "{{tier}}",
+      "contactTitleSubject": "Assunto",
+      "contactValidation": "Digite um assunto e uma mensagem.",
+      "ach": {
+        "firstGame": {
+          "name": "Primeiro Jogo",
+          "desc": "Jogue sua primeira partida"
+        },
+        "sharpShooter": {
+          "name": "Atirador Certeiro",
+          "desc": "Alcance 90%+ de precisão em qualquer jogo"
+        },
+        "speedDemon": {
+          "name": "Demônio da Velocidade",
+          "desc": "Conclua qualquer jogo em menos de 30 segundos"
+        },
+        "explorer": {
+          "name": "Explorador",
+          "desc": "Experimente 3 jogos diferentes"
+        },
+        "highRoller": {
+          "name": "Grande Apostador",
+          "desc": "Faça mais de 5.000 em qualquer jogo"
+        },
+        "onFire": {
+          "name": "Pegando Fogo",
+          "desc": "Jogue 10 partidas"
+        },
+        "committed": {
+          "name": "Comprometido",
+          "desc": "Jogue 25 partidas"
+        },
+        "veteran": {
+          "name": "Veterano",
+          "desc": "Jogue 50 partidas"
+        },
+        "legend": {
+          "name": "Lenda",
+          "desc": "Jogue 100 partidas"
+        },
+        "brainPower": {
+          "name": "Poder Mental",
+          "desc": "Faça 5.000+ em 3 jogos diferentes"
+        },
+        "perfectionist": {
+          "name": "Perfeccionista",
+          "desc": "Alcance 100% de precisão em qualquer jogo"
+        },
+        "worldTraveler": {
+          "name": "Viajante do Mundo",
+          "desc": "Jogue todos os {{count}} jogos"
+        },
+        "elite": {
+          "name": "Elite",
+          "desc": "Faça mais de 7.000 em qualquer jogo"
+        },
+        "hardMode": {
+          "name": "Dificuldade Desbloqueada",
+          "desc": "Conclua um jogo na dificuldade Difícil"
+        }
+      }
     }
   }
 }

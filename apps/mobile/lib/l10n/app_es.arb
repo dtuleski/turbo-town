@@ -1537,6 +1537,298 @@
   },
   "mobileGame_questNodePlayUnavailable": "Este juego aún no está disponible en la app.",
   "mobileGame_worldLockedApp": "Este mundo aún no está disponible en la app.",
+  "mobileStats_tabHub": "Inicio",
+  "mobileStats_tabQuest": "Aventura",
+  "mobileStats_tabDashboard": "Panel",
+  "mobileStats_tabLeaderboard": "Clasificación",
+  "mobileStats_tabProfile": "Perfil",
+  "mobileStats_overall": "General",
+  "mobileStats_totalGames": "Juegos Totales",
+  "mobileStats_bestScore": "Mejor Puntuación",
+  "mobileStats_completedGames": "Juegos Completados",
+  "mobileStats_yourPerformance": "Tu Rendimiento",
+  "mobileStats_ofPlayers": "de {count} jugadores",
+  "@mobileStats_ofPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_points": "puntos",
+  "mobileStats_topTen": "¡Top 10%! 🌟",
+  "mobileStats_topQuarter": "¡Top 25%! 🎯",
+  "mobileStats_topHalf": "¡Top 50%! 💪",
+  "mobileStats_keepPlaying": "¡Sigue jugando! 🎮",
+  "mobileStats_playToRank": "¡Juega para entrar en la clasificación!",
+  "mobileStats_viewLeaderboard": "Ver Clasificación →",
+  "mobileStats_trendTitle": "Tendencia de Puntuación",
+  "mobileStats_trendUp": "¡Subió {percent}%!",
+  "@mobileStats_trendUp": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendDown": "Bajó {percent}%",
+  "@mobileStats_trendDown": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendStable": "Estable",
+  "mobileStats_trendNoData": "Juega más partidas para ver tu tendencia.",
+  "mobileStats_statisticsTitle": "Estadísticas",
+  "mobileStats_statisticsDesc": "Mira tus estadísticas detalladas de juego",
+  "mobileStats_historyTitle": "Historial de Juegos",
+  "mobileStats_historyDesc": "Mira todas tus partidas anteriores",
+  "mobileStats_achievementsDesc": "Sigue tu progreso y desbloquea insignias",
+  "mobileStats_contactDesc": "Reporta un error o envía comentarios",
+  "mobileStats_noData": "Aún No Hay Datos",
+  "mobileStats_noDataBody": "¡Juega algunas partidas para ver tus estadísticas aquí!",
+  "mobileStats_errorTitle": "Algo salió mal",
+  "mobileStats_statsLoadFailed": "No se pudieron cargar las estadísticas. Inténtalo de nuevo.",
+  "mobileStats_allGames": "Todos los Juegos",
+  "mobileStats_gamesPlayed": "Partidas Jugadas",
+  "mobileStats_avgScore": "Puntuación Media",
+  "mobileStats_avgAccuracy": "Precisión Media",
+  "mobileStats_totalPlayTime": "Tiempo Total de Juego",
+  "mobileStats_gamesPerWeek": "Partidas por Semana",
+  "mobileStats_gamesBreakdown": "Partidas por Juego",
+  "mobileStats_distinctGames": "{count} juegos distintos jugados",
+  "@mobileStats_distinctGames": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_scoreProgression": "Progreso de Puntuación",
+  "mobileStats_progressionHelp": "Cada barra muestra tu puntuación como % de tu mejor marca en ese juego. La línea muestra el promedio móvil.",
+  "mobileStats_progressionEmpty": "¡Juega más partidas para ver tu progreso!",
+  "mobileStats_accuracyTrend": "Tendencia de Precisión",
+  "mobileStats_speedTrend": "Tendencia de Velocidad",
+  "mobileStats_avgLabel": "Prom.: {value}",
+  "@mobileStats_avgLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_personalBests": "Mejores Marcas Personales",
+  "mobileStats_bestLine": "{difficulty} · {time} · {accuracy}% de precisión",
+  "@mobileStats_bestLine": {
+    "placeholders": {
+      "difficulty": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noGames": "Aún No Hay Partidas",
+  "mobileStats_noGamesBody": "¡Juega algunas partidas y tu historial aparecerá aquí!",
+  "mobileStats_historyLoadFailed": "No se pudo cargar el historial. Inténtalo de nuevo.",
+  "mobileStats_gamesCount": "{count} partidas",
+  "@mobileStats_gamesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_rangeOf": "{from}–{to} de {total}",
+  "@mobileStats_rangeOf": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_allDifficulties": "Todas las Dificultades",
+  "mobileStats_easy": "Fácil",
+  "mobileStats_medium": "Medio",
+  "mobileStats_hard": "Difícil",
+  "mobileStats_sortDate": "Fecha",
+  "mobileStats_sortScore": "Puntuación",
+  "mobileStats_sortAccuracy": "Precisión",
+  "mobileStats_sortTime": "Tiempo",
+  "mobileStats_prev": "Anterior",
+  "mobileStats_next": "Siguiente",
+  "mobileStats_pageOf": "Página {page} de {pages}",
+  "@mobileStats_pageOf": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noMatch": "Ninguna partida coincide con tus filtros. Prueba a cambiarlos.",
+  "mobileStats_pb": "MP",
+  "mobileStats_unlockedCount": "{unlocked}/{total} desbloqueados",
+  "@mobileStats_unlockedCount": {
+    "placeholders": {
+      "unlocked": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_overallProgress": "Progreso General",
+  "mobileStats_earnedCount": "{count} obtenidos",
+  "@mobileStats_earnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_remainingCount": "{count} restantes",
+  "@mobileStats_remainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_all": "Todos",
+  "mobileStats_catGettingStarted": "Primeros Pasos",
+  "mobileStats_catDedication": "Dedicación",
+  "mobileStats_catMastery": "Maestría",
+  "mobileStats_catGameSpecific": "Maestría por Juego",
+  "mobileStats_earnedOn": "Obtenido el {date}",
+  "@mobileStats_earnedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressBest": "Mejor: {value}",
+  "@mobileStats_progressBest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressFastest": "Más rápido: {value}",
+  "@mobileStats_progressFastest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressGames": "{current}/{target} juegos",
+  "@mobileStats_progressGames": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressCount": "{current}/{target}",
+  "@mobileStats_progressCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterName": "Maestro de {game}",
+  "@mobileStats_masterName": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterDesc": "Consigue 5.000+ en {game}",
+  "@mobileStats_masterDesc": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noEntries": "Aún No Hay Entradas",
+  "mobileStats_noEntriesBody": "¡Sé el primero en jugar y ocupa el primer lugar!",
+  "mobileStats_you": "Tú",
+  "mobileStats_language": "Idioma",
+  "mobileStats_signOut": "Cerrar sesión",
+  "mobileStats_prefsLoadFailed": "No se pudieron cargar tus preferencias de correo.",
+  "mobileStats_prefsSaveFailed": "No se pudo guardar tu elección. Inténtalo de nuevo.",
+  "mobileStats_tierValue": "{tier}",
+  "@mobileStats_tierValue": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_contactTitleSubject": "Asunto",
+  "mobileStats_contactValidation": "Escribe un asunto y un mensaje.",
+  "mobileStats_ach_firstGame_name": "Primer Juego",
+  "mobileStats_ach_firstGame_desc": "Juega tu primera partida",
+  "mobileStats_ach_sharpShooter_name": "Tirador Certero",
+  "mobileStats_ach_sharpShooter_desc": "Consigue 90%+ de precisión en cualquier juego",
+  "mobileStats_ach_speedDemon_name": "Demonio de la Velocidad",
+  "mobileStats_ach_speedDemon_desc": "Completa cualquier juego en menos de 30 segundos",
+  "mobileStats_ach_explorer_name": "Explorador",
+  "mobileStats_ach_explorer_desc": "Prueba 3 juegos distintos",
+  "mobileStats_ach_highRoller_name": "Gran Apostador",
+  "mobileStats_ach_highRoller_desc": "Consigue más de 5.000 en cualquier juego",
+  "mobileStats_ach_onFire_name": "En Racha",
+  "mobileStats_ach_onFire_desc": "Juega 10 partidas",
+  "mobileStats_ach_committed_name": "Comprometido",
+  "mobileStats_ach_committed_desc": "Juega 25 partidas",
+  "mobileStats_ach_veteran_name": "Veterano",
+  "mobileStats_ach_veteran_desc": "Juega 50 partidas",
+  "mobileStats_ach_legend_name": "Leyenda",
+  "mobileStats_ach_legend_desc": "Juega 100 partidas",
+  "mobileStats_ach_brainPower_name": "Poder Mental",
+  "mobileStats_ach_brainPower_desc": "Consigue 5.000+ en 3 juegos distintos",
+  "mobileStats_ach_perfectionist_name": "Perfeccionista",
+  "mobileStats_ach_perfectionist_desc": "Consigue 100% de precisión en cualquier juego",
+  "mobileStats_ach_worldTraveler_name": "Viajero del Mundo",
+  "mobileStats_ach_worldTraveler_desc": "Juega los {count} juegos",
+  "@mobileStats_ach_worldTraveler_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_ach_elite_name": "Élite",
+  "mobileStats_ach_elite_desc": "Consigue más de 7.000 en cualquier juego",
+  "mobileStats_ach_hardMode_name": "Dificultad Desbloqueada",
+  "mobileStats_ach_hardMode_desc": "Completa un juego en dificultad Difícil",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

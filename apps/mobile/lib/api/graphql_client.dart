@@ -30,3 +30,22 @@ GraphQLClient buildGameClient(CognitoService cognito) {
     ),
   );
 }
+
+/// Builds the GraphQL client for the leaderboard service. Same Bearer idToken
+/// as the game client; the endpoint is [Env.leaderboardEndpoint].
+GraphQLClient buildLeaderboardClient(CognitoService cognito) {
+  final authLink = AuthLink(
+    getToken: () async {
+      final token = await cognito.getValidIdToken();
+      return token != null ? 'Bearer $token' : null;
+    },
+  );
+  return GraphQLClient(
+    link: authLink.concat(HttpLink(Env.leaderboardEndpoint)),
+    cache: GraphQLCache(),
+    defaultPolicies: DefaultPolicies(
+      query: Policies(fetch: FetchPolicy.networkOnly),
+      mutate: Policies(fetch: FetchPolicy.noCache),
+    ),
+  );
+}

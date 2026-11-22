@@ -6369,6 +6369,732 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This world is not available in the app yet.'**
   String get mobileGame_worldLockedApp;
+
+  /// No description provided for @mobileStats_tabHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Hub'**
+  String get mobileStats_tabHub;
+
+  /// No description provided for @mobileStats_tabQuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Quest'**
+  String get mobileStats_tabQuest;
+
+  /// No description provided for @mobileStats_tabDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get mobileStats_tabDashboard;
+
+  /// No description provided for @mobileStats_tabLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get mobileStats_tabLeaderboard;
+
+  /// No description provided for @mobileStats_tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get mobileStats_tabProfile;
+
+  /// No description provided for @mobileStats_overall.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall'**
+  String get mobileStats_overall;
+
+  /// No description provided for @mobileStats_totalGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Games'**
+  String get mobileStats_totalGames;
+
+  /// No description provided for @mobileStats_bestScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Score'**
+  String get mobileStats_bestScore;
+
+  /// No description provided for @mobileStats_completedGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Games'**
+  String get mobileStats_completedGames;
+
+  /// No description provided for @mobileStats_yourPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Performance'**
+  String get mobileStats_yourPerformance;
+
+  /// No description provided for @mobileStats_ofPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'of {count} players'**
+  String mobileStats_ofPlayers(String count);
+
+  /// No description provided for @mobileStats_points.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get mobileStats_points;
+
+  /// No description provided for @mobileStats_topTen.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 10%! 🌟'**
+  String get mobileStats_topTen;
+
+  /// No description provided for @mobileStats_topQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 25%! 🎯'**
+  String get mobileStats_topQuarter;
+
+  /// No description provided for @mobileStats_topHalf.
+  ///
+  /// In en, this message translates to:
+  /// **'Top 50%! 💪'**
+  String get mobileStats_topHalf;
+
+  /// No description provided for @mobileStats_keepPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing! 🎮'**
+  String get mobileStats_keepPlaying;
+
+  /// No description provided for @mobileStats_playToRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Play games to get ranked!'**
+  String get mobileStats_playToRank;
+
+  /// No description provided for @mobileStats_viewLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'View Leaderboard →'**
+  String get mobileStats_viewLeaderboard;
+
+  /// No description provided for @mobileStats_trendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Score Trend'**
+  String get mobileStats_trendTitle;
+
+  /// No description provided for @mobileStats_trendUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up {percent}%!'**
+  String mobileStats_trendUp(String percent);
+
+  /// No description provided for @mobileStats_trendDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down {percent}%'**
+  String mobileStats_trendDown(String percent);
+
+  /// No description provided for @mobileStats_trendStable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get mobileStats_trendStable;
+
+  /// No description provided for @mobileStats_trendNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Play more games to see your trend.'**
+  String get mobileStats_trendNoData;
+
+  /// No description provided for @mobileStats_statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get mobileStats_statisticsTitle;
+
+  /// No description provided for @mobileStats_statisticsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View your detailed game statistics'**
+  String get mobileStats_statisticsDesc;
+
+  /// No description provided for @mobileStats_historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game History'**
+  String get mobileStats_historyTitle;
+
+  /// No description provided for @mobileStats_historyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See all your past games'**
+  String get mobileStats_historyDesc;
+
+  /// No description provided for @mobileStats_achievementsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your progress and unlock badges'**
+  String get mobileStats_achievementsDesc;
+
+  /// No description provided for @mobileStats_contactDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bug or send feedback'**
+  String get mobileStats_contactDesc;
+
+  /// No description provided for @mobileStats_noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No Data Yet'**
+  String get mobileStats_noData;
+
+  /// No description provided for @mobileStats_noDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Play some games to see your statistics here!'**
+  String get mobileStats_noDataBody;
+
+  /// No description provided for @mobileStats_errorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get mobileStats_errorTitle;
+
+  /// No description provided for @mobileStats_statsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load statistics. Please try again.'**
+  String get mobileStats_statsLoadFailed;
+
+  /// No description provided for @mobileStats_allGames.
+  ///
+  /// In en, this message translates to:
+  /// **'All Games'**
+  String get mobileStats_allGames;
+
+  /// No description provided for @mobileStats_gamesPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Games Played'**
+  String get mobileStats_gamesPlayed;
+
+  /// No description provided for @mobileStats_avgScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Score'**
+  String get mobileStats_avgScore;
+
+  /// No description provided for @mobileStats_avgAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Accuracy'**
+  String get mobileStats_avgAccuracy;
+
+  /// No description provided for @mobileStats_totalPlayTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Play Time'**
+  String get mobileStats_totalPlayTime;
+
+  /// No description provided for @mobileStats_gamesPerWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Games Per Week'**
+  String get mobileStats_gamesPerWeek;
+
+  /// No description provided for @mobileStats_gamesBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Games Played by Game'**
+  String get mobileStats_gamesBreakdown;
+
+  /// No description provided for @mobileStats_distinctGames.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} different games played'**
+  String mobileStats_distinctGames(String count);
+
+  /// No description provided for @mobileStats_scoreProgression.
+  ///
+  /// In en, this message translates to:
+  /// **'Score Progression'**
+  String get mobileStats_scoreProgression;
+
+  /// No description provided for @mobileStats_progressionHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Each bar shows your score as a % of your personal best for that game. The line shows your rolling average.'**
+  String get mobileStats_progressionHelp;
+
+  /// No description provided for @mobileStats_progressionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Play more games to see your progression!'**
+  String get mobileStats_progressionEmpty;
+
+  /// No description provided for @mobileStats_accuracyTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy Trend'**
+  String get mobileStats_accuracyTrend;
+
+  /// No description provided for @mobileStats_speedTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Trend'**
+  String get mobileStats_speedTrend;
+
+  /// No description provided for @mobileStats_avgLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg: {value}'**
+  String mobileStats_avgLabel(String value);
+
+  /// No description provided for @mobileStats_personalBests.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Bests'**
+  String get mobileStats_personalBests;
+
+  /// No description provided for @mobileStats_bestLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{difficulty} · {time} · {accuracy}% accuracy'**
+  String mobileStats_bestLine(String difficulty, String time, String accuracy);
+
+  /// No description provided for @mobileStats_noGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No Games Yet'**
+  String get mobileStats_noGames;
+
+  /// No description provided for @mobileStats_noGamesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Play some games and your history will appear here!'**
+  String get mobileStats_noGamesBody;
+
+  /// No description provided for @mobileStats_historyLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load game history. Please try again.'**
+  String get mobileStats_historyLoadFailed;
+
+  /// No description provided for @mobileStats_gamesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} games'**
+  String mobileStats_gamesCount(String count);
+
+  /// No description provided for @mobileStats_rangeOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{from}–{to} of {total}'**
+  String mobileStats_rangeOf(String from, String to, String total);
+
+  /// No description provided for @mobileStats_allDifficulties.
+  ///
+  /// In en, this message translates to:
+  /// **'All Difficulties'**
+  String get mobileStats_allDifficulties;
+
+  /// No description provided for @mobileStats_easy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get mobileStats_easy;
+
+  /// No description provided for @mobileStats_medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get mobileStats_medium;
+
+  /// No description provided for @mobileStats_hard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get mobileStats_hard;
+
+  /// No description provided for @mobileStats_sortDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get mobileStats_sortDate;
+
+  /// No description provided for @mobileStats_sortScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get mobileStats_sortScore;
+
+  /// No description provided for @mobileStats_sortAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get mobileStats_sortAccuracy;
+
+  /// No description provided for @mobileStats_sortTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get mobileStats_sortTime;
+
+  /// No description provided for @mobileStats_prev.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get mobileStats_prev;
+
+  /// No description provided for @mobileStats_next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get mobileStats_next;
+
+  /// No description provided for @mobileStats_pageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {pages}'**
+  String mobileStats_pageOf(String page, String pages);
+
+  /// No description provided for @mobileStats_noMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No games match your filters. Try adjusting them.'**
+  String get mobileStats_noMatch;
+
+  /// No description provided for @mobileStats_pb.
+  ///
+  /// In en, this message translates to:
+  /// **'PB'**
+  String get mobileStats_pb;
+
+  /// No description provided for @mobileStats_unlockedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{unlocked}/{total} unlocked'**
+  String mobileStats_unlockedCount(String unlocked, String total);
+
+  /// No description provided for @mobileStats_overallProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Progress'**
+  String get mobileStats_overallProgress;
+
+  /// No description provided for @mobileStats_earnedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} earned'**
+  String mobileStats_earnedCount(String count);
+
+  /// No description provided for @mobileStats_remainingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} remaining'**
+  String mobileStats_remainingCount(String count);
+
+  /// No description provided for @mobileStats_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get mobileStats_all;
+
+  /// No description provided for @mobileStats_catGettingStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting Started'**
+  String get mobileStats_catGettingStarted;
+
+  /// No description provided for @mobileStats_catDedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Dedication'**
+  String get mobileStats_catDedication;
+
+  /// No description provided for @mobileStats_catMastery.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery'**
+  String get mobileStats_catMastery;
+
+  /// No description provided for @mobileStats_catGameSpecific.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Mastery'**
+  String get mobileStats_catGameSpecific;
+
+  /// No description provided for @mobileStats_earnedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned {date}'**
+  String mobileStats_earnedOn(String date);
+
+  /// No description provided for @mobileStats_progressBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best: {value}'**
+  String mobileStats_progressBest(String value);
+
+  /// No description provided for @mobileStats_progressFastest.
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest: {value}'**
+  String mobileStats_progressFastest(String value);
+
+  /// No description provided for @mobileStats_progressGames.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target} games'**
+  String mobileStats_progressGames(String current, String target);
+
+  /// No description provided for @mobileStats_progressCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target}'**
+  String mobileStats_progressCount(String current, String target);
+
+  /// No description provided for @mobileStats_masterName.
+  ///
+  /// In en, this message translates to:
+  /// **'{game} Master'**
+  String mobileStats_masterName(String game);
+
+  /// No description provided for @mobileStats_masterDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Score 5,000+ in {game}'**
+  String mobileStats_masterDesc(String game);
+
+  /// No description provided for @mobileStats_noEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No Entries Yet'**
+  String get mobileStats_noEntries;
+
+  /// No description provided for @mobileStats_noEntriesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to play and claim the top spot!'**
+  String get mobileStats_noEntriesBody;
+
+  /// No description provided for @mobileStats_you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get mobileStats_you;
+
+  /// No description provided for @mobileStats_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get mobileStats_language;
+
+  /// No description provided for @mobileStats_signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get mobileStats_signOut;
+
+  /// No description provided for @mobileStats_prefsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your email preferences.'**
+  String get mobileStats_prefsLoadFailed;
+
+  /// No description provided for @mobileStats_prefsSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your choice. Try again.'**
+  String get mobileStats_prefsSaveFailed;
+
+  /// No description provided for @mobileStats_tierValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{tier}'**
+  String mobileStats_tierValue(String tier);
+
+  /// No description provided for @mobileStats_contactTitleSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get mobileStats_contactTitleSubject;
+
+  /// No description provided for @mobileStats_contactValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a subject and a message.'**
+  String get mobileStats_contactValidation;
+
+  /// No description provided for @mobileStats_ach_firstGame_name.
+  ///
+  /// In en, this message translates to:
+  /// **'First Game'**
+  String get mobileStats_ach_firstGame_name;
+
+  /// No description provided for @mobileStats_ach_firstGame_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play your first game'**
+  String get mobileStats_ach_firstGame_desc;
+
+  /// No description provided for @mobileStats_ach_sharpShooter_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharp Shooter'**
+  String get mobileStats_ach_sharpShooter_name;
+
+  /// No description provided for @mobileStats_ach_sharpShooter_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get 90%+ accuracy on any game'**
+  String get mobileStats_ach_sharpShooter_desc;
+
+  /// No description provided for @mobileStats_ach_speedDemon_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Demon'**
+  String get mobileStats_ach_speedDemon_name;
+
+  /// No description provided for @mobileStats_ach_speedDemon_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete any game under 30 seconds'**
+  String get mobileStats_ach_speedDemon_desc;
+
+  /// No description provided for @mobileStats_ach_explorer_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Explorer'**
+  String get mobileStats_ach_explorer_name;
+
+  /// No description provided for @mobileStats_ach_explorer_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Try 3 different games'**
+  String get mobileStats_ach_explorer_desc;
+
+  /// No description provided for @mobileStats_ach_highRoller_name.
+  ///
+  /// In en, this message translates to:
+  /// **'High Roller'**
+  String get mobileStats_ach_highRoller_name;
+
+  /// No description provided for @mobileStats_ach_highRoller_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Score over 5,000 in any game'**
+  String get mobileStats_ach_highRoller_desc;
+
+  /// No description provided for @mobileStats_ach_onFire_name.
+  ///
+  /// In en, this message translates to:
+  /// **'On Fire'**
+  String get mobileStats_ach_onFire_name;
+
+  /// No description provided for @mobileStats_ach_onFire_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play 10 games'**
+  String get mobileStats_ach_onFire_desc;
+
+  /// No description provided for @mobileStats_ach_committed_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Committed'**
+  String get mobileStats_ach_committed_name;
+
+  /// No description provided for @mobileStats_ach_committed_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play 25 games'**
+  String get mobileStats_ach_committed_desc;
+
+  /// No description provided for @mobileStats_ach_veteran_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Veteran'**
+  String get mobileStats_ach_veteran_name;
+
+  /// No description provided for @mobileStats_ach_veteran_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play 50 games'**
+  String get mobileStats_ach_veteran_desc;
+
+  /// No description provided for @mobileStats_ach_legend_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get mobileStats_ach_legend_name;
+
+  /// No description provided for @mobileStats_ach_legend_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play 100 games'**
+  String get mobileStats_ach_legend_desc;
+
+  /// No description provided for @mobileStats_ach_brainPower_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Brain Power'**
+  String get mobileStats_ach_brainPower_name;
+
+  /// No description provided for @mobileStats_ach_brainPower_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Score 5,000+ on 3 different games'**
+  String get mobileStats_ach_brainPower_desc;
+
+  /// No description provided for @mobileStats_ach_perfectionist_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfectionist'**
+  String get mobileStats_ach_perfectionist_name;
+
+  /// No description provided for @mobileStats_ach_perfectionist_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get 100% accuracy on any game'**
+  String get mobileStats_ach_perfectionist_desc;
+
+  /// No description provided for @mobileStats_ach_worldTraveler_name.
+  ///
+  /// In en, this message translates to:
+  /// **'World Traveler'**
+  String get mobileStats_ach_worldTraveler_name;
+
+  /// No description provided for @mobileStats_ach_worldTraveler_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play all {count} games'**
+  String mobileStats_ach_worldTraveler_desc(String count);
+
+  /// No description provided for @mobileStats_ach_elite_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite'**
+  String get mobileStats_ach_elite_name;
+
+  /// No description provided for @mobileStats_ach_elite_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Score over 7,000 in any game'**
+  String get mobileStats_ach_elite_desc;
+
+  /// No description provided for @mobileStats_ach_hardMode_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty Unlocked'**
+  String get mobileStats_ach_hardMode_name;
+
+  /// No description provided for @mobileStats_ach_hardMode_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a game on Hard difficulty'**
+  String get mobileStats_ach_hardMode_desc;
 }
 
 class _AppLocalizationsDelegate

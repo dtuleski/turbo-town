@@ -3505,4 +3505,425 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mobileGame_worldLockedApp =>
       'This world is not available in the app yet.';
+
+  @override
+  String get mobileStats_tabHub => 'Hub';
+
+  @override
+  String get mobileStats_tabQuest => 'Quest';
+
+  @override
+  String get mobileStats_tabDashboard => 'Dashboard';
+
+  @override
+  String get mobileStats_tabLeaderboard => 'Leaderboard';
+
+  @override
+  String get mobileStats_tabProfile => 'Profile';
+
+  @override
+  String get mobileStats_overall => 'Overall';
+
+  @override
+  String get mobileStats_totalGames => 'Total Games';
+
+  @override
+  String get mobileStats_bestScore => 'Best Score';
+
+  @override
+  String get mobileStats_completedGames => 'Completed Games';
+
+  @override
+  String get mobileStats_yourPerformance => 'Your Performance';
+
+  @override
+  String mobileStats_ofPlayers(String count) {
+    return 'of $count players';
+  }
+
+  @override
+  String get mobileStats_points => 'points';
+
+  @override
+  String get mobileStats_topTen => 'Top 10%! 🌟';
+
+  @override
+  String get mobileStats_topQuarter => 'Top 25%! 🎯';
+
+  @override
+  String get mobileStats_topHalf => 'Top 50%! 💪';
+
+  @override
+  String get mobileStats_keepPlaying => 'Keep playing! 🎮';
+
+  @override
+  String get mobileStats_playToRank => 'Play games to get ranked!';
+
+  @override
+  String get mobileStats_viewLeaderboard => 'View Leaderboard →';
+
+  @override
+  String get mobileStats_trendTitle => 'Score Trend';
+
+  @override
+  String mobileStats_trendUp(String percent) {
+    return 'Up $percent%!';
+  }
+
+  @override
+  String mobileStats_trendDown(String percent) {
+    return 'Down $percent%';
+  }
+
+  @override
+  String get mobileStats_trendStable => 'Stable';
+
+  @override
+  String get mobileStats_trendNoData => 'Play more games to see your trend.';
+
+  @override
+  String get mobileStats_statisticsTitle => 'Statistics';
+
+  @override
+  String get mobileStats_statisticsDesc => 'View your detailed game statistics';
+
+  @override
+  String get mobileStats_historyTitle => 'Game History';
+
+  @override
+  String get mobileStats_historyDesc => 'See all your past games';
+
+  @override
+  String get mobileStats_achievementsDesc =>
+      'Track your progress and unlock badges';
+
+  @override
+  String get mobileStats_contactDesc => 'Report a bug or send feedback';
+
+  @override
+  String get mobileStats_noData => 'No Data Yet';
+
+  @override
+  String get mobileStats_noDataBody =>
+      'Play some games to see your statistics here!';
+
+  @override
+  String get mobileStats_errorTitle => 'Something went wrong';
+
+  @override
+  String get mobileStats_statsLoadFailed =>
+      'Failed to load statistics. Please try again.';
+
+  @override
+  String get mobileStats_allGames => 'All Games';
+
+  @override
+  String get mobileStats_gamesPlayed => 'Games Played';
+
+  @override
+  String get mobileStats_avgScore => 'Avg Score';
+
+  @override
+  String get mobileStats_avgAccuracy => 'Avg Accuracy';
+
+  @override
+  String get mobileStats_totalPlayTime => 'Total Play Time';
+
+  @override
+  String get mobileStats_gamesPerWeek => 'Games Per Week';
+
+  @override
+  String get mobileStats_gamesBreakdown => 'Games Played by Game';
+
+  @override
+  String mobileStats_distinctGames(String count) {
+    return '$count different games played';
+  }
+
+  @override
+  String get mobileStats_scoreProgression => 'Score Progression';
+
+  @override
+  String get mobileStats_progressionHelp =>
+      'Each bar shows your score as a % of your personal best for that game. The line shows your rolling average.';
+
+  @override
+  String get mobileStats_progressionEmpty =>
+      'Play more games to see your progression!';
+
+  @override
+  String get mobileStats_accuracyTrend => 'Accuracy Trend';
+
+  @override
+  String get mobileStats_speedTrend => 'Speed Trend';
+
+  @override
+  String mobileStats_avgLabel(String value) {
+    return 'Avg: $value';
+  }
+
+  @override
+  String get mobileStats_personalBests => 'Personal Bests';
+
+  @override
+  String mobileStats_bestLine(String difficulty, String time, String accuracy) {
+    return '$difficulty · $time · $accuracy% accuracy';
+  }
+
+  @override
+  String get mobileStats_noGames => 'No Games Yet';
+
+  @override
+  String get mobileStats_noGamesBody =>
+      'Play some games and your history will appear here!';
+
+  @override
+  String get mobileStats_historyLoadFailed =>
+      'Failed to load game history. Please try again.';
+
+  @override
+  String mobileStats_gamesCount(String count) {
+    return '$count games';
+  }
+
+  @override
+  String mobileStats_rangeOf(String from, String to, String total) {
+    return '$from–$to of $total';
+  }
+
+  @override
+  String get mobileStats_allDifficulties => 'All Difficulties';
+
+  @override
+  String get mobileStats_easy => 'Easy';
+
+  @override
+  String get mobileStats_medium => 'Medium';
+
+  @override
+  String get mobileStats_hard => 'Hard';
+
+  @override
+  String get mobileStats_sortDate => 'Date';
+
+  @override
+  String get mobileStats_sortScore => 'Score';
+
+  @override
+  String get mobileStats_sortAccuracy => 'Accuracy';
+
+  @override
+  String get mobileStats_sortTime => 'Time';
+
+  @override
+  String get mobileStats_prev => 'Previous';
+
+  @override
+  String get mobileStats_next => 'Next';
+
+  @override
+  String mobileStats_pageOf(String page, String pages) {
+    return 'Page $page of $pages';
+  }
+
+  @override
+  String get mobileStats_noMatch =>
+      'No games match your filters. Try adjusting them.';
+
+  @override
+  String get mobileStats_pb => 'PB';
+
+  @override
+  String mobileStats_unlockedCount(String unlocked, String total) {
+    return '$unlocked/$total unlocked';
+  }
+
+  @override
+  String get mobileStats_overallProgress => 'Overall Progress';
+
+  @override
+  String mobileStats_earnedCount(String count) {
+    return '$count earned';
+  }
+
+  @override
+  String mobileStats_remainingCount(String count) {
+    return '$count remaining';
+  }
+
+  @override
+  String get mobileStats_all => 'All';
+
+  @override
+  String get mobileStats_catGettingStarted => 'Getting Started';
+
+  @override
+  String get mobileStats_catDedication => 'Dedication';
+
+  @override
+  String get mobileStats_catMastery => 'Mastery';
+
+  @override
+  String get mobileStats_catGameSpecific => 'Game Mastery';
+
+  @override
+  String mobileStats_earnedOn(String date) {
+    return 'Earned $date';
+  }
+
+  @override
+  String mobileStats_progressBest(String value) {
+    return 'Best: $value';
+  }
+
+  @override
+  String mobileStats_progressFastest(String value) {
+    return 'Fastest: $value';
+  }
+
+  @override
+  String mobileStats_progressGames(String current, String target) {
+    return '$current/$target games';
+  }
+
+  @override
+  String mobileStats_progressCount(String current, String target) {
+    return '$current/$target';
+  }
+
+  @override
+  String mobileStats_masterName(String game) {
+    return '$game Master';
+  }
+
+  @override
+  String mobileStats_masterDesc(String game) {
+    return 'Score 5,000+ in $game';
+  }
+
+  @override
+  String get mobileStats_noEntries => 'No Entries Yet';
+
+  @override
+  String get mobileStats_noEntriesBody =>
+      'Be the first to play and claim the top spot!';
+
+  @override
+  String get mobileStats_you => 'You';
+
+  @override
+  String get mobileStats_language => 'Language';
+
+  @override
+  String get mobileStats_signOut => 'Sign out';
+
+  @override
+  String get mobileStats_prefsLoadFailed =>
+      'Could not load your email preferences.';
+
+  @override
+  String get mobileStats_prefsSaveFailed =>
+      'Could not save your choice. Try again.';
+
+  @override
+  String mobileStats_tierValue(String tier) {
+    return '$tier';
+  }
+
+  @override
+  String get mobileStats_contactTitleSubject => 'Subject';
+
+  @override
+  String get mobileStats_contactValidation => 'Enter a subject and a message.';
+
+  @override
+  String get mobileStats_ach_firstGame_name => 'First Game';
+
+  @override
+  String get mobileStats_ach_firstGame_desc => 'Play your first game';
+
+  @override
+  String get mobileStats_ach_sharpShooter_name => 'Sharp Shooter';
+
+  @override
+  String get mobileStats_ach_sharpShooter_desc =>
+      'Get 90%+ accuracy on any game';
+
+  @override
+  String get mobileStats_ach_speedDemon_name => 'Speed Demon';
+
+  @override
+  String get mobileStats_ach_speedDemon_desc =>
+      'Complete any game under 30 seconds';
+
+  @override
+  String get mobileStats_ach_explorer_name => 'Explorer';
+
+  @override
+  String get mobileStats_ach_explorer_desc => 'Try 3 different games';
+
+  @override
+  String get mobileStats_ach_highRoller_name => 'High Roller';
+
+  @override
+  String get mobileStats_ach_highRoller_desc => 'Score over 5,000 in any game';
+
+  @override
+  String get mobileStats_ach_onFire_name => 'On Fire';
+
+  @override
+  String get mobileStats_ach_onFire_desc => 'Play 10 games';
+
+  @override
+  String get mobileStats_ach_committed_name => 'Committed';
+
+  @override
+  String get mobileStats_ach_committed_desc => 'Play 25 games';
+
+  @override
+  String get mobileStats_ach_veteran_name => 'Veteran';
+
+  @override
+  String get mobileStats_ach_veteran_desc => 'Play 50 games';
+
+  @override
+  String get mobileStats_ach_legend_name => 'Legend';
+
+  @override
+  String get mobileStats_ach_legend_desc => 'Play 100 games';
+
+  @override
+  String get mobileStats_ach_brainPower_name => 'Brain Power';
+
+  @override
+  String get mobileStats_ach_brainPower_desc =>
+      'Score 5,000+ on 3 different games';
+
+  @override
+  String get mobileStats_ach_perfectionist_name => 'Perfectionist';
+
+  @override
+  String get mobileStats_ach_perfectionist_desc =>
+      'Get 100% accuracy on any game';
+
+  @override
+  String get mobileStats_ach_worldTraveler_name => 'World Traveler';
+
+  @override
+  String mobileStats_ach_worldTraveler_desc(String count) {
+    return 'Play all $count games';
+  }
+
+  @override
+  String get mobileStats_ach_elite_name => 'Elite';
+
+  @override
+  String get mobileStats_ach_elite_desc => 'Score over 7,000 in any game';
+
+  @override
+  String get mobileStats_ach_hardMode_name => 'Difficulty Unlocked';
+
+  @override
+  String get mobileStats_ach_hardMode_desc =>
+      'Complete a game on Hard difficulty';
 }
