@@ -123,7 +123,10 @@ void main() {
       expect(isLegPlayableInApp(const LegView(themeId: 'GEO_QUIZ', difficulty: 1)), isTrue);
       expect(isLegPlayableInApp(const LegView(themeId: 'MATH_CHALLENGE', difficulty: 2)), isTrue);
       expect(isLegPlayableInApp(const LegView(themeId: 'WORD_PUZZLE', difficulty: 3)), isTrue);
-      expect(isLegPlayableInApp(const LegView(themeId: 'SEQUENCE_MEMORY', difficulty: 1)), isFalse);
+      expect(isLegPlayableInApp(const LegView(themeId: 'SEQUENCE_MEMORY', difficulty: 1)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'MATH_MAZE', difficulty: 2)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'BUBBLE_POP', difficulty: 3)), isTrue);
+      expect(isLegPlayableInApp(const LegView(themeId: 'BOND_AND_BURN', difficulty: 1)), isFalse);
       expect(isLegPlayableInApp(const LegView(themeId: 'NOPE', difficulty: 1)), isFalse);
     });
   });

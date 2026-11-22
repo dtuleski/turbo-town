@@ -84,30 +84,35 @@ const List<GameEntry> kGameRegistry = [
     emoji: '🔢',
     category: GameCategory.scienceMath,
     themeId: 'SUDOKU',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'jigsaw-puzzle',
     emoji: '🧩',
     category: GameCategory.puzzlesLogic,
     themeId: 'JIGSAW_PUZZLE',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'bubble-pop',
     emoji: '🫧',
     category: GameCategory.puzzlesLogic,
     themeId: 'BUBBLE_POP',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'sequence-memory',
     emoji: '🔁',
     category: GameCategory.puzzlesLogic,
     themeId: 'SEQUENCE_MEMORY',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'code-a-bot',
     emoji: '🤖',
     category: GameCategory.puzzlesLogic,
     themeId: 'CODE_A_BOT',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'geo-quiz',
@@ -142,6 +147,7 @@ const List<GameEntry> kGameRegistry = [
     emoji: '❌',
     category: GameCategory.puzzlesLogic,
     themeId: 'TIC_TAC_TOE',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'scratch-coding',
@@ -154,12 +160,14 @@ const List<GameEntry> kGameRegistry = [
     emoji: '🧮',
     category: GameCategory.scienceMath,
     themeId: 'MATH_MAZE',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'pattern-recall',
     emoji: '🎵',
     category: GameCategory.puzzlesLogic,
     themeId: 'PATTERN_RECALL',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'space-entry',

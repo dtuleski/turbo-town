@@ -5,7 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../auth/auth_controller.dart';
 import '../api/quest_models.dart';
 import '../config/constants.dart';
+import '../game/jigsaw/logic.dart';
 import '../game/language/language_data.dart';
+import '../game/math_maze/logic.dart';
+import '../game/pattern_recall/logic.dart';
+import '../game/sequence_memory/logic.dart';
 import '../game/quiz/quiz_providers.dart';
 import '../game/quiz/quiz_questions.dart';
 import '../quest/quest_launch.dart';
@@ -18,11 +22,19 @@ import 'screens/history_screen.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/hub_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/games/bubble_pop_screens.dart';
+import 'screens/games/code_a_bot_screens.dart';
 import 'screens/games/hangman_screens.dart';
+import 'screens/games/jigsaw_screens.dart';
 import 'screens/games/language_screens.dart';
+import 'screens/games/math_maze_screens.dart';
 import 'screens/games/math_screens.dart';
+import 'screens/games/pattern_screens.dart';
 import 'screens/games/quiz_game_screen.dart';
 import 'screens/games/quiz_setup_screens.dart';
+import 'screens/games/sequence_screens.dart';
+import 'screens/games/sudoku_screens.dart';
+import 'screens/games/tic_tac_toe_screens.dart';
 import 'screens/games/word_puzzle_screens.dart';
 import 'screens/memory_game_screen.dart';
 import 'screens/memory_setup_screen.dart';
@@ -171,6 +183,130 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/civics-quiz/play',
         builder: (_, state) =>
             QuizGameScreen(args: _quizArgs('civics-quiz', state.uri.queryParameters)),
+      ),
+      GoRoute(
+        path: '/sudoku/setup',
+        builder: (_, __) => const SudokuSetupScreen(),
+      ),
+      GoRoute(
+        path: '/sudoku/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return SudokuGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/jigsaw-puzzle/setup',
+        builder: (_, __) => const JigsawSetupScreen(),
+      ),
+      GoRoute(
+        path: '/jigsaw-puzzle/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return JigsawGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            image: jigsawImageId(query['image']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/sequence-memory/setup',
+        builder: (_, __) => const SequenceSetupScreen(),
+      ),
+      GoRoute(
+        path: '/sequence-memory/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return SequenceGameScreen(
+            difficulty: seqDifficulty(query['difficulty']).id,
+            theme: seqThemeId(query['theme']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/pattern-recall/setup',
+        builder: (_, __) => const PatternSetupScreen(),
+      ),
+      GoRoute(
+        path: '/pattern-recall/play',
+        // A missing or unknown theme or difficulty goes back to setup (web).
+        redirect: (_, state) {
+          final query = state.uri.queryParameters;
+          return patternThemeById(query['theme']) == null ||
+                  patternDifficultyById(query['difficulty']) == null
+              ? '/pattern-recall/setup'
+              : null;
+        },
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return PatternGameScreen(
+            theme: query['theme']!,
+            difficulty: query['difficulty']!,
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/tic-tac-toe/setup',
+        builder: (_, __) => const TicTacToeSetupScreen(),
+      ),
+      GoRoute(
+        path: '/tic-tac-toe/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          if (query['mode'] == 'two-player') return const TicTacToeTwoPlayerScreen();
+          return TicTacToeGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/bubble-pop/setup',
+        builder: (_, __) => const BubblePopSetupScreen(),
+      ),
+      GoRoute(
+        path: '/bubble-pop/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return BubblePopGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/code-a-bot/setup',
+        builder: (_, __) => const CodeABotSetupScreen(),
+      ),
+      GoRoute(
+        path: '/code-a-bot/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return CodeABotGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/math-maze/setup',
+        builder: (_, __) => const MathMazeSetupScreen(),
+      ),
+      GoRoute(
+        path: '/math-maze/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return MathMazeGameScreen(
+            difficulty: mazeDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
       ),
       GoRoute(
         path: '/hangman/setup',

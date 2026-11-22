@@ -101,13 +101,14 @@ void main() {
   test('availability: playable, server Coming Soon, not in the app yet', () {
     final catalog = [
       item('memory-match'),
-      item('sudoku'),
+      item('circuit-builder'),
       item('hangman', status: 'COMING_SOON'),
       item('tic-tac-toe', status: 'MAINTENANCE'),
     ];
-    final tiles = buildHubTiles(catalog: catalog, tier: 'FREE');
+    // A paid tier, so the not-yet-built paid game reads as "not in the app".
+    final tiles = buildHubTiles(catalog: catalog, tier: 'PREMIUM');
     expect(tileFor(tiles, 'memory-match').availability, TileAvailability.playable);
-    expect(tileFor(tiles, 'sudoku').availability, TileAvailability.notInApp);
+    expect(tileFor(tiles, 'circuit-builder').availability, TileAvailability.notInApp);
     expect(tileFor(tiles, 'hangman').availability, TileAvailability.comingSoon);
     expect(tileFor(tiles, 'tic-tac-toe').availability, TileAvailability.comingSoon);
   });

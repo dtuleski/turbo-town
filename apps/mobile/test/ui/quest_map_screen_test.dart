@@ -50,7 +50,7 @@ QuestProgressView _progress({bool scienceOpen = false}) => QuestProgressView(
             _node('bp-05-sequence',
                 x: 40,
                 y: 60,
-                legs: const [LegView(themeId: 'SEQUENCE_MEMORY', difficulty: 1)]),
+                legs: const [LegView(themeId: 'SPACE_ENTRY', difficulty: 1)]),
             _node('bp-boss', kind: 'BOSS', status: 'LOCKED', x: 50, y: 20),
             _node('bp-bonus-sequence', kind: 'BONUS', status: 'LOCKED', x: 20, y: 10),
           ],
