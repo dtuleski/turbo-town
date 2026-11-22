@@ -1501,5 +1501,42 @@
   "mobileAuth_errUnconfirmed": "Please confirm your account first (check your email for a code).",
   "mobileAuth_errNewPasswordRequired": "A new password is required for this account. Please reset your password.",
   "mobileAuth_errGoogle": "Google sign-in failed. Please try again.",
-  "mobileAuth_errGeneric": "Something went wrong. Please try again."
+  "mobileAuth_errGeneric": "Something went wrong. Please try again.",
+  "mobileGame_limitTitle": "Daily limit reached",
+  "mobileGame_limitBody": "You have used all your plays for today. Come back tomorrow!",
+  "mobileGame_unavailableTitle": "Not available in the app yet",
+  "mobileGame_unavailableBody": "This game is not available in the app yet.",
+  "mobileGame_comingToApp": "Coming to the app soon",
+  "mobileGame_notAvailableLabel": "Not available in the app yet",
+  "mobileGame_goBack": "Go back",
+  "mobileGame_starting": "Starting game...",
+  "mobileGame_leaveTitle": "Leave this game?",
+  "mobileGame_leaveBody": "Your progress in this round will be lost.",
+  "mobileGame_leave": "Leave",
+  "mobileGame_keepPlaying": "Keep playing",
+  "mobileGame_scoreHiccup": "Your score could not be loaded this time.",
+  "mobileGame_complete": "Complete!",
+  "mobileGame_leaderboardRank": "Leaderboard rank",
+  "mobileGame_achievementsUnlocked": "Achievements unlocked",
+  "mobileGame_backToHub": "Back to hub",
+  "mobileGame_questStartFailed": "That quest node could not be started. You are back on the map.",
+  "mobileGame_ratingsCount": "{count} ratings",
+  "@mobileGame_ratingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questLocked": "Locked",
+  "mobileGame_questStarsLabel": "{count} of 3 stars",
+  "@mobileGame_questStarsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questNodePlayUnavailable": "This game is not available in the app yet.",
+  "mobileGame_worldLockedApp": "This world is not available in the app yet."
 }

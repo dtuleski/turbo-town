@@ -3425,4 +3425,84 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mobileAuth_errGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get mobileGame_limitTitle => 'Daily limit reached';
+
+  @override
+  String get mobileGame_limitBody =>
+      'You have used all your plays for today. Come back tomorrow!';
+
+  @override
+  String get mobileGame_unavailableTitle => 'Not available in the app yet';
+
+  @override
+  String get mobileGame_unavailableBody =>
+      'This game is not available in the app yet.';
+
+  @override
+  String get mobileGame_comingToApp => 'Coming to the app soon';
+
+  @override
+  String get mobileGame_notAvailableLabel => 'Not available in the app yet';
+
+  @override
+  String get mobileGame_goBack => 'Go back';
+
+  @override
+  String get mobileGame_starting => 'Starting game...';
+
+  @override
+  String get mobileGame_leaveTitle => 'Leave this game?';
+
+  @override
+  String get mobileGame_leaveBody =>
+      'Your progress in this round will be lost.';
+
+  @override
+  String get mobileGame_leave => 'Leave';
+
+  @override
+  String get mobileGame_keepPlaying => 'Keep playing';
+
+  @override
+  String get mobileGame_scoreHiccup =>
+      'Your score could not be loaded this time.';
+
+  @override
+  String get mobileGame_complete => 'Complete!';
+
+  @override
+  String get mobileGame_leaderboardRank => 'Leaderboard rank';
+
+  @override
+  String get mobileGame_achievementsUnlocked => 'Achievements unlocked';
+
+  @override
+  String get mobileGame_backToHub => 'Back to hub';
+
+  @override
+  String get mobileGame_questStartFailed =>
+      'That quest node could not be started. You are back on the map.';
+
+  @override
+  String mobileGame_ratingsCount(String count) {
+    return '$count ratings';
+  }
+
+  @override
+  String get mobileGame_questLocked => 'Locked';
+
+  @override
+  String mobileGame_questStarsLabel(String count) {
+    return '$count of 3 stars';
+  }
+
+  @override
+  String get mobileGame_questNodePlayUnavailable =>
+      'This game is not available in the app yet.';
+
+  @override
+  String get mobileGame_worldLockedApp =>
+      'This world is not available in the app yet.';
 }

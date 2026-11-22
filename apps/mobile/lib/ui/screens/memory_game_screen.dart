@@ -1,127 +1,113 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../api/quest_models.dart';
 import '../../config/constants.dart';
 import '../../game/card.dart';
-import '../../game/game_controller.dart';
+import '../../game/framework/game_session.dart';
+import '../../game/framework/game_session_frame.dart';
 import '../../game/game_logic.dart';
+import '../../game/game_registry.dart';
+import '../../game/memory_controller.dart';
+import '../../l10n/gen/app_localizations.dart';
+import '../memory_text.dart';
 import '../theme.dart';
 
-class MemoryGameScreen extends ConsumerStatefulWidget {
+/// Memory Match round, built on the shared game framework.
+class MemoryGameScreen extends ConsumerWidget {
   const MemoryGameScreen({
     super.key,
     required this.themeId,
     required this.difficulty,
+    this.questContext,
   });
 
   final String themeId;
   final Difficulty difficulty;
 
-  @override
-  ConsumerState<MemoryGameScreen> createState() => _MemoryGameScreenState();
-}
-
-class _MemoryGameScreenState extends ConsumerState<MemoryGameScreen> {
-  late final ({String themeId, Difficulty difficulty}) _key =
-      (themeId: widget.themeId, difficulty: widget.difficulty);
+  /// Set when the round was launched from a Quest Map node.
+  final QuestContext? questContext;
 
   @override
-  void initState() {
-    super.initState();
-    // Kick off the backend startGame once the first frame is laid out.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(gameControllerProvider(_key).notifier).start();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(gameControllerProvider(_key));
-    final controller = ref.read(gameControllerProvider(_key).notifier);
-
-    final themeName = kGameThemes
-        .firstWhere((t) => t.id == widget.themeId,
-            orElse: () => kGameThemes.first)
-        .name;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('$themeName · ${widget.difficulty.label}'),
-      ),
-      body: SafeArea(child: _body(context, state, controller)),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final args = (
+      themeId: themeId,
+      difficulty: difficulty,
+      questContext: questContext,
+    );
+    final board = memoryControllerProvider(args);
+    // Keep the board alive while the frame shows pause/result screens.
+    ref.listen(board, (_, __) {});
+    final entry = gameById('memory-match')!;
+    return GameSessionFrame(
+      args: memorySessionArgs(args),
+      title:
+          '${memoryThemeName(l10n, themeId)} · ${memoryDifficultyLabel(l10n, difficulty)}',
+      reviewType: entry.reviewType,
+      onPlayAgain: () => ref.read(board.notifier).restart(),
+      boardBuilder: (context, session) => _Board(args: args, session: session),
     );
   }
+}
 
-  Widget _body(
-    BuildContext context,
-    GameSessionState state,
-    GameController controller,
-  ) {
-    // Blocked by paywall or rate limit before play began.
-    if (state.status == GameStatus.notStarted && state.error != null) {
-      return _BlockedView(
-        message: state.error!,
-        isPaywall: controller.paywallHit,
-        onBack: () => context.pop(),
-      );
-    }
+class _Board extends ConsumerWidget {
+  const _Board({required this.args, required this.session});
 
-    if (state.status == GameStatus.notStarted && state.isBusy) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  final MemoryArgs args;
+  final GameSessionState session;
 
-    if (state.status == GameStatus.completed) {
-      return _ResultView(
-        state: state,
-        onPlayAgain: () {
-          controller.restart();
-          controller.start();
-        },
-        onHome: () => context.go('/'),
-      );
-    }
-
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(memoryControllerProvider(args));
+    final controller = ref.read(memoryControllerProvider(args).notifier);
     return Column(
       children: [
-        _StatsBar(state: state),
-        Expanded(child: _CardGrid(state: state, onTap: controller.flipCard)),
-        if (state.isBusy)
-          const Padding(
-            padding: EdgeInsets.all(12),
-            child: LinearProgressIndicator(),
-          ),
+        _StatsBar(session: session, board: state),
+        Expanded(child: _CardGrid(cards: state.cards, onTap: controller.flipCard)),
       ],
     );
   }
 }
 
 class _StatsBar extends StatelessWidget {
-  const _StatsBar({required this.state});
-  final GameSessionState state;
+  const _StatsBar({required this.session, required this.board});
+
+  final GameSessionState session;
+  final MemoryBoardState board;
 
   String get _time {
-    final m = (state.elapsedSeconds ~/ 60).toString().padLeft(2, '0');
-    final s = (state.elapsedSeconds % 60).toString().padLeft(2, '0');
+    final m = (session.elapsedSeconds ~/ 60).toString().padLeft(2, '0');
+    final s = (session.elapsedSeconds % 60).toString().padLeft(2, '0');
     return '$m:$s';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _Stat(label: 'Time', value: _time, icon: Icons.timer_outlined),
           _Stat(
-              label: 'Matches',
-              value: '${state.matches}/${state.totalPairs}',
-              icon: Icons.check_circle_outline),
+            label: l10n.setup_memoryMatch_time,
+            value: _time,
+            icon: Icons.timer_outlined,
+            valueKey: const Key('stat-time'),
+          ),
           _Stat(
-              label: 'Attempts',
-              value: '${state.attempts}',
-              icon: Icons.touch_app_outlined),
+            label: l10n.setup_memoryMatch_matches,
+            value: '${board.matches}/${board.totalPairs}',
+            icon: Icons.check_circle_outline,
+            valueKey: const Key('stat-matches'),
+          ),
+          _Stat(
+            label: l10n.setup_memoryMatch_attempts,
+            value: '${session.attempts}',
+            icon: Icons.touch_app_outlined,
+            valueKey: const Key('stat-attempts'),
+          ),
         ],
       ),
     );
@@ -129,10 +115,17 @@ class _StatsBar extends StatelessWidget {
 }
 
 class _Stat extends StatelessWidget {
-  const _Stat({required this.label, required this.value, required this.icon});
+  const _Stat({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.valueKey,
+  });
+
   final String label;
   final String value;
   final IconData icon;
+  final Key valueKey;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +134,7 @@ class _Stat extends StatelessWidget {
         Icon(icon, color: AppTheme.primary),
         const SizedBox(height: 2),
         Text(value,
+            key: valueKey,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         Text(label, style: Theme.of(context).textTheme.bodySmall),
       ],
@@ -149,24 +143,24 @@ class _Stat extends StatelessWidget {
 }
 
 class _CardGrid extends StatelessWidget {
-  const _CardGrid({required this.state, required this.onTap});
-  final GameSessionState state;
+  const _CardGrid({required this.cards, required this.onTap});
+
+  final List<MemoryCard> cards;
   final void Function(MemoryCard) onTap;
 
   @override
   Widget build(BuildContext context) {
-    final columns = gridColumnsFor(state.cards.length);
     return Padding(
       padding: const EdgeInsets.all(12),
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columns,
+          crossAxisCount: gridColumnsFor(cards.length),
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 0.8,
         ),
-        itemCount: state.cards.length,
-        itemBuilder: (_, i) => _CardTile(card: state.cards[i], onTap: onTap),
+        itemCount: cards.length,
+        itemBuilder: (_, i) => _CardTile(card: cards[i], onTap: onTap),
       ),
     );
   }
@@ -174,6 +168,7 @@ class _CardGrid extends StatelessWidget {
 
 class _CardTile extends StatelessWidget {
   const _CardTile({required this.card, required this.onTap});
+
   final MemoryCard card;
   final void Function(MemoryCard) onTap;
 
@@ -181,6 +176,7 @@ class _CardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final faceUp = card.isFlipped || card.isMatched;
     return GestureDetector(
+      key: Key('card-${card.id}'),
       onTap: () => onTap(card),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -209,110 +205,6 @@ class _CardTile extends StatelessWidget {
                   ),
                 )
               : const Icon(Icons.help_outline, color: Colors.white70),
-        ),
-      ),
-    );
-  }
-}
-
-class _ResultView extends StatelessWidget {
-  const _ResultView({
-    required this.state,
-    required this.onPlayAgain,
-    required this.onHome,
-  });
-
-  final GameSessionState state;
-  final VoidCallback onPlayAgain;
-  final VoidCallback onHome;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('🎉', style: TextStyle(fontSize: 64)),
-            const SizedBox(height: 8),
-            Text('Complete!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.w800)),
-            const SizedBox(height: 16),
-            _ResultRow(label: 'Score', value: '${state.score ?? 0}'),
-            _ResultRow(
-                label: 'Time',
-                value: '${state.elapsedSeconds}s'),
-            _ResultRow(label: 'Attempts', value: '${state.attempts}'),
-            if (state.leaderboardRank != null)
-              _ResultRow(
-                  label: 'Leaderboard rank', value: '#${state.leaderboardRank}'),
-            const SizedBox(height: 24),
-            FilledButton(onPressed: onPlayAgain, child: const Text('Play again')),
-            const SizedBox(height: 8),
-            TextButton(onPressed: onHome, child: const Text('Back to home')),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ResultRow extends StatelessWidget {
-  const _ResultRow({required this.label, required this.value});
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: Theme.of(context).textTheme.bodyLarge),
-          Text(value,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-        ],
-      ),
-    );
-  }
-}
-
-class _BlockedView extends StatelessWidget {
-  const _BlockedView({
-    required this.message,
-    required this.isPaywall,
-    required this.onBack,
-  });
-
-  final String message;
-  final bool isPaywall;
-  final VoidCallback onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(isPaywall ? '🔒' : '⏳', style: const TextStyle(fontSize: 56)),
-            const SizedBox(height: 12),
-            Text(isPaywall ? 'Subscription required' : 'Limit reached',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.w800)),
-            const SizedBox(height: 8),
-            Text(message, textAlign: TextAlign.center),
-            const SizedBox(height: 24),
-            FilledButton(onPressed: onBack, child: const Text('Go back')),
-          ],
         ),
       ),
     );

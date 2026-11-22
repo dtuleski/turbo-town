@@ -6231,6 +6231,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get mobileAuth_errGeneric;
+
+  /// No description provided for @mobileGame_limitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily limit reached'**
+  String get mobileGame_limitTitle;
+
+  /// No description provided for @mobileGame_limitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have used all your plays for today. Come back tomorrow!'**
+  String get mobileGame_limitBody;
+
+  /// No description provided for @mobileGame_unavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available in the app yet'**
+  String get mobileGame_unavailableTitle;
+
+  /// No description provided for @mobileGame_unavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This game is not available in the app yet.'**
+  String get mobileGame_unavailableBody;
+
+  /// No description provided for @mobileGame_comingToApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming to the app soon'**
+  String get mobileGame_comingToApp;
+
+  /// No description provided for @mobileGame_notAvailableLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available in the app yet'**
+  String get mobileGame_notAvailableLabel;
+
+  /// No description provided for @mobileGame_goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get mobileGame_goBack;
+
+  /// No description provided for @mobileGame_starting.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting game...'**
+  String get mobileGame_starting;
+
+  /// No description provided for @mobileGame_leaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this game?'**
+  String get mobileGame_leaveTitle;
+
+  /// No description provided for @mobileGame_leaveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress in this round will be lost.'**
+  String get mobileGame_leaveBody;
+
+  /// No description provided for @mobileGame_leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get mobileGame_leave;
+
+  /// No description provided for @mobileGame_keepPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing'**
+  String get mobileGame_keepPlaying;
+
+  /// No description provided for @mobileGame_scoreHiccup.
+  ///
+  /// In en, this message translates to:
+  /// **'Your score could not be loaded this time.'**
+  String get mobileGame_scoreHiccup;
+
+  /// No description provided for @mobileGame_complete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete!'**
+  String get mobileGame_complete;
+
+  /// No description provided for @mobileGame_leaderboardRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard rank'**
+  String get mobileGame_leaderboardRank;
+
+  /// No description provided for @mobileGame_achievementsUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements unlocked'**
+  String get mobileGame_achievementsUnlocked;
+
+  /// No description provided for @mobileGame_backToHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to hub'**
+  String get mobileGame_backToHub;
+
+  /// No description provided for @mobileGame_questStartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'That quest node could not be started. You are back on the map.'**
+  String get mobileGame_questStartFailed;
+
+  /// No description provided for @mobileGame_ratingsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} ratings'**
+  String mobileGame_ratingsCount(String count);
+
+  /// No description provided for @mobileGame_questLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get mobileGame_questLocked;
+
+  /// No description provided for @mobileGame_questStarsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 3 stars'**
+  String mobileGame_questStarsLabel(String count);
+
+  /// No description provided for @mobileGame_questNodePlayUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This game is not available in the app yet.'**
+  String get mobileGame_questNodePlayUnavailable;
+
+  /// No description provided for @mobileGame_worldLockedApp.
+  ///
+  /// In en, this message translates to:
+  /// **'This world is not available in the app yet.'**
+  String get mobileGame_worldLockedApp;
 }
 
 class _AppLocalizationsDelegate

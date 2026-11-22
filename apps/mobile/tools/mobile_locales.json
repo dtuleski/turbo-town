@@ -39,6 +39,31 @@
       "errNewPasswordRequired": "A new password is required for this account. Please reset your password.",
       "errGoogle": "Google sign-in failed. Please try again.",
       "errGeneric": "Something went wrong. Please try again."
+    },
+    "mobileGame": {
+      "limitTitle": "Daily limit reached",
+      "limitBody": "You have used all your plays for today. Come back tomorrow!",
+      "unavailableTitle": "Not available in the app yet",
+      "unavailableBody": "This game is not available in the app yet.",
+      "comingToApp": "Coming to the app soon",
+      "notAvailableLabel": "Not available in the app yet",
+      "goBack": "Go back",
+      "starting": "Starting game...",
+      "leaveTitle": "Leave this game?",
+      "leaveBody": "Your progress in this round will be lost.",
+      "leave": "Leave",
+      "keepPlaying": "Keep playing",
+      "scoreHiccup": "Your score could not be loaded this time.",
+      "complete": "Complete!",
+      "leaderboardRank": "Leaderboard rank",
+      "achievementsUnlocked": "Achievements unlocked",
+      "backToHub": "Back to hub",
+      "questStartFailed": "That quest node could not be started. You are back on the map.",
+      "ratingsCount": "{{count}} ratings",
+      "questLocked": "Locked",
+      "questStarsLabel": "{{count}} of 3 stars",
+      "questNodePlayUnavailable": "This game is not available in the app yet.",
+      "worldLockedApp": "This world is not available in the app yet."
     }
   },
   "es": {
@@ -81,6 +106,31 @@
       "errNewPasswordRequired": "Esta cuenta requiere una nueva contraseña. Restablece tu contraseña.",
       "errGoogle": "Error al iniciar sesión con Google. Inténtalo de nuevo.",
       "errGeneric": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "mobileGame": {
+      "limitTitle": "Límite diario alcanzado",
+      "limitBody": "Has usado todas tus partidas de hoy. ¡Vuelve mañana!",
+      "unavailableTitle": "Aún no disponible en la app",
+      "unavailableBody": "Este juego aún no está disponible en la app.",
+      "comingToApp": "Pronto en la app",
+      "notAvailableLabel": "Aún no disponible en la app",
+      "goBack": "Volver",
+      "starting": "Iniciando juego...",
+      "leaveTitle": "¿Salir de este juego?",
+      "leaveBody": "Perderás tu progreso en esta ronda.",
+      "leave": "Salir",
+      "keepPlaying": "Seguir jugando",
+      "scoreHiccup": "No se pudo cargar tu puntuación esta vez.",
+      "complete": "¡Completado!",
+      "leaderboardRank": "Posición en la clasificación",
+      "achievementsUnlocked": "Logros desbloqueados",
+      "backToHub": "Volver al centro de juegos",
+      "questStartFailed": "No se pudo iniciar ese nodo de la misión. Volviste al mapa.",
+      "ratingsCount": "{{count}} valoraciones",
+      "questLocked": "Bloqueado",
+      "questStarsLabel": "{{count}} de 3 estrellas",
+      "questNodePlayUnavailable": "Este juego aún no está disponible en la app.",
+      "worldLockedApp": "Este mundo aún no está disponible en la app."
     }
   },
   "pt": {
@@ -123,6 +173,31 @@
       "errNewPasswordRequired": "Esta conta exige uma nova senha. Redefina sua senha.",
       "errGoogle": "Falha no login com o Google. Tente novamente.",
       "errGeneric": "Algo deu errado. Tente novamente."
+    },
+    "mobileGame": {
+      "limitTitle": "Limite diário atingido",
+      "limitBody": "Você usou todas as partidas de hoje. Volte amanhã!",
+      "unavailableTitle": "Ainda não disponível no app",
+      "unavailableBody": "Este jogo ainda não está disponível no app.",
+      "comingToApp": "Em breve no app",
+      "notAvailableLabel": "Ainda não disponível no app",
+      "goBack": "Voltar",
+      "starting": "Iniciando jogo...",
+      "leaveTitle": "Sair deste jogo?",
+      "leaveBody": "Você perderá o progresso desta rodada.",
+      "leave": "Sair",
+      "keepPlaying": "Continuar jogando",
+      "scoreHiccup": "Não foi possível carregar sua pontuação desta vez.",
+      "complete": "Concluído!",
+      "leaderboardRank": "Posição no ranking",
+      "achievementsUnlocked": "Conquistas desbloqueadas",
+      "backToHub": "Voltar ao hub",
+      "questStartFailed": "Não foi possível iniciar esse nó da missão. Você voltou ao mapa.",
+      "ratingsCount": "{{count}} avaliações",
+      "questLocked": "Bloqueado",
+      "questStarsLabel": "{{count}} de 3 estrelas",
+      "questNodePlayUnavailable": "Este jogo ainda não está disponível no app.",
+      "worldLockedApp": "Este mundo ainda não está disponível no app."
     }
   }
 }

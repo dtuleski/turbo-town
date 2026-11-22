@@ -1500,6 +1500,43 @@
   "mobileAuth_errNewPasswordRequired": "Esta cuenta requiere una nueva contraseña. Restablece tu contraseña.",
   "mobileAuth_errGoogle": "Error al iniciar sesión con Google. Inténtalo de nuevo.",
   "mobileAuth_errGeneric": "Algo salió mal. Inténtalo de nuevo.",
+  "mobileGame_limitTitle": "Límite diario alcanzado",
+  "mobileGame_limitBody": "Has usado todas tus partidas de hoy. ¡Vuelve mañana!",
+  "mobileGame_unavailableTitle": "Aún no disponible en la app",
+  "mobileGame_unavailableBody": "Este juego aún no está disponible en la app.",
+  "mobileGame_comingToApp": "Pronto en la app",
+  "mobileGame_notAvailableLabel": "Aún no disponible en la app",
+  "mobileGame_goBack": "Volver",
+  "mobileGame_starting": "Iniciando juego...",
+  "mobileGame_leaveTitle": "¿Salir de este juego?",
+  "mobileGame_leaveBody": "Perderás tu progreso en esta ronda.",
+  "mobileGame_leave": "Salir",
+  "mobileGame_keepPlaying": "Seguir jugando",
+  "mobileGame_scoreHiccup": "No se pudo cargar tu puntuación esta vez.",
+  "mobileGame_complete": "¡Completado!",
+  "mobileGame_leaderboardRank": "Posición en la clasificación",
+  "mobileGame_achievementsUnlocked": "Logros desbloqueados",
+  "mobileGame_backToHub": "Volver al centro de juegos",
+  "mobileGame_questStartFailed": "No se pudo iniciar ese nodo de la misión. Volviste al mapa.",
+  "mobileGame_ratingsCount": "{count} valoraciones",
+  "@mobileGame_ratingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questLocked": "Bloqueado",
+  "mobileGame_questStarsLabel": "{count} de 3 estrellas",
+  "@mobileGame_questStarsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questNodePlayUnavailable": "Este juego aún no está disponible en la app.",
+  "mobileGame_worldLockedApp": "Este mundo aún no está disponible en la app.",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

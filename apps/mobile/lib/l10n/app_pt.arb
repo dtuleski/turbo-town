@@ -1500,6 +1500,43 @@
   "mobileAuth_errNewPasswordRequired": "Esta conta exige uma nova senha. Redefina sua senha.",
   "mobileAuth_errGoogle": "Falha no login com o Google. Tente novamente.",
   "mobileAuth_errGeneric": "Algo deu errado. Tente novamente.",
+  "mobileGame_limitTitle": "Limite diário atingido",
+  "mobileGame_limitBody": "Você usou todas as partidas de hoje. Volte amanhã!",
+  "mobileGame_unavailableTitle": "Ainda não disponível no app",
+  "mobileGame_unavailableBody": "Este jogo ainda não está disponível no app.",
+  "mobileGame_comingToApp": "Em breve no app",
+  "mobileGame_notAvailableLabel": "Ainda não disponível no app",
+  "mobileGame_goBack": "Voltar",
+  "mobileGame_starting": "Iniciando jogo...",
+  "mobileGame_leaveTitle": "Sair deste jogo?",
+  "mobileGame_leaveBody": "Você perderá o progresso desta rodada.",
+  "mobileGame_leave": "Sair",
+  "mobileGame_keepPlaying": "Continuar jogando",
+  "mobileGame_scoreHiccup": "Não foi possível carregar sua pontuação desta vez.",
+  "mobileGame_complete": "Concluído!",
+  "mobileGame_leaderboardRank": "Posição no ranking",
+  "mobileGame_achievementsUnlocked": "Conquistas desbloqueadas",
+  "mobileGame_backToHub": "Voltar ao hub",
+  "mobileGame_questStartFailed": "Não foi possível iniciar esse nó da missão. Você voltou ao mapa.",
+  "mobileGame_ratingsCount": "{count} avaliações",
+  "@mobileGame_ratingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questLocked": "Bloqueado",
+  "mobileGame_questStarsLabel": "{count} de 3 estrelas",
+  "@mobileGame_questStarsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questNodePlayUnavailable": "Este jogo ainda não está disponível no app.",
+  "mobileGame_worldLockedApp": "Este mundo ainda não está disponível no app.",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }
