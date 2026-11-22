@@ -2203,5 +2203,134 @@
   "mobileBoard_moveUp": "Move up",
   "mobileBoard_moveDown": "Move down",
   "mobileBoard_moveLeft": "Move left",
-  "mobileBoard_moveRight": "Move right"
+  "mobileBoard_moveRight": "Move right",
+  "mobilePhysics_systemsCheck": "Systems check: {done}/{total} complete",
+  "@mobilePhysics_systemsCheck": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_ready": "Ready",
+  "mobilePhysics_pending": "Pending",
+  "mobilePhysics_englishPuzzles": "Mission puzzles and target facts are in English.",
+  "mobilePhysics_answerOk": "OK",
+  "mobilePhysics_answerWrong": "Answer: {answer}",
+  "@mobilePhysics_answerWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_bondDropHint": "Drag elements here or tap to add",
+  "mobilePhysics_bondHeat": "Heat",
+  "mobilePhysics_golfHoleOf": "Hole {current}/{total}",
+  "@mobilePhysics_golfHoleOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTotal": "Total: {strokes}",
+  "@mobilePhysics_golfTotal": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfPar": "Par {par}",
+  "@mobilePhysics_golfPar": {
+    "placeholders": {
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfStrokesPar": "{strokes} strokes (Par {par})",
+  "@mobilePhysics_golfStrokesPar": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      },
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfWaterHazard": "Water Hazard! +1 stroke",
+  "mobilePhysics_golfConditions": "Conditions",
+  "mobilePhysics_golfWind": "Wind",
+  "mobilePhysics_golfDirection": "Direction",
+  "mobilePhysics_golfTemp": "Temp",
+  "mobilePhysics_golfAltitude": "Altitude",
+  "mobilePhysics_golfWindSpeed": "{value} km/h",
+  "@mobilePhysics_golfWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempValue": "{value} °C",
+  "@mobilePhysics_golfTempValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfAltitudeValue": "{value} m",
+  "@mobilePhysics_golfAltitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempFrosty": "Frosty: ball rolls farther",
+  "mobilePhysics_golfTempHot": "Hot: grass is sticky",
+  "mobilePhysics_golfTempPleasant": "Pleasant conditions",
+  "mobilePhysics_golfAltThin": "Thin air: less drag",
+  "mobilePhysics_golfAltModerate": "Moderate elevation",
+  "mobilePhysics_golfAltSea": "Sea level",
+  "mobilePhysics_golfConditionsTip": "Conditions change each hole. Adjust your aim!",
+  "mobilePhysics_golfAimHint": "Drag back from the ball to aim and shoot",
+  "mobilePhysics_golfPullHint": "Pull back farther for more power",
+  "mobilePhysics_golfPower": "Power: {percent}%",
+  "@mobilePhysics_golfPower": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfConditionsNote": "Wind, temperature and altitude change each hole and affect the ball!",
+  "mobilePhysics_golfAlbatross": "Albatross!",
+  "mobilePhysics_golfEagle": "Eagle!",
+  "mobilePhysics_golfBirdie": "Birdie!",
+  "mobilePhysics_golfParName": "Par",
+  "mobilePhysics_golfBogey": "Bogey",
+  "mobilePhysics_golfDoubleBogey": "Double Bogey",
+  "mobilePhysics_golfTripleBogey": "Triple Bogey+",
+  "mobilePhysics_golfStrokeCounter": "{current}/{max}",
+  "@mobilePhysics_golfStrokeCounter": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }

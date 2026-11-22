@@ -8121,6 +8121,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Move right'**
   String get mobileBoard_moveRight;
+
+  /// No description provided for @mobilePhysics_systemsCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Systems check: {done}/{total} complete'**
+  String mobilePhysics_systemsCheck(String done, String total);
+
+  /// No description provided for @mobilePhysics_ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get mobilePhysics_ready;
+
+  /// No description provided for @mobilePhysics_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get mobilePhysics_pending;
+
+  /// No description provided for @mobilePhysics_englishPuzzles.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission puzzles and target facts are in English.'**
+  String get mobilePhysics_englishPuzzles;
+
+  /// No description provided for @mobilePhysics_answerOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get mobilePhysics_answerOk;
+
+  /// No description provided for @mobilePhysics_answerWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer: {answer}'**
+  String mobilePhysics_answerWrong(String answer);
+
+  /// No description provided for @mobilePhysics_bondDropHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag elements here or tap to add'**
+  String get mobilePhysics_bondDropHint;
+
+  /// No description provided for @mobilePhysics_bondHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get mobilePhysics_bondHeat;
+
+  /// No description provided for @mobilePhysics_golfHoleOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Hole {current}/{total}'**
+  String mobilePhysics_golfHoleOf(String current, String total);
+
+  /// No description provided for @mobilePhysics_golfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {strokes}'**
+  String mobilePhysics_golfTotal(String strokes);
+
+  /// No description provided for @mobilePhysics_golfPar.
+  ///
+  /// In en, this message translates to:
+  /// **'Par {par}'**
+  String mobilePhysics_golfPar(String par);
+
+  /// No description provided for @mobilePhysics_golfStrokesPar.
+  ///
+  /// In en, this message translates to:
+  /// **'{strokes} strokes (Par {par})'**
+  String mobilePhysics_golfStrokesPar(String strokes, String par);
+
+  /// No description provided for @mobilePhysics_golfWaterHazard.
+  ///
+  /// In en, this message translates to:
+  /// **'Water Hazard! +1 stroke'**
+  String get mobilePhysics_golfWaterHazard;
+
+  /// No description provided for @mobilePhysics_golfConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Conditions'**
+  String get mobilePhysics_golfConditions;
+
+  /// No description provided for @mobilePhysics_golfWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get mobilePhysics_golfWind;
+
+  /// No description provided for @mobilePhysics_golfDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get mobilePhysics_golfDirection;
+
+  /// No description provided for @mobilePhysics_golfTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Temp'**
+  String get mobilePhysics_golfTemp;
+
+  /// No description provided for @mobilePhysics_golfAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude'**
+  String get mobilePhysics_golfAltitude;
+
+  /// No description provided for @mobilePhysics_golfWindSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} km/h'**
+  String mobilePhysics_golfWindSpeed(String value);
+
+  /// No description provided for @mobilePhysics_golfTempValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} °C'**
+  String mobilePhysics_golfTempValue(String value);
+
+  /// No description provided for @mobilePhysics_golfAltitudeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} m'**
+  String mobilePhysics_golfAltitudeValue(String value);
+
+  /// No description provided for @mobilePhysics_golfTempFrosty.
+  ///
+  /// In en, this message translates to:
+  /// **'Frosty: ball rolls farther'**
+  String get mobilePhysics_golfTempFrosty;
+
+  /// No description provided for @mobilePhysics_golfTempHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot: grass is sticky'**
+  String get mobilePhysics_golfTempHot;
+
+  /// No description provided for @mobilePhysics_golfTempPleasant.
+  ///
+  /// In en, this message translates to:
+  /// **'Pleasant conditions'**
+  String get mobilePhysics_golfTempPleasant;
+
+  /// No description provided for @mobilePhysics_golfAltThin.
+  ///
+  /// In en, this message translates to:
+  /// **'Thin air: less drag'**
+  String get mobilePhysics_golfAltThin;
+
+  /// No description provided for @mobilePhysics_golfAltModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate elevation'**
+  String get mobilePhysics_golfAltModerate;
+
+  /// No description provided for @mobilePhysics_golfAltSea.
+  ///
+  /// In en, this message translates to:
+  /// **'Sea level'**
+  String get mobilePhysics_golfAltSea;
+
+  /// No description provided for @mobilePhysics_golfConditionsTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Conditions change each hole. Adjust your aim!'**
+  String get mobilePhysics_golfConditionsTip;
+
+  /// No description provided for @mobilePhysics_golfAimHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag back from the ball to aim and shoot'**
+  String get mobilePhysics_golfAimHint;
+
+  /// No description provided for @mobilePhysics_golfPullHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull back farther for more power'**
+  String get mobilePhysics_golfPullHint;
+
+  /// No description provided for @mobilePhysics_golfPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Power: {percent}%'**
+  String mobilePhysics_golfPower(String percent);
+
+  /// No description provided for @mobilePhysics_golfConditionsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind, temperature and altitude change each hole and affect the ball!'**
+  String get mobilePhysics_golfConditionsNote;
+
+  /// No description provided for @mobilePhysics_golfAlbatross.
+  ///
+  /// In en, this message translates to:
+  /// **'Albatross!'**
+  String get mobilePhysics_golfAlbatross;
+
+  /// No description provided for @mobilePhysics_golfEagle.
+  ///
+  /// In en, this message translates to:
+  /// **'Eagle!'**
+  String get mobilePhysics_golfEagle;
+
+  /// No description provided for @mobilePhysics_golfBirdie.
+  ///
+  /// In en, this message translates to:
+  /// **'Birdie!'**
+  String get mobilePhysics_golfBirdie;
+
+  /// No description provided for @mobilePhysics_golfParName.
+  ///
+  /// In en, this message translates to:
+  /// **'Par'**
+  String get mobilePhysics_golfParName;
+
+  /// No description provided for @mobilePhysics_golfBogey.
+  ///
+  /// In en, this message translates to:
+  /// **'Bogey'**
+  String get mobilePhysics_golfBogey;
+
+  /// No description provided for @mobilePhysics_golfDoubleBogey.
+  ///
+  /// In en, this message translates to:
+  /// **'Double Bogey'**
+  String get mobilePhysics_golfDoubleBogey;
+
+  /// No description provided for @mobilePhysics_golfTripleBogey.
+  ///
+  /// In en, this message translates to:
+  /// **'Triple Bogey+'**
+  String get mobilePhysics_golfTripleBogey;
+
+  /// No description provided for @mobilePhysics_golfStrokeCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{max}'**
+  String mobilePhysics_golfStrokeCounter(String current, String max);
 }
 
 class _AppLocalizationsDelegate

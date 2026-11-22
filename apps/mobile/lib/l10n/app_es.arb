@@ -2202,6 +2202,135 @@
   "mobileBoard_moveDown": "Mover abajo",
   "mobileBoard_moveLeft": "Mover a la izquierda",
   "mobileBoard_moveRight": "Mover a la derecha",
+  "mobilePhysics_systemsCheck": "Revisión de sistemas: {done}/{total} completas",
+  "@mobilePhysics_systemsCheck": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_ready": "Listo",
+  "mobilePhysics_pending": "Pendiente",
+  "mobilePhysics_englishPuzzles": "Los acertijos de la misión y los datos del destino están en inglés.",
+  "mobilePhysics_answerOk": "OK",
+  "mobilePhysics_answerWrong": "Respuesta: {answer}",
+  "@mobilePhysics_answerWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_bondDropHint": "Arrastra elementos aquí o toca para añadir",
+  "mobilePhysics_bondHeat": "Calor",
+  "mobilePhysics_golfHoleOf": "Hoyo {current}/{total}",
+  "@mobilePhysics_golfHoleOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTotal": "Total: {strokes}",
+  "@mobilePhysics_golfTotal": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfPar": "Par {par}",
+  "@mobilePhysics_golfPar": {
+    "placeholders": {
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfStrokesPar": "{strokes} golpes (Par {par})",
+  "@mobilePhysics_golfStrokesPar": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      },
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfWaterHazard": "¡Obstáculo de agua! +1 golpe",
+  "mobilePhysics_golfConditions": "Condiciones",
+  "mobilePhysics_golfWind": "Viento",
+  "mobilePhysics_golfDirection": "Dirección",
+  "mobilePhysics_golfTemp": "Temp.",
+  "mobilePhysics_golfAltitude": "Altitud",
+  "mobilePhysics_golfWindSpeed": "{value} km/h",
+  "@mobilePhysics_golfWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempValue": "{value} °C",
+  "@mobilePhysics_golfTempValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfAltitudeValue": "{value} m",
+  "@mobilePhysics_golfAltitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempFrosty": "Helado: la bola rueda más lejos",
+  "mobilePhysics_golfTempHot": "Calor: el césped es pegajoso",
+  "mobilePhysics_golfTempPleasant": "Condiciones agradables",
+  "mobilePhysics_golfAltThin": "Aire fino: menos resistencia",
+  "mobilePhysics_golfAltModerate": "Elevación moderada",
+  "mobilePhysics_golfAltSea": "Nivel del mar",
+  "mobilePhysics_golfConditionsTip": "Las condiciones cambian en cada hoyo. ¡Ajusta tu puntería!",
+  "mobilePhysics_golfAimHint": "Arrastra hacia atrás desde la bola para apuntar y disparar",
+  "mobilePhysics_golfPullHint": "Tira más atrás para más potencia",
+  "mobilePhysics_golfPower": "Potencia: {percent}%",
+  "@mobilePhysics_golfPower": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfConditionsNote": "¡El viento, la temperatura y la altitud cambian en cada hoyo y afectan a la bola!",
+  "mobilePhysics_golfAlbatross": "¡Albatros!",
+  "mobilePhysics_golfEagle": "¡Águila!",
+  "mobilePhysics_golfBirdie": "¡Birdie!",
+  "mobilePhysics_golfParName": "Par",
+  "mobilePhysics_golfBogey": "Bogey",
+  "mobilePhysics_golfDoubleBogey": "Doble bogey",
+  "mobilePhysics_golfTripleBogey": "Triple bogey o más",
+  "mobilePhysics_golfStrokeCounter": "{current}/{max}",
+  "@mobilePhysics_golfStrokeCounter": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

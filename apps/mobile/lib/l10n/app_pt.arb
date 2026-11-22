@@ -2202,6 +2202,135 @@
   "mobileBoard_moveDown": "Mover para baixo",
   "mobileBoard_moveLeft": "Mover para a esquerda",
   "mobileBoard_moveRight": "Mover para a direita",
+  "mobilePhysics_systemsCheck": "Verificação de sistemas: {done}/{total} concluídas",
+  "@mobilePhysics_systemsCheck": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_ready": "Pronto",
+  "mobilePhysics_pending": "Pendente",
+  "mobilePhysics_englishPuzzles": "Os enigmas da missão e os fatos do destino estão em inglês.",
+  "mobilePhysics_answerOk": "OK",
+  "mobilePhysics_answerWrong": "Resposta: {answer}",
+  "@mobilePhysics_answerWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_bondDropHint": "Arraste elementos aqui ou toque para adicionar",
+  "mobilePhysics_bondHeat": "Calor",
+  "mobilePhysics_golfHoleOf": "Buraco {current}/{total}",
+  "@mobilePhysics_golfHoleOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTotal": "Total: {strokes}",
+  "@mobilePhysics_golfTotal": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfPar": "Par {par}",
+  "@mobilePhysics_golfPar": {
+    "placeholders": {
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfStrokesPar": "{strokes} tacadas (Par {par})",
+  "@mobilePhysics_golfStrokesPar": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      },
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfWaterHazard": "Obstáculo de água! +1 tacada",
+  "mobilePhysics_golfConditions": "Condições",
+  "mobilePhysics_golfWind": "Vento",
+  "mobilePhysics_golfDirection": "Direção",
+  "mobilePhysics_golfTemp": "Temp.",
+  "mobilePhysics_golfAltitude": "Altitude",
+  "mobilePhysics_golfWindSpeed": "{value} km/h",
+  "@mobilePhysics_golfWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempValue": "{value} °C",
+  "@mobilePhysics_golfTempValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfAltitudeValue": "{value} m",
+  "@mobilePhysics_golfAltitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempFrosty": "Gelado: a bola rola mais longe",
+  "mobilePhysics_golfTempHot": "Calor: a grama é pegajosa",
+  "mobilePhysics_golfTempPleasant": "Condições agradáveis",
+  "mobilePhysics_golfAltThin": "Ar rarefeito: menos resistência",
+  "mobilePhysics_golfAltModerate": "Elevação moderada",
+  "mobilePhysics_golfAltSea": "Nível do mar",
+  "mobilePhysics_golfConditionsTip": "As condições mudam a cada buraco. Ajuste a mira!",
+  "mobilePhysics_golfAimHint": "Arraste para trás a partir da bola para mirar e tacar",
+  "mobilePhysics_golfPullHint": "Puxe mais para trás para mais força",
+  "mobilePhysics_golfPower": "Força: {percent}%",
+  "@mobilePhysics_golfPower": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfConditionsNote": "Vento, temperatura e altitude mudam a cada buraco e afetam a bola!",
+  "mobilePhysics_golfAlbatross": "Albatroz!",
+  "mobilePhysics_golfEagle": "Águia!",
+  "mobilePhysics_golfBirdie": "Birdie!",
+  "mobilePhysics_golfParName": "Par",
+  "mobilePhysics_golfBogey": "Bogey",
+  "mobilePhysics_golfDoubleBogey": "Duplo bogey",
+  "mobilePhysics_golfTripleBogey": "Triplo bogey ou mais",
+  "mobilePhysics_golfStrokeCounter": "{current}/{max}",
+  "@mobilePhysics_golfStrokeCounter": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

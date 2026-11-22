@@ -246,15 +246,18 @@ class GameSessionController extends StateNotifier<GameSessionState> {
   }
 
   /// Submits the round. [extra] holds per-game metrics the server scores from
-  /// (see [GameApi.completeGame]). [attempts] overrides the counter.
+  /// (see [GameApi.completeGame]). [attempts] overrides the counter and
+  /// [completionSeconds] the elapsed time (a game that times only its last
+  /// attempt, like Space Entry).
   Future<GameResult?> complete({
     Map<String, dynamic>? extra,
     int? attempts,
+    int? completionSeconds,
   }) async {
     if (!state.isActive) return null;
     _timer?.cancel();
     final generation = _generation;
-    final seconds = state.elapsedSeconds;
+    final seconds = completionSeconds ?? state.elapsedSeconds;
     final tries = attempts ?? state.attempts;
     final gameId = state.gameId;
     state = state.copyWith(phase: SessionPhase.completing, attempts: tries);

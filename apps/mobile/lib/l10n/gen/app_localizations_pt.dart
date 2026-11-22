@@ -4554,4 +4554,152 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mobileBoard_moveRight => 'Mover para a direita';
+
+  @override
+  String mobilePhysics_systemsCheck(String done, String total) {
+    return 'Verificação de sistemas: $done/$total concluídas';
+  }
+
+  @override
+  String get mobilePhysics_ready => 'Pronto';
+
+  @override
+  String get mobilePhysics_pending => 'Pendente';
+
+  @override
+  String get mobilePhysics_englishPuzzles =>
+      'Os enigmas da missão e os fatos do destino estão em inglês.';
+
+  @override
+  String get mobilePhysics_answerOk => 'OK';
+
+  @override
+  String mobilePhysics_answerWrong(String answer) {
+    return 'Resposta: $answer';
+  }
+
+  @override
+  String get mobilePhysics_bondDropHint =>
+      'Arraste elementos aqui ou toque para adicionar';
+
+  @override
+  String get mobilePhysics_bondHeat => 'Calor';
+
+  @override
+  String mobilePhysics_golfHoleOf(String current, String total) {
+    return 'Buraco $current/$total';
+  }
+
+  @override
+  String mobilePhysics_golfTotal(String strokes) {
+    return 'Total: $strokes';
+  }
+
+  @override
+  String mobilePhysics_golfPar(String par) {
+    return 'Par $par';
+  }
+
+  @override
+  String mobilePhysics_golfStrokesPar(String strokes, String par) {
+    return '$strokes tacadas (Par $par)';
+  }
+
+  @override
+  String get mobilePhysics_golfWaterHazard => 'Obstáculo de água! +1 tacada';
+
+  @override
+  String get mobilePhysics_golfConditions => 'Condições';
+
+  @override
+  String get mobilePhysics_golfWind => 'Vento';
+
+  @override
+  String get mobilePhysics_golfDirection => 'Direção';
+
+  @override
+  String get mobilePhysics_golfTemp => 'Temp.';
+
+  @override
+  String get mobilePhysics_golfAltitude => 'Altitude';
+
+  @override
+  String mobilePhysics_golfWindSpeed(String value) {
+    return '$value km/h';
+  }
+
+  @override
+  String mobilePhysics_golfTempValue(String value) {
+    return '$value °C';
+  }
+
+  @override
+  String mobilePhysics_golfAltitudeValue(String value) {
+    return '$value m';
+  }
+
+  @override
+  String get mobilePhysics_golfTempFrosty => 'Gelado: a bola rola mais longe';
+
+  @override
+  String get mobilePhysics_golfTempHot => 'Calor: a grama é pegajosa';
+
+  @override
+  String get mobilePhysics_golfTempPleasant => 'Condições agradáveis';
+
+  @override
+  String get mobilePhysics_golfAltThin => 'Ar rarefeito: menos resistência';
+
+  @override
+  String get mobilePhysics_golfAltModerate => 'Elevação moderada';
+
+  @override
+  String get mobilePhysics_golfAltSea => 'Nível do mar';
+
+  @override
+  String get mobilePhysics_golfConditionsTip =>
+      'As condições mudam a cada buraco. Ajuste a mira!';
+
+  @override
+  String get mobilePhysics_golfAimHint =>
+      'Arraste para trás a partir da bola para mirar e tacar';
+
+  @override
+  String get mobilePhysics_golfPullHint =>
+      'Puxe mais para trás para mais força';
+
+  @override
+  String mobilePhysics_golfPower(String percent) {
+    return 'Força: $percent%';
+  }
+
+  @override
+  String get mobilePhysics_golfConditionsNote =>
+      'Vento, temperatura e altitude mudam a cada buraco e afetam a bola!';
+
+  @override
+  String get mobilePhysics_golfAlbatross => 'Albatroz!';
+
+  @override
+  String get mobilePhysics_golfEagle => 'Águia!';
+
+  @override
+  String get mobilePhysics_golfBirdie => 'Birdie!';
+
+  @override
+  String get mobilePhysics_golfParName => 'Par';
+
+  @override
+  String get mobilePhysics_golfBogey => 'Bogey';
+
+  @override
+  String get mobilePhysics_golfDoubleBogey => 'Duplo bogey';
+
+  @override
+  String get mobilePhysics_golfTripleBogey => 'Triplo bogey ou mais';
+
+  @override
+  String mobilePhysics_golfStrokeCounter(String current, String max) {
+    return '$current/$max';
+  }
 }
