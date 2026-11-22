@@ -1980,6 +1980,228 @@
   "mobileLanguage_errNotSupported": "El reconocimiento de voz no está disponible en este dispositivo.",
   "mobileLanguage_errUnknown": "Algo salió mal. ¡Inténtalo de nuevo!",
   "mobileLanguage_pronUnavailable": "Todavía no disponible en la app",
+  "mobileBoard_selectLevel": "Elige un nivel",
+  "mobileBoard_chooseLevel": "Elige tu nivel",
+  "mobileBoard_gameOver": "¡Fin del juego!",
+  "mobileBoard_seeScore": "Ver puntuación",
+  "mobileBoard_tryAgain": "Intentar de nuevo",
+  "mobileBoard_roundOf": "Ronda {current}/{total}",
+  "@mobileBoard_roundOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_lives": "Vidas",
+  "mobileBoard_timeLabel": "Tiempo",
+  "mobileBoard_sudokuSubtitle": "¡Llena la cuadrícula para que cada fila, columna y caja tenga del 1 al 9!",
+  "mobileBoard_sudokuGiven": "{count} números dados",
+  "@mobileBoard_sudokuGiven": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_sudokuEasyDetail": "Ideal para principiantes",
+  "mobileBoard_sudokuMediumDetail": "Un buen reto",
+  "mobileBoard_sudokuHardDetail": "Para expertos en Sudoku",
+  "mobileBoard_startPuzzle": "¡Empezar rompecabezas! 🧩",
+  "mobileBoard_generating": "Generando rompecabezas...",
+  "mobileBoard_notesOn": "Notas ACTIVADAS",
+  "mobileBoard_notesOff": "Notas DESACTIVADAS",
+  "mobileBoard_erase": "Borrar",
+  "mobileBoard_mistakes": "Errores",
+  "mobileBoard_jigsawSubtitle": "Toca una pieza y luego toca dónde va. ¡También puedes arrastrarla!",
+  "mobileBoard_jigsawGrid": "Cuadrícula de {size}×{size} ({pieces} piezas)",
+  "@mobileBoard_jigsawGrid": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "pieces": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_jigsawEasyDetail": "Ideal para principiantes",
+  "mobileBoard_jigsawMediumDetail": "Un reto divertido",
+  "mobileBoard_jigsawHardDetail": "Para maestros del rompecabezas",
+  "mobileBoard_chooseImage": "Elige una imagen",
+  "mobileBoard_imageSunset": "Playa al atardecer",
+  "mobileBoard_imageMountains": "Montañas",
+  "mobileBoard_imageForest": "Bosque encantado",
+  "mobileBoard_imageOcean": "Olas del océano",
+  "mobileBoard_imageSpace": "Espacio exterior",
+  "mobileBoard_imageGarden": "Jardín de flores",
+  "mobileBoard_imageCity": "Horizonte de la ciudad",
+  "mobileBoard_imageArctic": "Aurora ártica",
+  "mobileBoard_selectDifficultyAndImage": "Elige dificultad e imagen",
+  "mobileBoard_moves": "Movimientos",
+  "mobileBoard_pieceSelected": "Pieza seleccionada. Toca la casilla donde va",
+  "mobileBoard_showReference": "Mostrar imagen",
+  "mobileBoard_hideReference": "Ocultar imagen",
+  "mobileBoard_piecesLeft": "Piezas restantes: {count}",
+  "@mobileBoard_piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_seqSubtitle": "¡Memoriza las cartas y tócalas de nuevo en orden!",
+  "mobileBoard_chooseTheme": "Elige un tema",
+  "mobileBoard_seqDesc": "{cards} cartas · {seconds}s para verlas",
+  "@mobileBoard_seqDesc": {
+    "placeholders": {
+      "cards": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_memorize": "¡MEMORIZA! {seconds}s",
+  "@mobileBoard_memorize": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_tapCardYouSaw": "TOCA LA CARTA QUE VISTE",
+  "mobileBoard_tapCardInOrder": "TOCA LA CARTA {current} DE {total} EN ORDEN",
+  "@mobileBoard_tapCardInOrder": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_correctNextRound": "✅ ¡Correcto! Siguiente ronda...",
+  "mobileBoard_challengeSequence": "Secuencia del desafío",
+  "mobileBoard_allDrivers": "{theme} — Todos los pilotos",
+  "@mobileBoard_allDrivers": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_roundsCompleted": "Completaste {done} de {total} rondas",
+  "@mobileBoard_roundsCompleted": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_mistakesCount": "{count} errores",
+  "@mobileBoard_mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_twoPlayer": "Dos jugadores",
+  "mobileBoard_localMultiplayer": "Multijugador local",
+  "mobileBoard_twoPlayerDesc": "Juega contra un amigo en el mismo dispositivo",
+  "mobileBoard_twoPlayerDetail": "Por turnos, sin IA, ¡solo diversión!",
+  "mobileBoard_or": "o",
+  "mobileBoard_player1": "Jugador 1 (X)",
+  "mobileBoard_player2": "Jugador 2 (O)",
+  "mobileBoard_ties": "Empates",
+  "mobileBoard_playerWins": "¡Gana {player}!",
+  "@mobileBoard_playerWins": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_itsADraw": "¡Empate!",
+  "mobileBoard_turnOf": "Turno de {player}",
+  "@mobileBoard_turnOf": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_newRound": "Nueva ronda",
+  "mobileBoard_bubbleSubtitle": "¡Revienta las letras en orden para formar la palabra!",
+  "mobileBoard_bubbleEasyDesc": "Palabras cortas (3–4 letras)",
+  "mobileBoard_bubbleMediumDesc": "Palabras de 6 letras",
+  "mobileBoard_bubbleHardDesc": "Palabras largas (7–9 letras)",
+  "mobileBoard_startBubble": "¡Empezar a reventar! 🫧",
+  "mobileBoard_nextWord": "Siguiente palabra →",
+  "mobileBoard_wordsEnglishOnly": "Las palabras y pistas están solo en inglés",
+  "mobileBoard_botSubtitle": "¡Programa al robot para llegar a la celda de energía!",
+  "mobileBoard_botEasyDesc": "Cuadrícula 5×5 · Caminos simples",
+  "mobileBoard_botMediumDesc": "Cuadrícula 6×6 · Grietas para saltar",
+  "mobileBoard_botHardDesc": "Cuadrícula 7×7 · Grietas + hielo que te desliza",
+  "mobileBoard_botEasyFeatures": "Solo paredes",
+  "mobileBoard_botMediumFeatures": "Paredes + grietas",
+  "mobileBoard_botHardFeatures": "Paredes + grietas + hielo",
+  "mobileBoard_startBot": "¡Empezar a programar! 🤖",
+  "mobileBoard_levelOf": "Nivel {current}/{total}",
+  "@mobileBoard_levelOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botForward": "Avanzar",
+  "mobileBoard_botTurnLeft": "Girar a la izquierda",
+  "mobileBoard_botTurnRight": "Girar a la derecha",
+  "mobileBoard_botJump": "Saltar",
+  "mobileBoard_botRun": "Ejecutar",
+  "mobileBoard_botClear": "Borrar",
+  "mobileBoard_yourProgram": "Tu programa",
+  "mobileBoard_programEmpty": "Toca los bloques de abajo para armar tu programa",
+  "mobileBoard_blocksUsed": "{used}/{max} bloques",
+  "@mobileBoard_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botHint": "Pista",
+  "mobileBoard_botSuccess": "¡Llegaste a la celda de energía! ⚡",
+  "mobileBoard_botNextLevel": "Siguiente nivel →",
+  "mobileBoard_botFinish": "Terminar 🏆",
+  "mobileBoard_botRetry": "Intentar de nuevo",
+  "mobileBoard_botFellCrack": "¡El robot cayó en una grieta! 🕳",
+  "mobileBoard_botCrashed": "¡El robot chocó! 💥",
+  "mobileBoard_botNotReached": "El robot no llegó a la celda de energía 🤔",
+  "mobileBoard_botRunning": "Ejecutando...",
+  "mobileBoard_botHintsEnglishOnly": "Las pistas están solo en inglés",
+  "mobileBoard_mazeControls": "Desliza sobre el laberinto o usa las flechas para moverte",
+  "mobileBoard_mazeAnswerHint": "Tu respuesta",
+  "mobileBoard_moveUp": "Mover arriba",
+  "mobileBoard_moveDown": "Mover abajo",
+  "mobileBoard_moveLeft": "Mover a la izquierda",
+  "mobileBoard_moveRight": "Mover a la derecha",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

@@ -7503,6 +7503,624 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available in the app yet'**
   String get mobileLanguage_pronUnavailable;
+
+  /// No description provided for @mobileBoard_selectLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Level'**
+  String get mobileBoard_selectLevel;
+
+  /// No description provided for @mobileBoard_chooseLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Level'**
+  String get mobileBoard_chooseLevel;
+
+  /// No description provided for @mobileBoard_gameOver.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Over!'**
+  String get mobileBoard_gameOver;
+
+  /// No description provided for @mobileBoard_seeScore.
+  ///
+  /// In en, this message translates to:
+  /// **'See Score'**
+  String get mobileBoard_seeScore;
+
+  /// No description provided for @mobileBoard_tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get mobileBoard_tryAgain;
+
+  /// No description provided for @mobileBoard_roundOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {current}/{total}'**
+  String mobileBoard_roundOf(String current, String total);
+
+  /// No description provided for @mobileBoard_lives.
+  ///
+  /// In en, this message translates to:
+  /// **'Lives'**
+  String get mobileBoard_lives;
+
+  /// No description provided for @mobileBoard_timeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get mobileBoard_timeLabel;
+
+  /// No description provided for @mobileBoard_sudokuSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill the grid so every row, column and box has 1–9!'**
+  String get mobileBoard_sudokuSubtitle;
+
+  /// No description provided for @mobileBoard_sudokuGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} numbers given'**
+  String mobileBoard_sudokuGiven(String count);
+
+  /// No description provided for @mobileBoard_sudokuEasyDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Great for beginners'**
+  String get mobileBoard_sudokuEasyDetail;
+
+  /// No description provided for @mobileBoard_sudokuMediumDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'A solid challenge'**
+  String get mobileBoard_sudokuMediumDetail;
+
+  /// No description provided for @mobileBoard_sudokuHardDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'For Sudoku pros'**
+  String get mobileBoard_sudokuHardDetail;
+
+  /// No description provided for @mobileBoard_startPuzzle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Puzzle! 🧩'**
+  String get mobileBoard_startPuzzle;
+
+  /// No description provided for @mobileBoard_generating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating puzzle...'**
+  String get mobileBoard_generating;
+
+  /// No description provided for @mobileBoard_notesOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes ON'**
+  String get mobileBoard_notesOn;
+
+  /// No description provided for @mobileBoard_notesOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes OFF'**
+  String get mobileBoard_notesOff;
+
+  /// No description provided for @mobileBoard_erase.
+  ///
+  /// In en, this message translates to:
+  /// **'Erase'**
+  String get mobileBoard_erase;
+
+  /// No description provided for @mobileBoard_mistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Mistakes'**
+  String get mobileBoard_mistakes;
+
+  /// No description provided for @mobileBoard_jigsawSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a piece, then tap where it belongs. You can also drag it there!'**
+  String get mobileBoard_jigsawSubtitle;
+
+  /// No description provided for @mobileBoard_jigsawGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'{size}×{size} grid ({pieces} pieces)'**
+  String mobileBoard_jigsawGrid(String size, String pieces);
+
+  /// No description provided for @mobileBoard_jigsawEasyDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Great for beginners'**
+  String get mobileBoard_jigsawEasyDetail;
+
+  /// No description provided for @mobileBoard_jigsawMediumDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'A fun challenge'**
+  String get mobileBoard_jigsawMediumDetail;
+
+  /// No description provided for @mobileBoard_jigsawHardDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'For puzzle masters'**
+  String get mobileBoard_jigsawHardDetail;
+
+  /// No description provided for @mobileBoard_chooseImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Picture'**
+  String get mobileBoard_chooseImage;
+
+  /// No description provided for @mobileBoard_imageSunset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset Beach'**
+  String get mobileBoard_imageSunset;
+
+  /// No description provided for @mobileBoard_imageMountains.
+  ///
+  /// In en, this message translates to:
+  /// **'Mountains'**
+  String get mobileBoard_imageMountains;
+
+  /// No description provided for @mobileBoard_imageForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Enchanted Forest'**
+  String get mobileBoard_imageForest;
+
+  /// No description provided for @mobileBoard_imageOcean.
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean Waves'**
+  String get mobileBoard_imageOcean;
+
+  /// No description provided for @mobileBoard_imageSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Outer Space'**
+  String get mobileBoard_imageSpace;
+
+  /// No description provided for @mobileBoard_imageGarden.
+  ///
+  /// In en, this message translates to:
+  /// **'Flower Garden'**
+  String get mobileBoard_imageGarden;
+
+  /// No description provided for @mobileBoard_imageCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City Skyline'**
+  String get mobileBoard_imageCity;
+
+  /// No description provided for @mobileBoard_imageArctic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arctic Aurora'**
+  String get mobileBoard_imageArctic;
+
+  /// No description provided for @mobileBoard_selectDifficultyAndImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Difficulty & Image'**
+  String get mobileBoard_selectDifficultyAndImage;
+
+  /// No description provided for @mobileBoard_moves.
+  ///
+  /// In en, this message translates to:
+  /// **'Moves'**
+  String get mobileBoard_moves;
+
+  /// No description provided for @mobileBoard_pieceSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Piece selected. Tap the cell where it belongs'**
+  String get mobileBoard_pieceSelected;
+
+  /// No description provided for @mobileBoard_showReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Show picture'**
+  String get mobileBoard_showReference;
+
+  /// No description provided for @mobileBoard_hideReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide picture'**
+  String get mobileBoard_hideReference;
+
+  /// No description provided for @mobileBoard_piecesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces left: {count}'**
+  String mobileBoard_piecesLeft(String count);
+
+  /// No description provided for @mobileBoard_seqSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Memorize the cards, then tap them back in order!'**
+  String get mobileBoard_seqSubtitle;
+
+  /// No description provided for @mobileBoard_chooseTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Theme'**
+  String get mobileBoard_chooseTheme;
+
+  /// No description provided for @mobileBoard_seqDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'{cards} cards · {seconds}s view time'**
+  String mobileBoard_seqDesc(String cards, String seconds);
+
+  /// No description provided for @mobileBoard_memorize.
+  ///
+  /// In en, this message translates to:
+  /// **'MEMORIZE! {seconds}s'**
+  String mobileBoard_memorize(String seconds);
+
+  /// No description provided for @mobileBoard_tapCardYouSaw.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP THE CARD YOU SAW'**
+  String get mobileBoard_tapCardYouSaw;
+
+  /// No description provided for @mobileBoard_tapCardInOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'TAP CARD {current} OF {total} IN ORDER'**
+  String mobileBoard_tapCardInOrder(String current, String total);
+
+  /// No description provided for @mobileBoard_correctNextRound.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Correct! Next round...'**
+  String get mobileBoard_correctNextRound;
+
+  /// No description provided for @mobileBoard_challengeSequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Sequence'**
+  String get mobileBoard_challengeSequence;
+
+  /// No description provided for @mobileBoard_allDrivers.
+  ///
+  /// In en, this message translates to:
+  /// **'{theme} — All Drivers'**
+  String mobileBoard_allDrivers(String theme);
+
+  /// No description provided for @mobileBoard_roundsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'You completed {done} of {total} rounds'**
+  String mobileBoard_roundsCompleted(String done, String total);
+
+  /// No description provided for @mobileBoard_mistakesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} mistakes'**
+  String mobileBoard_mistakesCount(String count);
+
+  /// No description provided for @mobileBoard_twoPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Two Player'**
+  String get mobileBoard_twoPlayer;
+
+  /// No description provided for @mobileBoard_localMultiplayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Multiplayer'**
+  String get mobileBoard_localMultiplayer;
+
+  /// No description provided for @mobileBoard_twoPlayerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Play against a friend on the same device'**
+  String get mobileBoard_twoPlayerDesc;
+
+  /// No description provided for @mobileBoard_twoPlayerDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Take turns, no AI, just fun!'**
+  String get mobileBoard_twoPlayerDetail;
+
+  /// No description provided for @mobileBoard_or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get mobileBoard_or;
+
+  /// No description provided for @mobileBoard_player1.
+  ///
+  /// In en, this message translates to:
+  /// **'Player 1 (X)'**
+  String get mobileBoard_player1;
+
+  /// No description provided for @mobileBoard_player2.
+  ///
+  /// In en, this message translates to:
+  /// **'Player 2 (O)'**
+  String get mobileBoard_player2;
+
+  /// No description provided for @mobileBoard_ties.
+  ///
+  /// In en, this message translates to:
+  /// **'Ties'**
+  String get mobileBoard_ties;
+
+  /// No description provided for @mobileBoard_playerWins.
+  ///
+  /// In en, this message translates to:
+  /// **'{player} wins!'**
+  String mobileBoard_playerWins(String player);
+
+  /// No description provided for @mobileBoard_itsADraw.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'\'s a draw!'**
+  String get mobileBoard_itsADraw;
+
+  /// No description provided for @mobileBoard_turnOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{player}\'\'s turn'**
+  String mobileBoard_turnOf(String player);
+
+  /// No description provided for @mobileBoard_newRound.
+  ///
+  /// In en, this message translates to:
+  /// **'New Round'**
+  String get mobileBoard_newRound;
+
+  /// No description provided for @mobileBoard_bubbleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pop the letters in order to spell the word!'**
+  String get mobileBoard_bubbleSubtitle;
+
+  /// No description provided for @mobileBoard_bubbleEasyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Short words (3–4 letters)'**
+  String get mobileBoard_bubbleEasyDesc;
+
+  /// No description provided for @mobileBoard_bubbleMediumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'6-letter words'**
+  String get mobileBoard_bubbleMediumDesc;
+
+  /// No description provided for @mobileBoard_bubbleHardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Long words (7–9 letters)'**
+  String get mobileBoard_bubbleHardDesc;
+
+  /// No description provided for @mobileBoard_startBubble.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Popping! 🫧'**
+  String get mobileBoard_startBubble;
+
+  /// No description provided for @mobileBoard_nextWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Word →'**
+  String get mobileBoard_nextWord;
+
+  /// No description provided for @mobileBoard_wordsEnglishOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Words and hints are in English only'**
+  String get mobileBoard_wordsEnglishOnly;
+
+  /// No description provided for @mobileBoard_botSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Program the robot to reach the power cell!'**
+  String get mobileBoard_botSubtitle;
+
+  /// No description provided for @mobileBoard_botEasyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'5×5 grid · Simple paths'**
+  String get mobileBoard_botEasyDesc;
+
+  /// No description provided for @mobileBoard_botMediumDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'6×6 grid · Cracks to jump over'**
+  String get mobileBoard_botMediumDesc;
+
+  /// No description provided for @mobileBoard_botHardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'7×7 grid · Cracks + Ice that slides you'**
+  String get mobileBoard_botHardDesc;
+
+  /// No description provided for @mobileBoard_botEasyFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Walls only'**
+  String get mobileBoard_botEasyFeatures;
+
+  /// No description provided for @mobileBoard_botMediumFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Walls + Cracks'**
+  String get mobileBoard_botMediumFeatures;
+
+  /// No description provided for @mobileBoard_botHardFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Walls + Cracks + Ice'**
+  String get mobileBoard_botHardFeatures;
+
+  /// No description provided for @mobileBoard_startBot.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Coding! 🤖'**
+  String get mobileBoard_startBot;
+
+  /// No description provided for @mobileBoard_levelOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {current}/{total}'**
+  String mobileBoard_levelOf(String current, String total);
+
+  /// No description provided for @mobileBoard_botForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward'**
+  String get mobileBoard_botForward;
+
+  /// No description provided for @mobileBoard_botTurnLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn Left'**
+  String get mobileBoard_botTurnLeft;
+
+  /// No description provided for @mobileBoard_botTurnRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn Right'**
+  String get mobileBoard_botTurnRight;
+
+  /// No description provided for @mobileBoard_botJump.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump'**
+  String get mobileBoard_botJump;
+
+  /// No description provided for @mobileBoard_botRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Run'**
+  String get mobileBoard_botRun;
+
+  /// No description provided for @mobileBoard_botClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get mobileBoard_botClear;
+
+  /// No description provided for @mobileBoard_yourProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Your program'**
+  String get mobileBoard_yourProgram;
+
+  /// No description provided for @mobileBoard_programEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the blocks below to build your program'**
+  String get mobileBoard_programEmpty;
+
+  /// No description provided for @mobileBoard_blocksUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'{used}/{max} blocks'**
+  String mobileBoard_blocksUsed(String used, String max);
+
+  /// No description provided for @mobileBoard_botHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint'**
+  String get mobileBoard_botHint;
+
+  /// No description provided for @mobileBoard_botSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Power cell reached! ⚡'**
+  String get mobileBoard_botSuccess;
+
+  /// No description provided for @mobileBoard_botNextLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level →'**
+  String get mobileBoard_botNextLevel;
+
+  /// No description provided for @mobileBoard_botFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish 🏆'**
+  String get mobileBoard_botFinish;
+
+  /// No description provided for @mobileBoard_botRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get mobileBoard_botRetry;
+
+  /// No description provided for @mobileBoard_botFellCrack.
+  ///
+  /// In en, this message translates to:
+  /// **'Bot fell into a crack! 🕳'**
+  String get mobileBoard_botFellCrack;
+
+  /// No description provided for @mobileBoard_botCrashed.
+  ///
+  /// In en, this message translates to:
+  /// **'Bot crashed! 💥'**
+  String get mobileBoard_botCrashed;
+
+  /// No description provided for @mobileBoard_botNotReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Bot didn\'\'t reach the power cell 🤔'**
+  String get mobileBoard_botNotReached;
+
+  /// No description provided for @mobileBoard_botRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running...'**
+  String get mobileBoard_botRunning;
+
+  /// No description provided for @mobileBoard_botHintsEnglishOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Hints are in English only'**
+  String get mobileBoard_botHintsEnglishOnly;
+
+  /// No description provided for @mobileBoard_mazeControls.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe on the maze or use the arrows to move'**
+  String get mobileBoard_mazeControls;
+
+  /// No description provided for @mobileBoard_mazeAnswerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get mobileBoard_mazeAnswerHint;
+
+  /// No description provided for @mobileBoard_moveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get mobileBoard_moveUp;
+
+  /// No description provided for @mobileBoard_moveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get mobileBoard_moveDown;
+
+  /// No description provided for @mobileBoard_moveLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Move left'**
+  String get mobileBoard_moveLeft;
+
+  /// No description provided for @mobileBoard_moveRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Move right'**
+  String get mobileBoard_moveRight;
 }
 
 class _AppLocalizationsDelegate

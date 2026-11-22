@@ -1980,6 +1980,228 @@
   "mobileLanguage_errNotSupported": "O reconhecimento de voz não está disponível neste dispositivo.",
   "mobileLanguage_errUnknown": "Algo deu errado. Tente de novo!",
   "mobileLanguage_pronUnavailable": "Ainda não disponível no app",
+  "mobileBoard_selectLevel": "Escolha um nível",
+  "mobileBoard_chooseLevel": "Escolha seu nível",
+  "mobileBoard_gameOver": "Fim de jogo!",
+  "mobileBoard_seeScore": "Ver pontuação",
+  "mobileBoard_tryAgain": "Tentar de novo",
+  "mobileBoard_roundOf": "Rodada {current}/{total}",
+  "@mobileBoard_roundOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_lives": "Vidas",
+  "mobileBoard_timeLabel": "Tempo",
+  "mobileBoard_sudokuSubtitle": "Preencha a grade para que cada linha, coluna e caixa tenha de 1 a 9!",
+  "mobileBoard_sudokuGiven": "{count} números dados",
+  "@mobileBoard_sudokuGiven": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_sudokuEasyDetail": "Ótimo para iniciantes",
+  "mobileBoard_sudokuMediumDetail": "Um bom desafio",
+  "mobileBoard_sudokuHardDetail": "Para especialistas em Sudoku",
+  "mobileBoard_startPuzzle": "Começar quebra-cabeça! 🧩",
+  "mobileBoard_generating": "Gerando quebra-cabeça...",
+  "mobileBoard_notesOn": "Notas LIGADAS",
+  "mobileBoard_notesOff": "Notas DESLIGADAS",
+  "mobileBoard_erase": "Apagar",
+  "mobileBoard_mistakes": "Erros",
+  "mobileBoard_jigsawSubtitle": "Toque em uma peça e depois toque onde ela vai. Você também pode arrastá-la!",
+  "mobileBoard_jigsawGrid": "Grade {size}×{size} ({pieces} peças)",
+  "@mobileBoard_jigsawGrid": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "pieces": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_jigsawEasyDetail": "Ótimo para iniciantes",
+  "mobileBoard_jigsawMediumDetail": "Um desafio divertido",
+  "mobileBoard_jigsawHardDetail": "Para mestres do quebra-cabeça",
+  "mobileBoard_chooseImage": "Escolha uma imagem",
+  "mobileBoard_imageSunset": "Praia ao pôr do sol",
+  "mobileBoard_imageMountains": "Montanhas",
+  "mobileBoard_imageForest": "Floresta encantada",
+  "mobileBoard_imageOcean": "Ondas do oceano",
+  "mobileBoard_imageSpace": "Espaço sideral",
+  "mobileBoard_imageGarden": "Jardim de flores",
+  "mobileBoard_imageCity": "Horizonte da cidade",
+  "mobileBoard_imageArctic": "Aurora ártica",
+  "mobileBoard_selectDifficultyAndImage": "Escolha dificuldade e imagem",
+  "mobileBoard_moves": "Movimentos",
+  "mobileBoard_pieceSelected": "Peça selecionada. Toque no espaço onde ela vai",
+  "mobileBoard_showReference": "Mostrar imagem",
+  "mobileBoard_hideReference": "Ocultar imagem",
+  "mobileBoard_piecesLeft": "Peças restantes: {count}",
+  "@mobileBoard_piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_seqSubtitle": "Memorize as cartas e toque nelas de novo na ordem!",
+  "mobileBoard_chooseTheme": "Escolha um tema",
+  "mobileBoard_seqDesc": "{cards} cartas · {seconds}s para ver",
+  "@mobileBoard_seqDesc": {
+    "placeholders": {
+      "cards": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_memorize": "MEMORIZE! {seconds}s",
+  "@mobileBoard_memorize": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_tapCardYouSaw": "TOQUE NA CARTA QUE VOCÊ VIU",
+  "mobileBoard_tapCardInOrder": "TOQUE NA CARTA {current} DE {total} NA ORDEM",
+  "@mobileBoard_tapCardInOrder": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_correctNextRound": "✅ Certo! Próxima rodada...",
+  "mobileBoard_challengeSequence": "Sequência do desafio",
+  "mobileBoard_allDrivers": "{theme} — Todos os pilotos",
+  "@mobileBoard_allDrivers": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_roundsCompleted": "Você completou {done} de {total} rodadas",
+  "@mobileBoard_roundsCompleted": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_mistakesCount": "{count} erros",
+  "@mobileBoard_mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_twoPlayer": "Dois jogadores",
+  "mobileBoard_localMultiplayer": "Multijogador local",
+  "mobileBoard_twoPlayerDesc": "Jogue contra um amigo no mesmo aparelho",
+  "mobileBoard_twoPlayerDetail": "Um de cada vez, sem IA, só diversão!",
+  "mobileBoard_or": "ou",
+  "mobileBoard_player1": "Jogador 1 (X)",
+  "mobileBoard_player2": "Jogador 2 (O)",
+  "mobileBoard_ties": "Empates",
+  "mobileBoard_playerWins": "{player} venceu!",
+  "@mobileBoard_playerWins": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_itsADraw": "Empate!",
+  "mobileBoard_turnOf": "Vez de {player}",
+  "@mobileBoard_turnOf": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_newRound": "Nova rodada",
+  "mobileBoard_bubbleSubtitle": "Estoure as letras na ordem para formar a palavra!",
+  "mobileBoard_bubbleEasyDesc": "Palavras curtas (3–4 letras)",
+  "mobileBoard_bubbleMediumDesc": "Palavras de 6 letras",
+  "mobileBoard_bubbleHardDesc": "Palavras longas (7–9 letras)",
+  "mobileBoard_startBubble": "Começar a estourar! 🫧",
+  "mobileBoard_nextWord": "Próxima palavra →",
+  "mobileBoard_wordsEnglishOnly": "As palavras e dicas estão só em inglês",
+  "mobileBoard_botSubtitle": "Programe o robô para chegar à célula de energia!",
+  "mobileBoard_botEasyDesc": "Grade 5×5 · Caminhos simples",
+  "mobileBoard_botMediumDesc": "Grade 6×6 · Rachaduras para pular",
+  "mobileBoard_botHardDesc": "Grade 7×7 · Rachaduras + gelo que escorrega",
+  "mobileBoard_botEasyFeatures": "Só paredes",
+  "mobileBoard_botMediumFeatures": "Paredes + rachaduras",
+  "mobileBoard_botHardFeatures": "Paredes + rachaduras + gelo",
+  "mobileBoard_startBot": "Começar a programar! 🤖",
+  "mobileBoard_levelOf": "Nível {current}/{total}",
+  "@mobileBoard_levelOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botForward": "Avançar",
+  "mobileBoard_botTurnLeft": "Virar à esquerda",
+  "mobileBoard_botTurnRight": "Virar à direita",
+  "mobileBoard_botJump": "Pular",
+  "mobileBoard_botRun": "Executar",
+  "mobileBoard_botClear": "Limpar",
+  "mobileBoard_yourProgram": "Seu programa",
+  "mobileBoard_programEmpty": "Toque nos blocos abaixo para montar seu programa",
+  "mobileBoard_blocksUsed": "{used}/{max} blocos",
+  "@mobileBoard_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botHint": "Dica",
+  "mobileBoard_botSuccess": "Chegou à célula de energia! ⚡",
+  "mobileBoard_botNextLevel": "Próximo nível →",
+  "mobileBoard_botFinish": "Concluir 🏆",
+  "mobileBoard_botRetry": "Tentar de novo",
+  "mobileBoard_botFellCrack": "O robô caiu numa rachadura! 🕳",
+  "mobileBoard_botCrashed": "O robô bateu! 💥",
+  "mobileBoard_botNotReached": "O robô não chegou à célula de energia 🤔",
+  "mobileBoard_botRunning": "Executando...",
+  "mobileBoard_botHintsEnglishOnly": "As dicas estão só em inglês",
+  "mobileBoard_mazeControls": "Deslize no labirinto ou use as setas para andar",
+  "mobileBoard_mazeAnswerHint": "Sua resposta",
+  "mobileBoard_moveUp": "Mover para cima",
+  "mobileBoard_moveDown": "Mover para baixo",
+  "mobileBoard_moveLeft": "Mover para a esquerda",
+  "mobileBoard_moveRight": "Mover para a direita",
   "game_superHard": "Super Hard",
   "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
 }

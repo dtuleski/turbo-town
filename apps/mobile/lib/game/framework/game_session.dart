@@ -141,6 +141,9 @@ class GameSessionController extends StateNotifier<GameSessionState> {
   Timer? _timer;
   int _generation = 0;
 
+  /// Current phase, readable by helpers that are not StateNotifiers.
+  SessionPhase get phase => state.phase;
+
   /// Calls `startGame`, then begins play. Safe to call again after [reset].
   Future<void> start() async {
     if (state.phase != SessionPhase.idle) return;

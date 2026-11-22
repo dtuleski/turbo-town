@@ -4203,4 +4203,355 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mobileLanguage_pronUnavailable => 'Ainda não disponível no app';
+
+  @override
+  String get mobileBoard_selectLevel => 'Escolha um nível';
+
+  @override
+  String get mobileBoard_chooseLevel => 'Escolha seu nível';
+
+  @override
+  String get mobileBoard_gameOver => 'Fim de jogo!';
+
+  @override
+  String get mobileBoard_seeScore => 'Ver pontuação';
+
+  @override
+  String get mobileBoard_tryAgain => 'Tentar de novo';
+
+  @override
+  String mobileBoard_roundOf(String current, String total) {
+    return 'Rodada $current/$total';
+  }
+
+  @override
+  String get mobileBoard_lives => 'Vidas';
+
+  @override
+  String get mobileBoard_timeLabel => 'Tempo';
+
+  @override
+  String get mobileBoard_sudokuSubtitle =>
+      'Preencha a grade para que cada linha, coluna e caixa tenha de 1 a 9!';
+
+  @override
+  String mobileBoard_sudokuGiven(String count) {
+    return '$count números dados';
+  }
+
+  @override
+  String get mobileBoard_sudokuEasyDetail => 'Ótimo para iniciantes';
+
+  @override
+  String get mobileBoard_sudokuMediumDetail => 'Um bom desafio';
+
+  @override
+  String get mobileBoard_sudokuHardDetail => 'Para especialistas em Sudoku';
+
+  @override
+  String get mobileBoard_startPuzzle => 'Começar quebra-cabeça! 🧩';
+
+  @override
+  String get mobileBoard_generating => 'Gerando quebra-cabeça...';
+
+  @override
+  String get mobileBoard_notesOn => 'Notas LIGADAS';
+
+  @override
+  String get mobileBoard_notesOff => 'Notas DESLIGADAS';
+
+  @override
+  String get mobileBoard_erase => 'Apagar';
+
+  @override
+  String get mobileBoard_mistakes => 'Erros';
+
+  @override
+  String get mobileBoard_jigsawSubtitle =>
+      'Toque em uma peça e depois toque onde ela vai. Você também pode arrastá-la!';
+
+  @override
+  String mobileBoard_jigsawGrid(String size, String pieces) {
+    return 'Grade $size×$size ($pieces peças)';
+  }
+
+  @override
+  String get mobileBoard_jigsawEasyDetail => 'Ótimo para iniciantes';
+
+  @override
+  String get mobileBoard_jigsawMediumDetail => 'Um desafio divertido';
+
+  @override
+  String get mobileBoard_jigsawHardDetail => 'Para mestres do quebra-cabeça';
+
+  @override
+  String get mobileBoard_chooseImage => 'Escolha uma imagem';
+
+  @override
+  String get mobileBoard_imageSunset => 'Praia ao pôr do sol';
+
+  @override
+  String get mobileBoard_imageMountains => 'Montanhas';
+
+  @override
+  String get mobileBoard_imageForest => 'Floresta encantada';
+
+  @override
+  String get mobileBoard_imageOcean => 'Ondas do oceano';
+
+  @override
+  String get mobileBoard_imageSpace => 'Espaço sideral';
+
+  @override
+  String get mobileBoard_imageGarden => 'Jardim de flores';
+
+  @override
+  String get mobileBoard_imageCity => 'Horizonte da cidade';
+
+  @override
+  String get mobileBoard_imageArctic => 'Aurora ártica';
+
+  @override
+  String get mobileBoard_selectDifficultyAndImage =>
+      'Escolha dificuldade e imagem';
+
+  @override
+  String get mobileBoard_moves => 'Movimentos';
+
+  @override
+  String get mobileBoard_pieceSelected =>
+      'Peça selecionada. Toque no espaço onde ela vai';
+
+  @override
+  String get mobileBoard_showReference => 'Mostrar imagem';
+
+  @override
+  String get mobileBoard_hideReference => 'Ocultar imagem';
+
+  @override
+  String mobileBoard_piecesLeft(String count) {
+    return 'Peças restantes: $count';
+  }
+
+  @override
+  String get mobileBoard_seqSubtitle =>
+      'Memorize as cartas e toque nelas de novo na ordem!';
+
+  @override
+  String get mobileBoard_chooseTheme => 'Escolha um tema';
+
+  @override
+  String mobileBoard_seqDesc(String cards, String seconds) {
+    return '$cards cartas · ${seconds}s para ver';
+  }
+
+  @override
+  String mobileBoard_memorize(String seconds) {
+    return 'MEMORIZE! ${seconds}s';
+  }
+
+  @override
+  String get mobileBoard_tapCardYouSaw => 'TOQUE NA CARTA QUE VOCÊ VIU';
+
+  @override
+  String mobileBoard_tapCardInOrder(String current, String total) {
+    return 'TOQUE NA CARTA $current DE $total NA ORDEM';
+  }
+
+  @override
+  String get mobileBoard_correctNextRound => '✅ Certo! Próxima rodada...';
+
+  @override
+  String get mobileBoard_challengeSequence => 'Sequência do desafio';
+
+  @override
+  String mobileBoard_allDrivers(String theme) {
+    return '$theme — Todos os pilotos';
+  }
+
+  @override
+  String mobileBoard_roundsCompleted(String done, String total) {
+    return 'Você completou $done de $total rodadas';
+  }
+
+  @override
+  String mobileBoard_mistakesCount(String count) {
+    return '$count erros';
+  }
+
+  @override
+  String get mobileBoard_twoPlayer => 'Dois jogadores';
+
+  @override
+  String get mobileBoard_localMultiplayer => 'Multijogador local';
+
+  @override
+  String get mobileBoard_twoPlayerDesc =>
+      'Jogue contra um amigo no mesmo aparelho';
+
+  @override
+  String get mobileBoard_twoPlayerDetail =>
+      'Um de cada vez, sem IA, só diversão!';
+
+  @override
+  String get mobileBoard_or => 'ou';
+
+  @override
+  String get mobileBoard_player1 => 'Jogador 1 (X)';
+
+  @override
+  String get mobileBoard_player2 => 'Jogador 2 (O)';
+
+  @override
+  String get mobileBoard_ties => 'Empates';
+
+  @override
+  String mobileBoard_playerWins(String player) {
+    return '$player venceu!';
+  }
+
+  @override
+  String get mobileBoard_itsADraw => 'Empate!';
+
+  @override
+  String mobileBoard_turnOf(String player) {
+    return 'Vez de $player';
+  }
+
+  @override
+  String get mobileBoard_newRound => 'Nova rodada';
+
+  @override
+  String get mobileBoard_bubbleSubtitle =>
+      'Estoure as letras na ordem para formar a palavra!';
+
+  @override
+  String get mobileBoard_bubbleEasyDesc => 'Palavras curtas (3–4 letras)';
+
+  @override
+  String get mobileBoard_bubbleMediumDesc => 'Palavras de 6 letras';
+
+  @override
+  String get mobileBoard_bubbleHardDesc => 'Palavras longas (7–9 letras)';
+
+  @override
+  String get mobileBoard_startBubble => 'Começar a estourar! 🫧';
+
+  @override
+  String get mobileBoard_nextWord => 'Próxima palavra →';
+
+  @override
+  String get mobileBoard_wordsEnglishOnly =>
+      'As palavras e dicas estão só em inglês';
+
+  @override
+  String get mobileBoard_botSubtitle =>
+      'Programe o robô para chegar à célula de energia!';
+
+  @override
+  String get mobileBoard_botEasyDesc => 'Grade 5×5 · Caminhos simples';
+
+  @override
+  String get mobileBoard_botMediumDesc => 'Grade 6×6 · Rachaduras para pular';
+
+  @override
+  String get mobileBoard_botHardDesc =>
+      'Grade 7×7 · Rachaduras + gelo que escorrega';
+
+  @override
+  String get mobileBoard_botEasyFeatures => 'Só paredes';
+
+  @override
+  String get mobileBoard_botMediumFeatures => 'Paredes + rachaduras';
+
+  @override
+  String get mobileBoard_botHardFeatures => 'Paredes + rachaduras + gelo';
+
+  @override
+  String get mobileBoard_startBot => 'Começar a programar! 🤖';
+
+  @override
+  String mobileBoard_levelOf(String current, String total) {
+    return 'Nível $current/$total';
+  }
+
+  @override
+  String get mobileBoard_botForward => 'Avançar';
+
+  @override
+  String get mobileBoard_botTurnLeft => 'Virar à esquerda';
+
+  @override
+  String get mobileBoard_botTurnRight => 'Virar à direita';
+
+  @override
+  String get mobileBoard_botJump => 'Pular';
+
+  @override
+  String get mobileBoard_botRun => 'Executar';
+
+  @override
+  String get mobileBoard_botClear => 'Limpar';
+
+  @override
+  String get mobileBoard_yourProgram => 'Seu programa';
+
+  @override
+  String get mobileBoard_programEmpty =>
+      'Toque nos blocos abaixo para montar seu programa';
+
+  @override
+  String mobileBoard_blocksUsed(String used, String max) {
+    return '$used/$max blocos';
+  }
+
+  @override
+  String get mobileBoard_botHint => 'Dica';
+
+  @override
+  String get mobileBoard_botSuccess => 'Chegou à célula de energia! ⚡';
+
+  @override
+  String get mobileBoard_botNextLevel => 'Próximo nível →';
+
+  @override
+  String get mobileBoard_botFinish => 'Concluir 🏆';
+
+  @override
+  String get mobileBoard_botRetry => 'Tentar de novo';
+
+  @override
+  String get mobileBoard_botFellCrack => 'O robô caiu numa rachadura! 🕳';
+
+  @override
+  String get mobileBoard_botCrashed => 'O robô bateu! 💥';
+
+  @override
+  String get mobileBoard_botNotReached =>
+      'O robô não chegou à célula de energia 🤔';
+
+  @override
+  String get mobileBoard_botRunning => 'Executando...';
+
+  @override
+  String get mobileBoard_botHintsEnglishOnly => 'As dicas estão só em inglês';
+
+  @override
+  String get mobileBoard_mazeControls =>
+      'Deslize no labirinto ou use as setas para andar';
+
+  @override
+  String get mobileBoard_mazeAnswerHint => 'Sua resposta';
+
+  @override
+  String get mobileBoard_moveUp => 'Mover para cima';
+
+  @override
+  String get mobileBoard_moveDown => 'Mover para baixo';
+
+  @override
+  String get mobileBoard_moveLeft => 'Mover para a esquerda';
+
+  @override
+  String get mobileBoard_moveRight => 'Mover para a direita';
 }

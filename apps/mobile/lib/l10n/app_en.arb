@@ -1981,5 +1981,227 @@
   "mobileLanguage_errAborted": "Recording was stopped. Tap the microphone to try again!",
   "mobileLanguage_errNotSupported": "Speech recognition is not available on this device.",
   "mobileLanguage_errUnknown": "Something went wrong. Please try again!",
-  "mobileLanguage_pronUnavailable": "Not available in the app yet"
+  "mobileLanguage_pronUnavailable": "Not available in the app yet",
+  "mobileBoard_selectLevel": "Select a Level",
+  "mobileBoard_chooseLevel": "Choose Your Level",
+  "mobileBoard_gameOver": "Game Over!",
+  "mobileBoard_seeScore": "See Score",
+  "mobileBoard_tryAgain": "Try Again",
+  "mobileBoard_roundOf": "Round {current}/{total}",
+  "@mobileBoard_roundOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_lives": "Lives",
+  "mobileBoard_timeLabel": "Time",
+  "mobileBoard_sudokuSubtitle": "Fill the grid so every row, column and box has 1–9!",
+  "mobileBoard_sudokuGiven": "{count} numbers given",
+  "@mobileBoard_sudokuGiven": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_sudokuEasyDetail": "Great for beginners",
+  "mobileBoard_sudokuMediumDetail": "A solid challenge",
+  "mobileBoard_sudokuHardDetail": "For Sudoku pros",
+  "mobileBoard_startPuzzle": "Start Puzzle! 🧩",
+  "mobileBoard_generating": "Generating puzzle...",
+  "mobileBoard_notesOn": "Notes ON",
+  "mobileBoard_notesOff": "Notes OFF",
+  "mobileBoard_erase": "Erase",
+  "mobileBoard_mistakes": "Mistakes",
+  "mobileBoard_jigsawSubtitle": "Tap a piece, then tap where it belongs. You can also drag it there!",
+  "mobileBoard_jigsawGrid": "{size}×{size} grid ({pieces} pieces)",
+  "@mobileBoard_jigsawGrid": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "pieces": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_jigsawEasyDetail": "Great for beginners",
+  "mobileBoard_jigsawMediumDetail": "A fun challenge",
+  "mobileBoard_jigsawHardDetail": "For puzzle masters",
+  "mobileBoard_chooseImage": "Choose a Picture",
+  "mobileBoard_imageSunset": "Sunset Beach",
+  "mobileBoard_imageMountains": "Mountains",
+  "mobileBoard_imageForest": "Enchanted Forest",
+  "mobileBoard_imageOcean": "Ocean Waves",
+  "mobileBoard_imageSpace": "Outer Space",
+  "mobileBoard_imageGarden": "Flower Garden",
+  "mobileBoard_imageCity": "City Skyline",
+  "mobileBoard_imageArctic": "Arctic Aurora",
+  "mobileBoard_selectDifficultyAndImage": "Select Difficulty & Image",
+  "mobileBoard_moves": "Moves",
+  "mobileBoard_pieceSelected": "Piece selected. Tap the cell where it belongs",
+  "mobileBoard_showReference": "Show picture",
+  "mobileBoard_hideReference": "Hide picture",
+  "mobileBoard_piecesLeft": "Pieces left: {count}",
+  "@mobileBoard_piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_seqSubtitle": "Memorize the cards, then tap them back in order!",
+  "mobileBoard_chooseTheme": "Choose a Theme",
+  "mobileBoard_seqDesc": "{cards} cards · {seconds}s view time",
+  "@mobileBoard_seqDesc": {
+    "placeholders": {
+      "cards": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_memorize": "MEMORIZE! {seconds}s",
+  "@mobileBoard_memorize": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_tapCardYouSaw": "TAP THE CARD YOU SAW",
+  "mobileBoard_tapCardInOrder": "TAP CARD {current} OF {total} IN ORDER",
+  "@mobileBoard_tapCardInOrder": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_correctNextRound": "✅ Correct! Next round...",
+  "mobileBoard_challengeSequence": "Challenge Sequence",
+  "mobileBoard_allDrivers": "{theme} — All Drivers",
+  "@mobileBoard_allDrivers": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_roundsCompleted": "You completed {done} of {total} rounds",
+  "@mobileBoard_roundsCompleted": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_mistakesCount": "{count} mistakes",
+  "@mobileBoard_mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_twoPlayer": "Two Player",
+  "mobileBoard_localMultiplayer": "Local Multiplayer",
+  "mobileBoard_twoPlayerDesc": "Play against a friend on the same device",
+  "mobileBoard_twoPlayerDetail": "Take turns, no AI, just fun!",
+  "mobileBoard_or": "or",
+  "mobileBoard_player1": "Player 1 (X)",
+  "mobileBoard_player2": "Player 2 (O)",
+  "mobileBoard_ties": "Ties",
+  "mobileBoard_playerWins": "{player} wins!",
+  "@mobileBoard_playerWins": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_itsADraw": "It''s a draw!",
+  "mobileBoard_turnOf": "{player}''s turn",
+  "@mobileBoard_turnOf": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_newRound": "New Round",
+  "mobileBoard_bubbleSubtitle": "Pop the letters in order to spell the word!",
+  "mobileBoard_bubbleEasyDesc": "Short words (3–4 letters)",
+  "mobileBoard_bubbleMediumDesc": "6-letter words",
+  "mobileBoard_bubbleHardDesc": "Long words (7–9 letters)",
+  "mobileBoard_startBubble": "Start Popping! 🫧",
+  "mobileBoard_nextWord": "Next Word →",
+  "mobileBoard_wordsEnglishOnly": "Words and hints are in English only",
+  "mobileBoard_botSubtitle": "Program the robot to reach the power cell!",
+  "mobileBoard_botEasyDesc": "5×5 grid · Simple paths",
+  "mobileBoard_botMediumDesc": "6×6 grid · Cracks to jump over",
+  "mobileBoard_botHardDesc": "7×7 grid · Cracks + Ice that slides you",
+  "mobileBoard_botEasyFeatures": "Walls only",
+  "mobileBoard_botMediumFeatures": "Walls + Cracks",
+  "mobileBoard_botHardFeatures": "Walls + Cracks + Ice",
+  "mobileBoard_startBot": "Start Coding! 🤖",
+  "mobileBoard_levelOf": "Level {current}/{total}",
+  "@mobileBoard_levelOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botForward": "Forward",
+  "mobileBoard_botTurnLeft": "Turn Left",
+  "mobileBoard_botTurnRight": "Turn Right",
+  "mobileBoard_botJump": "Jump",
+  "mobileBoard_botRun": "Run",
+  "mobileBoard_botClear": "Clear",
+  "mobileBoard_yourProgram": "Your program",
+  "mobileBoard_programEmpty": "Tap the blocks below to build your program",
+  "mobileBoard_blocksUsed": "{used}/{max} blocks",
+  "@mobileBoard_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botHint": "Hint",
+  "mobileBoard_botSuccess": "Power cell reached! ⚡",
+  "mobileBoard_botNextLevel": "Next level →",
+  "mobileBoard_botFinish": "Finish 🏆",
+  "mobileBoard_botRetry": "Try again",
+  "mobileBoard_botFellCrack": "Bot fell into a crack! 🕳",
+  "mobileBoard_botCrashed": "Bot crashed! 💥",
+  "mobileBoard_botNotReached": "Bot didn''t reach the power cell 🤔",
+  "mobileBoard_botRunning": "Running...",
+  "mobileBoard_botHintsEnglishOnly": "Hints are in English only",
+  "mobileBoard_mazeControls": "Swipe on the maze or use the arrows to move",
+  "mobileBoard_mazeAnswerHint": "Your answer",
+  "mobileBoard_moveUp": "Move up",
+  "mobileBoard_moveDown": "Move down",
+  "mobileBoard_moveLeft": "Move left",
+  "mobileBoard_moveRight": "Move right"
 }
