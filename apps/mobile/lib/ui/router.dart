@@ -22,17 +22,20 @@ import 'screens/history_screen.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/hub_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/games/bond_and_burn_screens.dart';
 import 'screens/games/bubble_pop_screens.dart';
 import 'screens/games/code_a_bot_screens.dart';
 import 'screens/games/hangman_screens.dart';
 import 'screens/games/jigsaw_screens.dart';
 import 'screens/games/language_screens.dart';
 import 'screens/games/math_maze_screens.dart';
+import 'screens/games/mini_golf_screens.dart';
 import 'screens/games/math_screens.dart';
 import 'screens/games/pattern_screens.dart';
 import 'screens/games/quiz_game_screen.dart';
 import 'screens/games/quiz_setup_screens.dart';
 import 'screens/games/sequence_screens.dart';
+import 'screens/games/space_entry_screens.dart';
 import 'screens/games/sudoku_screens.dart';
 import 'screens/games/tic_tac_toe_screens.dart';
 import 'screens/games/word_puzzle_screens.dart';
@@ -275,6 +278,48 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) {
           final query = state.uri.queryParameters;
           return BubblePopGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/space-entry/setup',
+        builder: (_, __) => const SpaceEntrySetupScreen(),
+      ),
+      GoRoute(
+        path: '/space-entry/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return SpaceEntryGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/bond-and-burn/setup',
+        builder: (_, __) => const BondAndBurnSetupScreen(),
+      ),
+      GoRoute(
+        path: '/bond-and-burn/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return BondAndBurnGameScreen(
+            difficulty: quizDifficultyParam(query['difficulty']),
+            questContext: QuestContext.parse(query['quest']),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/mini-golf/setup',
+        builder: (_, __) => const MiniGolfSetupScreen(),
+      ),
+      GoRoute(
+        path: '/mini-golf/play',
+        builder: (_, state) {
+          final query = state.uri.queryParameters;
+          return MiniGolfGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
           );

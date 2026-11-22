@@ -102,10 +102,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
 
     expect(
-      tester.widget<Text>(find.byKey(const Key('tile-label-bond-and-burn'))).data,
+      tester.widget<Text>(find.byKey(const Key('tile-label-scratch-coding'))).data,
       'Coming to the app soon',
     );
-    await tester.tap(_tile('bond-and-burn'));
+    await tester.tap(_tile('scratch-coding'));
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('DashDen Game Hub'), findsOneWidget);
     expect(find.byKey(const Key('game-start-button')), findsNothing);

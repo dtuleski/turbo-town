@@ -88,8 +88,8 @@ void main() {
     expect(gameByThemeId('MATH_CHALLENGE')?.gameId, 'math-challenge');
     expect(gameById('bond-and-burn')?.reviewType, 'BOND_AND_BURN');
     expect(gameById('memory-match')?.setupRoute, '/memory-match/setup');
-    // Memory Match, the quiz and word games (FEAT-005) and the board and grid
-    // games (FEAT-006); later features flip the others.
+    // Memory Match, the quiz and word games (FEAT-005), the board and grid
+    // games (FEAT-006) and the physics games (FEAT-007); later features flip the others.
     expect(
       kGameRegistry.where((g) => g.implemented).map((g) => g.gameId).toSet(),
       {
@@ -109,6 +109,9 @@ void main() {
         'bubble-pop',
         'code-a-bot',
         'math-maze',
+        'space-entry',
+        'bond-and-burn',
+        'mini-golf',
       },
     );
   });

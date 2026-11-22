@@ -46,11 +46,11 @@ QuestProgressView _progress({bool scienceOpen = false}) => QuestProgressView(
                 y: 84,
                 legs: const [LegView(themeId: 'MATH_CHALLENGE', difficulty: 1)]),
             _node('bp-03-words', status: 'LOCKED', x: 80, y: 70),
-            // Sequence Memory has no screens in the app yet.
+            // Space Coder (Scratch Coding) has no screens in the app yet.
             _node('bp-05-sequence',
                 x: 40,
                 y: 60,
-                legs: const [LegView(themeId: 'SPACE_ENTRY', difficulty: 1)]),
+                legs: const [LegView(themeId: 'SCRATCH_CODING', difficulty: 1)]),
             _node('bp-boss', kind: 'BOSS', status: 'LOCKED', x: 50, y: 20),
             _node('bp-bonus-sequence', kind: 'BONUS', status: 'LOCKED', x: 20, y: 10),
           ],

@@ -174,12 +174,14 @@ const List<GameEntry> kGameRegistry = [
     emoji: '🚀',
     category: GameCategory.scienceMath,
     themeId: 'SPACE_ENTRY',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'bond-and-burn',
     emoji: '⚗',
     category: GameCategory.scienceMath,
     themeId: 'BOND_AND_BURN',
+    implemented: true,
   ),
   GameEntry(
     gameId: 'circuit-builder',
@@ -192,6 +194,7 @@ const List<GameEntry> kGameRegistry = [
     emoji: '⛳',
     category: GameCategory.other,
     themeId: 'MINI_GOLF',
+    implemented: true,
   ),
 ];
 
