@@ -3730,6 +3730,12 @@ abstract class AppLocalizations {
   /// **'Pick elements from the periodic table'**
   String get bondAndBurn_pickElements;
 
+  /// No description provided for @bondAndBurn_swipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe sideways to see all elements'**
+  String get bondAndBurn_swipeHint;
+
   /// No description provided for @bondAndBurn_labComplete.
   ///
   /// In en, this message translates to:

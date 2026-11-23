@@ -460,41 +460,76 @@ class _FunFact extends StatelessWidget {
   }
 }
 
-class _PeriodicTable extends StatelessWidget {
+class _PeriodicTable extends StatefulWidget {
   const _PeriodicTable({required this.difficulty, required this.wrongSymbol, required this.onPick});
 
   final String difficulty;
   final String? wrongSymbol;
   final void Function(String symbol) onPick;
 
+  @override
+  State<_PeriodicTable> createState() => _PeriodicTableState();
+}
+
+class _PeriodicTableState extends State<_PeriodicTable> {
   static const double _w = 34;
   static const double _h = 40;
   static const double _gap = 2;
 
+  final ScrollController _scroll = ScrollController();
+
+  String get difficulty => widget.difficulty;
+  String? get wrongSymbol => widget.wrongSymbol;
+  void Function(String symbol) get onPick => widget.onPick;
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final entries = bondPeriodicTable(difficulty);
     final config = bondConfig(difficulty);
     final maxRow = entries.fold<int>(0, (m, e) => e.row > m ? e.row : m);
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        key: const Key('bond-table'),
-        width: 18 * (_w + _gap),
-        height: maxRow * (_h + _gap),
-        child: Stack(
-          children: [
-            for (final e in entries)
-              Positioned(
-                left: (e.col - 1) * (_w + _gap),
-                top: (e.row - 1) * (_h + _gap),
-                width: _w,
-                height: _h,
-                child: _tile(e, difficulty == 'hard' || config.elements.contains(e.symbol)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Scrollbar(
+          controller: _scroll,
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            controller: _scroll,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(bottom: 10),
+            child: SizedBox(
+              key: const Key('bond-table'),
+              width: 18 * (_w + _gap),
+              height: maxRow * (_h + _gap),
+              child: Stack(
+                children: [
+                  for (final e in entries)
+                    Positioned(
+                      left: (e.col - 1) * (_w + _gap),
+                      top: (e.row - 1) * (_h + _gap),
+                      width: _w,
+                      height: _h,
+                      child: _tile(e, difficulty == 'hard' || config.elements.contains(e.symbol)),
+                    ),
+                ],
               ),
-          ],
+            ),
+          ),
         ),
-      ),
+        Text(
+          '\u2190 ${l10n.bondAndBurn_swipeHint} \u2192',
+          key: const Key('bond-table-hint'),
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 11),
+        ),
+      ],
     );
   }
 

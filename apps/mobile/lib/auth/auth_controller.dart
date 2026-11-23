@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'cognito_service.dart';
+import 'display_name.dart';
 import 'token_storage.dart';
 
 /// Singleton Cognito service.
@@ -19,6 +20,7 @@ class AuthState {
     this.status = AuthStatus.unknown,
     this.email,
     this.username,
+    this.displayName,
     this.error,
     this.errorCode,
     this.isBusy = false,
@@ -27,6 +29,9 @@ class AuthState {
   final AuthStatus status;
   final String? email;
   final String? username;
+
+  /// Friendly name for the UI. Never a raw `Google_<id>` username.
+  final String? displayName;
   final String? error;
 
   /// Cognito/app error code behind [error], used to pick a localized message.
@@ -37,6 +42,7 @@ class AuthState {
     AuthStatus? status,
     String? email,
     String? username,
+    String? displayName,
     String? error,
     String? errorCode,
     bool clearError = false,
@@ -46,6 +52,7 @@ class AuthState {
       status: status ?? this.status,
       email: email ?? this.email,
       username: username ?? this.username,
+      displayName: displayName ?? this.displayName,
       error: clearError ? null : (error ?? this.error),
       errorCode: clearError ? null : (errorCode ?? this.errorCode),
       isBusy: isBusy ?? this.isBusy,
@@ -69,6 +76,7 @@ class AuthController extends StateNotifier<AuthState> {
         status: AuthStatus.authenticated,
         email: await _storage.email,
         username: await _storage.username,
+        displayName: displayNameFromIdToken(await _storage.idToken),
       );
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);
@@ -83,6 +91,7 @@ class AuthController extends StateNotifier<AuthState> {
         status: AuthStatus.authenticated,
         email: await _storage.email,
         username: await _storage.username,
+        displayName: displayNameFromIdToken(await _storage.idToken),
         isBusy: false,
       );
     } on AuthException catch (e) {
@@ -99,6 +108,7 @@ class AuthController extends StateNotifier<AuthState> {
         status: AuthStatus.authenticated,
         email: await _storage.email,
         username: await _storage.username,
+        displayName: displayNameFromIdToken(await _storage.idToken),
         isBusy: false,
       );
     } on AuthException catch (e) {

@@ -2016,6 +2016,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Elige elementos de la tabla periódica';
 
   @override
+  String get bondAndBurn_swipeHint =>
+      'Desliza hacia los lados para ver todos los elementos';
+
+  @override
   String get bondAndBurn_labComplete => '¡Misión en el Lab Completa!';
 
   @override

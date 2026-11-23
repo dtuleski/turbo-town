@@ -830,6 +830,7 @@
     }
   },
   "bondAndBurn_pickElements": "Pick elements from the periodic table",
+  "bondAndBurn_swipeHint": "Swipe sideways to see all elements",
   "bondAndBurn_labComplete": "Lab Mission Complete!",
   "bondAndBurn_meltdown": "MELTDOWN!",
   "bondAndBurn_preparingLab": "Setting up the lab...",
