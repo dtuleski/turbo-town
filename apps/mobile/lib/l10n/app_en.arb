@@ -1,0 +1,2369 @@
+{
+  "@@locale": "en",
+  "games_memory_match_title": "Memory Match",
+  "games_memory_match_description": "Flip cards and find matching pairs!",
+  "games_memory_match_category": "Puzzles & Logic",
+  "games_math_challenge_title": "Math Challenge",
+  "games_math_challenge_description": "Solve math problems as fast as you can!",
+  "games_math_challenge_category": "Science & Math",
+  "games_word_puzzle_title": "Word Puzzle",
+  "games_word_puzzle_description": "Find hidden words in the grid!",
+  "games_word_puzzle_category": "Puzzles & Logic",
+  "games_language_learning_title": "Language Learning",
+  "games_language_learning_description": "Learn new languages with fun matching games!",
+  "games_language_learning_category": "Geography & Language",
+  "games_sudoku_title": "Sudoku",
+  "games_sudoku_description": "Fill the grid with numbers — no repeats!",
+  "games_sudoku_category": "Puzzles & Logic",
+  "games_jigsaw_puzzle_title": "Jigsaw Puzzle",
+  "games_jigsaw_puzzle_description": "Put the pieces together to complete the picture!",
+  "games_jigsaw_puzzle_category": "Puzzles & Logic",
+  "games_bubble_pop_title": "Bubble Pop",
+  "games_bubble_pop_description": "Pop bubbles by solving quick challenges!",
+  "games_bubble_pop_category": "Puzzles & Logic",
+  "games_sequence_memory_title": "Sequence Memory",
+  "games_sequence_memory_description": "Remember and repeat growing sequences!",
+  "games_sequence_memory_category": "Puzzles & Logic",
+  "games_code_a_bot_title": "Code-a-Bot",
+  "games_code_a_bot_description": "Program a robot to reach the goal!",
+  "games_code_a_bot_category": "Puzzles & Logic",
+  "games_geo_quiz_title": "Geography Quiz",
+  "games_geo_quiz_description": "Test your world geography knowledge!",
+  "games_geo_quiz_category": "Geography & Language",
+  "games_history_quiz_title": "History Quiz",
+  "games_history_quiz_description": "Journey through time with history questions!",
+  "games_history_quiz_category": "History & Civics",
+  "games_civics_quiz_title": "Civics Quiz",
+  "games_civics_quiz_description": "Learn about government and citizenship!",
+  "games_civics_quiz_category": "History & Civics",
+  "games_color_by_number_title": "Color by Number",
+  "games_color_by_number_description": "Paint beautiful pictures number by number!",
+  "games_color_by_number_category": "Puzzles & Logic",
+  "games_hangman_title": "Hangman",
+  "games_hangman_description": "Guess the word letter by letter!",
+  "games_hangman_category": "Puzzles & Logic",
+  "games_tic_tac_toe_title": "Tic Tac Toe",
+  "games_tic_tac_toe_description": "Classic X and O strategy game!",
+  "games_tic_tac_toe_category": "Puzzles & Logic",
+  "games_scratch_coding_title": "Space Coder",
+  "games_scratch_coding_description": "Program your astronaut to the airlock with the fewest blocks!",
+  "games_scratch_coding_category": "Puzzles & Logic",
+  "games_math_maze_title": "Math Maze",
+  "games_math_maze_description": "Navigate a maze by solving math equations at gates!",
+  "games_math_maze_category": "Science & Math",
+  "games_pattern_recall_title": "Pattern Recall",
+  "games_pattern_recall_description": "Memorize and repeat patterns in this Simon Says-style memory game!",
+  "games_pattern_recall_category": "Puzzles & Logic",
+  "games_space_entry_title": "Space Entry",
+  "games_space_entry_description": "Calculate your reentry angle and land safely on Earth!",
+  "games_space_entry_category": "Science & Math",
+  "games_bond_and_burn_title": "Bond & Burn",
+  "games_bond_and_burn_description": "Read the formula, find elements on the periodic table, and build compounds before the lab overheats!",
+  "games_bond_and_burn_category": "Science & Math",
+  "games_circuit_builder_title": "Circuit Builder",
+  "games_circuit_builder_description": "Wire up batteries, bulbs and switches, then watch the current flow and fix faults!",
+  "games_circuit_builder_category": "Science & Math",
+  "nav_dashboard": "Dashboard",
+  "nav_leaderboard": "Leaderboard",
+  "nav_achievements": "Achievements",
+  "nav_changePlan": "Change Plan",
+  "nav_logout": "Logout",
+  "nav_profile": "Profile",
+  "nav_contact": "Contact",
+  "hub_title": "DashDen Game Hub",
+  "hub_greeting": "Hi {name}! Pick a game to play!",
+  "@hub_greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hub_subtitle": "Educational games that make learning fun",
+  "hub_filter_all": "All",
+  "hub_filter_scienceMath": "Science & Math",
+  "hub_filter_historyCivics": "History & Civics",
+  "hub_filter_geographyLanguage": "Geography & Language",
+  "hub_filter_puzzlesLogic": "Puzzles & Logic",
+  "hub_noGames": "No games available right now. Check back soon!",
+  "hub_noGamesFilter": "No games in this category yet. Try another filter!",
+  "hub_playNow": "Play Now! →",
+  "hub_comingSoon": "Coming Soon!",
+  "hub_loadingGames": "Loading games...",
+  "hub_oops": "Oops!",
+  "hub_failedToLoad": "Failed to load games. Please try again.",
+  "hub_dashboard": "Dashboard",
+  "hub_leaderboard": "Leaderboard",
+  "hub_ages": "Ages",
+  "game_back": "← Back",
+  "game_startQuiz": "Start Quiz! 🚀",
+  "game_startGame": "Start Game!",
+  "game_selectDifficulty": "Select Difficulty",
+  "game_chooseDifficulty": "Choose Difficulty",
+  "game_chooseTopic": "Choose a Topic",
+  "game_chooseGameMode": "Choose Game Mode",
+  "game_chooseAIDifficulty": "Choose AI Difficulty",
+  "game_selectDifficultyAndMode": "Select Difficulty & Mode",
+  "game_selectTopicAndDifficulty": "Select Topic & Difficulty",
+  "game_easy": "Easy",
+  "game_medium": "Medium",
+  "game_hard": "Hard",
+  "game_superHard": "Super Hard",
+  "game_correct": "Correct!",
+  "game_wrong": "Wrong!",
+  "game_score": "Score",
+  "game_time": "Time",
+  "game_round": "Round",
+  "game_streak": "streak!",
+  "game_bonus": "bonus",
+  "game_nextRound": "Next Round →",
+  "game_seeResults": "See Results 🏆",
+  "game_calculating": "Calculating score...",
+  "game_gameComplete": "Game Complete!",
+  "game_playAgain": "Play Again",
+  "game_close": "Close",
+  "game_rateGame": "Rate this game",
+  "game_thanksFeedback": "✓ Thanks for your feedback!",
+  "game_totalScore": "Total Score",
+  "game_baseScore": "Base Score",
+  "game_difficulty": "Difficulty",
+  "game_speed": "Speed",
+  "game_accuracy": "Accuracy",
+  "game_leaderboardBtn": "🏆 Leaderboard",
+  "game_playAgainBtn": "🎮 Play Again",
+  "leaderboard_title": "Leaderboard",
+  "leaderboard_subtitle": "Compete with players worldwide and climb the ranks!",
+  "leaderboard_gameType": "Game Type",
+  "leaderboard_daily": "Daily",
+  "leaderboard_weekly": "Weekly",
+  "leaderboard_monthly": "Monthly",
+  "leaderboard_allTime": "All Time",
+  "leaderboard_yourRank": "Your Rank",
+  "leaderboard_topPlayers": "Top Players",
+  "leaderboard_rank": "Rank",
+  "leaderboard_player": "Player",
+  "leaderboard_date": "Date",
+  "leaderboard_clearAll": "Clear All Records",
+  "leaderboard_players": "players",
+  "leaderboard_keepPlaying": "Keep playing to improve your rank!",
+  "leaderboard_todaysTop": "Today''s Top Players",
+  "leaderboard_thisWeeksTop": "This Week''s Top Players",
+  "leaderboard_thisMonthsTop": "This Month''s Top Players",
+  "leaderboard_allTimeTop": "All-Time Top Players",
+  "leaderboard_ranked": "You''re ranked #{rank} out of {total} players",
+  "@leaderboard_ranked": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_showing": "Showing top {count} players",
+  "@leaderboard_showing": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_clearing": "⏳ Clearing...",
+  "leaderboard_failedToLoad": "Failed to load leaderboard. Please try again later.",
+  "profile_title": "Profile",
+  "profile_accountTier": "Account Tier",
+  "profile_memberSince": "Member Since",
+  "profile_emailPrefs": "Email Preferences",
+  "profile_dailyDigest": "Daily Digest",
+  "profile_dailyDigestDesc": "Get daily leaderboard highlights and game updates",
+  "profile_dailyDigestOn": "✓ You''ll receive daily updates at 8pm EST",
+  "auth_createAccount": "Create Account",
+  "auth_login": "Login",
+  "auth_email": "Email",
+  "auth_username": "Username",
+  "auth_password": "Password",
+  "auth_confirmPassword": "Confirm Password",
+  "auth_forgotPassword": "Forgot Password?",
+  "auth_alreadyHaveAccount": "Already have an account?",
+  "auth_dontHaveAccount": "Don''t have an account?",
+  "auth_signUpGoogle": "Sign up with Google",
+  "auth_signInGoogle": "Sign in with Google",
+  "auth_emailOptIn": "Send me daily game updates, leaderboard highlights, and new game alerts",
+  "auth_or": "or",
+  "auth_welcomeBack": "Welcome Back!",
+  "auth_rememberMe": "Remember me",
+  "auth_invalidCredentials": "Invalid email or password",
+  "auth_continueWithGoogle": "Continue with Google",
+  "auth_signUp": "Sign up",
+  "auth_confirmEmail": "Confirm Your Email",
+  "auth_confirmationCode": "Confirmation Code",
+  "auth_sentCodeTo": "We''ve sent a confirmation code to {email}. Please enter it below.",
+  "@auth_sentCodeTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "auth_confirmEmailBtn": "Confirm Email",
+  "auth_backToRegistration": "Back to registration",
+  "auth_checkEmailForCode": "Please check your email for a confirmation code.",
+  "auth_registrationFailed": "Registration failed. Please try again.",
+  "auth_confirmationFailed": "Confirmation failed. Please try again.",
+  "common_loading": "Loading...",
+  "common_error": "Error",
+  "common_retry": "Retry",
+  "common_save": "Save",
+  "common_cancel": "Cancel",
+  "common_confirm": "Confirm",
+  "common_yes": "Yes",
+  "common_no": "No",
+  "common_tryAgain": "Try Again",
+  "common_player": "Player",
+  "setup_mathChallenge_title": "Math Challenge",
+  "setup_mathChallenge_subtitle": "Test your math skills! Solve problems as fast as you can!",
+  "setup_mathChallenge_chooseLevel": "Choose Your Level",
+  "setup_mathChallenge_addSub": "Addition & Subtraction",
+  "setup_mathChallenge_allBasic": "All Basic Operations",
+  "setup_mathChallenge_advanced": "Advanced Math",
+  "setup_mathChallenge_questions": "{count} questions",
+  "@setup_mathChallenge_questions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_minutes": "{count} minutes",
+  "@setup_mathChallenge_minutes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_startChallenge": "Start Challenge! 🚀",
+  "setup_mathChallenge_selectLevel": "Select a Level",
+  "setup_mathChallenge_question": "Question",
+  "setup_mathChallenge_time": "Time",
+  "setup_mathChallenge_score": "Score",
+  "setup_mathChallenge_level": "{emoji} {name} Level",
+  "@setup_mathChallenge_level": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_yourAnswer": "Your answer...",
+  "setup_mathChallenge_submitAnswer": "Submit Answer",
+  "setup_mathChallenge_calculatingScore": "Calculating your score...",
+  "setup_mathChallenge_correct": "✅ Correct!",
+  "setup_mathChallenge_wrong": "❌ Wrong! Answer: {answer}",
+  "@setup_mathChallenge_wrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_amazing": "Amazing!",
+  "setup_mathChallenge_goodJob": "Good Job!",
+  "setup_mathChallenge_keepPracticing": "Keep Practicing!",
+  "setup_mathChallenge_playAgain": "Play Again",
+  "setup_mathChallenge_backToHub": "Back to Hub",
+  "setup_memoryMatch_letsPlay": "Let''s Play! 🎮",
+  "setup_memoryMatch_chooseTheme": "Choose Your Theme",
+  "setup_memoryMatch_chooseDifficulty": "Choose Difficulty",
+  "setup_memoryMatch_startGame": "Start Game 🚀",
+  "setup_memoryMatch_animals": "Animals",
+  "setup_memoryMatch_fruits": "Fruits",
+  "setup_memoryMatch_vehicles": "Vehicles",
+  "setup_memoryMatch_space": "Space",
+  "setup_memoryMatch_ocean": "Ocean",
+  "setup_memoryMatch_formula1": "Formula 1",
+  "setup_memoryMatch_easyDesc": "6 pairs - Perfect for beginners",
+  "setup_memoryMatch_mediumDesc": "8 pairs - A good challenge",
+  "setup_memoryMatch_hardDesc": "10 pairs - For memory masters",
+  "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!",
+  "setup_memoryMatch_readyToPlay": "Ready to Play?",
+  "setup_memoryMatch_matchPairs": "Match all the pairs as fast as you can!",
+  "setup_memoryMatch_theme": "Theme",
+  "setup_memoryMatch_difficulty": "Difficulty",
+  "setup_memoryMatch_time": "Time",
+  "setup_memoryMatch_attempts": "Attempts",
+  "setup_memoryMatch_matches": "Matches",
+  "setup_memoryMatch_pause": "Pause",
+  "setup_memoryMatch_resume": "Resume",
+  "setup_memoryMatch_restart": "Restart",
+  "setup_memoryMatch_gamePaused": "Game Paused",
+  "setup_contact_title": "Contact Us",
+  "setup_contact_subtitle": "Report a bug, request a feature, or just say hi!",
+  "setup_contact_whatsAbout": "What''s this about?",
+  "setup_contact_bugReport": "Bug Report",
+  "setup_contact_featureRequest": "Feature Request",
+  "setup_contact_question": "Question",
+  "setup_contact_other": "Other",
+  "setup_contact_from": "From:",
+  "setup_contact_subject": "Subject",
+  "setup_contact_subjectPlaceholder": "Brief description...",
+  "setup_contact_message": "Message",
+  "setup_contact_messagePlaceholder": "Tell us more...",
+  "setup_contact_send": "📨 Send Message",
+  "setup_contact_sending": "⏳ Sending...",
+  "setup_contact_errorMsg": "Something went wrong. Please try again.",
+  "setup_contact_sentTitle": "Message Sent!",
+  "setup_contact_sentMsg": "Thanks for reaching out. We''ll get back to you soon.",
+  "setup_contact_backToGames": "Back to Games",
+  "setup_civicsQuiz_title": "Civics Quiz",
+  "setup_civicsQuiz_subtitle": "Master the official US Citizenship Test",
+  "setup_civicsQuiz_based": "Based on the USCIS 100 Civics Questions",
+  "setup_civicsQuiz_allTopics": "All Topics",
+  "setup_civicsQuiz_allTopicsDesc": "All 100 questions mixed together",
+  "setup_civicsQuiz_americanGov": "American Government",
+  "setup_civicsQuiz_americanGovDesc": "Principles, system, rights & responsibilities",
+  "setup_civicsQuiz_americanHistory": "American History",
+  "setup_civicsQuiz_americanHistoryDesc": "Colonial period, 1800s, and recent history",
+  "setup_civicsQuiz_integratedCivics": "Integrated Civics",
+  "setup_civicsQuiz_integratedCivicsDesc": "Geography, symbols, and holidays",
+  "setup_civicsQuiz_questions": "questions",
+  "setup_civicsQuiz_aboutQuiz": "About This Quiz",
+  "setup_geoQuiz_title": "Geo Quiz",
+  "setup_geoQuiz_subtitle": "Test your geography knowledge!",
+  "setup_geoQuiz_info": "10 questions · Progressive hints · Fun facts",
+  "setup_geoQuiz_howItWorks": "How It Works",
+  "setup_geoQuiz_questionsLabel": "Questions",
+  "setup_geoQuiz_timerPerQ": "Timer per question",
+  "setup_geoQuiz_hintsAfter": "Hints after 5s & 10s",
+  "setup_geoQuiz_streakBonuses": "Streak bonuses",
+  "setup_geoQuiz_funFacts": "Fun facts after each answer",
+  "setup_geoModes_capitals": "Capitals",
+  "setup_geoModes_flags": "Flags",
+  "setup_geoModes_usStates": "US States",
+  "setup_geoModes_silhouettes": "Silhouettes",
+  "setup_geoModes_continents": "Continents",
+  "setup_historyQuiz_title": "History Quiz",
+  "setup_historyQuiz_subtitle": "Famous quotes, events & people through the ages",
+  "setup_historyQuiz_info": "10 questions · Images · Fun facts after each answer",
+  "setup_hangman_title": "Hangman",
+  "setup_hangman_subtitle": "Guess the word before the hangman is complete!",
+  "setup_hangman_info": "6 wrong guesses allowed · Hints provided · 5 rounds per game",
+  "setup_hangman_hintInfo": "Each word comes with a hint and category · Fewer wrong guesses = higher score",
+  "setup_hangman_upTo5": "Up to 5 letters",
+  "setup_hangman_upTo10": "6-10 letters",
+  "setup_hangman_moreThan10": "11+ letters",
+  "setup_hangman_rounds": "5 rounds",
+  "setup_ticTacToe_title": "Tic Tac Toe",
+  "setup_ticTacToe_subtitle": "Challenge the AI — Best of 5 rounds!",
+  "setup_ticTacToe_youAreX": "You are X · AI is O · Win, draw, or lose each round",
+  "setup_ticTacToe_randomAI": "Random AI",
+  "setup_ticTacToe_smartAI": "Smart AI",
+  "setup_ticTacToe_perfectAI": "Perfect AI",
+  "setup_ticTacToe_greatForBeginners": "Great for beginners",
+  "setup_ticTacToe_blocksYourWins": "Blocks your wins",
+  "setup_ticTacToe_impossibleToBeat": "Impossible to beat — try to draw!",
+  "setup_ticTacToe_scoring": "Win = 300pts · Draw = 100pts · Lose = 0pts · Faster = bonus points",
+  "scratchCoding_title": "Space Coder",
+  "scratchCoding_subtitle": "Program your astronaut to the airlock with the fewest lines of code!",
+  "scratchCoding_howToPlay": "How to Play",
+  "scratchCoding_chooseDifficulty": "Choose Difficulty",
+  "scratchCoding_startCoding": "Start Coding! 🚀",
+  "scratchCoding_howToPlayStep1": "Click command buttons from the palette to add code lines",
+  "scratchCoding_howToPlayStep2": "Build your program in the terminal-style code editor",
+  "scratchCoding_howToPlayStep3": "Press Run and watch your astronaut follow the instructions!",
+  "scratchCoding_blocks_onStart": "On Start",
+  "scratchCoding_blocks_moveForward": "Move Forward",
+  "scratchCoding_blocks_turnLeft": "Turn Left",
+  "scratchCoding_blocks_turnRight": "Turn Right",
+  "scratchCoding_blocks_repeat": "Repeat",
+  "scratchCoding_blocks_ifWallAhead": "If Asteroid Ahead",
+  "scratchCoding_blocks_ifOnGoal": "If At Airlock",
+  "scratchCoding_categories_motion": "Motion",
+  "scratchCoding_categories_control": "Control",
+  "scratchCoding_categories_events": "Events",
+  "scratchCoding_game_blocks": "Commands",
+  "scratchCoding_game_noMoreBlocks": "Maximum lines reached!",
+  "scratchCoding_game_program": "Program",
+  "scratchCoding_game_blocksUsed": "{used}/{max} lines",
+  "@scratchCoding_game_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_dragHere": "Click commands to add code here...",
+  "scratchCoding_game_clearAll": "Clear All ✕",
+  "scratchCoding_game_clickToRemove": "click to remove",
+  "scratchCoding_game_run": "Run",
+  "scratchCoding_game_level": "Level {current}/{total}",
+  "@scratchCoding_game_level": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_levelComplete": "Level Complete!",
+  "scratchCoding_game_blocksUsedCount": "Solved in {count} lines",
+  "@scratchCoding_game_blocksUsedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_optimalSolution": "Optimal solution!",
+  "scratchCoding_game_optimalHint": "Optimal: {count} lines",
+  "@scratchCoding_game_optimalHint": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_nextLevel": "Next Level →",
+  "scratchCoding_game_seeScore": "See Score 🏆",
+  "scratchCoding_game_tryAgain": "Try Again 🔄",
+  "scratchCoding_game_endGame": "End Game",
+  "scratchCoding_game_hitWall": "Astronaut hit an asteroid! ☄️",
+  "scratchCoding_game_offGrid": "Astronaut drifted into space! ☄️",
+  "scratchCoding_game_didntReachGoal": "Astronaut didn''t reach the airlock 🤔",
+  "scratchCoding_game_tryDifferent": "Try a different sequence",
+  "scratchCoding_difficulty_easy_label": "Easy",
+  "scratchCoding_difficulty_easy_desc": "6×6 grid · forward, turn",
+  "scratchCoding_difficulty_easy_features": "forward() · turn-left() · turn-right()",
+  "scratchCoding_difficulty_medium_label": "Medium",
+  "scratchCoding_difficulty_medium_desc": "8×8 grid · loops!",
+  "scratchCoding_difficulty_medium_features": "forward() · turns · loop(n)",
+  "scratchCoding_difficulty_hard_label": "Hard",
+  "scratchCoding_difficulty_hard_desc": "12×12 grid · obstacles & conditionals",
+  "scratchCoding_difficulty_hard_features": "All commands · jump() · if/while",
+  "scratchCoding_nesting_ifLabel": "If",
+  "scratchCoding_nesting_elseLabel": "Else",
+  "scratchCoding_nesting_dropHere": "Drop blocks here",
+  "scratchCoding_nesting_maxDepthReached": "Maximum nesting depth reached!",
+  "scratchCoding_nesting_perfectEfficiency": "Perfect Code ⚡",
+  "scratchCoding_nesting_goodEfficiency": "Clean Code 👍",
+  "scratchCoding_nesting_canImprove": "Can improve — use fewer lines!",
+  "scratchCoding_hints_easy1": "Move right to reach the airlock — use forward() five times",
+  "scratchCoding_hints_easy2": "Move right and down to reach the airlock",
+  "scratchCoding_hints_easy3": "Go around the wall — U-turn through the corridor",
+  "scratchCoding_hints_easy4": "Navigate around the asteroids with turns",
+  "scratchCoding_hints_easy5": "Zigzag through the S-shaped corridor",
+  "scratchCoding_hints_medium1": "See the staircase pattern? Use loop() to repeat: forward + turn + forward + turn",
+  "scratchCoding_hints_medium2": "The path zigzags — use loop() to repeat the zigzag pattern",
+  "scratchCoding_hints_medium3": "Navigate the spiral — loops help with repeating patterns",
+  "scratchCoding_hints_medium4": "Two identical L-turns — put the L-shape inside a loop(2)",
+  "scratchCoding_hints_medium5": "Tiny diagonal steps repeat 6 times — perfect for a loop()",
+  "scratchCoding_hints_hard1": "Obstacles block your path! Use jump() to hop over them",
+  "scratchCoding_hints_hard2": "Use if(obstacle-ahead) to decide when to jump",
+  "scratchCoding_hints_hard3": "Dense obstacles — combine jump() with if(obstacle-ahead) and its else branch",
+  "scratchCoding_hints_hard4": "Use if(obstacle-ahead) to navigate around obstacles",
+  "scratchCoding_hints_hard5": "Use while(not-at-goal) to keep moving until you reach the airlock",
+  "spaceCoder_commands_forward": "forward()",
+  "spaceCoder_commands_turnLeft": "turn-left()",
+  "spaceCoder_commands_turnRight": "turn-right()",
+  "spaceCoder_commands_jump": "jump()",
+  "spaceCoder_commands_loop": "loop(n)",
+  "spaceCoder_commands_if": "if(...)",
+  "spaceCoder_commands_while": "while(...)",
+  "spaceCoder_commands_varNumDecl": "var-num",
+  "spaceCoder_commands_varCharDecl": "var-char",
+  "spaceCoder_commands_varNumInc": "var-num++",
+  "spaceCoder_commands_varNumDec": "var-num--",
+  "spaceCoder_conditions_sensorMode": "Sensor",
+  "spaceCoder_conditions_comparisonMode": "Compare",
+  "spaceCoder_conditions_obstacleAhead": "obstacle-ahead()",
+  "spaceCoder_conditions_atGoal": "at-goal()",
+  "spaceCoder_conditions_notAtGoal": "not-at-goal()",
+  "spaceCoder_conditions_edgeAhead": "edge-ahead()",
+  "spaceCoder_variables_sectionTitle": "Variables",
+  "spaceCoder_variables_numLabel": "Number",
+  "spaceCoder_variables_charLabel": "Character",
+  "spaceCoder_editor_lineNumbers": "Line Numbers",
+  "spaceCoder_editor_clearAll": "Clear All",
+  "spaceCoder_editor_insertionHint": "Click a command to insert it here",
+  "spaceCoder_editor_maxLinesReached": "Maximum lines reached!",
+  "spaceCoder_errors_collision": "Astronaut hit an asteroid! ☄️",
+  "spaceCoder_errors_hitObstacle": "Astronaut hit a rock! Use jump() to hop over obstacles 🪨",
+  "spaceCoder_errors_outOfBounds": "Astronaut drifted into space! ☄️",
+  "spaceCoder_errors_noObstacleToJump": "Nothing to jump over! jump() needs an obstacle ahead 🤔",
+  "spaceCoder_errors_jumpLandingBlocked": "Can''t land there! The landing spot is blocked ☄️",
+  "spaceCoder_errors_infiniteLoop": "Program ran too long! Check your loops 🔄",
+  "spaceCoder_errors_undefinedVarNum": "Variable not defined! Add var-num = <value> before using it.",
+  "spaceCoder_errors_undefinedVarChar": "Variable not defined! Add var-char = ''<value>'' before using it.",
+  "spaceCoder_efficiency_perfectCode": "Perfect Code ⚡",
+  "spaceCoder_efficiency_cleanCode": "Clean Code 👍",
+  "gameplay_loadingQuestions": "Loading questions...",
+  "gameplay_whichCountry": "Which country is this?",
+  "gameplay_guessesLeft": "{count} guesses left",
+  "@gameplay_guessesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theWordWas": "The word was: {word}",
+  "@gameplay_theWordWas": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theAnswerWas": "The answer was: {answer}",
+  "@gameplay_theAnswerWas": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_answer": "Answer: {answer}",
+  "@gameplay_answer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_englishOnlyBadge": "🌐 Content in English only",
+  "gameplay_nameEvent": "Name the Event",
+  "gameplay_whenHappened": "When Did It Happen?",
+  "gameplay_whoSaidIt": "Who Said It?",
+  "gameplay_yourTurn": "Your turn",
+  "gameplay_aiThinking": "AI thinking...",
+  "gameplay_wins": "Wins",
+  "gameplay_draws": "Draws",
+  "gameplay_losses": "Losses",
+  "gameplay_youWin": "You Win! +300",
+  "gameplay_draw": "Draw! +100",
+  "gameplay_aiWins": "AI Wins!",
+  "patternRecall_setup_title": "Pattern Recall",
+  "patternRecall_setup_subtitle": "Memorize and repeat the pattern!",
+  "patternRecall_setup_chooseTheme": "Choose a Theme",
+  "patternRecall_setup_chooseDifficulty": "Choose Difficulty",
+  "patternRecall_setup_startGame": "Start Game! 🧩",
+  "patternRecall_setup_selectBoth": "Select theme & difficulty",
+  "patternRecall_themes_colors": "Colors",
+  "patternRecall_themes_animals": "Animals",
+  "patternRecall_themes_musicalNotes": "Musical Notes",
+  "patternRecall_themes_emojis": "Emojis",
+  "patternRecall_difficulty_easy": "Easy",
+  "patternRecall_difficulty_medium": "Medium",
+  "patternRecall_difficulty_hard": "Hard",
+  "patternRecall_difficulty_easyDesc": "Slower playback, 4 items",
+  "patternRecall_difficulty_mediumDesc": "Medium speed, 5 items",
+  "patternRecall_difficulty_hardDesc": "Fast playback, 6 items",
+  "patternRecall_game_round": "Round {current}",
+  "@patternRecall_game_round": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_time": "Time",
+  "patternRecall_game_watchPattern": "Watch the pattern!",
+  "patternRecall_game_lives": "Lives",
+  "patternRecall_game_livesLeft": "Lives: {count}",
+  "@patternRecall_game_livesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_yourTurn": "Your turn!",
+  "patternRecall_game_correct": "Correct!",
+  "patternRecall_game_nextRound": "Next round...",
+  "patternRecall_game_gameOver": "Game Over!",
+  "patternRecall_game_roundsCompleted": "Rounds completed: {count}",
+  "@patternRecall_game_roundsCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_totalTime": "Total time: {time}",
+  "@patternRecall_game_totalTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_seeScore": "See Score 🏆",
+  "patternRecall_game_tryAgain": "Try Again",
+  "patternRecall_items_red": "Red",
+  "patternRecall_items_blue": "Blue",
+  "patternRecall_items_green": "Green",
+  "patternRecall_items_yellow": "Yellow",
+  "patternRecall_items_purple": "Purple",
+  "patternRecall_items_orange": "Orange",
+  "patternRecall_items_dog": "Dog",
+  "patternRecall_items_cat": "Cat",
+  "patternRecall_items_rabbit": "Rabbit",
+  "patternRecall_items_bear": "Bear",
+  "patternRecall_items_fox": "Fox",
+  "patternRecall_items_penguin": "Penguin",
+  "patternRecall_items_quarterNote": "Quarter Note",
+  "patternRecall_items_eighthNote": "Eighth Note",
+  "patternRecall_items_trumpet": "Trumpet",
+  "patternRecall_items_guitar": "Guitar",
+  "patternRecall_items_drum": "Drum",
+  "patternRecall_items_piano": "Piano",
+  "patternRecall_items_smile": "Smile",
+  "patternRecall_items_heart": "Heart",
+  "patternRecall_items_star": "Star",
+  "patternRecall_items_fire": "Fire",
+  "patternRecall_items_rainbow": "Rainbow",
+  "patternRecall_items_rocket": "Rocket",
+  "spaceEntry_title": "Space Entry",
+  "spaceEntry_subtitle": "Land your spacecraft safely on Earth!",
+  "spaceEntry_chooseDifficulty": "Choose Your Mission Difficulty",
+  "spaceEntry_easyDesc": "3 puzzles, wider angle tolerance, stronger heat shield",
+  "spaceEntry_mediumDesc": "5 puzzles, all variables active, moderate tolerances",
+  "spaceEntry_hardDesc": "7 puzzles, tight tolerances, turbulence, limited heat shield",
+  "spaceEntry_startMission": "Launch Mission",
+  "spaceEntry_selectDifficulty": "Select a difficulty to launch",
+  "spaceEntry_missionControl": "Mission Control",
+  "spaceEntry_target": "Target",
+  "spaceEntry_entryAngle": "Entry Angle",
+  "spaceEntry_heatShield": "Heat Shield",
+  "spaceEntry_atmosphericDensity": "Atmospheric Density",
+  "spaceEntry_turbulenceWarning": "Turbulence Active",
+  "spaceEntry_initiateReentry": "Initiate Reentry",
+  "spaceEntry_landingAccuracy": "Landing Accuracy",
+  "spaceEntry_successTitle": "Successful Landing!",
+  "spaceEntry_burnUpTitle": "Orbital Burn-up",
+  "spaceEntry_burnUpMessage": "Entry angle too steep — heat shield failed",
+  "spaceEntry_skipOffTitle": "Skip-off",
+  "spaceEntry_skipOffMessage": "Entry angle too shallow — spacecraft bounced off atmosphere",
+  "spaceEntry_geographyFact": "Did You Know?",
+  "spaceEntry_seeScore": "See Score",
+  "spaceEntry_tryAgain": "Try Again",
+  "spaceEntry_heatShieldAtFailure": "Heat Shield at Failure",
+  "spaceEntry_angleUsed": "Entry Angle Used",
+  "spaceEntry_remaining": "Remaining",
+  "spaceEntry_hintEasy": "💡 Safe range: 5° - 12°",
+  "spaceEntry_hintMedium": "💡 Aim for around 7°",
+  "spaceEntry_countdown": "Time Left",
+  "spaceEntry_autoFire": "Auto-firing in {seconds}s!",
+  "@spaceEntry_autoFire": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_thrusterPower": "Thruster Power",
+  "spaceEntry_lateralCorrection": "Lateral Correction",
+  "spaceEntry_optimalThruster": "Optimal: ~{value}%",
+  "@spaceEntry_optimalThruster": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_tutorialEasy": "🎯 Adjust the entry angle to land safely. Watch the trajectory color!",
+  "spaceEntry_tutorialMedium": "🎯 Set your entry angle AND thruster power. Higher thrust = faster landing but more heat shield damage!",
+  "spaceEntry_tutorialHard": "🎯 Master all 3 controls: angle, thruster power, and lateral correction. No hints — trust your instruments!",
+  "spaceEntry_predictedLanding": "Predicted Landing",
+  "spaceEntry_accuracy": "Accuracy",
+  "spaceEntry_distanceFromTarget": "Distance",
+  "spaceEntry_solveToCalculate": "Solve to calculate:",
+  "spaceEntry_yourAnswer": "Your answer",
+  "spaceEntry_submit": "Submit",
+  "spaceEntry_correctAnswer": "Correct!",
+  "spaceEntry_wrongAnswer": "Wrong! Answer was {answer}",
+  "@spaceEntry_wrongAnswer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_allPuzzlesSolved": "All calculations complete!",
+  "spaceEntry_puzzlesRemaining": "{count} calculation(s) remaining",
+  "@spaceEntry_puzzlesRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_controlPuzzles": "Flight Controls",
+  "spaceEntry_missionChecks": "Mission Checks",
+  "spaceEntry_puzzleScore": "Puzzles Correct",
+  "mathMaze_title": "Math Maze",
+  "mathMaze_subtitle": "Solve equations to find your way!",
+  "mathMaze_chooseLevel": "Choose Your Level",
+  "mathMaze_easyDesc": "Addition & subtraction, small maze, 3 min",
+  "mathMaze_mediumDesc": "All 4 operations, medium maze, 4 min",
+  "mathMaze_hardDesc": "Advanced math & algebra, large maze, 5 min",
+  "mathMaze_startGame": "Enter the Maze!",
+  "mathMaze_selectLevel": "Select a Level",
+  "mathMaze_gateHint": "You don''t have to open every gate. Pick a route to the exit; a wrong answer blocks that gate, so choose another way.",
+  "mathMaze_gatePrompt": "Solve to open the gate:",
+  "mathMaze_submitAnswer": "Submit",
+  "mathMaze_correct": "Correct! Gate opened!",
+  "mathMaze_incorrect": "Wrong! The answer was {answer}. Path blocked!",
+  "@mathMaze_incorrect": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mathMaze_timeUp": "Time''s Up!",
+  "mathMaze_mazeComplete": "Maze Complete!",
+  "mathMaze_noPath": "No Path Available!",
+  "mathMaze_gatesLabel": "Gates",
+  "mathMaze_collectiblesLabel": "Stars",
+  "mathMaze_timerLabel": "Time",
+  "mathMaze_scoreLabel": "Score",
+  "mathMaze_collected": "{collected} / {total}",
+  "@mathMaze_collected": {
+    "placeholders": {
+      "collected": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_title": "Choose Your Plan",
+  "subscription_subtitle": "Upgrade to unlock more plays and features!",
+  "subscription_rateLimitTitle": "Daily Limit Reached!",
+  "subscription_rateLimitSubtitle": "Upgrade to keep playing!",
+  "subscription_premiumTitle": "Premium Game",
+  "subscription_premiumSubtitle": "This game requires a Premium subscription!",
+  "subscription_currentPlan": "Current Plan",
+  "subscription_upgradeTo": "Upgrade to {plan}",
+  "@subscription_upgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeTo": "Downgrade to {plan}",
+  "@subscription_downgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeToFree": "Downgrade to Free",
+  "subscription_popular": "POPULAR",
+  "subscription_playsPerDay": "{count} plays/day",
+  "@subscription_playsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_perMonth": "month",
+  "subscription_forever": "forever",
+  "subscription_footer": "Free plays reset every 24 hours. You can change plans at any time.",
+  "subscription_footerPayment": "If payment doesn''t clear, you''ll be downgraded to the Free plan.",
+  "subscription_plans_free_name": "Free",
+  "subscription_plans_free_features_0": "Access to all games",
+  "subscription_plans_free_features_1": "Single device",
+  "subscription_plans_free_features_2": "Renews every 24 hours",
+  "subscription_plans_light_name": "Light",
+  "subscription_plans_light_features_0": "Access to all games",
+  "subscription_plans_light_features_1": "Up to 3 devices",
+  "subscription_plans_light_features_2": "Renews every 24 hours",
+  "subscription_plans_light_features_3": "Basic statistics",
+  "subscription_plans_standard_name": "Standard",
+  "subscription_plans_standard_features_0": "Access to all games",
+  "subscription_plans_standard_features_1": "Up to 3 devices",
+  "subscription_plans_standard_features_2": "Renews every 24 hours",
+  "subscription_plans_standard_features_3": "Detailed statistics",
+  "subscription_plans_standard_features_4": "Priority support",
+  "subscription_plans_premium_name": "Premium",
+  "subscription_plans_premium_features_0": "Access to all games",
+  "subscription_plans_premium_features_1": "Up to 5 devices",
+  "subscription_plans_premium_features_2": "1,000 plays/day",
+  "subscription_plans_premium_features_3": "Advanced analytics",
+  "subscription_plans_premium_features_4": "Priority support",
+  "subscription_plans_premium_features_5": "Early access to new games",
+  "bondAndBurn_title": "Bond & Burn",
+  "bondAndBurn_subtitle": "The Reaction Lab",
+  "bondAndBurn_description": "Read the formula, find the elements on the periodic table, and build compounds before the lab overheats!",
+  "bondAndBurn_chooseDifficulty": "Choose Your Lab Level",
+  "bondAndBurn_startMission": "Start Mission",
+  "bondAndBurn_selectDifficulty": "Select a lab level",
+  "bondAndBurn_howToPlay": "How to Play",
+  "bondAndBurn_step1": "Read the compound formula and find the right elements",
+  "bondAndBurn_step2": "Tap elements on the periodic table to add them to the beaker",
+  "bondAndBurn_step3": "Complete reactions before the heat gauge reaches 100%",
+  "bondAndBurn_step4": "Wrong picks add heat — be precise!",
+  "bondAndBurn_easyDesc": "Simple molecules, slow heat rise",
+  "bondAndBurn_mediumDesc": "More complex compounds, faster heat",
+  "bondAndBurn_hardDesc": "Complex reactions, high pressure, strict heat!",
+  "bondAndBurn_makeCompound": "Make: {name}",
+  "@bondAndBurn_makeCompound": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bondAndBurn_pickElements": "Pick elements from the periodic table",
+  "bondAndBurn_labComplete": "Lab Mission Complete!",
+  "bondAndBurn_meltdown": "MELTDOWN!",
+  "bondAndBurn_preparingLab": "Setting up the lab...",
+  "bondAndBurn_make": "Make:",
+  "bondAndBurn_round": "Round",
+  "bondAndBurn_recipes_water_name": "Water",
+  "bondAndBurn_recipes_water_hint": "Grab 2 Hydrogen and 1 Oxygen",
+  "bondAndBurn_recipes_water_funFact": "Water covers 71% of Earth''s surface! Every living thing needs it.",
+  "bondAndBurn_recipes_salt_name": "Table Salt",
+  "bondAndBurn_recipes_salt_hint": "Grab 1 Sodium and 1 Chlorine",
+  "bondAndBurn_recipes_salt_funFact": "Salt was so valuable in ancient Rome that soldiers were paid with it!",
+  "bondAndBurn_recipes_co2_name": "Carbon Dioxide",
+  "bondAndBurn_recipes_co2_hint": "Grab 1 Carbon and 2 Oxygen",
+  "bondAndBurn_recipes_co2_funFact": "Plants breathe in CO₂ and breathe out oxygen — the opposite of us!",
+  "bondAndBurn_recipes_methane_name": "Methane",
+  "bondAndBurn_recipes_methane_hint": "Grab 1 Carbon and 4 Hydrogen",
+  "bondAndBurn_recipes_methane_funFact": "Methane is the main ingredient in natural gas used for cooking!",
+  "bondAndBurn_recipes_ammonia_name": "Ammonia",
+  "bondAndBurn_recipes_ammonia_hint": "Grab 1 Nitrogen and 3 Hydrogen",
+  "bondAndBurn_recipes_ammonia_funFact": "Ammonia is used to make fertilizer that helps grow food for billions!",
+  "bondAndBurn_recipes_ethane_name": "Ethane",
+  "bondAndBurn_recipes_ethane_hint": "Grab 2 Carbon and 6 Hydrogen",
+  "bondAndBurn_recipes_ethane_funFact": "Ethane is found in natural gas and on the surface of Saturn''s moon Titan!",
+  "bondAndBurn_recipes_hydrogen_peroxide_name": "Hydrogen Peroxide",
+  "bondAndBurn_recipes_hydrogen_peroxide_hint": "Grab 2 Hydrogen and 2 Oxygen",
+  "bondAndBurn_recipes_hydrogen_peroxide_funFact": "Hydrogen peroxide is used to clean wounds and even bleach hair!",
+  "bondAndBurn_recipes_hydrochloric_acid_name": "Hydrochloric Acid",
+  "bondAndBurn_recipes_hydrochloric_acid_hint": "Grab 1 Hydrogen and 1 Chlorine",
+  "bondAndBurn_recipes_hydrochloric_acid_funFact": "Your stomach makes hydrochloric acid to digest food!",
+  "bondAndBurn_recipes_sodium_hydroxide_name": "Sodium Hydroxide",
+  "bondAndBurn_recipes_sodium_hydroxide_hint": "Grab 1 Sodium, 1 Oxygen, and 1 Hydrogen",
+  "bondAndBurn_recipes_sodium_hydroxide_funFact": "Sodium hydroxide (lye) is used to make soap and unclog drains!",
+  "bondAndBurn_recipes_nitrous_oxide_name": "Laughing Gas",
+  "bondAndBurn_recipes_nitrous_oxide_hint": "Grab 2 Nitrogen and 1 Oxygen",
+  "bondAndBurn_recipes_nitrous_oxide_funFact": "Dentists use laughing gas (N₂O) to help patients relax during procedures!",
+  "circuitBuilder_canvasLabel": "Circuit building grid",
+  "circuitBuilder_flip": "Flip",
+  "circuitBuilder_howTo_title": "How to build",
+  "circuitBuilder_howTo_step1": "Pick a part, then tap a cell to place it.",
+  "circuitBuilder_howTo_step2": "Tap a part''s dot, then another part''s dot, to wire them.",
+  "circuitBuilder_howTo_step3": "Tap Flip if the LED shows backwards.",
+  "circuitBuilder_howTo_keyboardTitle": "Keyboard",
+  "circuitBuilder_howTo_keyboard": "Arrow keys move the cursor, Enter places or activates, C starts a wire, Enter or Shift+Enter finishes it on the first or second dot, R flips, Delete removes.",
+  "circuitBuilder_component_battery_name": "Battery",
+  "circuitBuilder_component_battery_abbr": "BAT",
+  "circuitBuilder_component_solar_name": "Solar panel",
+  "circuitBuilder_component_solar_abbr": "SOL",
+  "circuitBuilder_component_wire_name": "Wire",
+  "circuitBuilder_component_wire_abbr": "WIR",
+  "circuitBuilder_component_switch_name": "Switch",
+  "circuitBuilder_component_switch_abbr": "SW",
+  "circuitBuilder_component_resistor_name": "Resistor",
+  "circuitBuilder_component_resistor_abbr": "RES",
+  "circuitBuilder_component_led_name": "LED bulb",
+  "circuitBuilder_component_led_abbr": "LED",
+  "circuitBuilder_component_motor_name": "Motor",
+  "circuitBuilder_component_motor_abbr": "MOT",
+  "circuitBuilder_component_buzzer_name": "Buzzer",
+  "circuitBuilder_component_buzzer_abbr": "BUZ",
+  "circuitBuilder_tray_title": "Components",
+  "circuitBuilder_tray_remaining": "{count} left",
+  "@circuitBuilder_tray_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_tray_exhausted": "None left",
+  "circuitBuilder_tray_armed": "Selected — tap a grid cell to place",
+  "circuitBuilder_status_energized": "Current is flowing",
+  "circuitBuilder_status_deEnergized": "No current is flowing",
+  "circuitBuilder_status_fuseBlown": "The fuse has blown",
+  "circuitBuilder_status_resetFuse": "Reset the fuse",
+  "circuitBuilder_status_voltage": "Supply voltage",
+  "circuitBuilder_status_lightLevel": "Light level",
+  "circuitBuilder_fault_SHORT_CIRCUIT": "Short circuit",
+  "circuitBuilder_fault_OVERCURRENT": "Too much current",
+  "circuitBuilder_fault_REVERSED_POLARITY": "Component is backwards",
+  "circuitBuilder_fault_SINGULAR_SYSTEM": "This circuit cannot work",
+  "circuitBuilder_faultHelp_SHORT_CIRCUIT": "The current found a path straight from one side of the battery to the other with nothing to slow it down, so it rushed through and blew the fuse. Put a load in that path, such as an LED bulb with a resistor, or a motor.",
+  "circuitBuilder_faultHelp_OVERCURRENT": "There is more current in this path than the parts can carry safely. Raise the resistance by adding a resistor, or turn the supply voltage down.",
+  "circuitBuilder_faultHelp_REVERSED_POLARITY": "A component is connected the wrong way round, so it blocks the current instead of using it. Swap its two ends and try again.",
+  "circuitBuilder_faultHelp_SINGULAR_SYSTEM": "This circuit has no single answer the simulator can work out, usually because a part is wired across itself. Remove the connection that joins a component''s two terminals together.",
+  "circuitBuilder_rejection_OUT_OF_BOUNDS": "That spot is off the grid",
+  "circuitBuilder_rejection_CELL_OCCUPIED": "Something is already there",
+  "circuitBuilder_rejection_OVER_BUDGET": "No more of those are available",
+  "circuitBuilder_rejection_ELEMENT_LIMIT": "The grid is full",
+  "circuitBuilder_rejection_CONNECTION_LIMIT": "No more connections can be added",
+  "circuitBuilder_rejection_UNKNOWN_ELEMENT": "That component is no longer there",
+  "circuitBuilder_rejection_UNKNOWN_CONNECTION": "That connection is no longer there",
+  "circuitBuilder_rejection_ELEMENT_LOCKED": "That component cannot be moved",
+  "circuitBuilder_rejection_NOT_A_SWITCH": "Only a switch can be opened and closed",
+  "circuitBuilder_rejection_SELF_CONNECTION": "A terminal cannot connect to itself",
+  "circuitBuilder_rejection_DUPLICATE_CONNECTION": "Those terminals are already connected",
+  "circuitBuilder_rejection_INVALID_VOLTAGE": "That voltage cannot be used",
+  "circuitBuilder_rejection_INVALID_LIGHT_LEVEL": "That light level cannot be used",
+  "circuitBuilder_layout_enterFullScreen": "Full screen",
+  "circuitBuilder_layout_exitFullScreen": "Leave full screen",
+  "circuitBuilder_audio_soundOn": "Sound on",
+  "circuitBuilder_audio_soundOff": "Sound off",
+  "circuitBuilder_error_evaluationUnavailable": "The simulation is unavailable right now. Try changing your circuit.",
+  "circuitBuilder_error_levelUnavailable": "This circuit workbench could not be opened. Please try again.",
+  "circuitBuilder_setup_title": "Circuit Builder",
+  "circuitBuilder_setup_subtitle": "Build circuits, power the rover",
+  "circuitBuilder_setup_description": "Wire up batteries, switches and bulbs to bring a Mars rover to life. Each level teaches one idea about electricity.",
+  "circuitBuilder_setup_howToPlay": "How to Play",
+  "circuitBuilder_setup_step1": "Pick a component and place it on the grid",
+  "circuitBuilder_setup_step2": "Connect the terminals with wires",
+  "circuitBuilder_setup_step3": "Watch the rover: its parts light up when current flows",
+  "circuitBuilder_setup_step4": "Reach the goal to send your circuit and earn points",
+  "circuitBuilder_setup_chooseDifficulty": "Choose a difficulty",
+  "circuitBuilder_setup_chooseLevel": "Choose a level",
+  "circuitBuilder_setup_levelNumber": "Level {n}",
+  "@circuitBuilder_setup_levelNumber": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_setup_concept": "Goal",
+  "circuitBuilder_setup_startLevel": "Start level",
+  "circuitBuilder_setup_selectDifficulty": "Select a difficulty",
+  "circuitBuilder_setup_sandboxTitle": "Sandbox",
+  "circuitBuilder_setup_sandboxDescription": "Free play with every component. No goal, no score, and it does not use up a daily game.",
+  "circuitBuilder_setup_sandboxStart": "Open the sandbox",
+  "circuitBuilder_setup_startFailed": "The game could not be started. Please try again.",
+  "circuitBuilder_setup_noLevels": "No levels are available right now.",
+  "circuitBuilder_setup_gateChecking": "Checking your access...",
+  "circuitBuilder_difficulty_1_name": "Easy",
+  "circuitBuilder_difficulty_1_summary": "Learn the basics: closed loops and switches. The rover shows what is on and what is off.",
+  "circuitBuilder_difficulty_1_disclosure": "No numbers, just parts that are lit or dark.",
+  "circuitBuilder_difficulty_1_levels": "{count} levels",
+  "@circuitBuilder_difficulty_1_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_2_name": "Medium",
+  "circuitBuilder_difficulty_2_summary": "Compare series and parallel wiring.",
+  "circuitBuilder_difficulty_2_disclosure": "Brightness bars that compare parts, with no units.",
+  "circuitBuilder_difficulty_2_levels": "{count} levels",
+  "@circuitBuilder_difficulty_2_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_3_name": "Hard",
+  "circuitBuilder_difficulty_3_summary": "Power the whole rover and recover from a short circuit.",
+  "circuitBuilder_difficulty_3_disclosure": "Voltage and resistance values.",
+  "circuitBuilder_difficulty_3_levels": "{count} levels",
+  "@circuitBuilder_difficulty_3_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_4_name": "Super Hard",
+  "circuitBuilder_difficulty_4_summary": "Control current with resistors and change the supply voltage.",
+  "circuitBuilder_difficulty_4_disclosure": "Everything: volts, ohms, amps and totals.",
+  "circuitBuilder_difficulty_4_levels": "{count} levels",
+  "@circuitBuilder_difficulty_4_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_level_cb_01_closed_circuit_title": "Close the loop",
+  "circuitBuilder_level_cb_01_closed_circuit_goal": "Light the rover headlight.",
+  "circuitBuilder_level_cb_01_closed_circuit_hint": "Join the battery, the resistor and the LED bulb in a ring, and bring a wire back to the battery. If the bulb stays dark, check which way round it is connected.",
+  "circuitBuilder_level_cb_01_closed_circuit_learn": "Current only flows around a closed loop. The resistor protects the LED bulb from too much current.",
+  "circuitBuilder_level_cb_02_switch_control_title": "Switch it on",
+  "circuitBuilder_level_cb_02_switch_control_goal": "Light the headlight with the switch closed, then turn it off and on again.",
+  "circuitBuilder_level_cb_02_switch_control_hint": "The switch is already on the board. Put it in the loop with the battery, the resistor and the LED bulb, then select it to open or close it.",
+  "circuitBuilder_level_cb_02_switch_control_learn": "A switch opens or closes the loop. When it is open the loop is cut, no current flows and the light goes out.",
+  "circuitBuilder_level_cb_03_series_loop_title": "One loop for two",
+  "circuitBuilder_level_cb_03_series_loop_goal": "Light the headlight and sound the buzzer in the same loop.",
+  "circuitBuilder_level_cb_03_series_loop_hint": "Put the LED bulb and the buzzer one after the other in the same loop, with the resistor and the switch. Then open the switch and watch both.",
+  "circuitBuilder_level_cb_03_series_loop_learn": "In a series circuit the same current goes through every part, one after the other. Open the switch and everything stops.",
+  "circuitBuilder_level_cb_04_parallel_branches_title": "Two paths",
+  "circuitBuilder_level_cb_04_parallel_branches_goal": "Give the headlight one path and the buzzer another, each with its own switch.",
+  "circuitBuilder_level_cb_04_parallel_branches_hint": "Connect both paths to the same battery terminals. Each path has its own switch. Open one and see what the other does.",
+  "circuitBuilder_level_cb_04_parallel_branches_learn": "In a parallel circuit each path is its own loop. Switching one off leaves the other running.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_title": "Power the whole rover",
+  "circuitBuilder_level_cb_05_series_vs_parallel_goal": "Run the motors, the headlight and the buzzer at the same time.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_hint": "Wire the parts side by side, each one straight across the battery, with the resistor in front of the LED bulb. Motors in one series loop turn very slowly.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_learn": "Parts side by side each get the full battery voltage. Parts in series share it, so motors in series get less and turn more slowly.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_title": "Beat the short circuit",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_goal": "Light the headlight even if a short circuit blows the fuse first.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_hint": "A wire straight across the battery blows the fuse. Reset the fuse, take that wire away and put the load back in the loop.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_learn": "A path with almost no resistance lets a huge current through. Always keep a load in the loop, and reset the fuse once the fault is fixed.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_title": "Tame the current",
+  "circuitBuilder_level_cb_07_resistance_limits_current_goal": "Light the LED with a safe current, using the battery and LED already on the board.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_hint": "Put a resistor in series with the LED. Two resistors in series add up. Two in parallel give less resistance than one, so more current flows.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_learn": "Current is voltage divided by resistance. More resistance means less current, and resistors in parallel lower the total resistance.",
+  "circuitBuilder_level_cb_08_variable_voltage_title": "Find the right voltage",
+  "circuitBuilder_level_cb_08_variable_voltage_goal": "Power the motor, the buzzer and the headlight from one battery, and find which supply voltages work.",
+  "circuitBuilder_level_cb_08_variable_voltage_hint": "Close the master switch and the headlight switch. Change the supply voltage with the slider: the motor needs enough voltage to turn, and the LED can get too much current if it is high.",
+  "circuitBuilder_level_cb_08_variable_voltage_learn": "Voltage pushes current through resistance. If it is too low the motor will not turn. If it is too high the LED carries more current than it is rated for.",
+  "circuitBuilder_rover_title": "Mars Rover",
+  "circuitBuilder_rover_alt": "Drawing of a Mars rover. Its wheels, headlight, buzzer and solar panel show which parts are powered.",
+  "circuitBuilder_rover_on": "On",
+  "circuitBuilder_rover_off": "Off",
+  "circuitBuilder_rover_unused": "Not used in this level",
+  "circuitBuilder_rover_allPowered": "The whole rover is powered!",
+  "circuitBuilder_machine_marsRover_driveMotor": "Drive motors",
+  "circuitBuilder_machine_marsRover_headlight": "Headlight",
+  "circuitBuilder_machine_marsRover_buzzerAlert": "Buzzer alert",
+  "circuitBuilder_machine_marsRover_solarCharging": "Solar charging",
+  "circuitBuilder_readout_title": "Circuit readout",
+  "circuitBuilder_readout_supply": "Supply",
+  "circuitBuilder_readout_voltage": "Voltage",
+  "circuitBuilder_readout_resistance": "Resistance",
+  "circuitBuilder_readout_current": "Current",
+  "circuitBuilder_readout_totalResistance": "Total resistance",
+  "circuitBuilder_readout_totalCurrent": "Total current",
+  "circuitBuilder_readout_relative": "Brightness",
+  "circuitBuilder_readout_noPath": "No complete loop yet",
+  "circuitBuilder_readout_state_lit": "Working",
+  "circuitBuilder_readout_state_dim": "Dim",
+  "circuitBuilder_readout_state_dark": "Off",
+  "circuitBuilder_readout_state_spark": "Fault",
+  "circuitBuilder_readout_brightness_off": "Off",
+  "circuitBuilder_readout_brightness_dim": "Dim",
+  "circuitBuilder_readout_brightness_medium": "Medium",
+  "circuitBuilder_readout_brightness_bright": "Bright",
+  "circuitBuilder_readout_noneHint": "Look at the rover: each part is on or off.",
+  "circuitBuilder_readout_qualitativeHint": "The bars compare how bright each part is, with no units.",
+  "circuitBuilder_game_loading": "Starting your game...",
+  "circuitBuilder_game_level": "Level",
+  "circuitBuilder_game_goal": "Goal",
+  "circuitBuilder_game_showHint": "Show hint",
+  "circuitBuilder_game_hideHint": "Hide hint",
+  "circuitBuilder_game_solved": "The rover is working! Checking your circuit...",
+  "circuitBuilder_game_solvedTitle": "Circuit complete",
+  "circuitBuilder_game_submitting": "The server is checking your circuit...",
+  "circuitBuilder_game_submitFailed": "We could not send your circuit. Your work is safe. Please try again.",
+  "circuitBuilder_game_rejected": "The server could not verify that circuit. Change it and try again.",
+  "circuitBuilder_game_retry": "Try again",
+  "circuitBuilder_game_nextLevel": "Next level",
+  "circuitBuilder_game_backToSetup": "Back to levels",
+  "circuitBuilder_game_quit": "Quit",
+  "circuitBuilder_game_noLevel": "That level could not be found.",
+  "circuitBuilder_game_learnTitle": "What you learned",
+  "circuitBuilder_faultOverlay_label": "Circuit fault",
+  "circuitBuilder_faultOverlay_dismiss": "Dismiss",
+  "circuitBuilder_sandbox_badge": "Sandbox: nothing here is scored",
+  "circuitBuilder_sandbox_note": "Free play with every component. There is no score and no daily game is used.",
+  "circuitBuilder_sandbox_back": "Back to levels",
+  "circuitBuilder_result_serverScoreNote": "The server checked this score.",
+  "circuitBuilder_result_rankLabel": "Leaderboard rank",
+  "miniGolf_title": "Mini Golf",
+  "miniGolf_subtitle": "Physics Putting",
+  "miniGolf_description": "Aim, set your power, and putt through obstacles to sink the ball in as few strokes as possible!",
+  "miniGolf_chooseCourse": "Choose Your Course",
+  "miniGolf_teeOff": "Tee Off",
+  "miniGolf_selectCourse": "Select a course",
+  "miniGolf_howToPlay": "How to Play",
+  "miniGolf_step1": "Drag from the ball to aim your shot",
+  "miniGolf_step2": "Pull back farther for more power",
+  "miniGolf_step3": "Release to putt — angle off walls!",
+  "miniGolf_step4": "Sink it in the fewest strokes",
+  "miniGolf_easyDesc": "Open greens, simple angles",
+  "miniGolf_mediumDesc": "Bumpers, sand traps, water hazards",
+  "miniGolf_hardDesc": "Windmills, tight mazes, chaos!",
+  "miniGolf_loading": "Setting up the course...",
+  "wordPuzzle_title": "Word Puzzle",
+  "wordPuzzle_subtitle": "Find all the hidden words in the grid!",
+  "wordPuzzle_howToPlay": "How to Play",
+  "wordPuzzle_selectLetters": "Select Letters",
+  "wordPuzzle_selectLettersDesc": "Click and drag to select letters in the grid",
+  "wordPuzzle_findWords": "Find Words",
+  "wordPuzzle_findWordsDesc": "Words can be horizontal, vertical, or diagonal",
+  "wordPuzzle_beatTheClock": "Beat the Clock",
+  "wordPuzzle_beatTheClockDesc": "Find all words before time runs out!",
+  "wordPuzzle_easy": "Easy",
+  "wordPuzzle_easyDesc": "Perfect for beginners",
+  "wordPuzzle_medium": "Medium",
+  "wordPuzzle_mediumDesc": "A good challenge",
+  "wordPuzzle_hard": "Hard",
+  "wordPuzzle_hardDesc": "For word masters",
+  "wordPuzzle_gridSize": "Grid Size",
+  "wordPuzzle_words": "Words",
+  "wordPuzzle_timeLimit": "Time Limit",
+  "wordPuzzle_minutes": "minutes",
+  "wordPuzzle_start": "Start",
+  "wordPuzzle_backToGames": "← Back to Games",
+  "wordPuzzle_wordsFound": "Words Found",
+  "wordPuzzle_time": "Time",
+  "wordPuzzle_difficulty": "Difficulty",
+  "wordPuzzle_wordsToFind": "Words to Find",
+  "wordPuzzle_dragHint": "Drag across the letters to select a word",
+  "quest_title": "Quest Map",
+  "quest_subtitle": "Clear each node to open the next one. Earn up to 3 stars per node.",
+  "quest_playsLeft": "{count} plays left today",
+  "@quest_playsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_playsUsed": "{used} of {limit} plays used",
+  "@quest_playsUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_resetsAt": "Resets at {time}",
+  "@quest_resetsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_loading": "Loading your Quest Map...",
+  "quest_error_title": "We could not load the Quest Map.",
+  "quest_error_retry": "Retry",
+  "quest_worldStars": "{stars} of {max} stars",
+  "@quest_worldStars": {
+    "placeholders": {
+      "stars": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_shelfLabel": "{world} badges",
+  "@quest_badges_shelfLabel": {
+    "placeholders": {
+      "world": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_earned": "Earned",
+  "quest_badges_locked": "Locked",
+  "quest_badges_new": "New",
+  "quest_badges_WORLD_CLEARED_name": "World Cleared",
+  "quest_badges_WORLD_CLEARED_hint": "Beat the boss with at least 1 star.",
+  "quest_badges_WORLD_MASTERED_name": "World Mastered",
+  "quest_badges_WORLD_MASTERED_hint": "Earn 3 stars on every path node.",
+  "quest_achievements_title": "Quest Map badges",
+  "quest_achievements_summary": "{earned} of {total} badges earned",
+  "@quest_achievements_summary": {
+    "placeholders": {
+      "earned": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_achievements_error": "Quest Map badges are not available right now.",
+  "quest_worlds_brain_peaks_name": "Brain Peaks",
+  "quest_worlds_science_island_name": "Science Island",
+  "quest_nodes_bp_01_memory_name": "Animal Memory",
+  "quest_nodes_bp_02_math_name": "Math Warm-up",
+  "quest_nodes_bp_03_words_name": "Word Hunt",
+  "quest_nodes_bp_04_sequence_name": "Sequence Steps",
+  "quest_nodes_bp_05_geo_name": "Geo Pass",
+  "quest_nodes_bp_06_maze_name": "Number Maze",
+  "quest_nodes_bp_07_memory_space_name": "Space Memory",
+  "quest_nodes_bp_boss_name": "Peak Boss",
+  "quest_nodes_bp_bonus_sequence_name": "Bonus: Long Sequence",
+  "quest_nodes_si_01_bond_burn_name": "Chemistry Lab",
+  "quest_nodes_si_02_space_entry_name": "Rocket Landing",
+  "quest_nodes_si_03_circuit_series_name": "Series Circuit",
+  "quest_nodes_si_04_circuit_branches_name": "Parallel Branches",
+  "quest_nodes_si_05_scratch_name": "Code Corner",
+  "quest_nodes_si_06_mini_golf_name": "Golf Cove",
+  "quest_nodes_si_07_circuit_parallel_name": "Parallel Circuit",
+  "quest_nodes_si_boss_name": "Island Boss",
+  "quest_nodes_si_bonus_name": "Bonus: Expert Circuit",
+  "quest_games_ANIMALS": "Memory Match: Animals",
+  "quest_games_FRUITS": "Memory Match: Fruits",
+  "quest_games_VEHICLES": "Memory Match: Vehicles",
+  "quest_games_SPACE": "Memory Match: Space",
+  "quest_games_OCEAN": "Memory Match: Ocean",
+  "quest_games_FORMULA1": "Memory Match: Formula 1",
+  "quest_games_MATH_CHALLENGE": "Math Challenge",
+  "quest_games_WORD_PUZZLE": "Word Puzzle",
+  "quest_games_SEQUENCE_MEMORY": "Sequence Memory",
+  "quest_games_PATTERN_RECALL": "Pattern Recall",
+  "quest_games_GEO_QUIZ": "Geography Quiz",
+  "quest_games_MATH_MAZE": "Math Maze",
+  "quest_games_BUBBLE_POP": "Bubble Pop",
+  "quest_games_BOND_AND_BURN": "Bond & Burn",
+  "quest_games_SPACE_ENTRY": "Space Entry",
+  "quest_games_TRAFFIC_LAB": "Traffic Lab",
+  "quest_games_MINI_GOLF": "Mini Golf",
+  "quest_games_SCRATCH_CODING": "Space Coder",
+  "quest_games_CIRCUIT_BUILDER": "Circuit Builder",
+  "quest_difficulty_1": "Easy",
+  "quest_difficulty_2": "Medium",
+  "quest_difficulty_3": "Hard",
+  "quest_difficulty_4": "Expert",
+  "quest_node_aria_locked": "{name}, locked",
+  "@quest_node_aria_locked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_available": "{name}, ready to play",
+  "@quest_node_aria_available": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_earned": "{name}, {count} of 3 stars",
+  "@quest_node_aria_earned": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_unavailable": "{name}, not available",
+  "@quest_node_aria_unavailable": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_boss": "boss",
+  "quest_node_aria_bonus": "bonus",
+  "quest_node_aria_new": "newly unlocked",
+  "quest_node_boss": "Boss",
+  "quest_node_bonus": "Bonus",
+  "quest_node_new": "New",
+  "quest_panel_goals": "Star goals",
+  "quest_panel_goal1": "1 star",
+  "quest_panel_goal2": "2 stars",
+  "quest_panel_goal3": "3 stars",
+  "quest_panel_points": "{points} points",
+  "@quest_panel_points": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_combinedScore": "Combined score",
+  "quest_panel_bossTotalBoth": "Total of both games",
+  "quest_panel_bossTotalAll": "Total of all {count} games",
+  "@quest_panel_bossTotalAll": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_perGame": "about {points} per game",
+  "@quest_panel_perGame": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_reached": "Reached",
+  "quest_panel_best": "Best: {score}",
+  "@quest_panel_best": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_legs": "Games",
+  "quest_panel_legOf": "Leg {k} of {n}",
+  "@quest_panel_legOf": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_order": "Play the legs in order within 30 minutes.",
+  "quest_panel_runInProgress": "Run in progress: {done} of {total} legs, expires at {time}",
+  "@quest_panel_runInProgress": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_play": "Play",
+  "quest_panel_replay": "Replay",
+  "quest_panel_continue": "Continue run",
+  "quest_panel_notAvailableNow": "This node is not available right now.",
+  "quest_panel_locked": "Earn a star on the previous node to unlock.",
+  "quest_panel_bonusLocked": "Collect stars in this world to unlock.",
+  "quest_panel_unavailable": "This game is not available right now. Skipping it counts as passed.",
+  "quest_panel_paywall": "Subscribe to unlock World 2",
+  "quest_panel_noPlaysLeft": "You have no plays left today. Playing now will take you to the limit page.",
+  "quest_panel_close": "Close",
+  "quest_worldLocked_label": "Locked: subscribers only",
+  "quest_worldLocked_link": "Subscribe to unlock World 2",
+  "quest_banner_playing": "Playing from Quest Map",
+  "quest_banner_goal": "3-star goal: {points} points",
+  "@quest_banner_goal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_banner_back": "Back to map",
+  "quest_result_stars": "Stars this run: {count} of 3",
+  "@quest_result_stars": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_best": "Best: {count} of 3 stars",
+  "@quest_result_best": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_goals": "Goals",
+  "quest_result_score": "Your score: {score}",
+  "@quest_result_score": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextGoal": "Next star at {points} points",
+  "@quest_result_nextGoal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_allGoals": "All goals reached",
+  "quest_result_legDone": "Leg {k} of {n} done",
+  "@quest_result_legDone": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_legScore": "Leg score: {score}",
+  "@quest_result_legScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextLeg": "Next leg",
+  "quest_result_combined": "Combined score: {score}",
+  "@quest_result_combined": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_expired": "This run expired. Start the boss again from leg 1.",
+  "quest_result_unlocked": "Unlocked: {names}",
+  "@quest_result_unlocked": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_worldCleared": "World cleared!",
+  "quest_result_notSaved": "Progress could not be saved, replay to retry.",
+  "quest_result_backToMap": "Back to map",
+  "quest_notice_questUnavailable": "That node is not available right now.",
+  "quest_hub_title": "Quest Map",
+  "quest_hub_body": "Follow a path of games, earn stars and beat the boss.",
+  "quest_hub_cta": "Open Quest Map",
+  "mobileAuth_firstName": "First name",
+  "mobileAuth_lastName": "Last name",
+  "mobileAuth_required": "Required",
+  "mobileAuth_invalidEmail": "Invalid email address",
+  "mobileAuth_usernameMin": "Username must be at least 3 characters",
+  "mobileAuth_usernameMax": "Username must be at most 20 characters",
+  "mobileAuth_usernameChars": "Username can only contain letters, numbers, and underscores",
+  "mobileAuth_passwordMin": "Password must be at least 8 characters",
+  "mobileAuth_passwordUpper": "Password must contain at least one uppercase letter",
+  "mobileAuth_passwordLower": "Password must contain at least one lowercase letter",
+  "mobileAuth_passwordNumber": "Password must contain at least one number",
+  "mobileAuth_passwordsMismatch": "Passwords don''t match",
+  "mobileAuth_codeMin": "Code must be at least 6 characters",
+  "mobileAuth_forgotSubtitle": "Enter your email and we''ll send you a reset code",
+  "mobileAuth_sendResetCode": "Send Reset Code",
+  "mobileAuth_resetTitle": "Reset Password",
+  "mobileAuth_resetSubtitle": "Enter the code from your email and your new password",
+  "mobileAuth_resetCode": "Reset Code",
+  "mobileAuth_newPassword": "New Password",
+  "mobileAuth_resetButton": "Reset Password",
+  "mobileAuth_resetCodeSentTo": "If an account exists for {email}, we sent a reset code to it.",
+  "@mobileAuth_resetCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_haveResetCode": "Already have a code? Enter it",
+  "mobileAuth_passwordResetDone": "Your password was reset. Sign in with your new password.",
+  "mobileAuth_backToLogin": "Back to Login",
+  "mobileAuth_resendCode": "Resend code",
+  "mobileAuth_resendCodeIn": "Resend code ({seconds}s)",
+  "@mobileAuth_resendCodeIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_codeResent": "A new code was sent to your email.",
+  "mobileAuth_enterEmailFirst": "Enter your email above first.",
+  "mobileAuth_errNetwork": "Network error. Check your connection and try again.",
+  "mobileAuth_errCodeMismatch": "That code is incorrect. Check it and try again.",
+  "mobileAuth_errCodeExpired": "That code has expired. Request a new one.",
+  "mobileAuth_errTooMany": "Too many attempts. Please wait a while and try again.",
+  "mobileAuth_errInvalidPassword": "That password does not meet the requirements.",
+  "mobileAuth_errUserExists": "An account with this email already exists.",
+  "mobileAuth_errUnconfirmed": "Please confirm your account first (check your email for a code).",
+  "mobileAuth_errNewPasswordRequired": "A new password is required for this account. Please reset your password.",
+  "mobileAuth_errGoogle": "Google sign-in failed. Please try again.",
+  "mobileAuth_errGeneric": "Something went wrong. Please try again.",
+  "mobileGame_limitTitle": "Daily limit reached",
+  "mobileGame_limitBody": "You have used all your plays for today. Come back tomorrow!",
+  "mobileGame_unavailableTitle": "Not available in the app yet",
+  "mobileGame_unavailableBody": "This game is not available in the app yet.",
+  "mobileGame_comingToApp": "Coming to the app soon",
+  "mobileGame_notAvailableLabel": "Not available in the app yet",
+  "mobileGame_goBack": "Go back",
+  "mobileGame_starting": "Starting game...",
+  "mobileGame_leaveTitle": "Leave this game?",
+  "mobileGame_leaveBody": "Your progress in this round will be lost.",
+  "mobileGame_leave": "Leave",
+  "mobileGame_keepPlaying": "Keep playing",
+  "mobileGame_scoreHiccup": "Your score could not be loaded this time.",
+  "mobileGame_complete": "Complete!",
+  "mobileGame_leaderboardRank": "Leaderboard rank",
+  "mobileGame_achievementsUnlocked": "Achievements unlocked",
+  "mobileGame_backToHub": "Back to hub",
+  "mobileGame_questStartFailed": "That quest node could not be started. You are back on the map.",
+  "mobileGame_ratingsCount": "{count} ratings",
+  "@mobileGame_ratingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questLocked": "Locked",
+  "mobileGame_questStarsLabel": "{count} of 3 stars",
+  "@mobileGame_questStarsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questNodePlayUnavailable": "This game is not available in the app yet.",
+  "mobileGame_worldLockedApp": "This world is not available in the app yet.",
+  "mobileStats_tabHub": "Hub",
+  "mobileStats_tabQuest": "Quest",
+  "mobileStats_tabDashboard": "Dashboard",
+  "mobileStats_tabLeaderboard": "Leaderboard",
+  "mobileStats_tabProfile": "Profile",
+  "mobileStats_overall": "Overall",
+  "mobileStats_totalGames": "Total Games",
+  "mobileStats_bestScore": "Best Score",
+  "mobileStats_completedGames": "Completed Games",
+  "mobileStats_yourPerformance": "Your Performance",
+  "mobileStats_ofPlayers": "of {count} players",
+  "@mobileStats_ofPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_points": "points",
+  "mobileStats_topTen": "Top 10%! 🌟",
+  "mobileStats_topQuarter": "Top 25%! 🎯",
+  "mobileStats_topHalf": "Top 50%! 💪",
+  "mobileStats_keepPlaying": "Keep playing! 🎮",
+  "mobileStats_playToRank": "Play games to get ranked!",
+  "mobileStats_viewLeaderboard": "View Leaderboard →",
+  "mobileStats_trendTitle": "Score Trend",
+  "mobileStats_trendUp": "Up {percent}%!",
+  "@mobileStats_trendUp": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendDown": "Down {percent}%",
+  "@mobileStats_trendDown": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendStable": "Stable",
+  "mobileStats_trendNoData": "Play more games to see your trend.",
+  "mobileStats_statisticsTitle": "Statistics",
+  "mobileStats_statisticsDesc": "View your detailed game statistics",
+  "mobileStats_historyTitle": "Game History",
+  "mobileStats_historyDesc": "See all your past games",
+  "mobileStats_achievementsDesc": "Track your progress and unlock badges",
+  "mobileStats_contactDesc": "Report a bug or send feedback",
+  "mobileStats_noData": "No Data Yet",
+  "mobileStats_noDataBody": "Play some games to see your statistics here!",
+  "mobileStats_errorTitle": "Something went wrong",
+  "mobileStats_statsLoadFailed": "Failed to load statistics. Please try again.",
+  "mobileStats_allGames": "All Games",
+  "mobileStats_gamesPlayed": "Games Played",
+  "mobileStats_avgScore": "Avg Score",
+  "mobileStats_avgAccuracy": "Avg Accuracy",
+  "mobileStats_totalPlayTime": "Total Play Time",
+  "mobileStats_gamesPerWeek": "Games Per Week",
+  "mobileStats_gamesBreakdown": "Games Played by Game",
+  "mobileStats_distinctGames": "{count} different games played",
+  "@mobileStats_distinctGames": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_scoreProgression": "Score Progression",
+  "mobileStats_progressionHelp": "Each bar shows your score as a % of your personal best for that game. The line shows your rolling average.",
+  "mobileStats_progressionEmpty": "Play more games to see your progression!",
+  "mobileStats_accuracyTrend": "Accuracy Trend",
+  "mobileStats_speedTrend": "Speed Trend",
+  "mobileStats_avgLabel": "Avg: {value}",
+  "@mobileStats_avgLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_personalBests": "Personal Bests",
+  "mobileStats_bestLine": "{difficulty} · {time} · {accuracy}% accuracy",
+  "@mobileStats_bestLine": {
+    "placeholders": {
+      "difficulty": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noGames": "No Games Yet",
+  "mobileStats_noGamesBody": "Play some games and your history will appear here!",
+  "mobileStats_historyLoadFailed": "Failed to load game history. Please try again.",
+  "mobileStats_gamesCount": "{count} games",
+  "@mobileStats_gamesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_rangeOf": "{from}–{to} of {total}",
+  "@mobileStats_rangeOf": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_allDifficulties": "All Difficulties",
+  "mobileStats_easy": "Easy",
+  "mobileStats_medium": "Medium",
+  "mobileStats_hard": "Hard",
+  "mobileStats_sortDate": "Date",
+  "mobileStats_sortScore": "Score",
+  "mobileStats_sortAccuracy": "Accuracy",
+  "mobileStats_sortTime": "Time",
+  "mobileStats_prev": "Previous",
+  "mobileStats_next": "Next",
+  "mobileStats_pageOf": "Page {page} of {pages}",
+  "@mobileStats_pageOf": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noMatch": "No games match your filters. Try adjusting them.",
+  "mobileStats_pb": "PB",
+  "mobileStats_unlockedCount": "{unlocked}/{total} unlocked",
+  "@mobileStats_unlockedCount": {
+    "placeholders": {
+      "unlocked": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_overallProgress": "Overall Progress",
+  "mobileStats_earnedCount": "{count} earned",
+  "@mobileStats_earnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_remainingCount": "{count} remaining",
+  "@mobileStats_remainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_all": "All",
+  "mobileStats_catGettingStarted": "Getting Started",
+  "mobileStats_catDedication": "Dedication",
+  "mobileStats_catMastery": "Mastery",
+  "mobileStats_catGameSpecific": "Game Mastery",
+  "mobileStats_earnedOn": "Earned {date}",
+  "@mobileStats_earnedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressBest": "Best: {value}",
+  "@mobileStats_progressBest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressFastest": "Fastest: {value}",
+  "@mobileStats_progressFastest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressGames": "{current}/{target} games",
+  "@mobileStats_progressGames": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressCount": "{current}/{target}",
+  "@mobileStats_progressCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterName": "{game} Master",
+  "@mobileStats_masterName": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterDesc": "Score 5,000+ in {game}",
+  "@mobileStats_masterDesc": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noEntries": "No Entries Yet",
+  "mobileStats_noEntriesBody": "Be the first to play and claim the top spot!",
+  "mobileStats_you": "You",
+  "mobileStats_language": "Language",
+  "mobileStats_signOut": "Sign out",
+  "mobileStats_prefsLoadFailed": "Could not load your email preferences.",
+  "mobileStats_prefsSaveFailed": "Could not save your choice. Try again.",
+  "mobileStats_tierValue": "{tier}",
+  "@mobileStats_tierValue": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_contactTitleSubject": "Subject",
+  "mobileStats_contactValidation": "Enter a subject and a message.",
+  "mobileStats_ach_firstGame_name": "First Game",
+  "mobileStats_ach_firstGame_desc": "Play your first game",
+  "mobileStats_ach_sharpShooter_name": "Sharp Shooter",
+  "mobileStats_ach_sharpShooter_desc": "Get 90%+ accuracy on any game",
+  "mobileStats_ach_speedDemon_name": "Speed Demon",
+  "mobileStats_ach_speedDemon_desc": "Complete any game under 30 seconds",
+  "mobileStats_ach_explorer_name": "Explorer",
+  "mobileStats_ach_explorer_desc": "Try 3 different games",
+  "mobileStats_ach_highRoller_name": "High Roller",
+  "mobileStats_ach_highRoller_desc": "Score over 5,000 in any game",
+  "mobileStats_ach_onFire_name": "On Fire",
+  "mobileStats_ach_onFire_desc": "Play 10 games",
+  "mobileStats_ach_committed_name": "Committed",
+  "mobileStats_ach_committed_desc": "Play 25 games",
+  "mobileStats_ach_veteran_name": "Veteran",
+  "mobileStats_ach_veteran_desc": "Play 50 games",
+  "mobileStats_ach_legend_name": "Legend",
+  "mobileStats_ach_legend_desc": "Play 100 games",
+  "mobileStats_ach_brainPower_name": "Brain Power",
+  "mobileStats_ach_brainPower_desc": "Score 5,000+ on 3 different games",
+  "mobileStats_ach_perfectionist_name": "Perfectionist",
+  "mobileStats_ach_perfectionist_desc": "Get 100% accuracy on any game",
+  "mobileStats_ach_worldTraveler_name": "World Traveler",
+  "mobileStats_ach_worldTraveler_desc": "Play all {count} games",
+  "@mobileStats_ach_worldTraveler_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_ach_elite_name": "Elite",
+  "mobileStats_ach_elite_desc": "Score over 7,000 in any game",
+  "mobileStats_ach_hardMode_name": "Difficulty Unlocked",
+  "mobileStats_ach_hardMode_desc": "Complete a game on Hard difficulty",
+  "mobileLanguage_chooseLanguage": "Choose a language to learn",
+  "mobileLanguage_levelLabel": "Level {level}",
+  "@mobileLanguage_levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_wordsLearnedLabel": "{count} words",
+  "@mobileLanguage_wordsLearnedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_learnTitle": "Learn {language}",
+  "@mobileLanguage_learnTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_configure": "Configure your learning session",
+  "mobileLanguage_chooseMode": "Choose Mode",
+  "mobileLanguage_modeImageMatch": "Image Match",
+  "mobileLanguage_modeImageMatchDesc": "See the word, pick the correct image",
+  "mobileLanguage_modePronunciation": "Pronunciation",
+  "mobileLanguage_modePronunciationDesc": "See an image, speak the word correctly",
+  "mobileLanguage_accuracyVaries": "Recognition accuracy may vary for this language",
+  "mobileLanguage_diffBeginner": "Beginner",
+  "mobileLanguage_diffIntermediate": "Intermediate",
+  "mobileLanguage_diffAdvanced": "Advanced",
+  "mobileLanguage_diffBeginnerDesc": "Basic vocabulary, {count} words",
+  "@mobileLanguage_diffBeginnerDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffIntermediateDesc": "Common words, {count} words",
+  "@mobileLanguage_diffIntermediateDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffAdvancedDesc": "Complex vocabulary, {count} words",
+  "@mobileLanguage_diffAdvancedDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_chooseCategory": "Choose Category",
+  "mobileLanguage_catAnimals": "Animals",
+  "mobileLanguage_catAnimalsDesc": "Dogs, cats, birds, and more",
+  "mobileLanguage_catFood": "Food & Drinks",
+  "mobileLanguage_catFoodDesc": "Fruits, vegetables, meals",
+  "mobileLanguage_catColors": "Colors",
+  "mobileLanguage_catColorsDesc": "Basic and advanced colors",
+  "mobileLanguage_catNumbers": "Numbers",
+  "mobileLanguage_catNumbersDesc": "Numbers 1-20 and beyond",
+  "mobileLanguage_catObjects": "Objects",
+  "mobileLanguage_catObjectsDesc": "Everyday items and tools",
+  "mobileLanguage_catNature": "Nature",
+  "mobileLanguage_catNatureDesc": "Trees, flowers, weather",
+  "mobileLanguage_startLearning": "Start Learning",
+  "mobileLanguage_languageNotFound": "Language not found",
+  "mobileLanguage_backToLanguages": "Back to language selection",
+  "mobileLanguage_loadingWords": "Loading words...",
+  "mobileLanguage_noWords": "No vocabulary is available for this language and category. Please try a different category.",
+  "mobileLanguage_loadFailed": "The words could not be loaded. Check your connection and try again.",
+  "mobileLanguage_retryLoad": "Try again",
+  "mobileLanguage_questionOf": "Question {current} of {total}",
+  "@mobileLanguage_questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_correctCount": "{count} correct",
+  "@mobileLanguage_correctCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_hearWord": "Hear the word",
+  "mobileLanguage_whichImage": "Which image matches this word?",
+  "mobileLanguage_imageUnavailable": "Image unavailable",
+  "mobileLanguage_attempt": "Attempt {current}/{max}",
+  "@mobileLanguage_attempt": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_record": "Record",
+  "mobileLanguage_stopRecording": "Stop Recording",
+  "mobileLanguage_tapToRecord": "Tap the microphone and say the word",
+  "mobileLanguage_listening": "Listening... speak now!",
+  "mobileLanguage_processing": "Processing...",
+  "mobileLanguage_heard": "Heard: \"{text}\"",
+  "@mobileLanguage_heard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_recognized": "✓ Recognized",
+  "mobileLanguage_notRecognized": "✗ Not recognized",
+  "mobileLanguage_niceHeard": "Nice! We heard the right word.",
+  "mobileLanguage_didntCatch": "We didn''t catch the right word. Try again!",
+  "mobileLanguage_retryLeft": "Retry ({count} left)",
+  "@mobileLanguage_retryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_nextWord": "Next Word",
+  "mobileLanguage_finish": "Finish",
+  "mobileLanguage_fbTryAgain": "Try Again",
+  "mobileLanguage_fbGoodEffort": "Good Effort",
+  "mobileLanguage_fbGreat": "Great!",
+  "mobileLanguage_fbPerfect": "Perfect!",
+  "mobileLanguage_errNotAllowed": "I need to hear you! Please allow microphone and speech access in Settings and try again.",
+  "mobileLanguage_errNoSpeech": "I didn''t hear anything. Tap the microphone and speak clearly!",
+  "mobileLanguage_errAudio": "I can''t use the microphone. Make sure it is free and try again.",
+  "mobileLanguage_errNetwork": "Oops! Check your internet connection and try again.",
+  "mobileLanguage_errAborted": "Recording was stopped. Tap the microphone to try again!",
+  "mobileLanguage_errNotSupported": "Speech recognition is not available on this device.",
+  "mobileLanguage_errUnknown": "Something went wrong. Please try again!",
+  "mobileLanguage_pronUnavailable": "Not available in the app yet",
+  "mobileBoard_selectLevel": "Select a Level",
+  "mobileBoard_chooseLevel": "Choose Your Level",
+  "mobileBoard_gameOver": "Game Over!",
+  "mobileBoard_seeScore": "See Score",
+  "mobileBoard_tryAgain": "Try Again",
+  "mobileBoard_roundOf": "Round {current}/{total}",
+  "@mobileBoard_roundOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_lives": "Lives",
+  "mobileBoard_timeLabel": "Time",
+  "mobileBoard_sudokuSubtitle": "Fill the grid so every row, column and box has 1–9!",
+  "mobileBoard_sudokuGiven": "{count} numbers given",
+  "@mobileBoard_sudokuGiven": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_sudokuEasyDetail": "Great for beginners",
+  "mobileBoard_sudokuMediumDetail": "A solid challenge",
+  "mobileBoard_sudokuHardDetail": "For Sudoku pros",
+  "mobileBoard_startPuzzle": "Start Puzzle! 🧩",
+  "mobileBoard_generating": "Generating puzzle...",
+  "mobileBoard_notesOn": "Notes ON",
+  "mobileBoard_notesOff": "Notes OFF",
+  "mobileBoard_erase": "Erase",
+  "mobileBoard_mistakes": "Mistakes",
+  "mobileBoard_jigsawSubtitle": "Tap a piece, then tap where it belongs. You can also drag it there!",
+  "mobileBoard_jigsawGrid": "{size}×{size} grid ({pieces} pieces)",
+  "@mobileBoard_jigsawGrid": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "pieces": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_jigsawEasyDetail": "Great for beginners",
+  "mobileBoard_jigsawMediumDetail": "A fun challenge",
+  "mobileBoard_jigsawHardDetail": "For puzzle masters",
+  "mobileBoard_chooseImage": "Choose a Picture",
+  "mobileBoard_imageSunset": "Sunset Beach",
+  "mobileBoard_imageMountains": "Mountains",
+  "mobileBoard_imageForest": "Enchanted Forest",
+  "mobileBoard_imageOcean": "Ocean Waves",
+  "mobileBoard_imageSpace": "Outer Space",
+  "mobileBoard_imageGarden": "Flower Garden",
+  "mobileBoard_imageCity": "City Skyline",
+  "mobileBoard_imageArctic": "Arctic Aurora",
+  "mobileBoard_selectDifficultyAndImage": "Select Difficulty & Image",
+  "mobileBoard_moves": "Moves",
+  "mobileBoard_pieceSelected": "Piece selected. Tap the cell where it belongs",
+  "mobileBoard_showReference": "Show picture",
+  "mobileBoard_hideReference": "Hide picture",
+  "mobileBoard_piecesLeft": "Pieces left: {count}",
+  "@mobileBoard_piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_seqSubtitle": "Memorize the cards, then tap them back in order!",
+  "mobileBoard_chooseTheme": "Choose a Theme",
+  "mobileBoard_seqDesc": "{cards} cards · {seconds}s view time",
+  "@mobileBoard_seqDesc": {
+    "placeholders": {
+      "cards": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_memorize": "MEMORIZE! {seconds}s",
+  "@mobileBoard_memorize": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_tapCardYouSaw": "TAP THE CARD YOU SAW",
+  "mobileBoard_tapCardInOrder": "TAP CARD {current} OF {total} IN ORDER",
+  "@mobileBoard_tapCardInOrder": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_correctNextRound": "✅ Correct! Next round...",
+  "mobileBoard_challengeSequence": "Challenge Sequence",
+  "mobileBoard_allDrivers": "{theme} — All Drivers",
+  "@mobileBoard_allDrivers": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_roundsCompleted": "You completed {done} of {total} rounds",
+  "@mobileBoard_roundsCompleted": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_mistakesCount": "{count} mistakes",
+  "@mobileBoard_mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_twoPlayer": "Two Player",
+  "mobileBoard_localMultiplayer": "Local Multiplayer",
+  "mobileBoard_twoPlayerDesc": "Play against a friend on the same device",
+  "mobileBoard_twoPlayerDetail": "Take turns, no AI, just fun!",
+  "mobileBoard_or": "or",
+  "mobileBoard_player1": "Player 1 (X)",
+  "mobileBoard_player2": "Player 2 (O)",
+  "mobileBoard_ties": "Ties",
+  "mobileBoard_playerWins": "{player} wins!",
+  "@mobileBoard_playerWins": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_itsADraw": "It''s a draw!",
+  "mobileBoard_turnOf": "{player}''s turn",
+  "@mobileBoard_turnOf": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_newRound": "New Round",
+  "mobileBoard_bubbleSubtitle": "Pop the letters in order to spell the word!",
+  "mobileBoard_bubbleEasyDesc": "Short words (3–4 letters)",
+  "mobileBoard_bubbleMediumDesc": "6-letter words",
+  "mobileBoard_bubbleHardDesc": "Long words (7–9 letters)",
+  "mobileBoard_startBubble": "Start Popping! 🫧",
+  "mobileBoard_nextWord": "Next Word →",
+  "mobileBoard_wordsEnglishOnly": "Words and hints are in English only",
+  "mobileBoard_botSubtitle": "Program the robot to reach the power cell!",
+  "mobileBoard_botEasyDesc": "5×5 grid · Simple paths",
+  "mobileBoard_botMediumDesc": "6×6 grid · Cracks to jump over",
+  "mobileBoard_botHardDesc": "7×7 grid · Cracks + Ice that slides you",
+  "mobileBoard_botEasyFeatures": "Walls only",
+  "mobileBoard_botMediumFeatures": "Walls + Cracks",
+  "mobileBoard_botHardFeatures": "Walls + Cracks + Ice",
+  "mobileBoard_startBot": "Start Coding! 🤖",
+  "mobileBoard_levelOf": "Level {current}/{total}",
+  "@mobileBoard_levelOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botForward": "Forward",
+  "mobileBoard_botTurnLeft": "Turn Left",
+  "mobileBoard_botTurnRight": "Turn Right",
+  "mobileBoard_botJump": "Jump",
+  "mobileBoard_botRun": "Run",
+  "mobileBoard_botClear": "Clear",
+  "mobileBoard_yourProgram": "Your program",
+  "mobileBoard_programEmpty": "Tap the blocks below to build your program",
+  "mobileBoard_blocksUsed": "{used}/{max} blocks",
+  "@mobileBoard_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botHint": "Hint",
+  "mobileBoard_botSuccess": "Power cell reached! ⚡",
+  "mobileBoard_botNextLevel": "Next level →",
+  "mobileBoard_botFinish": "Finish 🏆",
+  "mobileBoard_botRetry": "Try again",
+  "mobileBoard_botFellCrack": "Bot fell into a crack! 🕳",
+  "mobileBoard_botCrashed": "Bot crashed! 💥",
+  "mobileBoard_botNotReached": "Bot didn''t reach the power cell 🤔",
+  "mobileBoard_botRunning": "Running...",
+  "mobileBoard_botHintsEnglishOnly": "Hints are in English only",
+  "mobileBoard_mazeControls": "Swipe on the maze or use the arrows to move",
+  "mobileBoard_mazeAnswerHint": "Your answer",
+  "mobileBoard_moveUp": "Move up",
+  "mobileBoard_moveDown": "Move down",
+  "mobileBoard_moveLeft": "Move left",
+  "mobileBoard_moveRight": "Move right",
+  "mobilePhysics_systemsCheck": "Systems check: {done}/{total} complete",
+  "@mobilePhysics_systemsCheck": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_ready": "Ready",
+  "mobilePhysics_pending": "Pending",
+  "mobilePhysics_englishPuzzles": "Mission puzzles and target facts are in English.",
+  "mobilePhysics_answerOk": "OK",
+  "mobilePhysics_answerWrong": "Answer: {answer}",
+  "@mobilePhysics_answerWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_bondDropHint": "Drag elements here or tap to add",
+  "mobilePhysics_bondHeat": "Heat",
+  "mobilePhysics_golfHoleOf": "Hole {current}/{total}",
+  "@mobilePhysics_golfHoleOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTotal": "Total: {strokes}",
+  "@mobilePhysics_golfTotal": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfPar": "Par {par}",
+  "@mobilePhysics_golfPar": {
+    "placeholders": {
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfStrokesPar": "{strokes} strokes (Par {par})",
+  "@mobilePhysics_golfStrokesPar": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      },
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfWaterHazard": "Water Hazard! +1 stroke",
+  "mobilePhysics_golfConditions": "Conditions",
+  "mobilePhysics_golfWind": "Wind",
+  "mobilePhysics_golfDirection": "Direction",
+  "mobilePhysics_golfTemp": "Temp",
+  "mobilePhysics_golfAltitude": "Altitude",
+  "mobilePhysics_golfWindSpeed": "{value} km/h",
+  "@mobilePhysics_golfWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempValue": "{value} °C",
+  "@mobilePhysics_golfTempValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfAltitudeValue": "{value} m",
+  "@mobilePhysics_golfAltitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempFrosty": "Frosty: ball rolls farther",
+  "mobilePhysics_golfTempHot": "Hot: grass is sticky",
+  "mobilePhysics_golfTempPleasant": "Pleasant conditions",
+  "mobilePhysics_golfAltThin": "Thin air: less drag",
+  "mobilePhysics_golfAltModerate": "Moderate elevation",
+  "mobilePhysics_golfAltSea": "Sea level",
+  "mobilePhysics_golfConditionsTip": "Conditions change each hole. Adjust your aim!",
+  "mobilePhysics_golfAimHint": "Drag back from the ball to aim and shoot",
+  "mobilePhysics_golfPullHint": "Pull back farther for more power",
+  "mobilePhysics_golfPower": "Power: {percent}%",
+  "@mobilePhysics_golfPower": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfConditionsNote": "Wind, temperature and altitude change each hole and affect the ball!",
+  "mobilePhysics_golfAlbatross": "Albatross!",
+  "mobilePhysics_golfEagle": "Eagle!",
+  "mobilePhysics_golfBirdie": "Birdie!",
+  "mobilePhysics_golfParName": "Par",
+  "mobilePhysics_golfBogey": "Bogey",
+  "mobilePhysics_golfDoubleBogey": "Double Bogey",
+  "mobilePhysics_golfTripleBogey": "Triple Bogey+",
+  "mobilePhysics_golfStrokeCounter": "{current}/{max}",
+  "@mobilePhysics_golfStrokeCounter": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileCircuit_remove": "Remove",
+  "mobileCircuit_moveHint": "Touch and hold a part, then drag it to move it. Tap a wire to remove it.",
+  "mobileCircuit_wiring": "Now tap another dot to finish the wire.",
+  "mobileCircuit_zoomHint": "Pinch to zoom and drag to pan the grid.",
+  "mobileCircuit_partSelected": "Selected: {name}",
+  "@mobileCircuit_partSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_goal": "🎯 Reach the airlock with the fewest lines! Target: {count} lines",
+  "@mobileSpaceCoder_goal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_cursorHere": "New lines go here",
+  "mobileSpaceCoder_dragHint": "Tap a command to add it at the green line, or drag it onto a line. Tap a line to move the green line there.",
+  "mobileSpaceCoder_removeLine": "Remove line {line}",
+  "@mobileSpaceCoder_removeLine": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_loopCount": "Loop count",
+  "mobileSpaceCoder_conditionMode": "Condition mode",
+  "mobileSpaceCoder_running": "Running…"
+}

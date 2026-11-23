@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'auth/auth_controller.dart';
 import 'config/env.dart';
+import 'l10n/gen/app_localizations.dart';
+import 'l10n/locale_controller.dart';
 import 'ui/router.dart';
 import 'ui/theme.dart';
 
@@ -14,6 +17,13 @@ Future<void> main() async {
   runApp(const ProviderScope(child: DashDenApp()));
 }
 
+const List<LocalizationsDelegate<dynamic>> _delegates = [
+  AppLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+];
+
 class DashDenApp extends ConsumerWidget {
   const DashDenApp({super.key});
 
@@ -21,12 +31,16 @@ class DashDenApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authControllerProvider);
     final router = ref.watch(routerProvider);
+    final locale = ref.watch(localeControllerProvider);
 
     // Show a splash while the session is being restored from secure storage.
     if (auth.status == AuthStatus.unknown) {
       return MaterialApp(
         title: Env.appName,
         theme: AppTheme.light(),
+        localizationsDelegates: _delegates,
+        supportedLocales: kSupportedLocales,
+        locale: locale,
         debugShowCheckedModeBanner: false,
         home: const _Splash(),
       );
@@ -35,6 +49,9 @@ class DashDenApp extends ConsumerWidget {
     return MaterialApp.router(
       title: Env.appName,
       theme: AppTheme.light(),
+      localizationsDelegates: _delegates,
+      supportedLocales: kSupportedLocales,
+      locale: locale,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );

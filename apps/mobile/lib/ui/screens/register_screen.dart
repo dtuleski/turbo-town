@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../auth/auth_controller.dart';
+import '../../auth/validation.dart';
+import '../../l10n/gen/app_localizations.dart';
+import '../auth_text.dart';
+import '../widgets/auth_widgets.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -16,17 +20,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _email = TextEditingController();
   final _username = TextEditingController();
   final _password = TextEditingController();
+  final _confirmPassword = TextEditingController();
   final _givenName = TextEditingController();
   final _familyName = TextEditingController();
   final _code = TextEditingController();
-
+  final _codeFormKey = GlobalKey<FormState>();
   bool _awaitingConfirmation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) ref.read(authControllerProvider.notifier).clearError();
+    });
+  }
 
   @override
   void dispose() {
     _email.dispose();
     _username.dispose();
     _password.dispose();
+    _confirmPassword.dispose();
     _givenName.dispose();
     _familyName.dispose();
     _code.dispose();
@@ -47,7 +61,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       case SignUpOutcome.needsConfirmation:
         setState(() => _awaitingConfirmation = true);
       case SignUpOutcome.confirmed:
-        // Auto-confirmed — sign in directly.
+        // Auto-confirmed: sign in directly.
         await ref
             .read(authControllerProvider.notifier)
             .signIn(_email.text.trim(), _password.text);
@@ -58,23 +72,40 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _confirm() async {
-    if (_code.text.trim().isEmpty) return;
+    if (!_codeFormKey.currentState!.validate()) return;
     final ok = await ref
         .read(authControllerProvider.notifier)
         .confirmSignUp(_email.text.trim(), _code.text.trim());
     if (!mounted || !ok) return;
-    // After confirmation, sign in.
+    // Sign in with the credentials just entered. If this screen was reached
+    // through "Already have a code?" the password may be empty; sign-in then
+    // fails with an error and the user can sign in from the login screen.
     await ref
         .read(authControllerProvider.notifier)
         .signIn(_email.text.trim(), _password.text);
   }
 
+  Future<bool> _resend() => ref
+      .read(authControllerProvider.notifier)
+      .resendSignUpCode(_email.text.trim())
+      .then((ok) {
+    if (ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context).mobileAuth_codeResent)));
+    }
+    return ok;
+  });
+
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authControllerProvider);
-
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(_awaitingConfirmation ? 'Confirm account' : 'Create account')),
+      appBar: AppBar(
+        title: Text(_awaitingConfirmation
+            ? l10n.auth_confirmEmail
+            : l10n.auth_createAccount),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -82,8 +113,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
               child: _awaitingConfirmation
-                  ? _confirmForm(context, auth)
-                  : _registerForm(context, auth),
+                  ? _confirmForm(context, l10n, auth)
+                  : _registerForm(context, l10n, auth),
             ),
           ),
         ),
@@ -91,7 +122,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     );
   }
 
-  Widget _registerForm(BuildContext context, AuthState auth) {
+  Widget _registerForm(
+      BuildContext context, AppLocalizations l10n, AuthState auth) {
     return Form(
       key: _formKey,
       child: Column(
@@ -99,136 +131,141 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
+            key: const Key('register-email'),
             controller: _email,
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              prefixIcon: Icon(Icons.email_outlined),
+            decoration: InputDecoration(
+              labelText: l10n.auth_email,
+              prefixIcon: const Icon(Icons.email_outlined),
             ),
-            validator: (v) => (v != null && v.contains('@')) ? null : 'Enter a valid email',
+            validator: fieldValidator(l10n, validateEmail),
           ),
           const SizedBox(height: 12),
           TextFormField(
+            key: const Key('register-first-name'),
             controller: _givenName,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'First name',
-              prefixIcon: Icon(Icons.badge_outlined),
+            decoration: InputDecoration(
+              labelText: l10n.mobileAuth_firstName,
+              prefixIcon: const Icon(Icons.badge_outlined),
             ),
-            validator: (v) =>
-                (v != null && v.trim().isNotEmpty) ? null : 'Required',
+            validator: fieldValidator(l10n, validateRequired),
           ),
           const SizedBox(height: 12),
           TextFormField(
+            key: const Key('register-last-name'),
             controller: _familyName,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'Last name',
-              prefixIcon: Icon(Icons.badge_outlined),
+            decoration: InputDecoration(
+              labelText: l10n.mobileAuth_lastName,
+              prefixIcon: const Icon(Icons.badge_outlined),
             ),
-            validator: (v) =>
-                (v != null && v.trim().isNotEmpty) ? null : 'Required',
+            validator: fieldValidator(l10n, validateRequired),
           ),
           const SizedBox(height: 12),
           TextFormField(
+            key: const Key('register-username'),
             controller: _username,
-            decoration: const InputDecoration(
-              labelText: 'Username',
-              prefixIcon: Icon(Icons.person_outline),
+            decoration: InputDecoration(
+              labelText: l10n.auth_username,
+              prefixIcon: const Icon(Icons.person_outline),
             ),
-            validator: (v) =>
-                (v != null && v.trim().length >= 3) ? null : 'At least 3 characters',
+            validator: fieldValidator(l10n, validateUsername),
           ),
           const SizedBox(height: 12),
           TextFormField(
+            key: const Key('register-password'),
             controller: _password,
             obscureText: true,
-            decoration: const InputDecoration(
-              labelText: 'Password',
-              prefixIcon: Icon(Icons.lock_outline),
+            decoration: InputDecoration(
+              labelText: l10n.auth_password,
+              prefixIcon: const Icon(Icons.lock_outline),
             ),
-            validator: (v) =>
-                (v != null && v.length >= 8) ? null : 'At least 8 characters',
+            validator: fieldValidator(l10n, validateNewPassword),
           ),
-          if (auth.error != null) ...[
-            const SizedBox(height: 16),
-            Text(auth.error!,
-                style: TextStyle(color: Theme.of(context).colorScheme.error)),
-          ],
+          const SizedBox(height: 12),
+          TextFormField(
+            key: const Key('register-confirm-password'),
+            controller: _confirmPassword,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: l10n.auth_confirmPassword,
+              prefixIcon: const Icon(Icons.lock_outline),
+            ),
+            validator: fieldValidator(
+                l10n, (v) => validateConfirmPassword(_password.text, v)),
+          ),
+          AuthErrorText(authErrorText(l10n, auth)),
           const SizedBox(height: 24),
           FilledButton(
             onPressed: auth.isBusy ? null : _register,
-            child: auth.isBusy
-                ? const SizedBox(
-                    height: 22, width: 22,
-                    child: CircularProgressIndicator(strokeWidth: 2))
-                : const Text('Create account'),
+            child: AuthButtonLabel(
+                busy: auth.isBusy, label: l10n.auth_createAccount),
           ),
           TextButton(
             onPressed: () {
               // Escape hatch: if an account was already created (e.g. a prior
               // attempt), let the user jump straight to entering their code.
-              if (_email.text.trim().contains('@')) {
+              if (validateEmail(_email.text) == null) {
                 setState(() => _awaitingConfirmation = true);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Enter your email above first, then tap this.'),
-                  ),
+                  SnackBar(content: Text(l10n.mobileAuth_enterEmailFirst)),
                 );
               }
             },
-            child: const Text('Already have a code? Enter it'),
+            child: Text(l10n.mobileAuth_haveResetCode),
           ),
           TextButton(
             onPressed: () => context.pop(),
-            child: const Text('Back to sign in'),
+            child: Text(l10n.mobileAuth_backToLogin),
           ),
         ],
       ),
     );
   }
 
-  Widget _confirmForm(BuildContext context, AuthState auth) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text('We sent a confirmation code to ${_email.text.trim()}.',
-            style: Theme.of(context).textTheme.bodyLarge),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _code,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: 'Confirmation code',
-            prefixIcon: Icon(Icons.pin_outlined),
-          ),
-        ),
-        if (auth.error != null) ...[
+  Widget _confirmForm(
+      BuildContext context, AppLocalizations l10n, AuthState auth) {
+    return Form(
+      key: _codeFormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(l10n.auth_sentCodeTo(_email.text.trim()),
+              style: Theme.of(context).textTheme.bodyLarge),
           const SizedBox(height: 16),
-          Text(auth.error!,
-              style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          TextFormField(
+            key: const Key('register-code'),
+            controller: _code,
+            keyboardType: TextInputType.number,
+            autofillHints: const [AutofillHints.oneTimeCode],
+            decoration: InputDecoration(
+              labelText: l10n.auth_confirmationCode,
+              prefixIcon: const Icon(Icons.pin_outlined),
+            ),
+            validator: fieldValidator(l10n, validateConfirmationCode),
+          ),
+          AuthErrorText(authErrorText(l10n, auth)),
+          const SizedBox(height: 24),
+          FilledButton(
+            onPressed: auth.isBusy ? null : _confirm,
+            child: AuthButtonLabel(
+                busy: auth.isBusy, label: l10n.auth_confirmEmailBtn),
+          ),
+          ResendCodeButton(onResend: _resend),
+          TextButton(
+            onPressed: auth.isBusy
+                ? null
+                : () {
+                    ref.read(authControllerProvider.notifier).clearError();
+                    setState(() => _awaitingConfirmation = false);
+                  },
+            child: Text(l10n.auth_backToRegistration),
+          ),
         ],
-        const SizedBox(height: 24),
-        FilledButton(
-          onPressed: auth.isBusy ? null : _confirm,
-          child: auth.isBusy
-              ? const SizedBox(
-                  height: 22, width: 22,
-                  child: CircularProgressIndicator(strokeWidth: 2))
-              : const Text('Confirm & sign in'),
-        ),
-        TextButton(
-          onPressed: auth.isBusy
-              ? null
-              : () {
-                  ref.read(authControllerProvider.notifier).clearError();
-                  setState(() => _awaitingConfirmation = false);
-                },
-          child: const Text('Back'),
-        ),
-      ],
+      ),
     );
   }
 }

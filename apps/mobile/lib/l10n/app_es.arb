@@ -1,0 +1,2369 @@
+{
+  "@@locale": "es",
+  "games_memory_match_title": "Memoria",
+  "games_memory_match_description": "¡Voltea cartas y encuentra los pares!",
+  "games_memory_match_category": "Rompecabezas & Lógica",
+  "games_math_challenge_title": "Desafío Matemático",
+  "games_math_challenge_description": "¡Resuelve problemas de matemáticas lo más rápido posible!",
+  "games_math_challenge_category": "Ciencia & Matemáticas",
+  "games_word_puzzle_title": "Sopa de Letras",
+  "games_word_puzzle_description": "¡Encuentra palabras ocultas en la cuadrícula!",
+  "games_word_puzzle_category": "Rompecabezas & Lógica",
+  "games_language_learning_title": "Aprendizaje de Idiomas",
+  "games_language_learning_description": "¡Aprende idiomas con juegos divertidos!",
+  "games_language_learning_category": "Geografía & Idiomas",
+  "games_sudoku_title": "Sudoku",
+  "games_sudoku_description": "¡Llena la cuadrícula con números — sin repetir!",
+  "games_sudoku_category": "Rompecabezas & Lógica",
+  "games_jigsaw_puzzle_title": "Rompecabezas",
+  "games_jigsaw_puzzle_description": "¡Arma las piezas para completar la imagen!",
+  "games_jigsaw_puzzle_category": "Rompecabezas & Lógica",
+  "games_bubble_pop_title": "Revienta Burbujas",
+  "games_bubble_pop_description": "¡Revienta burbujas resolviendo desafíos rápidos!",
+  "games_bubble_pop_category": "Rompecabezas & Lógica",
+  "games_sequence_memory_title": "Memoria de Secuencias",
+  "games_sequence_memory_description": "¡Memoriza y repite secuencias crecientes!",
+  "games_sequence_memory_category": "Rompecabezas & Lógica",
+  "games_code_a_bot_title": "Programa el Robot",
+  "games_code_a_bot_description": "¡Programa un robot para alcanzar la meta!",
+  "games_code_a_bot_category": "Rompecabezas & Lógica",
+  "games_geo_quiz_title": "Quiz de Geografía",
+  "games_geo_quiz_description": "¡Pon a prueba tu conocimiento de geografía mundial!",
+  "games_geo_quiz_category": "Geografía & Idiomas",
+  "games_history_quiz_title": "Quiz de Historia",
+  "games_history_quiz_description": "¡Viaja en el tiempo con preguntas de historia!",
+  "games_history_quiz_category": "Historia & Civismo",
+  "games_civics_quiz_title": "Quiz de Civismo",
+  "games_civics_quiz_description": "¡Aprende sobre gobierno y ciudadanía!",
+  "games_civics_quiz_category": "Historia & Civismo",
+  "games_color_by_number_title": "Colorear por Números",
+  "games_color_by_number_description": "¡Pinta hermosas imágenes número por número!",
+  "games_color_by_number_category": "Rompecabezas & Lógica",
+  "games_hangman_title": "Ahorcado",
+  "games_hangman_description": "¡Adivina la palabra letra por letra!",
+  "games_hangman_category": "Rompecabezas & Lógica",
+  "games_tic_tac_toe_title": "Tres en Raya",
+  "games_tic_tac_toe_description": "¡Clásico juego de estrategia X y O!",
+  "games_tic_tac_toe_category": "Rompecabezas & Lógica",
+  "games_scratch_coding_title": "Space Coder",
+  "games_scratch_coding_description": "¡Programa tu astronauta hasta la esclusa con los menos bloques!",
+  "games_scratch_coding_category": "Rompecabezas & Lógica",
+  "games_math_maze_title": "Laberinto Matemático",
+  "games_math_maze_description": "¡Navega por un laberinto resolviendo ecuaciones en las puertas!",
+  "games_math_maze_category": "Ciencia & Matemáticas",
+  "games_pattern_recall_title": "Memoria de Patrones",
+  "games_pattern_recall_description": "¡Memoriza y repite patrones en este juego estilo Simon Says!",
+  "games_pattern_recall_category": "Rompecabezas & Lógica",
+  "games_space_entry_title": "Entrada Espacial",
+  "games_space_entry_description": "¡Calcula tu ángulo de reentrada y aterriza en la Tierra!",
+  "games_space_entry_category": "Ciencia & Matemáticas",
+  "games_bond_and_burn_title": "Bond & Burn",
+  "games_bond_and_burn_description": "¡Lee la fórmula, encuentra elementos en la tabla periódica y crea compuestos antes de que el lab se sobrecaliente!",
+  "games_bond_and_burn_category": "Ciencia & Matemáticas",
+  "games_circuit_builder_title": "Constructor de Circuitos",
+  "games_circuit_builder_description": "¡Conecta pilas, bombillas e interruptores, observa cómo fluye la corriente y repara las averías!",
+  "games_circuit_builder_category": "Ciencia & Matemáticas",
+  "nav_dashboard": "Panel",
+  "nav_leaderboard": "Clasificación",
+  "nav_achievements": "Logros",
+  "nav_changePlan": "Cambiar Plan",
+  "nav_logout": "Cerrar Sesión",
+  "nav_profile": "Perfil",
+  "nav_contact": "Contacto",
+  "hub_title": "DashDen Centro de Juegos",
+  "hub_greeting": "¡Hola {name}! ¡Elige un juego!",
+  "@hub_greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "hub_subtitle": "Juegos educativos que hacen divertido aprender",
+  "hub_filter_all": "Todos",
+  "hub_filter_scienceMath": "Ciencia y Matemáticas",
+  "hub_filter_historyCivics": "Historia y Cívica",
+  "hub_filter_geographyLanguage": "Geografía e Idiomas",
+  "hub_filter_puzzlesLogic": "Puzzles y Lógica",
+  "hub_noGames": "No hay juegos disponibles ahora. ¡Vuelve pronto!",
+  "hub_noGamesFilter": "No hay juegos en esta categoría. ¡Prueba otro filtro!",
+  "hub_playNow": "¡Jugar! →",
+  "hub_comingSoon": "¡Próximamente!",
+  "hub_loadingGames": "Cargando juegos...",
+  "hub_oops": "¡Ups!",
+  "hub_failedToLoad": "Error al cargar los juegos. Inténtalo de nuevo.",
+  "hub_dashboard": "Panel",
+  "hub_leaderboard": "Clasificación",
+  "hub_ages": "Edades",
+  "game_back": "← Volver",
+  "game_startQuiz": "¡Comenzar! 🚀",
+  "game_startGame": "¡Comenzar!",
+  "game_selectDifficulty": "Seleccionar Dificultad",
+  "game_chooseDifficulty": "Elige la Dificultad",
+  "game_chooseTopic": "Elige un Tema",
+  "game_chooseGameMode": "Elige el Modo de Juego",
+  "game_chooseAIDifficulty": "Elige la Dificultad de la IA",
+  "game_selectDifficultyAndMode": "Selecciona Dificultad y Modo",
+  "game_selectTopicAndDifficulty": "Selecciona Tema y Dificultad",
+  "game_easy": "Fácil",
+  "game_medium": "Medio",
+  "game_hard": "Difícil",
+  "game_correct": "¡Correcto!",
+  "game_wrong": "¡Incorrecto!",
+  "game_score": "Puntuación",
+  "game_time": "Tiempo",
+  "game_round": "Ronda",
+  "game_streak": "¡racha!",
+  "game_bonus": "bonus",
+  "game_nextRound": "Siguiente Ronda →",
+  "game_seeResults": "Ver Resultados 🏆",
+  "game_calculating": "Calculando puntuación...",
+  "game_gameComplete": "¡Juego Completado!",
+  "game_playAgain": "Jugar de Nuevo",
+  "game_close": "Cerrar",
+  "game_rateGame": "Califica este juego",
+  "game_thanksFeedback": "✓ ¡Gracias por tu opinión!",
+  "game_totalScore": "Puntuación Total",
+  "game_baseScore": "Puntuación Base",
+  "game_difficulty": "Dificultad",
+  "game_speed": "Velocidad",
+  "game_accuracy": "Precisión",
+  "game_leaderboardBtn": "🏆 Clasificación",
+  "game_playAgainBtn": "🎮 Jugar de Nuevo",
+  "leaderboard_title": "Clasificación",
+  "leaderboard_subtitle": "¡Compite con jugadores de todo el mundo!",
+  "leaderboard_gameType": "Tipo de Juego",
+  "leaderboard_daily": "Diario",
+  "leaderboard_weekly": "Semanal",
+  "leaderboard_monthly": "Mensual",
+  "leaderboard_allTime": "Histórico",
+  "leaderboard_yourRank": "Tu Posición",
+  "leaderboard_topPlayers": "Mejores Jugadores",
+  "leaderboard_rank": "Posición",
+  "leaderboard_player": "Jugador",
+  "leaderboard_date": "Fecha",
+  "leaderboard_clearAll": "Borrar Todos los Registros",
+  "leaderboard_players": "jugadores",
+  "leaderboard_keepPlaying": "¡Sigue jugando para mejorar tu posición!",
+  "leaderboard_todaysTop": "Mejores Jugadores de Hoy",
+  "leaderboard_thisWeeksTop": "Mejores Jugadores de la Semana",
+  "leaderboard_thisMonthsTop": "Mejores Jugadores del Mes",
+  "leaderboard_allTimeTop": "Mejores Jugadores de Todos los Tiempos",
+  "leaderboard_ranked": "Estás en la posición #{rank} de {total} jugadores",
+  "@leaderboard_ranked": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_showing": "Mostrando los {count} mejores jugadores",
+  "@leaderboard_showing": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "leaderboard_clearing": "⏳ Borrando...",
+  "leaderboard_failedToLoad": "Error al cargar la clasificación. Inténtalo más tarde.",
+  "profile_title": "Perfil",
+  "profile_accountTier": "Nivel de Cuenta",
+  "profile_memberSince": "Miembro Desde",
+  "profile_emailPrefs": "Preferencias de Email",
+  "profile_dailyDigest": "Resumen Diario",
+  "profile_dailyDigestDesc": "Recibe actualizaciones diarias de clasificación y juegos",
+  "profile_dailyDigestOn": "✓ Recibirás actualizaciones diarias a las 8pm EST",
+  "auth_createAccount": "Crear Cuenta",
+  "auth_login": "Iniciar Sesión",
+  "auth_email": "Correo Electrónico",
+  "auth_username": "Nombre de Usuario",
+  "auth_password": "Contraseña",
+  "auth_confirmPassword": "Confirmar Contraseña",
+  "auth_forgotPassword": "¿Olvidaste tu contraseña?",
+  "auth_alreadyHaveAccount": "¿Ya tienes una cuenta?",
+  "auth_dontHaveAccount": "¿No tienes una cuenta?",
+  "auth_signUpGoogle": "Registrarse con Google",
+  "auth_signInGoogle": "Iniciar sesión con Google",
+  "auth_emailOptIn": "Envíame actualizaciones diarias de juegos, clasificaciones y alertas de nuevos juegos",
+  "auth_or": "o",
+  "auth_welcomeBack": "¡Bienvenido de nuevo!",
+  "auth_rememberMe": "Recordarme",
+  "auth_invalidCredentials": "Correo o contraseña inválidos",
+  "auth_continueWithGoogle": "Continuar con Google",
+  "auth_signUp": "Registrarse",
+  "auth_confirmEmail": "Confirma tu Email",
+  "auth_confirmationCode": "Código de Confirmación",
+  "auth_sentCodeTo": "Hemos enviado un código de confirmación a {email}. Ingrésalo a continuación.",
+  "@auth_sentCodeTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "auth_confirmEmailBtn": "Confirmar Email",
+  "auth_backToRegistration": "Volver al registro",
+  "auth_checkEmailForCode": "Revisa tu correo para obtener el código de confirmación.",
+  "auth_registrationFailed": "Error en el registro. Inténtalo de nuevo.",
+  "auth_confirmationFailed": "Error en la confirmación. Inténtalo de nuevo.",
+  "common_loading": "Cargando...",
+  "common_error": "Error",
+  "common_retry": "Reintentar",
+  "common_save": "Guardar",
+  "common_cancel": "Cancelar",
+  "common_confirm": "Confirmar",
+  "common_yes": "Sí",
+  "common_no": "No",
+  "common_tryAgain": "Intentar de Nuevo",
+  "common_player": "Jugador",
+  "setup_mathChallenge_title": "Desafío Matemático",
+  "setup_mathChallenge_subtitle": "¡Pon a prueba tus habilidades matemáticas!",
+  "setup_mathChallenge_chooseLevel": "Elige tu Nivel",
+  "setup_mathChallenge_addSub": "Suma y Resta",
+  "setup_mathChallenge_allBasic": "Todas las Operaciones Básicas",
+  "setup_mathChallenge_advanced": "Matemáticas Avanzadas",
+  "setup_mathChallenge_questions": "{count} preguntas",
+  "@setup_mathChallenge_questions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_minutes": "{count} minutos",
+  "@setup_mathChallenge_minutes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_startChallenge": "¡Comenzar! 🚀",
+  "setup_mathChallenge_selectLevel": "Selecciona un Nivel",
+  "setup_mathChallenge_question": "Pregunta",
+  "setup_mathChallenge_time": "Tiempo",
+  "setup_mathChallenge_score": "Puntuación",
+  "setup_mathChallenge_level": "{emoji} Nivel {name}",
+  "@setup_mathChallenge_level": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_yourAnswer": "Tu respuesta...",
+  "setup_mathChallenge_submitAnswer": "Enviar Respuesta",
+  "setup_mathChallenge_calculatingScore": "Calculando tu puntuación...",
+  "setup_mathChallenge_correct": "✅ ¡Correcto!",
+  "setup_mathChallenge_wrong": "❌ ¡Incorrecto! Respuesta: {answer}",
+  "@setup_mathChallenge_wrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "setup_mathChallenge_amazing": "¡Increíble!",
+  "setup_mathChallenge_goodJob": "¡Buen Trabajo!",
+  "setup_mathChallenge_keepPracticing": "¡Sigue Practicando!",
+  "setup_mathChallenge_playAgain": "Jugar de Nuevo",
+  "setup_mathChallenge_backToHub": "Volver al Hub",
+  "setup_memoryMatch_letsPlay": "¡A Jugar! 🎮",
+  "setup_memoryMatch_chooseTheme": "Elige tu Tema",
+  "setup_memoryMatch_chooseDifficulty": "Elige la Dificultad",
+  "setup_memoryMatch_startGame": "¡Comenzar! 🚀",
+  "setup_memoryMatch_animals": "Animales",
+  "setup_memoryMatch_fruits": "Frutas",
+  "setup_memoryMatch_vehicles": "Vehículos",
+  "setup_memoryMatch_space": "Espacio",
+  "setup_memoryMatch_ocean": "Océano",
+  "setup_memoryMatch_formula1": "Fórmula 1",
+  "setup_memoryMatch_easyDesc": "6 pares - Perfecto para principiantes",
+  "setup_memoryMatch_mediumDesc": "8 pares - Un buen desafío",
+  "setup_memoryMatch_hardDesc": "10 pares - Para maestros de la memoria",
+  "setup_memoryMatch_readyToPlay": "¿Listo para Jugar?",
+  "setup_memoryMatch_matchPairs": "¡Encuentra todos los pares lo más rápido posible!",
+  "setup_memoryMatch_theme": "Tema",
+  "setup_memoryMatch_difficulty": "Dificultad",
+  "setup_memoryMatch_time": "Tiempo",
+  "setup_memoryMatch_attempts": "Intentos",
+  "setup_memoryMatch_matches": "Aciertos",
+  "setup_memoryMatch_pause": "Pausa",
+  "setup_memoryMatch_resume": "Continuar",
+  "setup_memoryMatch_restart": "Reiniciar",
+  "setup_memoryMatch_gamePaused": "Juego en Pausa",
+  "setup_contact_title": "Contáctanos",
+  "setup_contact_subtitle": "Reporta un error, solicita una función o simplemente saluda.",
+  "setup_contact_whatsAbout": "¿De qué se trata?",
+  "setup_contact_bugReport": "Reporte de Error",
+  "setup_contact_featureRequest": "Solicitud de Función",
+  "setup_contact_question": "Pregunta",
+  "setup_contact_other": "Otro",
+  "setup_contact_from": "De:",
+  "setup_contact_subject": "Asunto",
+  "setup_contact_subjectPlaceholder": "Breve descripción...",
+  "setup_contact_message": "Mensaje",
+  "setup_contact_messagePlaceholder": "Cuéntanos más...",
+  "setup_contact_send": "📨 Enviar Mensaje",
+  "setup_contact_sending": "⏳ Enviando...",
+  "setup_contact_errorMsg": "Algo salió mal. Inténtalo de nuevo.",
+  "setup_contact_sentTitle": "¡Mensaje Enviado!",
+  "setup_contact_sentMsg": "Gracias por contactarnos. Te responderemos pronto.",
+  "setup_contact_backToGames": "Volver a los Juegos",
+  "setup_civicsQuiz_title": "Quiz de Civismo",
+  "setup_civicsQuiz_subtitle": "Domina el examen oficial de ciudadanía de EE.UU.",
+  "setup_civicsQuiz_based": "Basado en las 100 preguntas cívicas del USCIS",
+  "setup_civicsQuiz_allTopics": "Todos los Temas",
+  "setup_civicsQuiz_allTopicsDesc": "Las 100 preguntas mezcladas",
+  "setup_civicsQuiz_americanGov": "Gobierno Americano",
+  "setup_civicsQuiz_americanGovDesc": "Principios, sistema, derechos y responsabilidades",
+  "setup_civicsQuiz_americanHistory": "Historia Americana",
+  "setup_civicsQuiz_americanHistoryDesc": "Período colonial, 1800s e historia reciente",
+  "setup_civicsQuiz_integratedCivics": "Civismo Integrado",
+  "setup_civicsQuiz_integratedCivicsDesc": "Geografía, símbolos y feriados",
+  "setup_civicsQuiz_questions": "preguntas",
+  "setup_civicsQuiz_aboutQuiz": "Sobre este Quiz",
+  "setup_geoQuiz_title": "Quiz de Geografía",
+  "setup_geoQuiz_subtitle": "¡Pon a prueba tus conocimientos de geografía!",
+  "setup_geoQuiz_info": "10 preguntas · Pistas progresivas · Datos curiosos",
+  "setup_geoQuiz_howItWorks": "Cómo Funciona",
+  "setup_geoQuiz_questionsLabel": "Preguntas",
+  "setup_geoQuiz_timerPerQ": "Tiempo por pregunta",
+  "setup_geoQuiz_hintsAfter": "Pistas después de 5s y 10s",
+  "setup_geoQuiz_streakBonuses": "Bonos por racha",
+  "setup_geoQuiz_funFacts": "Datos curiosos después de cada respuesta",
+  "setup_geoModes_capitals": "Capitales",
+  "setup_geoModes_flags": "Banderas",
+  "setup_geoModes_usStates": "Estados de EE.UU.",
+  "setup_geoModes_silhouettes": "Siluetas",
+  "setup_geoModes_continents": "Continentes",
+  "setup_historyQuiz_title": "Quiz de Historia",
+  "setup_historyQuiz_subtitle": "Frases famosas, eventos y personajes históricos",
+  "setup_historyQuiz_info": "10 preguntas · Imágenes · Datos curiosos",
+  "setup_hangman_title": "Ahorcado",
+  "setup_hangman_subtitle": "¡Adivina la palabra antes de que se complete el ahorcado!",
+  "setup_hangman_info": "6 intentos fallidos permitidos · Pistas incluidas · 5 rondas",
+  "setup_hangman_hintInfo": "Cada palabra tiene una pista y categoría · Menos errores = más puntos",
+  "setup_hangman_upTo5": "Hasta 5 letras",
+  "setup_hangman_upTo10": "6-10 letras",
+  "setup_hangman_moreThan10": "11+ letras",
+  "setup_hangman_rounds": "5 rondas",
+  "setup_ticTacToe_title": "Tres en Raya",
+  "setup_ticTacToe_subtitle": "¡Desafía a la IA — Mejor de 5 rondas!",
+  "setup_ticTacToe_youAreX": "Tú eres X · IA es O · Gana, empata o pierde cada ronda",
+  "setup_ticTacToe_randomAI": "IA Aleatoria",
+  "setup_ticTacToe_smartAI": "IA Inteligente",
+  "setup_ticTacToe_perfectAI": "IA Perfecta",
+  "setup_ticTacToe_greatForBeginners": "Ideal para principiantes",
+  "setup_ticTacToe_blocksYourWins": "Bloquea tus victorias",
+  "setup_ticTacToe_impossibleToBeat": "¡Imposible de vencer — intenta empatar!",
+  "setup_ticTacToe_scoring": "Victoria = 300pts · Empate = 100pts · Derrota = 0pts · Más rápido = bonus",
+  "scratchCoding_title": "Programador Espacial",
+  "scratchCoding_subtitle": "¡Programa a tu astronauta hasta la esclusa con la menor cantidad de líneas de código!",
+  "scratchCoding_howToPlay": "Cómo Jugar",
+  "scratchCoding_chooseDifficulty": "Elige la Dificultad",
+  "scratchCoding_startCoding": "¡A Programar! 🚀",
+  "scratchCoding_howToPlayStep1": "Haz clic en los botones de comando de la paleta para agregar líneas de código",
+  "scratchCoding_howToPlayStep2": "Construye tu programa en el editor de código estilo terminal",
+  "scratchCoding_howToPlayStep3": "¡Presiona Ejecutar y mira a tu astronauta seguir las instrucciones!",
+  "scratchCoding_blocks_onStart": "Al Iniciar",
+  "scratchCoding_blocks_moveForward": "Avanzar",
+  "scratchCoding_blocks_turnLeft": "Girar Izquierda",
+  "scratchCoding_blocks_turnRight": "Girar Derecha",
+  "scratchCoding_blocks_repeat": "Repetir",
+  "scratchCoding_blocks_ifWallAhead": "Si Hay Asteroide",
+  "scratchCoding_blocks_ifOnGoal": "Si En Esclusa",
+  "scratchCoding_categories_motion": "Movimiento",
+  "scratchCoding_categories_control": "Control",
+  "scratchCoding_categories_events": "Eventos",
+  "scratchCoding_game_blocks": "Comandos",
+  "scratchCoding_game_noMoreBlocks": "¡Máximo de líneas alcanzado!",
+  "scratchCoding_game_program": "Programa",
+  "scratchCoding_game_blocksUsed": "{used}/{max} líneas",
+  "@scratchCoding_game_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_dragHere": "Haz clic en comandos para agregar código aquí...",
+  "scratchCoding_game_clearAll": "Borrar Todo ✕",
+  "scratchCoding_game_clickToRemove": "clic para eliminar",
+  "scratchCoding_game_run": "Ejecutar",
+  "scratchCoding_game_level": "Nivel {current}/{total}",
+  "@scratchCoding_game_level": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_levelComplete": "¡Nivel Completado!",
+  "scratchCoding_game_blocksUsedCount": "Resuelto en {count} líneas",
+  "@scratchCoding_game_blocksUsedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_optimalSolution": "¡Solución óptima!",
+  "scratchCoding_game_optimalHint": "Óptimo: {count} líneas",
+  "@scratchCoding_game_optimalHint": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scratchCoding_game_nextLevel": "Siguiente Nivel →",
+  "scratchCoding_game_seeScore": "Ver Puntuación 🏆",
+  "scratchCoding_game_tryAgain": "Intentar de Nuevo 🔄",
+  "scratchCoding_game_endGame": "Terminar Juego",
+  "scratchCoding_game_hitWall": "¡El astronauta chocó con un asteroide! ☄️",
+  "scratchCoding_game_offGrid": "¡El astronauta se perdió en el espacio! ☄️",
+  "scratchCoding_game_didntReachGoal": "El astronauta no llegó a la esclusa 🤔",
+  "scratchCoding_game_tryDifferent": "Prueba una secuencia diferente",
+  "scratchCoding_difficulty_easy_label": "Fácil",
+  "scratchCoding_difficulty_easy_desc": "Cuadrícula 6×6 · avanzar, girar",
+  "scratchCoding_difficulty_easy_features": "forward() · turn-left() · turn-right()",
+  "scratchCoding_difficulty_medium_label": "Medio",
+  "scratchCoding_difficulty_medium_desc": "Cuadrícula 8×8 · ¡bucles!",
+  "scratchCoding_difficulty_medium_features": "forward() · giros · loop(n)",
+  "scratchCoding_difficulty_hard_label": "Difícil",
+  "scratchCoding_difficulty_hard_desc": "Cuadrícula 12×12 · obstáculos y condicionales",
+  "scratchCoding_difficulty_hard_features": "Todos los comandos · jump() · if/while",
+  "scratchCoding_nesting_ifLabel": "Si",
+  "scratchCoding_nesting_elseLabel": "Sino",
+  "scratchCoding_nesting_dropHere": "Arrastra bloques aquí",
+  "scratchCoding_nesting_maxDepthReached": "¡Profundidad máxima de anidamiento alcanzada!",
+  "scratchCoding_nesting_perfectEfficiency": "Código Perfecto ⚡",
+  "scratchCoding_nesting_goodEfficiency": "Código Limpio 👍",
+  "scratchCoding_nesting_canImprove": "Puede mejorar — ¡usa menos líneas!",
+  "scratchCoding_hints_easy1": "Mueve a la derecha para llegar a la esclusa — usa forward() cinco veces",
+  "scratchCoding_hints_easy2": "Mueve a la derecha y abajo para llegar a la esclusa",
+  "scratchCoding_hints_easy3": "Rodea la pared — giro en U por el corredor",
+  "scratchCoding_hints_easy4": "Navega alrededor de los asteroides con giros",
+  "scratchCoding_hints_easy5": "Zigzaguea por el corredor en forma de S",
+  "scratchCoding_hints_medium1": "¿Ves el patrón de escalera? Usa loop() para repetir: forward + giro + forward + giro",
+  "scratchCoding_hints_medium2": "El camino zigzaguea — usa loop() para repetir el patrón",
+  "scratchCoding_hints_medium3": "Navega la espiral — los bucles ayudan con patrones repetitivos",
+  "scratchCoding_hints_medium4": "Dos giros en L idénticos — pon la forma L dentro de un loop(2)",
+  "scratchCoding_hints_medium5": "Pequeños pasos diagonales se repiten 6 veces — perfecto para un loop()",
+  "scratchCoding_hints_hard1": "¡Los obstáculos bloquean tu camino! Usa jump() para saltarlos",
+  "scratchCoding_hints_hard2": "Usa if(obstacle-ahead) para decidir cuándo saltar",
+  "scratchCoding_hints_hard3": "Obstáculos densos — combina jump() con if(obstacle-ahead) y su rama else",
+  "scratchCoding_hints_hard4": "Usa if(obstacle-ahead) para navegar alrededor de obstáculos",
+  "scratchCoding_hints_hard5": "Usa while(not-at-goal) para seguir moviéndote hasta llegar a la esclusa",
+  "spaceCoder_commands_forward": "forward()",
+  "spaceCoder_commands_turnLeft": "turn-left()",
+  "spaceCoder_commands_turnRight": "turn-right()",
+  "spaceCoder_commands_jump": "jump()",
+  "spaceCoder_commands_loop": "loop(n)",
+  "spaceCoder_commands_if": "si(...)",
+  "spaceCoder_commands_while": "mientras(...)",
+  "spaceCoder_commands_varNumDecl": "var-num",
+  "spaceCoder_commands_varCharDecl": "var-char",
+  "spaceCoder_commands_varNumInc": "var-num++",
+  "spaceCoder_commands_varNumDec": "var-num--",
+  "spaceCoder_conditions_sensorMode": "Sensor",
+  "spaceCoder_conditions_comparisonMode": "Comparar",
+  "spaceCoder_conditions_obstacleAhead": "obstacle-ahead()",
+  "spaceCoder_conditions_atGoal": "at-goal()",
+  "spaceCoder_conditions_notAtGoal": "not-at-goal()",
+  "spaceCoder_conditions_edgeAhead": "edge-ahead()",
+  "spaceCoder_variables_sectionTitle": "Variables",
+  "spaceCoder_variables_numLabel": "Número",
+  "spaceCoder_variables_charLabel": "Carácter",
+  "spaceCoder_editor_lineNumbers": "Números de Línea",
+  "spaceCoder_editor_clearAll": "Borrar Todo",
+  "spaceCoder_editor_insertionHint": "Haz clic en un comando para insertarlo aquí",
+  "spaceCoder_editor_maxLinesReached": "¡Máximo de líneas alcanzado!",
+  "spaceCoder_errors_collision": "¡El astronauta chocó con un asteroide! ☄️",
+  "spaceCoder_errors_hitObstacle": "¡El astronauta chocó con una roca! Usa jump() para saltar obstáculos 🪨",
+  "spaceCoder_errors_outOfBounds": "¡El astronauta se perdió en el espacio! ☄️",
+  "spaceCoder_errors_noObstacleToJump": "¡Nada que saltar! jump() necesita un obstáculo adelante 🤔",
+  "spaceCoder_errors_jumpLandingBlocked": "¡No puede aterrizar ahí! El punto de aterrizaje está bloqueado ☄️",
+  "spaceCoder_errors_infiniteLoop": "¡El programa tardó demasiado! Revisa tus bucles 🔄",
+  "spaceCoder_errors_undefinedVarNum": "¡Variable no definida! Agrega var-num = <valor> antes de usarla.",
+  "spaceCoder_errors_undefinedVarChar": "¡Variable no definida! Agrega var-char = ''<valor>'' antes de usarla.",
+  "spaceCoder_efficiency_perfectCode": "Código Perfecto ⚡",
+  "spaceCoder_efficiency_cleanCode": "Código Limpio 👍",
+  "gameplay_loadingQuestions": "Cargando preguntas...",
+  "gameplay_whichCountry": "¿Qué país es este?",
+  "gameplay_guessesLeft": "{count} intentos restantes",
+  "@gameplay_guessesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theWordWas": "La palabra era: {word}",
+  "@gameplay_theWordWas": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_theAnswerWas": "La respuesta era: {answer}",
+  "@gameplay_theAnswerWas": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_answer": "Respuesta: {answer}",
+  "@gameplay_answer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "gameplay_englishOnlyBadge": "🌐 Contenido solo en inglés",
+  "gameplay_nameEvent": "Nombra el Evento",
+  "gameplay_whenHappened": "¿Cuándo Ocurrió?",
+  "gameplay_whoSaidIt": "¿Quién lo Dijo?",
+  "gameplay_yourTurn": "Tu turno",
+  "gameplay_aiThinking": "IA pensando...",
+  "gameplay_wins": "Victorias",
+  "gameplay_draws": "Empates",
+  "gameplay_losses": "Derrotas",
+  "gameplay_youWin": "¡Ganaste! +300",
+  "gameplay_draw": "¡Empate! +100",
+  "gameplay_aiWins": "¡Gana la IA!",
+  "patternRecall_setup_title": "Recuerda el Patrón",
+  "patternRecall_setup_subtitle": "¡Memoriza y repite el patrón!",
+  "patternRecall_setup_chooseTheme": "Elige un Tema",
+  "patternRecall_setup_chooseDifficulty": "Elige la Dificultad",
+  "patternRecall_setup_startGame": "¡Comenzar! 🧩",
+  "patternRecall_setup_selectBoth": "Selecciona tema y dificultad",
+  "patternRecall_themes_colors": "Colores",
+  "patternRecall_themes_animals": "Animales",
+  "patternRecall_themes_musicalNotes": "Notas Musicales",
+  "patternRecall_themes_emojis": "Emojis",
+  "patternRecall_difficulty_easy": "Fácil",
+  "patternRecall_difficulty_medium": "Medio",
+  "patternRecall_difficulty_hard": "Difícil",
+  "patternRecall_difficulty_easyDesc": "Reproducción lenta, 4 elementos",
+  "patternRecall_difficulty_mediumDesc": "Velocidad media, 5 elementos",
+  "patternRecall_difficulty_hardDesc": "Reproducción rápida, 6 elementos",
+  "patternRecall_game_round": "Ronda {current}",
+  "@patternRecall_game_round": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_time": "Tiempo",
+  "patternRecall_game_watchPattern": "¡Observa el patrón!",
+  "patternRecall_game_lives": "Vidas",
+  "patternRecall_game_livesLeft": "Vidas: {count}",
+  "@patternRecall_game_livesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_yourTurn": "¡Tu turno!",
+  "patternRecall_game_correct": "¡Correcto!",
+  "patternRecall_game_nextRound": "Siguiente ronda...",
+  "patternRecall_game_gameOver": "¡Fin del Juego!",
+  "patternRecall_game_roundsCompleted": "Rondas completadas: {count}",
+  "@patternRecall_game_roundsCompleted": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_totalTime": "Tiempo total: {time}",
+  "@patternRecall_game_totalTime": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "patternRecall_game_seeScore": "Ver Puntuación 🏆",
+  "patternRecall_game_tryAgain": "Intentar de Nuevo",
+  "patternRecall_items_red": "Rojo",
+  "patternRecall_items_blue": "Azul",
+  "patternRecall_items_green": "Verde",
+  "patternRecall_items_yellow": "Amarillo",
+  "patternRecall_items_purple": "Morado",
+  "patternRecall_items_orange": "Naranja",
+  "patternRecall_items_dog": "Perro",
+  "patternRecall_items_cat": "Gato",
+  "patternRecall_items_rabbit": "Conejo",
+  "patternRecall_items_bear": "Oso",
+  "patternRecall_items_fox": "Zorro",
+  "patternRecall_items_penguin": "Pingüino",
+  "patternRecall_items_quarterNote": "Negra",
+  "patternRecall_items_eighthNote": "Corchea",
+  "patternRecall_items_trumpet": "Trompeta",
+  "patternRecall_items_guitar": "Guitarra",
+  "patternRecall_items_drum": "Tambor",
+  "patternRecall_items_piano": "Piano",
+  "patternRecall_items_smile": "Sonrisa",
+  "patternRecall_items_heart": "Corazón",
+  "patternRecall_items_star": "Estrella",
+  "patternRecall_items_fire": "Fuego",
+  "patternRecall_items_rainbow": "Arcoíris",
+  "patternRecall_items_rocket": "Cohete",
+  "spaceEntry_title": "Entrada Espacial",
+  "spaceEntry_subtitle": "¡Aterriza tu nave espacial de forma segura en la Tierra!",
+  "spaceEntry_chooseDifficulty": "Elige la Dificultad de tu Misión",
+  "spaceEntry_easyDesc": "3 puzzles, mayor tolerancia de ángulo, escudo térmico más fuerte",
+  "spaceEntry_mediumDesc": "5 puzzles, todas las variables activas, tolerancias moderadas",
+  "spaceEntry_hardDesc": "7 puzzles, tolerancias ajustadas, turbulencia, escudo limitado",
+  "spaceEntry_startMission": "Lanzar Misión",
+  "spaceEntry_selectDifficulty": "Selecciona una dificultad para lanzar",
+  "spaceEntry_missionControl": "Control de Misión",
+  "spaceEntry_target": "Objetivo",
+  "spaceEntry_entryAngle": "Ángulo de Entrada",
+  "spaceEntry_heatShield": "Escudo Térmico",
+  "spaceEntry_atmosphericDensity": "Densidad Atmosférica",
+  "spaceEntry_turbulenceWarning": "Turbulencia Activa",
+  "spaceEntry_initiateReentry": "Iniciar Reentrada",
+  "spaceEntry_landingAccuracy": "Precisión de Aterrizaje",
+  "spaceEntry_successTitle": "¡Aterrizaje Exitoso!",
+  "spaceEntry_burnUpTitle": "Combustión Orbital",
+  "spaceEntry_burnUpMessage": "Ángulo de entrada demasiado pronunciado — el escudo térmico falló",
+  "spaceEntry_skipOffTitle": "Rebote Atmosférico",
+  "spaceEntry_skipOffMessage": "Ángulo de entrada demasiado bajo — la nave rebotó en la atmósfera",
+  "spaceEntry_geographyFact": "¿Sabías que?",
+  "spaceEntry_seeScore": "Ver Puntuación",
+  "spaceEntry_tryAgain": "Intentar de Nuevo",
+  "spaceEntry_heatShieldAtFailure": "Escudo Térmico al Fallar",
+  "spaceEntry_angleUsed": "Ángulo de Entrada Usado",
+  "spaceEntry_remaining": "Restante",
+  "spaceEntry_hintEasy": "💡 Rango seguro: 5° - 12°",
+  "spaceEntry_hintMedium": "💡 Apunta alrededor de 7°",
+  "spaceEntry_countdown": "Tiempo Restante",
+  "spaceEntry_autoFire": "¡Disparo automático en {seconds}s!",
+  "@spaceEntry_autoFire": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_thrusterPower": "Potencia del Propulsor",
+  "spaceEntry_lateralCorrection": "Corrección Lateral",
+  "spaceEntry_optimalThruster": "Óptimo: ~{value}%",
+  "@spaceEntry_optimalThruster": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_tutorialEasy": "🎯 Ajusta el ángulo de entrada para aterrizar de forma segura. ¡Observa el color de la trayectoria!",
+  "spaceEntry_tutorialMedium": "🎯 Configura el ángulo de entrada Y la potencia del propulsor. ¡Más potencia = aterrizaje más rápido pero más daño al escudo!",
+  "spaceEntry_tutorialHard": "🎯 Domina los 3 controles: ángulo, potencia del propulsor y corrección lateral. ¡Sin pistas — confía en tus instrumentos!",
+  "spaceEntry_predictedLanding": "Aterrizaje Previsto",
+  "spaceEntry_accuracy": "Precisión",
+  "spaceEntry_distanceFromTarget": "Distancia",
+  "spaceEntry_solveToCalculate": "Resuelve para calcular:",
+  "spaceEntry_yourAnswer": "Tu respuesta",
+  "spaceEntry_submit": "Enviar",
+  "spaceEntry_correctAnswer": "¡Correcto!",
+  "spaceEntry_wrongAnswer": "¡Incorrecto! La respuesta era {answer}",
+  "@spaceEntry_wrongAnswer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_allPuzzlesSolved": "¡Todos los cálculos completos!",
+  "spaceEntry_puzzlesRemaining": "{count} cálculo(s) restante(s)",
+  "@spaceEntry_puzzlesRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "spaceEntry_controlPuzzles": "Controles de Vuelo",
+  "spaceEntry_missionChecks": "Verificaciones de Misión",
+  "spaceEntry_puzzleScore": "Puzzles Correctos",
+  "mathMaze_title": "Laberinto Matemático",
+  "mathMaze_subtitle": "¡Resuelve ecuaciones para encontrar tu camino!",
+  "mathMaze_chooseLevel": "Elige tu Nivel",
+  "mathMaze_easyDesc": "Suma y resta, laberinto pequeño, 3 min",
+  "mathMaze_mediumDesc": "Las 4 operaciones, laberinto mediano, 4 min",
+  "mathMaze_hardDesc": "Matemáticas avanzadas y álgebra, laberinto grande, 5 min",
+  "mathMaze_startGame": "¡Entrar al Laberinto!",
+  "mathMaze_selectLevel": "Selecciona un Nivel",
+  "mathMaze_gateHint": "No tienes que abrir todas las puertas. Elige un camino hacia la salida; una respuesta incorrecta bloquea esa puerta, así que busca otro camino.",
+  "mathMaze_gatePrompt": "Resuelve para abrir la puerta:",
+  "mathMaze_submitAnswer": "Enviar",
+  "mathMaze_correct": "¡Correcto! ¡Puerta abierta!",
+  "mathMaze_incorrect": "¡Incorrecto! La respuesta era {answer}. ¡Camino bloqueado!",
+  "@mathMaze_incorrect": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mathMaze_timeUp": "¡Se acabó el tiempo!",
+  "mathMaze_mazeComplete": "¡Laberinto Completado!",
+  "mathMaze_noPath": "¡No hay camino disponible!",
+  "mathMaze_gatesLabel": "Puertas",
+  "mathMaze_collectiblesLabel": "Estrellas",
+  "mathMaze_timerLabel": "Tiempo",
+  "mathMaze_scoreLabel": "Puntuación",
+  "mathMaze_collected": "{collected} / {total}",
+  "@mathMaze_collected": {
+    "placeholders": {
+      "collected": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_title": "Elige tu Plan",
+  "subscription_subtitle": "¡Mejora para desbloquear más jugadas y funciones!",
+  "subscription_rateLimitTitle": "¡Límite Diario Alcanzado!",
+  "subscription_rateLimitSubtitle": "¡Mejora para seguir jugando!",
+  "subscription_premiumTitle": "Juego Premium",
+  "subscription_premiumSubtitle": "¡Este juego requiere una suscripción Premium!",
+  "subscription_currentPlan": "Plan Actual",
+  "subscription_upgradeTo": "Mejorar a {plan}",
+  "@subscription_upgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeTo": "Cambiar a {plan}",
+  "@subscription_downgradeTo": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_downgradeToFree": "Cambiar a Gratis",
+  "subscription_popular": "POPULAR",
+  "subscription_playsPerDay": "{count} jugadas/día",
+  "@subscription_playsPerDay": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "subscription_perMonth": "mes",
+  "subscription_forever": "siempre",
+  "subscription_footer": "Las jugadas gratuitas se renuevan cada 24 horas. Puedes cambiar de plan en cualquier momento.",
+  "subscription_footerPayment": "Si el pago no se realiza, se te bajará al plan Gratis.",
+  "subscription_plans_free_name": "Gratis",
+  "subscription_plans_free_features_0": "Acceso a todos los juegos",
+  "subscription_plans_free_features_1": "Dispositivo único",
+  "subscription_plans_free_features_2": "Se renueva cada 24 horas",
+  "subscription_plans_light_name": "Light",
+  "subscription_plans_light_features_0": "Acceso a todos los juegos",
+  "subscription_plans_light_features_1": "Hasta 3 dispositivos",
+  "subscription_plans_light_features_2": "Se renueva cada 24 horas",
+  "subscription_plans_light_features_3": "Estadísticas básicas",
+  "subscription_plans_standard_name": "Standard",
+  "subscription_plans_standard_features_0": "Acceso a todos los juegos",
+  "subscription_plans_standard_features_1": "Hasta 3 dispositivos",
+  "subscription_plans_standard_features_2": "Se renueva cada 24 horas",
+  "subscription_plans_standard_features_3": "Estadísticas detalladas",
+  "subscription_plans_standard_features_4": "Soporte prioritario",
+  "subscription_plans_premium_name": "Premium",
+  "subscription_plans_premium_features_0": "Acceso a todos los juegos",
+  "subscription_plans_premium_features_1": "Hasta 5 dispositivos",
+  "subscription_plans_premium_features_2": "1.000 jugadas/día",
+  "subscription_plans_premium_features_3": "Análisis avanzados",
+  "subscription_plans_premium_features_4": "Soporte prioritario",
+  "subscription_plans_premium_features_5": "Acceso anticipado a nuevos juegos",
+  "bondAndBurn_title": "Bond & Burn",
+  "bondAndBurn_subtitle": "El Laboratorio de Reacciones",
+  "bondAndBurn_description": "¡Lee la fórmula, encuentra los elementos en la tabla periódica y crea compuestos antes de que el laboratorio se sobrecaliente!",
+  "bondAndBurn_chooseDifficulty": "Elige tu Nivel de Lab",
+  "bondAndBurn_startMission": "Iniciar Misión",
+  "bondAndBurn_selectDifficulty": "Selecciona un nivel",
+  "bondAndBurn_howToPlay": "Cómo Jugar",
+  "bondAndBurn_step1": "Lee la fórmula del compuesto y encuentra los elementos correctos",
+  "bondAndBurn_step2": "Toca los elementos de la tabla periódica para agregarlos al vaso de precipitados",
+  "bondAndBurn_step3": "¡Completa reacciones antes de que el medidor de calor llegue al 100%!",
+  "bondAndBurn_step4": "¡Las elecciones incorrectas agregan calor — sé preciso!",
+  "bondAndBurn_easyDesc": "Moléculas simples, calor sube lento",
+  "bondAndBurn_mediumDesc": "Compuestos más complejos, calor más rápido",
+  "bondAndBurn_hardDesc": "Reacciones complejas, alta presión, ¡calor estricto!",
+  "bondAndBurn_makeCompound": "Crea: {name}",
+  "@bondAndBurn_makeCompound": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bondAndBurn_pickElements": "Elige elementos de la tabla periódica",
+  "bondAndBurn_labComplete": "¡Misión en el Lab Completa!",
+  "bondAndBurn_meltdown": "¡FUSIÓN!",
+  "bondAndBurn_preparingLab": "Preparando el laboratorio...",
+  "bondAndBurn_make": "Crea:",
+  "bondAndBurn_round": "Ronda",
+  "bondAndBurn_recipes_water_name": "Agua",
+  "bondAndBurn_recipes_water_hint": "Toma 2 Hidrógeno y 1 Oxígeno",
+  "bondAndBurn_recipes_water_funFact": "¡El agua cubre el 71% de la superficie de la Tierra! Todo ser vivo la necesita.",
+  "bondAndBurn_recipes_salt_name": "Sal de Mesa",
+  "bondAndBurn_recipes_salt_hint": "Toma 1 Sodio y 1 Cloro",
+  "bondAndBurn_recipes_salt_funFact": "¡La sal era tan valiosa en la Roma Antigua que los soldados cobraban con ella!",
+  "bondAndBurn_recipes_co2_name": "Dióxido de Carbono",
+  "bondAndBurn_recipes_co2_hint": "Toma 1 Carbono y 2 Oxígeno",
+  "bondAndBurn_recipes_co2_funFact": "¡Las plantas respiran CO₂ y exhalan oxígeno — lo opuesto a nosotros!",
+  "bondAndBurn_recipes_methane_name": "Metano",
+  "bondAndBurn_recipes_methane_hint": "Toma 1 Carbono y 4 Hidrógeno",
+  "bondAndBurn_recipes_methane_funFact": "¡El metano es el ingrediente principal del gas natural para cocinar!",
+  "bondAndBurn_recipes_ammonia_name": "Amoníaco",
+  "bondAndBurn_recipes_ammonia_hint": "Toma 1 Nitrógeno y 3 Hidrógeno",
+  "bondAndBurn_recipes_ammonia_funFact": "¡El amoníaco se usa para hacer fertilizante que alimenta a miles de millones!",
+  "bondAndBurn_recipes_ethane_name": "Etano",
+  "bondAndBurn_recipes_ethane_hint": "Toma 2 Carbono y 6 Hidrógeno",
+  "bondAndBurn_recipes_ethane_funFact": "¡El etano se encuentra en el gas natural y en la superficie de la luna Titán de Saturno!",
+  "bondAndBurn_recipes_hydrogen_peroxide_name": "Peróxido de Hidrógeno",
+  "bondAndBurn_recipes_hydrogen_peroxide_hint": "Toma 2 Hidrógeno y 2 Oxígeno",
+  "bondAndBurn_recipes_hydrogen_peroxide_funFact": "¡El agua oxigenada se usa para limpiar heridas y hasta decolorar el cabello!",
+  "bondAndBurn_recipes_hydrochloric_acid_name": "Ácido Clorhídrico",
+  "bondAndBurn_recipes_hydrochloric_acid_hint": "Toma 1 Hidrógeno y 1 Cloro",
+  "bondAndBurn_recipes_hydrochloric_acid_funFact": "¡Tu estómago produce ácido clorhídrico para digerir los alimentos!",
+  "bondAndBurn_recipes_sodium_hydroxide_name": "Hidróxido de Sodio",
+  "bondAndBurn_recipes_sodium_hydroxide_hint": "Toma 1 Sodio, 1 Oxígeno y 1 Hidrógeno",
+  "bondAndBurn_recipes_sodium_hydroxide_funFact": "¡El hidróxido de sodio (lejía) se usa para hacer jabón y desatascar tuberías!",
+  "bondAndBurn_recipes_nitrous_oxide_name": "Gas de la Risa",
+  "bondAndBurn_recipes_nitrous_oxide_hint": "Toma 2 Nitrógeno y 1 Oxígeno",
+  "bondAndBurn_recipes_nitrous_oxide_funFact": "¡Los dentistas usan gas de la risa (N₂O) para ayudar a los pacientes a relajarse!",
+  "circuitBuilder_canvasLabel": "Cuadrícula para montar circuitos",
+  "circuitBuilder_flip": "Girar",
+  "circuitBuilder_howTo_title": "Cómo montar",
+  "circuitBuilder_howTo_step1": "Elige una pieza y toca una casilla para colocarla.",
+  "circuitBuilder_howTo_step2": "Toca el punto de una pieza y luego el de otra para conectarlas.",
+  "circuitBuilder_howTo_step3": "Toca Girar si el LED aparece al revés.",
+  "circuitBuilder_howTo_keyboardTitle": "Teclado",
+  "circuitBuilder_howTo_keyboard": "Las flechas mueven el cursor, Enter coloca o activa, C empieza una conexión, Enter o Shift+Enter la termina en el primer o segundo punto, R gira, Supr borra.",
+  "circuitBuilder_component_battery_name": "Pila",
+  "circuitBuilder_component_battery_abbr": "PIL",
+  "circuitBuilder_component_solar_name": "Panel solar",
+  "circuitBuilder_component_solar_abbr": "SOL",
+  "circuitBuilder_component_wire_name": "Cable",
+  "circuitBuilder_component_wire_abbr": "CAB",
+  "circuitBuilder_component_switch_name": "Interruptor",
+  "circuitBuilder_component_switch_abbr": "INT",
+  "circuitBuilder_component_resistor_name": "Resistencia",
+  "circuitBuilder_component_resistor_abbr": "RES",
+  "circuitBuilder_component_led_name": "Bombilla LED",
+  "circuitBuilder_component_led_abbr": "LED",
+  "circuitBuilder_component_motor_name": "Motor",
+  "circuitBuilder_component_motor_abbr": "MOT",
+  "circuitBuilder_component_buzzer_name": "Zumbador",
+  "circuitBuilder_component_buzzer_abbr": "ZUM",
+  "circuitBuilder_tray_title": "Componentes",
+  "circuitBuilder_tray_remaining": "Quedan {count}",
+  "@circuitBuilder_tray_remaining": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_tray_exhausted": "No quedan",
+  "circuitBuilder_tray_armed": "Seleccionado — toca una casilla para colocarlo",
+  "circuitBuilder_status_energized": "La corriente está pasando",
+  "circuitBuilder_status_deEnergized": "No pasa corriente",
+  "circuitBuilder_status_fuseBlown": "El fusible se ha fundido",
+  "circuitBuilder_status_resetFuse": "Reponer el fusible",
+  "circuitBuilder_status_voltage": "Tensión de alimentación",
+  "circuitBuilder_status_lightLevel": "Nivel de luz",
+  "circuitBuilder_fault_SHORT_CIRCUIT": "Cortocircuito",
+  "circuitBuilder_fault_OVERCURRENT": "Demasiada corriente",
+  "circuitBuilder_fault_REVERSED_POLARITY": "Componente al revés",
+  "circuitBuilder_fault_SINGULAR_SYSTEM": "Este circuito no puede funcionar",
+  "circuitBuilder_faultHelp_SHORT_CIRCUIT": "La corriente encontró un camino directo de un polo de la pila al otro, sin nada que la frenara, así que pasó de golpe y fundió el fusible. Pon un receptor en ese camino, como una bombilla LED con una resistencia, o un motor.",
+  "circuitBuilder_faultHelp_OVERCURRENT": "Por este camino pasa más corriente de la que los componentes aguantan sin dañarse. Aumenta la resistencia añadiendo una resistencia, o baja la tensión de alimentación.",
+  "circuitBuilder_faultHelp_REVERSED_POLARITY": "Un componente está conectado al revés, así que corta la corriente en vez de aprovecharla. Cambia sus dos extremos de sitio y vuelve a intentarlo.",
+  "circuitBuilder_faultHelp_SINGULAR_SYSTEM": "Este circuito no tiene una solución única que el simulador pueda calcular, casi siempre porque un componente está unido consigo mismo. Quita la conexión que junta los dos terminales de un mismo componente.",
+  "circuitBuilder_rejection_OUT_OF_BOUNDS": "Ese sitio está fuera de la cuadrícula",
+  "circuitBuilder_rejection_CELL_OCCUPIED": "Ahí ya hay algo",
+  "circuitBuilder_rejection_OVER_BUDGET": "No quedan más de esos",
+  "circuitBuilder_rejection_ELEMENT_LIMIT": "La cuadrícula está llena",
+  "circuitBuilder_rejection_CONNECTION_LIMIT": "No se pueden añadir más conexiones",
+  "circuitBuilder_rejection_UNKNOWN_ELEMENT": "Ese componente ya no está ahí",
+  "circuitBuilder_rejection_UNKNOWN_CONNECTION": "Esa conexión ya no está ahí",
+  "circuitBuilder_rejection_ELEMENT_LOCKED": "Ese componente no se puede mover",
+  "circuitBuilder_rejection_NOT_A_SWITCH": "Solo un interruptor se puede abrir y cerrar",
+  "circuitBuilder_rejection_SELF_CONNECTION": "Un terminal no puede conectarse consigo mismo",
+  "circuitBuilder_rejection_DUPLICATE_CONNECTION": "Esos terminales ya están conectados",
+  "circuitBuilder_rejection_INVALID_VOLTAGE": "Esa tensión no se puede usar",
+  "circuitBuilder_rejection_INVALID_LIGHT_LEVEL": "Ese nivel de luz no se puede usar",
+  "circuitBuilder_layout_enterFullScreen": "Pantalla completa",
+  "circuitBuilder_layout_exitFullScreen": "Salir de pantalla completa",
+  "circuitBuilder_audio_soundOn": "Sonido activado",
+  "circuitBuilder_audio_soundOff": "Sonido desactivado",
+  "circuitBuilder_error_evaluationUnavailable": "La simulación no está disponible ahora mismo. Prueba a cambiar tu circuito.",
+  "circuitBuilder_error_levelUnavailable": "No se ha podido abrir este taller de circuitos. Inténtalo de nuevo.",
+  "circuitBuilder_setup_title": "Constructor de Circuitos",
+  "circuitBuilder_setup_subtitle": "Monta circuitos y da vida al róver",
+  "circuitBuilder_setup_description": "Conecta pilas, interruptores y bombillas para poner en marcha un róver de Marte. Cada nivel te enseña una idea sobre la electricidad.",
+  "circuitBuilder_setup_howToPlay": "Cómo Jugar",
+  "circuitBuilder_setup_step1": "Elige un componente y colócalo en la cuadrícula",
+  "circuitBuilder_setup_step2": "Une los terminales con cables",
+  "circuitBuilder_setup_step3": "Mira el róver: sus partes se encienden cuando pasa corriente",
+  "circuitBuilder_setup_step4": "Cumple el objetivo para enviar tu circuito y ganar puntos",
+  "circuitBuilder_setup_chooseDifficulty": "Elige una dificultad",
+  "circuitBuilder_setup_chooseLevel": "Elige un nivel",
+  "circuitBuilder_setup_levelNumber": "Nivel {n}",
+  "@circuitBuilder_setup_levelNumber": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_setup_concept": "Objetivo",
+  "circuitBuilder_setup_startLevel": "Empezar nivel",
+  "circuitBuilder_setup_selectDifficulty": "Selecciona una dificultad",
+  "circuitBuilder_setup_sandboxTitle": "Zona de pruebas",
+  "circuitBuilder_setup_sandboxDescription": "Juego libre con todos los componentes. Sin objetivo, sin puntos y sin gastar una partida diaria.",
+  "circuitBuilder_setup_sandboxStart": "Abrir la zona de pruebas",
+  "circuitBuilder_setup_startFailed": "No se ha podido empezar la partida. Inténtalo de nuevo.",
+  "circuitBuilder_setup_noLevels": "Ahora mismo no hay niveles disponibles.",
+  "circuitBuilder_setup_gateChecking": "Comprobando tu acceso...",
+  "circuitBuilder_difficulty_1_name": "Fácil",
+  "circuitBuilder_difficulty_1_summary": "Aprende lo básico: circuitos cerrados e interruptores. El róver te muestra qué está encendido y qué no.",
+  "circuitBuilder_difficulty_1_disclosure": "Sin números: solo partes encendidas o apagadas.",
+  "circuitBuilder_difficulty_1_levels": "{count} niveles",
+  "@circuitBuilder_difficulty_1_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_2_name": "Medio",
+  "circuitBuilder_difficulty_2_summary": "Compara el montaje en serie y en paralelo.",
+  "circuitBuilder_difficulty_2_disclosure": "Barras de brillo que comparan las partes, sin unidades.",
+  "circuitBuilder_difficulty_2_levels": "{count} niveles",
+  "@circuitBuilder_difficulty_2_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_3_name": "Difícil",
+  "circuitBuilder_difficulty_3_summary": "Da energía a todo el róver y repara un cortocircuito.",
+  "circuitBuilder_difficulty_3_disclosure": "Valores de tensión y resistencia.",
+  "circuitBuilder_difficulty_3_levels": "{count} niveles",
+  "@circuitBuilder_difficulty_3_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_difficulty_4_name": "Muy difícil",
+  "circuitBuilder_difficulty_4_summary": "Controla la corriente con resistencias y cambia la tensión de la fuente.",
+  "circuitBuilder_difficulty_4_disclosure": "Todo: voltios, ohmios, amperios y totales.",
+  "circuitBuilder_difficulty_4_levels": "{count} niveles",
+  "@circuitBuilder_difficulty_4_levels": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "circuitBuilder_level_cb_01_closed_circuit_title": "Cierra el circuito",
+  "circuitBuilder_level_cb_01_closed_circuit_goal": "Enciende el faro del róver.",
+  "circuitBuilder_level_cb_01_closed_circuit_hint": "Une la pila, la resistencia y la bombilla LED formando un anillo y vuelve con un cable hasta la pila. Si la bombilla sigue apagada, revisa en qué sentido está conectada.",
+  "circuitBuilder_level_cb_01_closed_circuit_learn": "La corriente solo circula por un circuito cerrado. La resistencia protege la bombilla LED de un exceso de corriente.",
+  "circuitBuilder_level_cb_02_switch_control_title": "Enciende con el interruptor",
+  "circuitBuilder_level_cb_02_switch_control_goal": "Enciende el faro con el interruptor cerrado y luego apágalo y enciéndelo de nuevo.",
+  "circuitBuilder_level_cb_02_switch_control_hint": "El interruptor ya está en el tablero. Colócalo en el circuito junto con la pila, la resistencia y la bombilla LED, y selecciónalo para abrirlo o cerrarlo.",
+  "circuitBuilder_level_cb_02_switch_control_learn": "Un interruptor abre o cierra el circuito. Cuando está abierto, el circuito queda cortado, no pasa corriente y la luz se apaga.",
+  "circuitBuilder_level_cb_03_series_loop_title": "Un circuito para dos",
+  "circuitBuilder_level_cb_03_series_loop_goal": "Enciende el faro y haz sonar el zumbador en el mismo circuito.",
+  "circuitBuilder_level_cb_03_series_loop_hint": "Pon la bombilla LED y el zumbador uno detrás de otro en el mismo circuito, con la resistencia y el interruptor. Luego abre el interruptor y observa qué pasa con los dos.",
+  "circuitBuilder_level_cb_03_series_loop_learn": "En un circuito en serie la misma corriente pasa por todas las partes, una detrás de otra. Si abres el interruptor, todo se detiene.",
+  "circuitBuilder_level_cb_04_parallel_branches_title": "Dos caminos",
+  "circuitBuilder_level_cb_04_parallel_branches_goal": "Da un camino al faro y otro al zumbador, cada uno con su propio interruptor.",
+  "circuitBuilder_level_cb_04_parallel_branches_hint": "Conecta los dos caminos a los mismos terminales de la pila. Cada camino lleva su propio interruptor. Abre uno y mira qué hace el otro.",
+  "circuitBuilder_level_cb_04_parallel_branches_learn": "En un circuito en paralelo cada camino forma su propio circuito. Apagar uno deja el otro funcionando.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_title": "Dale energía a todo el róver",
+  "circuitBuilder_level_cb_05_series_vs_parallel_goal": "Pon en marcha los motores, el faro y el zumbador al mismo tiempo.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_hint": "Conecta las partes una al lado de la otra, cada una directa a la pila, con la resistencia delante de la bombilla LED. Si pones los motores en un solo circuito en serie, giran muy despacio.",
+  "circuitBuilder_level_cb_05_series_vs_parallel_learn": "Las partes colocadas una al lado de la otra reciben toda la tensión de la pila. En serie se la reparten, así que unos motores en serie reciben menos y giran más despacio.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_title": "Vence al cortocircuito",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_goal": "Enciende el faro aunque un cortocircuito funda antes el fusible.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_hint": "Un cable puesto directamente sobre la pila funde el fusible. Repón el fusible, quita ese cable y vuelve a poner el receptor en el circuito.",
+  "circuitBuilder_level_cb_06_short_circuit_recovery_learn": "Un camino casi sin resistencia deja pasar una corriente enorme. Mantén siempre un receptor en el circuito y repón el fusible cuando arregles el fallo.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_title": "Domina la corriente",
+  "circuitBuilder_level_cb_07_resistance_limits_current_goal": "Enciende el LED con una corriente segura usando la pila y el LED que ya están en el tablero.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_hint": "Pon una resistencia en serie con el LED. Dos resistencias en serie se suman. Dos en paralelo dan menos resistencia que una sola, así que pasa más corriente.",
+  "circuitBuilder_level_cb_07_resistance_limits_current_learn": "La corriente es la tensión dividida entre la resistencia. Más resistencia significa menos corriente, y las resistencias en paralelo reducen la resistencia total.",
+  "circuitBuilder_level_cb_08_variable_voltage_title": "Encuentra la tensión adecuada",
+  "circuitBuilder_level_cb_08_variable_voltage_goal": "Alimenta el motor, el zumbador y el faro con una sola pila y descubre qué tensiones de la fuente funcionan.",
+  "circuitBuilder_level_cb_08_variable_voltage_hint": "Cierra el interruptor general y el del faro. Cambia la tensión de la fuente con el control deslizante: el motor necesita tensión suficiente para girar, y el LED puede recibir demasiada corriente si es alta.",
+  "circuitBuilder_level_cb_08_variable_voltage_learn": "La tensión empuja la corriente a través de la resistencia. Si es muy baja, el motor no gira. Si es muy alta, el LED soporta más corriente de la que aguanta.",
+  "circuitBuilder_rover_title": "Róver de Marte",
+  "circuitBuilder_rover_alt": "Dibujo de un róver de Marte. Sus ruedas, el faro, el zumbador y el panel solar muestran qué partes reciben energía.",
+  "circuitBuilder_rover_on": "Encendido",
+  "circuitBuilder_rover_off": "Apagado",
+  "circuitBuilder_rover_unused": "No se usa en este nivel",
+  "circuitBuilder_rover_allPowered": "¡Todo el róver tiene energía!",
+  "circuitBuilder_machine_marsRover_driveMotor": "Motores de tracción",
+  "circuitBuilder_machine_marsRover_headlight": "Faro",
+  "circuitBuilder_machine_marsRover_buzzerAlert": "Alarma del zumbador",
+  "circuitBuilder_machine_marsRover_solarCharging": "Carga solar",
+  "circuitBuilder_readout_title": "Lectura del circuito",
+  "circuitBuilder_readout_supply": "Fuente",
+  "circuitBuilder_readout_voltage": "Tensión",
+  "circuitBuilder_readout_resistance": "Resistencia",
+  "circuitBuilder_readout_current": "Corriente",
+  "circuitBuilder_readout_totalResistance": "Resistencia total",
+  "circuitBuilder_readout_totalCurrent": "Corriente total",
+  "circuitBuilder_readout_relative": "Brillo",
+  "circuitBuilder_readout_noPath": "Todavía no hay un circuito cerrado",
+  "circuitBuilder_readout_state_lit": "Funciona",
+  "circuitBuilder_readout_state_dim": "Tenue",
+  "circuitBuilder_readout_state_dark": "Apagado",
+  "circuitBuilder_readout_state_spark": "Fallo",
+  "circuitBuilder_readout_brightness_off": "Apagado",
+  "circuitBuilder_readout_brightness_dim": "Tenue",
+  "circuitBuilder_readout_brightness_medium": "Medio",
+  "circuitBuilder_readout_brightness_bright": "Intenso",
+  "circuitBuilder_readout_noneHint": "Mira el róver: cada parte está encendida o apagada.",
+  "circuitBuilder_readout_qualitativeHint": "Las barras comparan cuánto brilla cada parte, sin unidades.",
+  "circuitBuilder_game_loading": "Empezando tu partida...",
+  "circuitBuilder_game_level": "Nivel",
+  "circuitBuilder_game_goal": "Objetivo",
+  "circuitBuilder_game_showHint": "Ver pista",
+  "circuitBuilder_game_hideHint": "Ocultar pista",
+  "circuitBuilder_game_solved": "¡El róver funciona! Comprobando tu circuito...",
+  "circuitBuilder_game_solvedTitle": "Circuito completado",
+  "circuitBuilder_game_submitting": "El servidor está comprobando tu circuito...",
+  "circuitBuilder_game_submitFailed": "No hemos podido enviar tu circuito. Tu trabajo está a salvo. Inténtalo de nuevo.",
+  "circuitBuilder_game_rejected": "El servidor no ha podido verificar ese circuito. Cámbialo e inténtalo de nuevo.",
+  "circuitBuilder_game_retry": "Reintentar",
+  "circuitBuilder_game_nextLevel": "Siguiente nivel",
+  "circuitBuilder_game_backToSetup": "Volver a los niveles",
+  "circuitBuilder_game_quit": "Salir",
+  "circuitBuilder_game_noLevel": "No se ha encontrado ese nivel.",
+  "circuitBuilder_game_learnTitle": "Lo que has aprendido",
+  "circuitBuilder_faultOverlay_label": "Fallo del circuito",
+  "circuitBuilder_faultOverlay_dismiss": "Cerrar",
+  "circuitBuilder_sandbox_badge": "Zona de pruebas: nada de aquí puntúa",
+  "circuitBuilder_sandbox_note": "Juego libre con todos los componentes. No hay puntos ni se gasta una partida diaria.",
+  "circuitBuilder_sandbox_back": "Volver a los niveles",
+  "circuitBuilder_result_serverScoreNote": "El servidor ha comprobado esta puntuación.",
+  "circuitBuilder_result_rankLabel": "Puesto en la clasificación",
+  "miniGolf_title": "Mini Golf",
+  "miniGolf_subtitle": "Física de Putts",
+  "miniGolf_description": "¡Apunta, ajusta la potencia y mete la bola sorteando obstáculos con el menor número de golpes!",
+  "miniGolf_chooseCourse": "Elige Tu Campo",
+  "miniGolf_teeOff": "¡A Jugar!",
+  "miniGolf_selectCourse": "Selecciona un campo",
+  "miniGolf_howToPlay": "Cómo Jugar",
+  "miniGolf_step1": "Arrastra desde la bola para apuntar",
+  "miniGolf_step2": "Tira más atrás para más potencia",
+  "miniGolf_step3": "Suelta para golpear — ¡rebota en las paredes!",
+  "miniGolf_step4": "Mete la bola con menos golpes",
+  "miniGolf_easyDesc": "Campos abiertos, ángulos simples",
+  "miniGolf_mediumDesc": "Obstáculos, arena y agua",
+  "miniGolf_hardDesc": "¡Molinos, laberintos, caos!",
+  "miniGolf_loading": "Preparando el campo...",
+  "wordPuzzle_title": "Sopa de Letras",
+  "wordPuzzle_subtitle": "¡Encuentra todas las palabras ocultas en la cuadrícula!",
+  "wordPuzzle_howToPlay": "Cómo Jugar",
+  "wordPuzzle_selectLetters": "Selecciona Letras",
+  "wordPuzzle_selectLettersDesc": "Haz clic y arrastra para seleccionar letras en la cuadrícula",
+  "wordPuzzle_findWords": "Encuentra Palabras",
+  "wordPuzzle_findWordsDesc": "Las palabras pueden ser horizontales, verticales o diagonales",
+  "wordPuzzle_beatTheClock": "Gana al Reloj",
+  "wordPuzzle_beatTheClockDesc": "¡Encuentra todas las palabras antes de que se acabe el tiempo!",
+  "wordPuzzle_easy": "Fácil",
+  "wordPuzzle_easyDesc": "Perfecto para principiantes",
+  "wordPuzzle_medium": "Medio",
+  "wordPuzzle_mediumDesc": "Un buen desafío",
+  "wordPuzzle_hard": "Difícil",
+  "wordPuzzle_hardDesc": "Para maestros de palabras",
+  "wordPuzzle_gridSize": "Tamaño",
+  "wordPuzzle_words": "Palabras",
+  "wordPuzzle_timeLimit": "Tiempo",
+  "wordPuzzle_minutes": "minutos",
+  "wordPuzzle_start": "Iniciar",
+  "wordPuzzle_backToGames": "← Volver a Juegos",
+  "wordPuzzle_wordsFound": "Palabras",
+  "wordPuzzle_time": "Tiempo",
+  "wordPuzzle_difficulty": "Dificultad",
+  "wordPuzzle_wordsToFind": "Palabras a Encontrar",
+  "wordPuzzle_dragHint": "Arrastra sobre las letras para seleccionar una palabra",
+  "quest_title": "Mapa de Aventura",
+  "quest_subtitle": "Supera cada nodo para abrir el siguiente. Gana hasta 3 estrellas por nodo.",
+  "quest_playsLeft": "Te quedan {count} partidas hoy",
+  "@quest_playsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_playsUsed": "{used} de {limit} partidas usadas",
+  "@quest_playsUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_resetsAt": "Se reinicia a las {time}",
+  "@quest_resetsAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_loading": "Cargando tu Mapa de Aventura...",
+  "quest_error_title": "No pudimos cargar el Mapa de Aventura.",
+  "quest_error_retry": "Reintentar",
+  "quest_worldStars": "{stars} de {max} estrellas",
+  "@quest_worldStars": {
+    "placeholders": {
+      "stars": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_shelfLabel": "Insignias de {world}",
+  "@quest_badges_shelfLabel": {
+    "placeholders": {
+      "world": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_badges_earned": "Obtenida",
+  "quest_badges_locked": "Bloqueada",
+  "quest_badges_new": "Nueva",
+  "quest_badges_WORLD_CLEARED_name": "Mundo completado",
+  "quest_badges_WORLD_CLEARED_hint": "Vence al jefe con al menos 1 estrella.",
+  "quest_badges_WORLD_MASTERED_name": "Mundo dominado",
+  "quest_badges_WORLD_MASTERED_hint": "Consigue 3 estrellas en cada nodo del camino.",
+  "quest_achievements_title": "Insignias del Quest Map",
+  "quest_achievements_summary": "{earned} de {total} insignias obtenidas",
+  "@quest_achievements_summary": {
+    "placeholders": {
+      "earned": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_achievements_error": "Las insignias del Quest Map no están disponibles ahora.",
+  "quest_worlds_brain_peaks_name": "Picos del Cerebro",
+  "quest_worlds_science_island_name": "Isla de la Ciencia",
+  "quest_nodes_bp_01_memory_name": "Memoria Animal",
+  "quest_nodes_bp_02_math_name": "Calentamiento Matemático",
+  "quest_nodes_bp_03_words_name": "Caza de Palabras",
+  "quest_nodes_bp_04_sequence_name": "Pasos en Secuencia",
+  "quest_nodes_bp_05_geo_name": "Paso Geográfico",
+  "quest_nodes_bp_06_maze_name": "Laberinto de Números",
+  "quest_nodes_bp_07_memory_space_name": "Memoria del Espacio",
+  "quest_nodes_bp_boss_name": "Jefe de la Cima",
+  "quest_nodes_bp_bonus_sequence_name": "Extra: Secuencia Larga",
+  "quest_nodes_si_01_bond_burn_name": "Laboratorio de Química",
+  "quest_nodes_si_02_space_entry_name": "Aterrizaje de Cohete",
+  "quest_nodes_si_03_circuit_series_name": "Circuito en Serie",
+  "quest_nodes_si_04_circuit_branches_name": "Ramas en Paralelo",
+  "quest_nodes_si_05_scratch_name": "Rincón del Código",
+  "quest_nodes_si_06_mini_golf_name": "Bahía del Golf",
+  "quest_nodes_si_07_circuit_parallel_name": "Circuito en Paralelo",
+  "quest_nodes_si_boss_name": "Jefe de la Isla",
+  "quest_nodes_si_bonus_name": "Extra: Circuito Experto",
+  "quest_games_ANIMALS": "Memoria: Animales",
+  "quest_games_FRUITS": "Memoria: Frutas",
+  "quest_games_VEHICLES": "Memoria: Vehículos",
+  "quest_games_SPACE": "Memoria: Espacio",
+  "quest_games_OCEAN": "Memoria: Océano",
+  "quest_games_FORMULA1": "Memoria: Fórmula 1",
+  "quest_games_MATH_CHALLENGE": "Desafío Matemático",
+  "quest_games_WORD_PUZZLE": "Sopa de Letras",
+  "quest_games_SEQUENCE_MEMORY": "Memoria de Secuencias",
+  "quest_games_PATTERN_RECALL": "Memoria de Patrones",
+  "quest_games_GEO_QUIZ": "Quiz de Geografía",
+  "quest_games_MATH_MAZE": "Laberinto Matemático",
+  "quest_games_BUBBLE_POP": "Revienta Burbujas",
+  "quest_games_BOND_AND_BURN": "Bond & Burn",
+  "quest_games_SPACE_ENTRY": "Entrada Espacial",
+  "quest_games_TRAFFIC_LAB": "Laboratorio de Tráfico",
+  "quest_games_MINI_GOLF": "Minigolf",
+  "quest_games_SCRATCH_CODING": "Space Coder",
+  "quest_games_CIRCUIT_BUILDER": "Constructor de Circuitos",
+  "quest_difficulty_1": "Fácil",
+  "quest_difficulty_2": "Medio",
+  "quest_difficulty_3": "Difícil",
+  "quest_difficulty_4": "Experto",
+  "quest_node_aria_locked": "{name}, bloqueado",
+  "@quest_node_aria_locked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_available": "{name}, listo para jugar",
+  "@quest_node_aria_available": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_earned": "{name}, {count} de 3 estrellas",
+  "@quest_node_aria_earned": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_unavailable": "{name}, no disponible",
+  "@quest_node_aria_unavailable": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_node_aria_boss": "jefe",
+  "quest_node_aria_bonus": "extra",
+  "quest_node_aria_new": "recién desbloqueado",
+  "quest_node_boss": "Jefe",
+  "quest_node_bonus": "Extra",
+  "quest_node_new": "Nuevo",
+  "quest_panel_goals": "Metas de estrellas",
+  "quest_panel_goal1": "1 estrella",
+  "quest_panel_goal2": "2 estrellas",
+  "quest_panel_goal3": "3 estrellas",
+  "quest_panel_points": "{points} puntos",
+  "@quest_panel_points": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_combinedScore": "Puntuación combinada",
+  "quest_panel_bossTotalBoth": "Total de los dos juegos",
+  "quest_panel_bossTotalAll": "Total de los {count} juegos",
+  "@quest_panel_bossTotalAll": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_perGame": "unos {points} por juego",
+  "@quest_panel_perGame": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_reached": "Logrado",
+  "quest_panel_best": "Mejor: {score}",
+  "@quest_panel_best": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_legs": "Juegos",
+  "quest_panel_legOf": "Etapa {k} de {n}",
+  "@quest_panel_legOf": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_order": "Juega las etapas en orden en menos de 30 minutos.",
+  "quest_panel_runInProgress": "Intento en curso: {done} de {total} etapas, vence a las {time}",
+  "@quest_panel_runInProgress": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_panel_play": "Jugar",
+  "quest_panel_replay": "Jugar de nuevo",
+  "quest_panel_continue": "Continuar intento",
+  "quest_panel_notAvailableNow": "Este nodo no está disponible en este momento.",
+  "quest_panel_locked": "Gana una estrella en el nodo anterior para desbloquearlo.",
+  "quest_panel_bonusLocked": "Reúne estrellas en este mundo para desbloquearlo.",
+  "quest_panel_unavailable": "Este juego no está disponible ahora. Saltarlo cuenta como superado.",
+  "quest_panel_paywall": "Suscríbete para desbloquear el Mundo 2",
+  "quest_panel_noPlaysLeft": "No te quedan partidas hoy. Si juegas ahora irás a la página de límite.",
+  "quest_panel_close": "Cerrar",
+  "quest_worldLocked_label": "Bloqueado: solo suscriptores",
+  "quest_worldLocked_link": "Suscríbete para desbloquear el Mundo 2",
+  "quest_banner_playing": "Jugando desde el Mapa de Aventura",
+  "quest_banner_goal": "Meta de 3 estrellas: {points} puntos",
+  "@quest_banner_goal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_banner_back": "Volver al mapa",
+  "quest_result_stars": "Estrellas en esta partida: {count} de 3",
+  "@quest_result_stars": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_best": "Mejor: {count} de 3 estrellas",
+  "@quest_result_best": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_goals": "Metas",
+  "quest_result_score": "Tu puntuación: {score}",
+  "@quest_result_score": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextGoal": "Siguiente estrella con {points} puntos",
+  "@quest_result_nextGoal": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_allGoals": "Todas las metas logradas",
+  "quest_result_legDone": "Etapa {k} de {n} completada",
+  "@quest_result_legDone": {
+    "placeholders": {
+      "k": {
+        "type": "String"
+      },
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_legScore": "Puntuación de la etapa: {score}",
+  "@quest_result_legScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_nextLeg": "Siguiente etapa",
+  "quest_result_combined": "Puntuación combinada: {score}",
+  "@quest_result_combined": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_expired": "Este intento venció. Empieza el jefe de nuevo desde la etapa 1.",
+  "quest_result_unlocked": "Desbloqueado: {names}",
+  "@quest_result_unlocked": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "quest_result_worldCleared": "¡Mundo completado!",
+  "quest_result_notSaved": "No se pudo guardar el progreso, juega de nuevo para reintentar.",
+  "quest_result_backToMap": "Volver al mapa",
+  "quest_notice_questUnavailable": "Ese nodo no está disponible en este momento.",
+  "quest_hub_title": "Mapa de Aventura",
+  "quest_hub_body": "Sigue un camino de juegos, gana estrellas y vence al jefe.",
+  "quest_hub_cta": "Abrir el Mapa de Aventura",
+  "mobileAuth_firstName": "Nombre",
+  "mobileAuth_lastName": "Apellido",
+  "mobileAuth_required": "Obligatorio",
+  "mobileAuth_invalidEmail": "Correo electrónico inválido",
+  "mobileAuth_usernameMin": "El nombre de usuario debe tener al menos 3 caracteres",
+  "mobileAuth_usernameMax": "El nombre de usuario debe tener como máximo 20 caracteres",
+  "mobileAuth_usernameChars": "El nombre de usuario solo puede contener letras, números y guiones bajos",
+  "mobileAuth_passwordMin": "La contraseña debe tener al menos 8 caracteres",
+  "mobileAuth_passwordUpper": "La contraseña debe contener al menos una letra mayúscula",
+  "mobileAuth_passwordLower": "La contraseña debe contener al menos una letra minúscula",
+  "mobileAuth_passwordNumber": "La contraseña debe contener al menos un número",
+  "mobileAuth_passwordsMismatch": "Las contraseñas no coinciden",
+  "mobileAuth_codeMin": "El código debe tener al menos 6 caracteres",
+  "mobileAuth_forgotSubtitle": "Ingresa tu correo y te enviaremos un código para restablecer tu contraseña",
+  "mobileAuth_sendResetCode": "Enviar código",
+  "mobileAuth_resetTitle": "Restablecer Contraseña",
+  "mobileAuth_resetSubtitle": "Ingresa el código de tu correo y tu nueva contraseña",
+  "mobileAuth_resetCode": "Código de Restablecimiento",
+  "mobileAuth_newPassword": "Nueva Contraseña",
+  "mobileAuth_resetButton": "Restablecer Contraseña",
+  "mobileAuth_resetCodeSentTo": "Si existe una cuenta para {email}, le enviamos un código de restablecimiento.",
+  "@mobileAuth_resetCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_haveResetCode": "¿Ya tienes un código? Ingrésalo",
+  "mobileAuth_passwordResetDone": "Tu contraseña fue restablecida. Inicia sesión con tu nueva contraseña.",
+  "mobileAuth_backToLogin": "Volver a Iniciar Sesión",
+  "mobileAuth_resendCode": "Reenviar código",
+  "mobileAuth_resendCodeIn": "Reenviar código ({seconds}s)",
+  "@mobileAuth_resendCodeIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileAuth_codeResent": "Enviamos un nuevo código a tu correo.",
+  "mobileAuth_enterEmailFirst": "Primero ingresa tu correo arriba.",
+  "mobileAuth_errNetwork": "Error de red. Revisa tu conexión e inténtalo de nuevo.",
+  "mobileAuth_errCodeMismatch": "El código es incorrecto. Revísalo e inténtalo de nuevo.",
+  "mobileAuth_errCodeExpired": "El código ha expirado. Solicita uno nuevo.",
+  "mobileAuth_errTooMany": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+  "mobileAuth_errInvalidPassword": "La contraseña no cumple los requisitos.",
+  "mobileAuth_errUserExists": "Ya existe una cuenta con este correo.",
+  "mobileAuth_errUnconfirmed": "Primero confirma tu cuenta (revisa tu correo para obtener el código).",
+  "mobileAuth_errNewPasswordRequired": "Esta cuenta requiere una nueva contraseña. Restablece tu contraseña.",
+  "mobileAuth_errGoogle": "Error al iniciar sesión con Google. Inténtalo de nuevo.",
+  "mobileAuth_errGeneric": "Algo salió mal. Inténtalo de nuevo.",
+  "mobileGame_limitTitle": "Límite diario alcanzado",
+  "mobileGame_limitBody": "Has usado todas tus partidas de hoy. ¡Vuelve mañana!",
+  "mobileGame_unavailableTitle": "Aún no disponible en la app",
+  "mobileGame_unavailableBody": "Este juego aún no está disponible en la app.",
+  "mobileGame_comingToApp": "Pronto en la app",
+  "mobileGame_notAvailableLabel": "Aún no disponible en la app",
+  "mobileGame_goBack": "Volver",
+  "mobileGame_starting": "Iniciando juego...",
+  "mobileGame_leaveTitle": "¿Salir de este juego?",
+  "mobileGame_leaveBody": "Perderás tu progreso en esta ronda.",
+  "mobileGame_leave": "Salir",
+  "mobileGame_keepPlaying": "Seguir jugando",
+  "mobileGame_scoreHiccup": "No se pudo cargar tu puntuación esta vez.",
+  "mobileGame_complete": "¡Completado!",
+  "mobileGame_leaderboardRank": "Posición en la clasificación",
+  "mobileGame_achievementsUnlocked": "Logros desbloqueados",
+  "mobileGame_backToHub": "Volver al centro de juegos",
+  "mobileGame_questStartFailed": "No se pudo iniciar ese nodo de la misión. Volviste al mapa.",
+  "mobileGame_ratingsCount": "{count} valoraciones",
+  "@mobileGame_ratingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questLocked": "Bloqueado",
+  "mobileGame_questStarsLabel": "{count} de 3 estrellas",
+  "@mobileGame_questStarsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileGame_questNodePlayUnavailable": "Este juego aún no está disponible en la app.",
+  "mobileGame_worldLockedApp": "Este mundo aún no está disponible en la app.",
+  "mobileStats_tabHub": "Inicio",
+  "mobileStats_tabQuest": "Aventura",
+  "mobileStats_tabDashboard": "Panel",
+  "mobileStats_tabLeaderboard": "Clasificación",
+  "mobileStats_tabProfile": "Perfil",
+  "mobileStats_overall": "General",
+  "mobileStats_totalGames": "Juegos Totales",
+  "mobileStats_bestScore": "Mejor Puntuación",
+  "mobileStats_completedGames": "Juegos Completados",
+  "mobileStats_yourPerformance": "Tu Rendimiento",
+  "mobileStats_ofPlayers": "de {count} jugadores",
+  "@mobileStats_ofPlayers": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_points": "puntos",
+  "mobileStats_topTen": "¡Top 10%! 🌟",
+  "mobileStats_topQuarter": "¡Top 25%! 🎯",
+  "mobileStats_topHalf": "¡Top 50%! 💪",
+  "mobileStats_keepPlaying": "¡Sigue jugando! 🎮",
+  "mobileStats_playToRank": "¡Juega para entrar en la clasificación!",
+  "mobileStats_viewLeaderboard": "Ver Clasificación →",
+  "mobileStats_trendTitle": "Tendencia de Puntuación",
+  "mobileStats_trendUp": "¡Subió {percent}%!",
+  "@mobileStats_trendUp": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendDown": "Bajó {percent}%",
+  "@mobileStats_trendDown": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_trendStable": "Estable",
+  "mobileStats_trendNoData": "Juega más partidas para ver tu tendencia.",
+  "mobileStats_statisticsTitle": "Estadísticas",
+  "mobileStats_statisticsDesc": "Mira tus estadísticas detalladas de juego",
+  "mobileStats_historyTitle": "Historial de Juegos",
+  "mobileStats_historyDesc": "Mira todas tus partidas anteriores",
+  "mobileStats_achievementsDesc": "Sigue tu progreso y desbloquea insignias",
+  "mobileStats_contactDesc": "Reporta un error o envía comentarios",
+  "mobileStats_noData": "Aún No Hay Datos",
+  "mobileStats_noDataBody": "¡Juega algunas partidas para ver tus estadísticas aquí!",
+  "mobileStats_errorTitle": "Algo salió mal",
+  "mobileStats_statsLoadFailed": "No se pudieron cargar las estadísticas. Inténtalo de nuevo.",
+  "mobileStats_allGames": "Todos los Juegos",
+  "mobileStats_gamesPlayed": "Partidas Jugadas",
+  "mobileStats_avgScore": "Puntuación Media",
+  "mobileStats_avgAccuracy": "Precisión Media",
+  "mobileStats_totalPlayTime": "Tiempo Total de Juego",
+  "mobileStats_gamesPerWeek": "Partidas por Semana",
+  "mobileStats_gamesBreakdown": "Partidas por Juego",
+  "mobileStats_distinctGames": "{count} juegos distintos jugados",
+  "@mobileStats_distinctGames": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_scoreProgression": "Progreso de Puntuación",
+  "mobileStats_progressionHelp": "Cada barra muestra tu puntuación como % de tu mejor marca en ese juego. La línea muestra el promedio móvil.",
+  "mobileStats_progressionEmpty": "¡Juega más partidas para ver tu progreso!",
+  "mobileStats_accuracyTrend": "Tendencia de Precisión",
+  "mobileStats_speedTrend": "Tendencia de Velocidad",
+  "mobileStats_avgLabel": "Prom.: {value}",
+  "@mobileStats_avgLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_personalBests": "Mejores Marcas Personales",
+  "mobileStats_bestLine": "{difficulty} · {time} · {accuracy}% de precisión",
+  "@mobileStats_bestLine": {
+    "placeholders": {
+      "difficulty": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noGames": "Aún No Hay Partidas",
+  "mobileStats_noGamesBody": "¡Juega algunas partidas y tu historial aparecerá aquí!",
+  "mobileStats_historyLoadFailed": "No se pudo cargar el historial. Inténtalo de nuevo.",
+  "mobileStats_gamesCount": "{count} partidas",
+  "@mobileStats_gamesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_rangeOf": "{from}–{to} de {total}",
+  "@mobileStats_rangeOf": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_allDifficulties": "Todas las Dificultades",
+  "mobileStats_easy": "Fácil",
+  "mobileStats_medium": "Medio",
+  "mobileStats_hard": "Difícil",
+  "mobileStats_sortDate": "Fecha",
+  "mobileStats_sortScore": "Puntuación",
+  "mobileStats_sortAccuracy": "Precisión",
+  "mobileStats_sortTime": "Tiempo",
+  "mobileStats_prev": "Anterior",
+  "mobileStats_next": "Siguiente",
+  "mobileStats_pageOf": "Página {page} de {pages}",
+  "@mobileStats_pageOf": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noMatch": "Ninguna partida coincide con tus filtros. Prueba a cambiarlos.",
+  "mobileStats_pb": "MP",
+  "mobileStats_unlockedCount": "{unlocked}/{total} desbloqueados",
+  "@mobileStats_unlockedCount": {
+    "placeholders": {
+      "unlocked": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_overallProgress": "Progreso General",
+  "mobileStats_earnedCount": "{count} obtenidos",
+  "@mobileStats_earnedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_remainingCount": "{count} restantes",
+  "@mobileStats_remainingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_all": "Todos",
+  "mobileStats_catGettingStarted": "Primeros Pasos",
+  "mobileStats_catDedication": "Dedicación",
+  "mobileStats_catMastery": "Maestría",
+  "mobileStats_catGameSpecific": "Maestría por Juego",
+  "mobileStats_earnedOn": "Obtenido el {date}",
+  "@mobileStats_earnedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressBest": "Mejor: {value}",
+  "@mobileStats_progressBest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressFastest": "Más rápido: {value}",
+  "@mobileStats_progressFastest": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressGames": "{current}/{target} juegos",
+  "@mobileStats_progressGames": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_progressCount": "{current}/{target}",
+  "@mobileStats_progressCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterName": "Maestro de {game}",
+  "@mobileStats_masterName": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_masterDesc": "Consigue 5.000+ en {game}",
+  "@mobileStats_masterDesc": {
+    "placeholders": {
+      "game": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_noEntries": "Aún No Hay Entradas",
+  "mobileStats_noEntriesBody": "¡Sé el primero en jugar y ocupa el primer lugar!",
+  "mobileStats_you": "Tú",
+  "mobileStats_language": "Idioma",
+  "mobileStats_signOut": "Cerrar sesión",
+  "mobileStats_prefsLoadFailed": "No se pudieron cargar tus preferencias de correo.",
+  "mobileStats_prefsSaveFailed": "No se pudo guardar tu elección. Inténtalo de nuevo.",
+  "mobileStats_tierValue": "{tier}",
+  "@mobileStats_tierValue": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_contactTitleSubject": "Asunto",
+  "mobileStats_contactValidation": "Escribe un asunto y un mensaje.",
+  "mobileStats_ach_firstGame_name": "Primer Juego",
+  "mobileStats_ach_firstGame_desc": "Juega tu primera partida",
+  "mobileStats_ach_sharpShooter_name": "Tirador Certero",
+  "mobileStats_ach_sharpShooter_desc": "Consigue 90%+ de precisión en cualquier juego",
+  "mobileStats_ach_speedDemon_name": "Demonio de la Velocidad",
+  "mobileStats_ach_speedDemon_desc": "Completa cualquier juego en menos de 30 segundos",
+  "mobileStats_ach_explorer_name": "Explorador",
+  "mobileStats_ach_explorer_desc": "Prueba 3 juegos distintos",
+  "mobileStats_ach_highRoller_name": "Gran Apostador",
+  "mobileStats_ach_highRoller_desc": "Consigue más de 5.000 en cualquier juego",
+  "mobileStats_ach_onFire_name": "En Racha",
+  "mobileStats_ach_onFire_desc": "Juega 10 partidas",
+  "mobileStats_ach_committed_name": "Comprometido",
+  "mobileStats_ach_committed_desc": "Juega 25 partidas",
+  "mobileStats_ach_veteran_name": "Veterano",
+  "mobileStats_ach_veteran_desc": "Juega 50 partidas",
+  "mobileStats_ach_legend_name": "Leyenda",
+  "mobileStats_ach_legend_desc": "Juega 100 partidas",
+  "mobileStats_ach_brainPower_name": "Poder Mental",
+  "mobileStats_ach_brainPower_desc": "Consigue 5.000+ en 3 juegos distintos",
+  "mobileStats_ach_perfectionist_name": "Perfeccionista",
+  "mobileStats_ach_perfectionist_desc": "Consigue 100% de precisión en cualquier juego",
+  "mobileStats_ach_worldTraveler_name": "Viajero del Mundo",
+  "mobileStats_ach_worldTraveler_desc": "Juega los {count} juegos",
+  "@mobileStats_ach_worldTraveler_desc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileStats_ach_elite_name": "Élite",
+  "mobileStats_ach_elite_desc": "Consigue más de 7.000 en cualquier juego",
+  "mobileStats_ach_hardMode_name": "Dificultad Desbloqueada",
+  "mobileStats_ach_hardMode_desc": "Completa un juego en dificultad Difícil",
+  "mobileLanguage_chooseLanguage": "Elige un idioma para aprender",
+  "mobileLanguage_levelLabel": "Nivel {level}",
+  "@mobileLanguage_levelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_wordsLearnedLabel": "{count} palabras",
+  "@mobileLanguage_wordsLearnedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_learnTitle": "Aprende {language}",
+  "@mobileLanguage_learnTitle": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_configure": "Configura tu sesión de aprendizaje",
+  "mobileLanguage_chooseMode": "Elige el modo",
+  "mobileLanguage_modeImageMatch": "Emparejar imagen",
+  "mobileLanguage_modeImageMatchDesc": "Mira la palabra y elige la imagen correcta",
+  "mobileLanguage_modePronunciation": "Pronunciación",
+  "mobileLanguage_modePronunciationDesc": "Mira una imagen y di la palabra correctamente",
+  "mobileLanguage_accuracyVaries": "La precisión del reconocimiento puede variar en este idioma",
+  "mobileLanguage_diffBeginner": "Principiante",
+  "mobileLanguage_diffIntermediate": "Intermedio",
+  "mobileLanguage_diffAdvanced": "Avanzado",
+  "mobileLanguage_diffBeginnerDesc": "Vocabulario básico, {count} palabras",
+  "@mobileLanguage_diffBeginnerDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffIntermediateDesc": "Palabras comunes, {count} palabras",
+  "@mobileLanguage_diffIntermediateDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_diffAdvancedDesc": "Vocabulario complejo, {count} palabras",
+  "@mobileLanguage_diffAdvancedDesc": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_chooseCategory": "Elige una categoría",
+  "mobileLanguage_catAnimals": "Animales",
+  "mobileLanguage_catAnimalsDesc": "Perros, gatos, aves y más",
+  "mobileLanguage_catFood": "Comida y bebidas",
+  "mobileLanguage_catFoodDesc": "Frutas, verduras, comidas",
+  "mobileLanguage_catColors": "Colores",
+  "mobileLanguage_catColorsDesc": "Colores básicos y avanzados",
+  "mobileLanguage_catNumbers": "Números",
+  "mobileLanguage_catNumbersDesc": "Números del 1 al 20 y más",
+  "mobileLanguage_catObjects": "Objetos",
+  "mobileLanguage_catObjectsDesc": "Cosas y herramientas de todos los días",
+  "mobileLanguage_catNature": "Naturaleza",
+  "mobileLanguage_catNatureDesc": "Árboles, flores, clima",
+  "mobileLanguage_startLearning": "Empezar a aprender",
+  "mobileLanguage_languageNotFound": "Idioma no encontrado",
+  "mobileLanguage_backToLanguages": "Volver a la selección de idioma",
+  "mobileLanguage_loadingWords": "Cargando palabras...",
+  "mobileLanguage_noWords": "No hay vocabulario disponible para este idioma y categoría. Prueba con otra categoría.",
+  "mobileLanguage_loadFailed": "No se pudieron cargar las palabras. Revisa tu conexión e inténtalo de nuevo.",
+  "mobileLanguage_retryLoad": "Reintentar",
+  "mobileLanguage_questionOf": "Pregunta {current} de {total}",
+  "@mobileLanguage_questionOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_correctCount": "{count} correctas",
+  "@mobileLanguage_correctCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_hearWord": "Escuchar la palabra",
+  "mobileLanguage_whichImage": "¿Qué imagen corresponde a esta palabra?",
+  "mobileLanguage_imageUnavailable": "Imagen no disponible",
+  "mobileLanguage_attempt": "Intento {current}/{max}",
+  "@mobileLanguage_attempt": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_record": "Grabar",
+  "mobileLanguage_stopRecording": "Detener grabación",
+  "mobileLanguage_tapToRecord": "Toca el micrófono y di la palabra",
+  "mobileLanguage_listening": "Escuchando... ¡habla ahora!",
+  "mobileLanguage_processing": "Procesando...",
+  "mobileLanguage_heard": "Se oyó: \"{text}\"",
+  "@mobileLanguage_heard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_recognized": "✓ Reconocida",
+  "mobileLanguage_notRecognized": "✗ No reconocida",
+  "mobileLanguage_niceHeard": "¡Bien! Oímos la palabra correcta.",
+  "mobileLanguage_didntCatch": "No captamos la palabra correcta. ¡Inténtalo de nuevo!",
+  "mobileLanguage_retryLeft": "Reintentar ({count} restantes)",
+  "@mobileLanguage_retryLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileLanguage_nextWord": "Siguiente palabra",
+  "mobileLanguage_finish": "Terminar",
+  "mobileLanguage_fbTryAgain": "Inténtalo de nuevo",
+  "mobileLanguage_fbGoodEffort": "Buen esfuerzo",
+  "mobileLanguage_fbGreat": "¡Muy bien!",
+  "mobileLanguage_fbPerfect": "¡Perfecto!",
+  "mobileLanguage_errNotAllowed": "¡Necesito oírte! Permite el acceso al micrófono y al reconocimiento de voz en Ajustes e inténtalo de nuevo.",
+  "mobileLanguage_errNoSpeech": "No oí nada. ¡Toca el micrófono y habla con claridad!",
+  "mobileLanguage_errAudio": "No puedo usar el micrófono. Comprueba que esté libre e inténtalo de nuevo.",
+  "mobileLanguage_errNetwork": "¡Ups! Revisa tu conexión a internet e inténtalo de nuevo.",
+  "mobileLanguage_errAborted": "Se detuvo la grabación. ¡Toca el micrófono para intentarlo de nuevo!",
+  "mobileLanguage_errNotSupported": "El reconocimiento de voz no está disponible en este dispositivo.",
+  "mobileLanguage_errUnknown": "Algo salió mal. ¡Inténtalo de nuevo!",
+  "mobileLanguage_pronUnavailable": "Todavía no disponible en la app",
+  "mobileBoard_selectLevel": "Elige un nivel",
+  "mobileBoard_chooseLevel": "Elige tu nivel",
+  "mobileBoard_gameOver": "¡Fin del juego!",
+  "mobileBoard_seeScore": "Ver puntuación",
+  "mobileBoard_tryAgain": "Intentar de nuevo",
+  "mobileBoard_roundOf": "Ronda {current}/{total}",
+  "@mobileBoard_roundOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_lives": "Vidas",
+  "mobileBoard_timeLabel": "Tiempo",
+  "mobileBoard_sudokuSubtitle": "¡Llena la cuadrícula para que cada fila, columna y caja tenga del 1 al 9!",
+  "mobileBoard_sudokuGiven": "{count} números dados",
+  "@mobileBoard_sudokuGiven": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_sudokuEasyDetail": "Ideal para principiantes",
+  "mobileBoard_sudokuMediumDetail": "Un buen reto",
+  "mobileBoard_sudokuHardDetail": "Para expertos en Sudoku",
+  "mobileBoard_startPuzzle": "¡Empezar rompecabezas! 🧩",
+  "mobileBoard_generating": "Generando rompecabezas...",
+  "mobileBoard_notesOn": "Notas ACTIVADAS",
+  "mobileBoard_notesOff": "Notas DESACTIVADAS",
+  "mobileBoard_erase": "Borrar",
+  "mobileBoard_mistakes": "Errores",
+  "mobileBoard_jigsawSubtitle": "Toca una pieza y luego toca dónde va. ¡También puedes arrastrarla!",
+  "mobileBoard_jigsawGrid": "Cuadrícula de {size}×{size} ({pieces} piezas)",
+  "@mobileBoard_jigsawGrid": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "pieces": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_jigsawEasyDetail": "Ideal para principiantes",
+  "mobileBoard_jigsawMediumDetail": "Un reto divertido",
+  "mobileBoard_jigsawHardDetail": "Para maestros del rompecabezas",
+  "mobileBoard_chooseImage": "Elige una imagen",
+  "mobileBoard_imageSunset": "Playa al atardecer",
+  "mobileBoard_imageMountains": "Montañas",
+  "mobileBoard_imageForest": "Bosque encantado",
+  "mobileBoard_imageOcean": "Olas del océano",
+  "mobileBoard_imageSpace": "Espacio exterior",
+  "mobileBoard_imageGarden": "Jardín de flores",
+  "mobileBoard_imageCity": "Horizonte de la ciudad",
+  "mobileBoard_imageArctic": "Aurora ártica",
+  "mobileBoard_selectDifficultyAndImage": "Elige dificultad e imagen",
+  "mobileBoard_moves": "Movimientos",
+  "mobileBoard_pieceSelected": "Pieza seleccionada. Toca la casilla donde va",
+  "mobileBoard_showReference": "Mostrar imagen",
+  "mobileBoard_hideReference": "Ocultar imagen",
+  "mobileBoard_piecesLeft": "Piezas restantes: {count}",
+  "@mobileBoard_piecesLeft": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_seqSubtitle": "¡Memoriza las cartas y tócalas de nuevo en orden!",
+  "mobileBoard_chooseTheme": "Elige un tema",
+  "mobileBoard_seqDesc": "{cards} cartas · {seconds}s para verlas",
+  "@mobileBoard_seqDesc": {
+    "placeholders": {
+      "cards": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_memorize": "¡MEMORIZA! {seconds}s",
+  "@mobileBoard_memorize": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_tapCardYouSaw": "TOCA LA CARTA QUE VISTE",
+  "mobileBoard_tapCardInOrder": "TOCA LA CARTA {current} DE {total} EN ORDEN",
+  "@mobileBoard_tapCardInOrder": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_correctNextRound": "✅ ¡Correcto! Siguiente ronda...",
+  "mobileBoard_challengeSequence": "Secuencia del desafío",
+  "mobileBoard_allDrivers": "{theme} — Todos los pilotos",
+  "@mobileBoard_allDrivers": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_roundsCompleted": "Completaste {done} de {total} rondas",
+  "@mobileBoard_roundsCompleted": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_mistakesCount": "{count} errores",
+  "@mobileBoard_mistakesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_twoPlayer": "Dos jugadores",
+  "mobileBoard_localMultiplayer": "Multijugador local",
+  "mobileBoard_twoPlayerDesc": "Juega contra un amigo en el mismo dispositivo",
+  "mobileBoard_twoPlayerDetail": "Por turnos, sin IA, ¡solo diversión!",
+  "mobileBoard_or": "o",
+  "mobileBoard_player1": "Jugador 1 (X)",
+  "mobileBoard_player2": "Jugador 2 (O)",
+  "mobileBoard_ties": "Empates",
+  "mobileBoard_playerWins": "¡Gana {player}!",
+  "@mobileBoard_playerWins": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_itsADraw": "¡Empate!",
+  "mobileBoard_turnOf": "Turno de {player}",
+  "@mobileBoard_turnOf": {
+    "placeholders": {
+      "player": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_newRound": "Nueva ronda",
+  "mobileBoard_bubbleSubtitle": "¡Revienta las letras en orden para formar la palabra!",
+  "mobileBoard_bubbleEasyDesc": "Palabras cortas (3–4 letras)",
+  "mobileBoard_bubbleMediumDesc": "Palabras de 6 letras",
+  "mobileBoard_bubbleHardDesc": "Palabras largas (7–9 letras)",
+  "mobileBoard_startBubble": "¡Empezar a reventar! 🫧",
+  "mobileBoard_nextWord": "Siguiente palabra →",
+  "mobileBoard_wordsEnglishOnly": "Las palabras y pistas están solo en inglés",
+  "mobileBoard_botSubtitle": "¡Programa al robot para llegar a la celda de energía!",
+  "mobileBoard_botEasyDesc": "Cuadrícula 5×5 · Caminos simples",
+  "mobileBoard_botMediumDesc": "Cuadrícula 6×6 · Grietas para saltar",
+  "mobileBoard_botHardDesc": "Cuadrícula 7×7 · Grietas + hielo que te desliza",
+  "mobileBoard_botEasyFeatures": "Solo paredes",
+  "mobileBoard_botMediumFeatures": "Paredes + grietas",
+  "mobileBoard_botHardFeatures": "Paredes + grietas + hielo",
+  "mobileBoard_startBot": "¡Empezar a programar! 🤖",
+  "mobileBoard_levelOf": "Nivel {current}/{total}",
+  "@mobileBoard_levelOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botForward": "Avanzar",
+  "mobileBoard_botTurnLeft": "Girar a la izquierda",
+  "mobileBoard_botTurnRight": "Girar a la derecha",
+  "mobileBoard_botJump": "Saltar",
+  "mobileBoard_botRun": "Ejecutar",
+  "mobileBoard_botClear": "Borrar",
+  "mobileBoard_yourProgram": "Tu programa",
+  "mobileBoard_programEmpty": "Toca los bloques de abajo para armar tu programa",
+  "mobileBoard_blocksUsed": "{used}/{max} bloques",
+  "@mobileBoard_blocksUsed": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileBoard_botHint": "Pista",
+  "mobileBoard_botSuccess": "¡Llegaste a la celda de energía! ⚡",
+  "mobileBoard_botNextLevel": "Siguiente nivel →",
+  "mobileBoard_botFinish": "Terminar 🏆",
+  "mobileBoard_botRetry": "Intentar de nuevo",
+  "mobileBoard_botFellCrack": "¡El robot cayó en una grieta! 🕳",
+  "mobileBoard_botCrashed": "¡El robot chocó! 💥",
+  "mobileBoard_botNotReached": "El robot no llegó a la celda de energía 🤔",
+  "mobileBoard_botRunning": "Ejecutando...",
+  "mobileBoard_botHintsEnglishOnly": "Las pistas están solo en inglés",
+  "mobileBoard_mazeControls": "Desliza sobre el laberinto o usa las flechas para moverte",
+  "mobileBoard_mazeAnswerHint": "Tu respuesta",
+  "mobileBoard_moveUp": "Mover arriba",
+  "mobileBoard_moveDown": "Mover abajo",
+  "mobileBoard_moveLeft": "Mover a la izquierda",
+  "mobileBoard_moveRight": "Mover a la derecha",
+  "mobilePhysics_systemsCheck": "Revisión de sistemas: {done}/{total} completas",
+  "@mobilePhysics_systemsCheck": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_ready": "Listo",
+  "mobilePhysics_pending": "Pendiente",
+  "mobilePhysics_englishPuzzles": "Los acertijos de la misión y los datos del destino están en inglés.",
+  "mobilePhysics_answerOk": "OK",
+  "mobilePhysics_answerWrong": "Respuesta: {answer}",
+  "@mobilePhysics_answerWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_bondDropHint": "Arrastra elementos aquí o toca para añadir",
+  "mobilePhysics_bondHeat": "Calor",
+  "mobilePhysics_golfHoleOf": "Hoyo {current}/{total}",
+  "@mobilePhysics_golfHoleOf": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTotal": "Total: {strokes}",
+  "@mobilePhysics_golfTotal": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfPar": "Par {par}",
+  "@mobilePhysics_golfPar": {
+    "placeholders": {
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfStrokesPar": "{strokes} golpes (Par {par})",
+  "@mobilePhysics_golfStrokesPar": {
+    "placeholders": {
+      "strokes": {
+        "type": "String"
+      },
+      "par": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfWaterHazard": "¡Obstáculo de agua! +1 golpe",
+  "mobilePhysics_golfConditions": "Condiciones",
+  "mobilePhysics_golfWind": "Viento",
+  "mobilePhysics_golfDirection": "Dirección",
+  "mobilePhysics_golfTemp": "Temp.",
+  "mobilePhysics_golfAltitude": "Altitud",
+  "mobilePhysics_golfWindSpeed": "{value} km/h",
+  "@mobilePhysics_golfWindSpeed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempValue": "{value} °C",
+  "@mobilePhysics_golfTempValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfAltitudeValue": "{value} m",
+  "@mobilePhysics_golfAltitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfTempFrosty": "Helado: la bola rueda más lejos",
+  "mobilePhysics_golfTempHot": "Calor: el césped es pegajoso",
+  "mobilePhysics_golfTempPleasant": "Condiciones agradables",
+  "mobilePhysics_golfAltThin": "Aire fino: menos resistencia",
+  "mobilePhysics_golfAltModerate": "Elevación moderada",
+  "mobilePhysics_golfAltSea": "Nivel del mar",
+  "mobilePhysics_golfConditionsTip": "Las condiciones cambian en cada hoyo. ¡Ajusta tu puntería!",
+  "mobilePhysics_golfAimHint": "Arrastra hacia atrás desde la bola para apuntar y disparar",
+  "mobilePhysics_golfPullHint": "Tira más atrás para más potencia",
+  "mobilePhysics_golfPower": "Potencia: {percent}%",
+  "@mobilePhysics_golfPower": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mobilePhysics_golfConditionsNote": "¡El viento, la temperatura y la altitud cambian en cada hoyo y afectan a la bola!",
+  "mobilePhysics_golfAlbatross": "¡Albatros!",
+  "mobilePhysics_golfEagle": "¡Águila!",
+  "mobilePhysics_golfBirdie": "¡Birdie!",
+  "mobilePhysics_golfParName": "Par",
+  "mobilePhysics_golfBogey": "Bogey",
+  "mobilePhysics_golfDoubleBogey": "Doble bogey",
+  "mobilePhysics_golfTripleBogey": "Triple bogey o más",
+  "mobilePhysics_golfStrokeCounter": "{current}/{max}",
+  "@mobilePhysics_golfStrokeCounter": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileCircuit_remove": "Quitar",
+  "mobileCircuit_moveHint": "Mantén pulsada una pieza y arrástrala para moverla. Toca un cable para quitarlo.",
+  "mobileCircuit_wiring": "Ahora toca otro punto para terminar el cable.",
+  "mobileCircuit_zoomHint": "Pellizca para hacer zoom y arrastra para mover la cuadrícula.",
+  "mobileCircuit_partSelected": "Seleccionado: {name}",
+  "@mobileCircuit_partSelected": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_goal": "🎯 ¡Llega a la esclusa con la menor cantidad de líneas! Meta: {count} líneas",
+  "@mobileSpaceCoder_goal": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_cursorHere": "Las nuevas líneas van aquí",
+  "mobileSpaceCoder_dragHint": "Toca un comando para añadirlo en la línea verde o arrástralo sobre una línea. Toca una línea para mover allí la línea verde.",
+  "mobileSpaceCoder_removeLine": "Quitar la línea {line}",
+  "@mobileSpaceCoder_removeLine": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSpaceCoder_loopCount": "Repeticiones",
+  "mobileSpaceCoder_conditionMode": "Tipo de condición",
+  "mobileSpaceCoder_running": "Ejecutando…",
+  "game_superHard": "Super Hard",
+  "setup_memoryMatch_superHardDesc": "15 pairs (6×5) - Paid members only!"
+}

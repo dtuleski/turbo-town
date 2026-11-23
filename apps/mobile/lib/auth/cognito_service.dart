@@ -38,9 +38,11 @@ class AuthException implements Exception {
 /// **ID token**, which is what the API Gateway JWT authorizer validates and
 /// whose claims (email, preferred_username) the game service reads.
 class CognitoService {
-  CognitoService({TokenStorage? storage})
+  /// [pool] is injectable so tests can supply a pool with a fake Cognito
+  /// client; production code uses the configured user pool.
+  CognitoService({TokenStorage? storage, CognitoUserPool? pool})
       : _storage = storage ?? TokenStorage(),
-        _pool = CognitoUserPool(Env.cognitoUserPoolId, Env.cognitoClientId);
+        _pool = pool ?? CognitoUserPool(Env.cognitoUserPoolId, Env.cognitoClientId);
 
   final TokenStorage _storage;
   final CognitoUserPool _pool;
@@ -241,13 +243,57 @@ class CognitoService {
 
   /// Confirm a new account with the emailed code.
   Future<void> confirmSignUp(String email, String code) async {
-    final cognitoUser = CognitoUser(email, _pool);
+    final cognitoUser = CognitoUser(_normalizeIdentifier(email), _pool);
     try {
       await cognitoUser.confirmRegistration(code);
     } on CognitoClientException catch (e) {
       throw AuthException(e.message ?? 'Confirmation failed', code: e.code);
     } catch (e) {
       throw AuthException('Confirmation failed: $e');
+    }
+  }
+
+  /// Ask Cognito to email a new sign-up confirmation code.
+  Future<void> resendSignUpCode(String email) async {
+    final cognitoUser = CognitoUser(_normalizeIdentifier(email), _pool);
+    try {
+      await cognitoUser.resendConfirmationCode();
+    } on CognitoClientException catch (e) {
+      throw AuthException(e.message ?? 'Could not resend the code', code: e.code);
+    } catch (e) {
+      throw AuthException('Could not resend the code: $e');
+    }
+  }
+
+  /// Start the forgot-password flow: Cognito emails a reset code.
+  ///
+  /// An unknown email is reported as success so the screen cannot be used to
+  /// find out which addresses have accounts.
+  Future<void> forgotPassword(String email) async {
+    final cognitoUser = CognitoUser(_normalizeIdentifier(email), _pool);
+    try {
+      await cognitoUser.forgotPassword();
+    } on CognitoClientException catch (e) {
+      if (e.code == 'UserNotFoundException') return;
+      throw AuthException(e.message ?? 'Could not send the reset code', code: e.code);
+    } catch (e) {
+      throw AuthException('Could not send the reset code: $e');
+    }
+  }
+
+  /// Finish the forgot-password flow with the emailed code and a new password.
+  Future<void> confirmForgotPassword(
+    String email,
+    String code,
+    String newPassword,
+  ) async {
+    final cognitoUser = CognitoUser(_normalizeIdentifier(email), _pool);
+    try {
+      await cognitoUser.confirmPassword(code, newPassword);
+    } on CognitoClientException catch (e) {
+      throw AuthException(e.message ?? 'Password reset failed', code: e.code);
+    } catch (e) {
+      throw AuthException('Password reset failed: $e');
     }
   }
 
@@ -288,7 +334,23 @@ class CognitoService {
     return null;
   }
 
-  Future<void> signOut() => _storage.clear();
+  /// Sign out on this device and, best effort, revoke every session for the
+  /// account (Cognito GlobalSignOut). A failed or offline revoke never blocks
+  /// the local sign-out.
+  Future<void> signOut() async {
+    try {
+      final accessToken = await _storage.accessToken;
+      final client = _pool.client;
+      if (accessToken != null && client != null) {
+        await client
+            .request('GlobalSignOut', {'AccessToken': accessToken})
+            .timeout(const Duration(seconds: 5));
+      }
+    } catch (_) {
+      // Token expired, offline or revoked already: just clear local state.
+    }
+    await _storage.clear();
+  }
 
   TokenStorage get storage => _storage;
 

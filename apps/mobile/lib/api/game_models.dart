@@ -1,6 +1,8 @@
 /// Dart models mirroring the game service GraphQL types.
 library;
 
+import 'quest_models.dart';
+
 class RateLimitInfo {
   const RateLimitInfo({
     required this.tier,
@@ -47,7 +49,7 @@ class StartGameResult {
 
   factory StartGameResult.fromJson(Map<String, dynamic> json) {
     return StartGameResult(
-      id: json['id'] as String,
+      id: json['id'] as String? ?? '',
       themeId: json['themeId'] as String? ?? '',
       difficulty: (json['difficulty'] as num?)?.toInt() ?? 1,
       status: json['status'] as String? ?? 'IN_PROGRESS',
@@ -66,6 +68,7 @@ class ScoreBreakdown {
     required this.speedBonus,
     required this.accuracyBonus,
     required this.finalScore,
+    this.accuracy,
   });
 
   final int baseScore;
@@ -73,6 +76,9 @@ class ScoreBreakdown {
   final int speedBonus;
   final int accuracyBonus;
   final int finalScore;
+
+  /// 0..1 accuracy used by the server, when it reports one.
+  final double? accuracy;
 
   factory ScoreBreakdown.fromJson(Map<String, dynamic> json) {
     return ScoreBreakdown(
@@ -82,6 +88,30 @@ class ScoreBreakdown {
       speedBonus: (json['speedBonus'] as num?)?.toInt() ?? 0,
       accuracyBonus: (json['accuracyBonus'] as num?)?.toInt() ?? 0,
       finalScore: (json['finalScore'] as num?)?.toInt() ?? 0,
+      accuracy: (json['accuracy'] as num?)?.toDouble(),
+    );
+  }
+}
+
+class AchievementResult {
+  const AchievementResult({
+    required this.type,
+    required this.unlocked,
+    this.progress = 0,
+    this.completedAt,
+  });
+
+  final String type;
+  final bool unlocked;
+  final num progress;
+  final String? completedAt;
+
+  factory AchievementResult.fromJson(Map<String, dynamic> json) {
+    return AchievementResult(
+      type: json['type'] as String? ?? '',
+      unlocked: json['unlocked'] as bool? ?? false,
+      progress: (json['progress'] as num?) ?? 0,
+      completedAt: json['completedAt'] as String?,
     );
   }
 }
@@ -96,6 +126,8 @@ class CompleteGameResult {
     this.attempts,
     this.scoreBreakdown,
     this.leaderboardRank,
+    this.achievements = const [],
+    this.quest,
   });
 
   final String id;
@@ -105,10 +137,17 @@ class CompleteGameResult {
   final int? attempts;
   final ScoreBreakdown? scoreBreakdown;
   final int? leaderboardRank;
+  final List<AchievementResult> achievements;
+
+  /// Quest Map result; null for games not started from the map.
+  final QuestResult? quest;
 
   factory CompleteGameResult.fromJson(Map<String, dynamic> json) {
     return CompleteGameResult(
-      id: json['id'] as String,
+      // The backend can return `id: null` on completeGame (the record is keyed
+      // by `gameId`). The app already holds the gameId, so tolerate null
+      // instead of throwing on the cast after the score is saved.
+      id: json['id'] as String? ?? '',
       status: json['status'] as String? ?? 'COMPLETED',
       score: (json['score'] as num?)?.toInt() ?? 0,
       completionTime: (json['completionTime'] as num?)?.toInt(),
@@ -118,6 +157,13 @@ class CompleteGameResult {
           : ScoreBreakdown.fromJson(
               json['scoreBreakdown'] as Map<String, dynamic>),
       leaderboardRank: (json['leaderboardRank'] as num?)?.toInt(),
+      achievements: ((json['achievements'] as List?) ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(AchievementResult.fromJson)
+          .toList(),
+      quest: json['quest'] == null
+          ? null
+          : QuestResult.fromJson(json['quest'] as Map<String, dynamic>),
     );
   }
 }
@@ -157,6 +203,95 @@ class GameApiException implements Exception {
       code == 'PAID_FEATURE_REQUIRED' ||
       message.toLowerCase().contains('paid subscription');
 
+  /// The server re-checked a Circuit Builder layout and refused it (web
+  /// `isRejection` in circuitGameSession.ts).
+  bool get isRejected =>
+      code == 'VALIDATION_ERROR' || message.toLowerCase().contains('could not be verified');
+
   @override
   String toString() => message;
+}
+
+/// One row of the `listAvailableGames` catalog.
+class GameCatalogItem {
+  const GameCatalogItem({
+    required this.gameId,
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.route,
+    required this.status,
+    required this.displayOrder,
+    required this.ageRange,
+    required this.category,
+  });
+
+  final String gameId;
+  final String title;
+  final String description;
+  final String icon;
+  final String route;
+
+  /// ACTIVE | COMING_SOON | MAINTENANCE
+  final String status;
+  final int displayOrder;
+  final String ageRange;
+  final String category;
+
+  bool get isActive => status == 'ACTIVE';
+
+  factory GameCatalogItem.fromJson(Map<String, dynamic> json) {
+    return GameCatalogItem(
+      gameId: json['gameId'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      icon: json['icon'] as String? ?? '',
+      route: json['route'] as String? ?? '',
+      status: json['status'] as String? ?? 'ACTIVE',
+      displayOrder: (json['displayOrder'] as num?)?.toInt() ?? 0,
+      ageRange: json['ageRange'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+    );
+  }
+}
+
+class ReviewStats {
+  const ReviewStats({
+    required this.gameType,
+    required this.averageRating,
+    required this.totalReviews,
+  });
+
+  final String gameType;
+  final double averageRating;
+  final int totalReviews;
+
+  factory ReviewStats.fromJson(Map<String, dynamic> json) {
+    return ReviewStats(
+      gameType: json['gameType'] as String? ?? '',
+      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0,
+      totalReviews: (json['totalReviews'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
+/// Response of `getReviewStats`: per-game ratings keyed by `gameType`
+/// (the game id upper-cased with dashes as underscores, e.g. MEMORY_MATCH).
+class ReviewStatsResult {
+  const ReviewStatsResult({required this.perGame, this.overall});
+
+  final List<ReviewStats> perGame;
+  final ReviewStats? overall;
+
+  factory ReviewStatsResult.fromJson(Map<String, dynamic> json) {
+    return ReviewStatsResult(
+      perGame: ((json['perGame'] as List?) ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(ReviewStats.fromJson)
+          .toList(),
+      overall: json['overall'] == null
+          ? null
+          : ReviewStats.fromJson(json['overall'] as Map<String, dynamic>),
+    );
+  }
 }

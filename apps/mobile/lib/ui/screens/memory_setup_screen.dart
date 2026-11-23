@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../config/constants.dart';
+import '../../game/framework/game_setup_scaffold.dart';
+import '../../l10n/game_text.dart';
+import '../../l10n/gen/app_localizations.dart';
+import '../memory_text.dart';
 
 class MemorySetupScreen extends StatefulWidget {
   const MemorySetupScreen({super.key});
@@ -15,66 +19,69 @@ class _MemorySetupScreenState extends State<MemorySetupScreen> {
   Difficulty _difficulty = Difficulty.easy;
 
   void _play() {
-    context.push('/memory-match/play?theme=$_themeId&difficulty=${_difficulty.id}');
+    context.push(Uri(
+      path: '/memory-match/play',
+      queryParameters: {'theme': _themeId, 'difficulty': _difficulty.id},
+    ).toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Memory Match')),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
+    final l10n = AppLocalizations.of(context);
+    return GameSetupScaffold(
+      title: gameTitle(l10n, 'memory-match') ?? 'Memory Match',
+      startLabel: l10n.setup_memoryMatch_startGame,
+      onStart: _play,
+      children: [
+        Text(l10n.setup_memoryMatch_chooseTheme,
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 12),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 3,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.95,
           children: [
-            Text('Choose a theme',
-                style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 12),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 0.95,
-              children: [
-                for (final t in kGameThemes)
-                  _ThemeTile(
-                    theme: t,
-                    selected: t.id == _themeId,
-                    onTap: () => setState(() => _themeId = t.id),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text('Difficulty',
-                style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 12),
-            for (final d in Difficulty.values)
-              _DifficultyTile(
-                difficulty: d,
-                selected: d == _difficulty,
-                onTap: () => setState(() => _difficulty = d),
+            for (final t in kGameThemes)
+              _ThemeTile(
+                key: Key('theme-${t.id}'),
+                emoji: t.emoji,
+                name: memoryThemeName(l10n, t.id),
+                selected: t.id == _themeId,
+                onTap: () => setState(() => _themeId = t.id),
               ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: _play,
-              child: const Text('Start game'),
-            ),
           ],
         ),
-      ),
+        const SizedBox(height: 24),
+        Text(l10n.setup_memoryMatch_chooseDifficulty,
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 12),
+        for (final d in Difficulty.values)
+          _DifficultyTile(
+            key: Key('difficulty-${d.id}'),
+            label: memoryDifficultyLabel(l10n, d),
+            description: memoryDifficultyDescription(l10n, d),
+            selected: d == _difficulty,
+            onTap: () => setState(() => _difficulty = d),
+          ),
+      ],
     );
   }
 }
 
 class _ThemeTile extends StatelessWidget {
   const _ThemeTile({
-    required this.theme,
+    super.key,
+    required this.emoji,
+    required this.name,
     required this.selected,
     required this.onTap,
   });
 
-  final GameThemeDef theme;
+  final String emoji;
+  final String name;
   final bool selected;
   final VoidCallback onTap;
 
@@ -96,9 +103,9 @@ class _ThemeTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(theme.emoji, style: const TextStyle(fontSize: 32)),
+            Text(emoji, style: const TextStyle(fontSize: 32)),
             const SizedBox(height: 6),
-            Text(theme.name,
+            Text(name,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.w600)),
           ],
@@ -110,12 +117,15 @@ class _ThemeTile extends StatelessWidget {
 
 class _DifficultyTile extends StatelessWidget {
   const _DifficultyTile({
-    required this.difficulty,
+    super.key,
+    required this.label,
+    required this.description,
     required this.selected,
     required this.onTap,
   });
 
-  final Difficulty difficulty;
+  final String label;
+  final String description;
   final bool selected;
   final VoidCallback onTap;
 
@@ -146,19 +156,10 @@ class _DifficultyTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text(difficulty.label,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700)),
-                        if (difficulty == Difficulty.superHard) ...[
-                          const SizedBox(width: 8),
-                          const _PaidBadge(),
-                        ],
-                      ],
-                    ),
-                    Text(difficulty.description,
-                        style: Theme.of(context).textTheme.bodySmall),
+                    Text(label,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700)),
+                    Text(description, style: Theme.of(context).textTheme.bodySmall),
                   ],
                 ),
               ),
@@ -166,26 +167,6 @@ class _DifficultyTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _PaidBadge extends StatelessWidget {
-  const _PaidBadge();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: Colors.amber.shade100,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text('PAID',
-          style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
-              color: Colors.amber.shade900)),
     );
   }
 }
