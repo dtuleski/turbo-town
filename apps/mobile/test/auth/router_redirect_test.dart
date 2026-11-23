@@ -61,11 +61,19 @@ void main() {
           route);
     });
 
-    testWidgets('logged-in user is redirected away from $route',
-        (tester) async {
-      expect(
-          await locationAfter(tester, AuthStatus.authenticated, route), '/');
-    });
+    if (route == '/register') {
+      testWidgets('logged-in user can still open /register to confirm',
+          (tester) async {
+        expect(await locationAfter(tester, AuthStatus.authenticated, route),
+            route);
+      });
+    } else {
+      testWidgets('logged-in user is redirected away from $route',
+          (tester) async {
+        expect(
+            await locationAfter(tester, AuthStatus.authenticated, route), '/');
+      });
+    }
   }
 
   testWidgets('logged-out user is sent to /login from a private route',

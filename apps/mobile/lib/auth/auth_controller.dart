@@ -138,8 +138,14 @@ class AuthController extends StateNotifier<AuthState> {
           : SignUpOutcome.confirmed;
     } on AuthException catch (e) {
       // An already-registered-but-unconfirmed account should route the user
-      // to the confirmation step, not a dead end.
-      if (e.code == 'UsernameExistsException') {
+      // to the confirmation step, not a dead end. Cognito signals this a few
+      // ways on a retried SignUp, so match the codes and the message text.
+      final msg = e.message.toLowerCase();
+      final isExisting = e.code == 'UsernameExistsException' ||
+          e.code == 'UserNotConfirmedException' ||
+          msg.contains('not confirmed') ||
+          msg.contains('already exists');
+      if (isExisting) {
         state = state.copyWith(isBusy: false, clearError: true);
         return SignUpOutcome.needsConfirmation;
       }

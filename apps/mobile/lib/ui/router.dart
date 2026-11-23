@@ -73,7 +73,11 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       final loggedIn = status == AuthStatus.authenticated;
       if (!loggedIn && !loggingIn) return '/login';
-      if (loggedIn && loggingIn) return '/';
+      // /register stays reachable when signed in: a just-created account may
+      // still need to finish the confirmation step on that screen.
+      if (loggedIn && loggingIn && state.matchedLocation != '/register') {
+        return '/';
+      }
       return null;
     },
     routes: [

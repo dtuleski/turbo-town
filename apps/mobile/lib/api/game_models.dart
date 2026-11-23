@@ -49,7 +49,7 @@ class StartGameResult {
 
   factory StartGameResult.fromJson(Map<String, dynamic> json) {
     return StartGameResult(
-      id: json['id'] as String,
+      id: json['id'] as String? ?? '',
       themeId: json['themeId'] as String? ?? '',
       difficulty: (json['difficulty'] as num?)?.toInt() ?? 1,
       status: json['status'] as String? ?? 'IN_PROGRESS',
@@ -144,7 +144,10 @@ class CompleteGameResult {
 
   factory CompleteGameResult.fromJson(Map<String, dynamic> json) {
     return CompleteGameResult(
-      id: json['id'] as String,
+      // The backend can return `id: null` on completeGame (the record is keyed
+      // by `gameId`). The app already holds the gameId, so tolerate null
+      // instead of throwing on the cast after the score is saved.
+      id: json['id'] as String? ?? '',
       status: json['status'] as String? ?? 'COMPLETED',
       score: (json['score'] as num?)?.toInt() ?? 0,
       completionTime: (json['completionTime'] as num?)?.toInt(),

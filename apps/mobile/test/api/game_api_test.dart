@@ -70,6 +70,26 @@ void main() {
     });
   });
 
+  test('completeGame tolerates a null id from the server', () async {
+    final api = _api(_ScriptedLink([
+      {
+        'completeGame': {'id': null, 'status': 'COMPLETED', 'score': 777},
+      },
+    ]));
+    final result =
+        await api.completeGame(gameId: 'g1', completionTime: 5, attempts: 1);
+    expect(result.score, 777);
+    expect(result.id, '');
+  });
+  test('startGame tolerates a null id from the server', () async {
+    final api = _api(_ScriptedLink([
+      {
+        'startGame': {'id': null, 'themeId': 'ANIMALS', 'difficulty': 1},
+      },
+    ]));
+    final result = await api.startGame(themeId: 'ANIMALS', difficulty: 1);
+    expect(result.id, '');
+  });
   test('completeGame forwards only the keys the server accepts', () async {
     final link = _ScriptedLink([
       {
