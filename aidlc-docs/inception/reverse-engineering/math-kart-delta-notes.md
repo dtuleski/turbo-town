@@ -6,6 +6,7 @@
 **Baseline**: the full reverse-engineering set in this folder describes HEAD `a328c74` and is stale.
 **Read for this note**: branch `feat/math-kart` at `c6ccf0f` (origin/main, PR #35 merged). Every fact below was read in that tree unless it is marked *inferred* or *unverified*.
 **Not re-done**: the business overview, architecture, API and dependency documents. This note lists only what changed since `a328c74` in the areas Math Rally touches, plus facts the requirements depend on.
+**Iteration 2**: facts added after the design review are marked *(iteration 2)*; they were read in the same tree.
 
 ---
 
@@ -63,7 +64,8 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 - **Score caps, two layers**: the calculator caps by difficulty at 5000 / 6500 / 8000 (1, 2, 3+); `completeGame` then caps by game type: 6000 for free games at difficulty 1-3, 8000 for difficulty 4, 8000 for themes in a local `PREMIUM_GAME_THEMES` list, Mini Golf uncapped. Circuit Builder uses its own `CB_SCORE_CAP` 8000.
 - **Duplicated lists**: `PREMIUM_GAME_THEMES` exists twice (score calculator and `completeGame`) and differs from `PAID_GAME_THEME_IDS` (no `CIRCUIT_BUILDER`). The "skip Memory Match attempts validation" and `preAccuracy` theme lists are also inline literals. A new game with its own completion branch avoids all of them.
 - **Generic trust level**: the generic path scores from client-reported `completionTime`, `correctAnswers`, `totalQuestions`, bounded only by `validateCompletionTime` (minimum `2 x difficulty` seconds, maximum 3600 s).
-- **Input schema**: `startGameInputSchema` passes `questContext` as `unknown`; `completeGameInputSchema` passes `circuitSubmission` as `unknown` and validates it later. A new per-game payload follows the same pattern.
+- **Input schema**: `startGameInputSchema` passes `questContext` as `unknown`; `completeGameInputSchema` passes `circuitSubmission` as `unknown` and validates it later. A new per-game payload follows the same pattern. Both schemas are plain `z.object` schemas, which drop undeclared keys, so a new start or completion field must be declared to reach the service *(iteration 2)*.
+- **`ScoreBreakdown`** (`score-calculator.service.ts`): `baseScore`, `difficultyMultiplier`, `speedBonus`, `accuracyBonus`, `finalScore`, `difficulty`, `completionTime`, `accuracy` *(iteration 2)*.
 - **Difficulty on the leaderboard**: the event maps 1 to EASY, 2 to MEDIUM, 3 and 4 to HARD (U7a finding: Super Hard is indistinguishable from Hard).
 
 ---
@@ -71,6 +73,8 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 ## 4. Leaderboard service
 
 `validateScore` switches on `GameType`. Math Challenge's window is 10 to 600 s, max score 10000; Math Maze and other newer games reuse it. Circuit Builder has a dedicated `circuitBuilder` entry (1 to 3600 s, 0 to 8000) because reuse would reject legitimate long games and an event that fails validation **silently produces no leaderboard entry**. Nine stale leaderboard tests fail on `main` (U7a section 8); they are pre-existing.
+
+*(iteration 2)* **Anomaly checks** (`services/leaderboard/src/services/anomaly.service.ts`, called from `handlers/event.handler.ts`): besides a z-score outlier check and a velocity check, a pattern check reads up to 20 of the player's entries from `UserScoreHistoryIndex`, keeps those of the same game type, and, when at least 3 remain, flags the new entry if its score appears 3 or more times among them or if their completion times have a coefficient of variation below 5%. A flagged entry gets `suspicious: true`, a `console.warn` with game id, user id and reasons, and an `AnomalyDetected` metric; it is still stored, aggregated and returned (`leaderboard.service.ts` only copies the flag). No alarm on `AnomalyDetected` exists in the repository (searched with `git grep`). **Ranking** sorts by score only (`aggregate.repository.ts`, `leaderboard.repository.ts`); there is no tie-break by time or accuracy.
 
 ---
 
@@ -82,6 +86,7 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 - A theme can be a leg only if listed in `QUEST_GAME_THEME_IDS` (`packages/shared/src/quest/themes.ts`). The config test rejects a **World 1 leg that is paid or above difficulty 3**, so a game planned to become paid must not be placed in World 1.
 - The `difficulty` launch kind can express difficulty 1-3 only (`DIFFICULTY_NAMES`).
 - Any new completion branch must call `finalizeQuest`, or quest stars are never awarded for that game.
+- *(iteration 2)* `QuestService.validateStart` (`services/game/src/services/quest.service.ts`) looks the world and node up in the shared config and rejects a leg whose theme or difficulty differs with `LEG_MISMATCH`, so a game with no node cannot pass it with a real config. `GameService` receives `QuestService` through an optional constructor parameter (`questService`), which gives tests a seam for a stub.
 
 ---
 
@@ -91,6 +96,7 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 - **No lazy routes**: every page is a static import in `App.tsx`, so the whole app ships as one entry bundle today. Math Rally would be the first `React.lazy` route.
 - `React.StrictMode` wraps the app (`main.tsx`), so effects mount twice in development; an embedded engine must survive that.
 - `@vercel/analytics` and `@vercel/speed-insights` are mounted app-wide (`main.tsx`).
+- *(iteration 2)* `i18n.ts` imports `en.json`, `es.json` and `pt.json` statically, so every string in the main locale files is in the entry chunk. It uses `i18next-browser-languagedetector` with `fallbackLng: 'en'` and no `supportedLngs` or `load` option, so `i18n.language` can hold a regional code such as `pt-BR` (*from the libraries' documented behaviour, not run here*).
 - **CSP ships as `Content-Security-Policy-Report-Only`** (`apps/web/vercel.json`): `script-src 'self'`, `img-src 'self' data: https://upload.wikimedia.org` (no `blob:`), `connect-src` limited to the API, Cognito and `ipapi.co`, `frame-ancestors 'none'`, plus `X-Frame-Options: DENY`. SECURITY-04 is recorded as partial in `aidlc-state.md`. A game engine that creates `blob:` image URLs would raise reports now and break once CSP is enforced (*whether Phaser 4 does this is unverified*).
 - `index.html` loads the Poppins font from Google Fonts; a bundle meant to run offline cannot rely on it.
 - `apps/web` imports `packages/shared` through relative-path funnel modules (`utils/circuitEngine.ts`, `utils/questShared.ts`). Both carry a warning that Vercel might not see `packages/shared`; Quest Map web, which uses `questShared.ts`, was deployed to production on 2026-11-03 (audit log), so the path resolves in the Vercel build (*inferred from the deploy record*).

@@ -3,6 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
 **Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
+**Revision**: iteration 2, after the design review (responses in the requirements, Section 13). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. No story was added or removed.
 
 ## Assessment and approach
 
@@ -37,7 +38,7 @@ As a player, I want to pick Easy, Medium, Hard or Super Hard and see how to stee
 - **Given** I am on setup **Then** I see four difficulties, each with its number of paths (2, 3, 4, 4)
 - **And** a "How to play" panel shows the keys (arrows or A/D, P to pause) and the bottom joystick
 - **Given** I am on the FREE tier **Then** Super Hard is shown locked with the existing upgrade path, and I cannot start it (after a paid switch Medium and Hard are locked too, MK-28)
-- **Given** I open the game from a Quest Map style link with `?difficulty=medium` **Then** setup is skipped and Medium starts
+- **Given** I open the game route `/math-rally/game?difficulty=medium` directly (the link a future Quest Map node will use) **Then** the setup page is skipped and Medium starts
 
 *Requirements: FR-MK-40, FR-MK-45, FR-MK-53, Section 4.0*
 
@@ -50,7 +51,7 @@ As a player, I want the race to load, count down and go without wasting a play.
 
 - **Given** I press Start **Then** the scene loads first (road, hills, Benji's kart from behind) and only then is my game started on the server
 - **When** the race data arrives **Then** I see 3-2-1-Go and the kart drives off by itself
-- **Given** my browser cannot run the game (for example WebGL is off) **Then** I see a short message and a way back, and no play was used
+- **Given** my browser cannot run the game (for example WebGL is off), or the game has not finished loading after 20 s **Then** I see a short message and a way back, and no play was used
 - **And** nothing in the scene looks like a Nintendo character, kart, item or track
 
 *Requirements: FR-MK-1, FR-MK-2, FR-MK-3, FR-MK-25, FR-MK-26, FR-MK-44*
@@ -88,6 +89,7 @@ As a phone player, I want a joystick at the bottom that I can use with one thumb
 - **Given** I hold the phone in portrait **Then** a horizontal joystick sits at the bottom centre, and the pause button is at the top
 - **When** I push the knob past the middle **Then** the kart moves one lane; holding it moves again after a short delay; letting go re-centres it
 - **And** touching the game never scrolls, zooms or selects text
+- **Given** I tapped Start on the app's setup screen, or I hold a touch phone in landscape **Then** the joystick is already on screen at the countdown, without my touching the game first
 - MANUAL: on a 320 px wide phone, the joystick and pause button are each at least 44 x 44 px and reachable with either thumb
 
 *Requirements: FR-MK-9, FR-MK-21*
@@ -122,9 +124,10 @@ As a player, I want to stop the race at any time without losing time.
 - **When** I press the pause button, P or Escape **Then** the race and its clock freeze and a menu offers Resume, Sound on/off and Quit
 - **When** I switch tabs or the app goes to the background **Then** the race pauses by itself
 - **When** I resume after 60 s **Then** my race time has not grown by those 60 s
+- **And** while the race is paused the question and the answer signs are hidden; when I resume they come back and the reading time continues where it stopped
 - **When** I choose Quit and confirm **Then** the race ends with no score and the play stays used, as in other games
 
-*Requirements: FR-MK-5, FR-MK-22, FR-MK-48*
+*Requirements: FR-MK-5, FR-MK-8, FR-MK-22, FR-MK-48*
 
 ## MK-10 - Finish and see my real score
 **P0 · MKP2, MKP1**
@@ -134,7 +137,8 @@ As a player, I want the finish line to celebrate and then show the score the ser
 - **Given** I pass the last fork **Then** I cross a finish line with a short celebration
 - **Then** the result screen shows my server-computed score breakdown, correct answers out of the total, and my time
 - **And** the score is the one `completeGame` returned, never a number my device made up
-- **And** with time equal, one more correct answer always gives a higher score
+- **And** one more correct answer always gives a higher score; my race time is shown but does not change the score, because the kart's speed already follows from my answers
+- **And** a race with every answer right scores 3000, 4500, 6000 or 8000 at Easy, Medium, Hard or Super Hard
 - **Given** I launched from a Quest Map node (later) **Then** the result also shows my stars
 
 *Requirements: FR-MK-4, FR-MK-24, FR-MK-27, FR-MK-29, FR-MK-32, FR-MK-33*
@@ -160,11 +164,12 @@ As a player (or parent), I want each difficulty to ask the math that fits the ag
 **P0 · MKP3, MKP4**
 
 - [ ] Distractors come from the mistake rules (off by 1 or 2, off by 10, neighbouring times-table product, wrong operation, swapped digits, sign error, fraction mistake) where the rule fits the question
-- [ ] All signs in a fork are different and exactly one is correct
+- [ ] All signs in a fork are different in value (`1/2` and `2/4` count as the same) and exactly one is correct
+- [ ] Every sign uses the canonical format: integers with no leading zero and no "-0", fractions with one- or two-digit parts, the correct fraction in lowest terms, at most 4 characters
 - [ ] The correct sign's position is spread evenly and never the same more than 3 forks in a row
 - [ ] The same seed and difficulty always build the same race; the generator uses no clock, network or `Math.random`
 
-*Requirements: FR-MK-15, FR-MK-16, FR-MK-18*
+*Requirements: FR-MK-14, FR-MK-15, FR-MK-16, FR-MK-18*
 
 # D. In the app
 
@@ -176,10 +181,11 @@ As an app player, I want Math Rally to work in the app just like on the website.
 - **Given** I open Math Rally in the app **Then** I pick a difficulty on a native setup screen, race in the same game as on the website, and see the app's usual result screen
 - **And** the game's files come from inside the app, not from the internet
 - **And** the app, not the game page, talks to the DashDen server; the game page never receives my login token, email or username
-- **Given** the game build in the app reports a protocol version the app does not support **Then** I see a short "update the app" message and no play is used
-- **And** the game build carries an identifier that ties it to the source commit it was built from
+- **Given** my app's game build uses a protocol version the server no longer supports (or the app itself does not list) **Then** I see a short "Please update the app to play." message and no play is used
+- **Given** the server changed its race rules after my app was released **Then** my app keeps working, because the server still serves the rules of my app's protocol version
+- **And** the bundled game records a hash of the source it was built from, and a check fails before an app release if the committed bundle is stale
 
-*Requirements: FR-MK-42, FR-MK-45, FR-MK-46, FR-MK-47, FR-MK-49, FR-MK-51*
+*Requirements: FR-MK-26, FR-MK-42, FR-MK-45, FR-MK-46, FR-MK-47, FR-MK-49, FR-MK-51, NFR-MK-23*
 
 ## MK-14 - The app behaves when I leave or go back
 **P0 · MKP1**
@@ -240,19 +246,21 @@ As an app player, I want to race even when the server cannot be reached, knowing
 - [ ] `startGame` for Math Rally builds the race on the server and stores the answer key with the game
 - [ ] `completeGame` reads only the chosen lane per fork and the fork times; a sent `correctAnswers` or score is ignored
 - [ ] Wrong lengths, out-of-range choices, non-integers, non-increasing times and extra keys are rejected
-- [ ] A race faster than the kart's top speed allows is rejected
+- [ ] A fork time or race time more than the tolerance below what the kart needs for the given right and wrong answers is rejected; a property test shows honest frame-by-frame play never falls below it
+- [ ] The score uses only the server's count of correct answers; the same choices with different valid times score the same
+- [ ] A missing or unsupported protocol version at start is refused before the play counter, with the generic update message
 - [ ] Every rejection returns one generic message, writes nothing, publishes nothing, leaves the game open for a corrected submission, and emits a rejection metric
 - [ ] Completing an already completed game is refused; a FREE user cannot start Super Hard; one race uses one play
-- [ ] Owner note: a script that reads the questions can still play perfectly; it then scores exactly what a perfect human would, never more (NFR-MK-13)
+- [ ] Owner note: a script that reads the questions can still play perfectly; because the score ignores client time, it can equal a perfect human race and never exceed one (NFR-MK-13)
 
-*Requirements: FR-MK-26, FR-MK-27, FR-MK-28, FR-MK-29, FR-MK-30, FR-MK-31, FR-MK-34, NFR-MK-11, NFR-MK-12, NFR-MK-13, NFR-MK-14, NFR-MK-15 · Security: SECURITY-03, -05, -08, -11, -15*
+*Requirements: FR-MK-26, FR-MK-27, FR-MK-28, FR-MK-29, FR-MK-30, FR-MK-31, FR-MK-32, FR-MK-34, NFR-MK-11, NFR-MK-12, NFR-MK-13, NFR-MK-14, NFR-MK-15 · Security: SECURITY-03, -05, -08, -11, -15*
 
 ## MK-20 - Safe for kids, free of borrowed IP (verification story)
 **P0 · MKP3, MKP4**
 
 - [ ] Benji is an original cartoon; no photo, likeness, voice, surname, age or location of the real child appears anywhere
 - [ ] The game collects no new personal data; per-fork choices are not stored; logs carry counts and ids only
-- [ ] The game makes no third-party or remote request and shows no ads
+- [ ] In the app, the WebView makes no request outside the app-internal origin (network inspector); on web, the Math Rally routes make no request the hub page does not already make (Google Fonts and the Vercel scripts are site-wide today); no third-party SDK and no ads
 - [ ] A credits manifest lists source, licence and URL for every art, sound and font file, and a test fails if a file in the game's assets has no entry
 - [ ] No Nintendo characters, names, items, item boxes, sounds, music, track names or trade dress
 - [ ] Wrong-answer text is friendly ("Almost! 7 x 8 = 56"), never "you lose"
@@ -265,7 +273,8 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - [ ] Release builds have web-content debugging off and file access off
 - [ ] Only the app-internal origin loads; external navigation and pop-ups are refused
-- [ ] The bundled page has its own CSP that allows only its own app-internal origin (`'self'` for every source, including `connect-src`), so no request leaves the device
+- [ ] The bundled page has its own enforced CSP that allows only its own app-internal origin (`'self'` for every source, including `connect-src`), so no request leaves the device; `blob:` appears only in `img-src` or `media-src`, and only if the engine's loader cannot avoid it (documented)
+- [ ] On iOS and Android, an image, an atlas JSON file and an audio file load over the app-internal origin through the engine's loader with no load error
 - [ ] The bridge exposes only the message channel, and both sides reject unknown, oversize or malformed messages
 - [ ] On web, the game works under the current CSP without `unsafe-eval` or inline scripts; any added source is narrow and documented
 
@@ -278,7 +287,9 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - **Given** I finish a race **Then** it appears on the leaderboard under Math Rally, and in History, Statistics and Achievements, on web and in the app
 - **And** the leaderboard accepts every score and time the Game Service can produce (no silent drops)
+- **And** if the leaderboard's pattern check flags my repeated scores, my entry still appears and ranks as usual (Q40)
 - Owner note: adding Math Rally raises the Achievements page's "play every game" total by one, as Circuit Builder did
+- Owner note: perfect races at one difficulty tie at the same score; there is no tie-break in v1 (R17)
 
 *Requirements: FR-MK-33, FR-MK-36, FR-MK-38*
 
@@ -295,7 +306,7 @@ As an app player, I want to race even when the server cannot be reached, knowing
 ## MK-24 - The rest of dashden.app stays light (verification story)
 **P0 · MKP4, MKP3**
 
-- [ ] Phaser and the game code load only on the Math Rally game route; the entry chunk grows by at most 2 KB gzip
+- [ ] Phaser and the game code load only on the Math Rally game route; both Math Rally routes are lazy; the entry chunk grows by at most 2 KB gzip of code, with the host strings and registry entries reported separately
 - [ ] The hub and every other page request no Math Rally file
 - [ ] The game core has no React, network or Flutter dependency, and one game instance exists even under React StrictMode
 - [ ] Leaving the game frees the engine, its WebGL context and audio; five races in a row show no steady memory growth
@@ -308,7 +319,8 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - [ ] The vertical slice is measured over a full race on the reference Android phone inside the app WebView, the owner's iPhone, and desktop Chrome and Safari
 - [ ] Pass: median at least 50 fps, slowest 1% of frames at least 30 fps, lane change visible within 100 ms
-- [ ] Fail after optimisation: work stops and the owner chooses between fewer effects, lower resolution, another renderer mode, or the Flame fallback
+- [ ] On Android the gate is measured in each platform-view composition mode the WebView plugin offers, and the mode that ships is recorded
+- [ ] Fail after optimisation: work stops and the owner chooses between fewer effects, lower resolution, another renderer mode, the other Android composition mode, or the Flame fallback
 - [ ] The frame-time overlay used for measuring is absent from production builds
 
 *Requirements: NFR-MK-1, NFR-MK-2*
@@ -318,7 +330,7 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - [ ] The web game route accepts `?difficulty=easy|medium|hard&quest=<world>:<node>:<leg>` and starts through `api/game.ts`, so the quest context reaches the server
 - [ ] The app play screen accepts a quest context
-- [ ] A game started with a valid quest context returns a `quest` result on completion
+- [ ] A game started with a valid quest context returns a `quest` result on completion (tested with a stub `QuestService` holding one `MATH_RALLY` leg, because no v1 node uses the game)
 - [ ] No Quest Map node is added; adding one later is config and launch-table rows only (not in World 1 while the paid switch is undecided)
 
 *Requirements: FR-MK-52*
@@ -362,19 +374,19 @@ As a FREE player (or a parent), I want Easy Math Rally to stay playable even if 
 | FR-MK-5 | MK-9 | FR-MK-23 | MK-4 | FR-MK-41 | MK-24 |
 | FR-MK-6 | MK-4 | FR-MK-24 | MK-10 | FR-MK-42 | MK-13, MK-24 |
 | FR-MK-7 | MK-4 | FR-MK-25 | MK-3 | FR-MK-43 | MK-24 |
-| FR-MK-8 | MK-4 | FR-MK-26 | MK-3, MK-19 | FR-MK-44 | MK-3 |
+| FR-MK-8 | MK-4, MK-9 | FR-MK-26 | MK-3, MK-13, MK-19 | FR-MK-44 | MK-3 |
 | FR-MK-9 | MK-5, MK-6 | FR-MK-27 | MK-10, MK-19 | FR-MK-45 | MK-1, MK-2, MK-13 |
 | FR-MK-10 | MK-7, MK-18 | FR-MK-28 | MK-19 | FR-MK-46 | MK-13, MK-21 |
 | FR-MK-11 | MK-8, MK-18 | FR-MK-29 | MK-10, MK-19 | FR-MK-47 | MK-13, MK-21 |
 | FR-MK-12 | MK-4 | FR-MK-30 | MK-19 | FR-MK-48 | MK-9, MK-14 |
 | FR-MK-13 | MK-11 | FR-MK-31 | MK-19 | FR-MK-49 | MK-13, MK-21 |
-| FR-MK-14 | MK-11, MK-17 | FR-MK-32 | MK-8, MK-10, MK-27 | FR-MK-50 | MK-15 |
+| FR-MK-14 | MK-11, MK-12, MK-17 | FR-MK-32 | MK-8, MK-10, MK-19, MK-27 | FR-MK-50 | MK-15 |
 | FR-MK-15 | MK-12 | FR-MK-33 | MK-10, MK-22 | FR-MK-51 | MK-13 |
 | FR-MK-16 | MK-12 | FR-MK-34 | MK-19 | FR-MK-52 | MK-26 |
 | FR-MK-17 | MK-11 | FR-MK-35 | MK-1, MK-23 | FR-MK-53 | MK-2, MK-27 |
 | FR-MK-18 | MK-12 | FR-MK-36 | MK-1, MK-22, MK-23 | FR-MK-54 | MK-27, MK-28 |
 | FR-MK-55 | MK-28 | FR-MK-56 | MK-28 | | |
 
-All 56 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19; 17 and 18 in MK-21; 19 to 21 in MK-20. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 23 (compatibility), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
+All 56 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19; 17 and 18 in MK-21; 19 to 21 in MK-20; 23 (compatibility, protocol versions) in MK-13. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
 
 **Persona coverage**: MKP1 in MK-1 to MK-4, MK-6 to MK-11, MK-13 to MK-18, MK-28; MKP2 in MK-1 to MK-5, MK-7 to MK-11, MK-19, MK-22; MKP3 in MK-1, MK-8, MK-11, MK-12, MK-16, MK-18, MK-20, MK-24, MK-27, MK-28; MKP4 in MK-12, MK-13, MK-19 to MK-21, MK-23 to MK-28.

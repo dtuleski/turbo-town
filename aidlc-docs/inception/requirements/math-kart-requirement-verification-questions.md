@@ -14,20 +14,22 @@ Every `[Answer]:` is filled with one of these labels:
 - **Recommended (pending owner approval)**: the analyst's recommendation with a one-line rationale. The owner delegated these; change the letter to override, then revisit the linked requirements (traceability table in `math-kart-requirements.md` Section 12).
 - **OPEN**: the owner has not decided. A recommendation is given, and the question stays open until the owner answers. No question is OPEN any more: the owner answered Q7, Q20, Q21 and Q22 on 2026-11-25 (relayed by the orchestrator).
 
+**Iteration 2 (after the design review of 2026-11-25)**: Q16, Q17, Q27, Q29 and Q31 were revised (marked "Revised in iteration 2" in their answers), analyst notes were added to the owner answers Q10 and Q11 without changing the owner's choice, and Q39 and Q40 were added. All revised and new answers are Recommended (pending owner approval).
+
 ## Map from the brief's open decisions
 
 | Brief decision | Questions | Status |
 |---|---|---|
 | 1 Road rendering | Q1 | Owner answer |
 | 2 Wrong and right answer, race end | Q2, Q3, Q4, Q5 | Q2 owner; Q3 to Q5 recommended |
-| 3 Fork mechanics | Q6, Q7, Q8, Q9 | Q6, Q7 owner; Q8, Q9 recommended |
+| 3 Fork mechanics | Q6, Q7, Q8, Q9, Q39 | Q6, Q7 owner; Q8, Q9, Q39 recommended |
 | 4 Math content and distractors | Q10, Q11 | Owner answer |
 | 5 Controls and accessibility | Q12, Q13, Q14 | Owner answer |
-| 6 Anti-cheat and scoring | Q16, Q17, Q18 | Recommended |
+| 6 Anti-cheat and scoring | Q16, Q17, Q18, Q40 | Recommended |
 | 7 Tier and name | Q19, Q20, Q21, Q22 | Owner answer |
 | 8 Flutter embedding | Q23, Q24, Q25, Q26 | Recommended |
 | 9 Performance budget | Q27, Q28, Q29 | Recommended |
-| Found during analysis | Q15, Q30 to Q38 | Q30 owner context; others recommended |
+| Found during analysis | Q15, Q30 to Q38 (Q39 and Q40 came from the design review and are listed above) | Q30 owner context; others recommended |
 
 ---
 
@@ -138,7 +140,7 @@ B) Reuse Math Challenge's operation sets unchanged (`apps/web/src/utils/mathUtil
 C) One mixed pool for all difficulties
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Owner answer (2026-11-25): "varies by level", accepting the per-difficulty recommendation. Answer forms are whole numbers or simple fractions written `a/b`, at most 4 characters, and never decimals (es and pt write decimals with a comma, which would need locale-aware signs).
+[Answer]: A - Owner answer (2026-11-25): "varies by level", accepting the per-difficulty recommendation. Answer forms are whole numbers or simple fractions written `a/b`, at most 4 characters, and never decimals (es and pt write decimals with a comma, which would need locale-aware signs). Analyst note (iteration 2, owner choice unchanged): the exact forms are integers from -999 to 999 with no leading zero and no "-0", and fractions of one- or two-digit parts, the correct one in lowest terms (FR-MK-14). Super Hard powers are therefore kept at or below 999 (no 2^10 = 1024).
 
 ## Question 11
 How are the wrong answers on the other signs (distractors) chosen?
@@ -148,7 +150,7 @@ B) Random numbers near the correct answer
 C) Random numbers in the level's range
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Owner answer (2026-11-25): accepted as part of the content recommendation. Mistake-based distractors make the fork a real math decision instead of "pick the odd number out"; the position rule stops "always go left" from paying off.
+[Answer]: A - Owner answer (2026-11-25): accepted as part of the content recommendation. Mistake-based distractors make the fork a real math decision instead of "pick the odd number out"; the position rule stops "always go left" from paying off. Analyst note (iteration 2, owner choice unchanged): "distinct" means distinct in value, so `2/4` and `1/2` count as the same sign and never appear together; the swapped-digits rule skips results with a leading zero (FR-MK-15).
 
 ---
 
@@ -202,26 +204,28 @@ D) Other (please describe after [Answer]: tag below)
 The browser (or WebView) runs the race. What does the server verify?
 
 A) Nothing new: the client reports `correctAnswers`, `totalQuestions` and `completionTime`, like Math Challenge
-B) The server builds the race at `startGame` (seeded generator in `packages/shared`), stores the answer key on the game record and returns the questions. At `completeGame` the client sends only the lane chosen at each fork and the time it crossed each decision line. The server counts correct answers from its own key, rejects impossible timings (faster than the kart's top speed allows) and computes the score
+B) The server builds the race at `startGame` (seeded generator in `packages/shared`, rules frozen per protocol version), stores the answer key on the game record and returns the questions. At `completeGame` the client sends only the lane chosen at each fork and the time it crossed each decision line. The server counts correct answers from its own key, rejects times faster than the kart can drive for those answers (expected times from the shared kinematics, minus a tolerance) and computes the score from the correct count
 C) The server holds the answers secret and the game asks the server for a verdict at every fork
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: B - Recommended (pending owner approval). It follows the Circuit Builder pattern (server decides, client cannot send a score), without a network call mid-race. Stated limit: the game needs each fork's correct answer locally to show instant feedback, so a script could always pick right; the server can still stop invented answers, answers to questions it never issued, impossible speed, and replays. C adds a round trip at every fork, which breaks on a weak phone connection mid-race.
+[Answer]: B - Recommended (pending owner approval). Revised in iteration 2: the timing check now compares each time with what the kart needs for the given right and wrong answers (the kart has no throttle, so honest times follow from the answers), instead of a top-speed floor no honest race reaches. It follows the Circuit Builder pattern (server decides, client cannot send a score), without a network call mid-race. Stated limit: the game needs each fork's correct answer locally to show instant feedback, so a script could always pick right; because the score uses only the correct count (Q17), such a script equals a perfect human race and never exceeds one. The server still stops invented answers, answers to questions it never issued, impossible speed, and replays. C adds a round trip at every fork, which breaks on a weak phone connection mid-race.
 
 ## Question 17
 How is the score computed?
 
-A) A dedicated Math Rally breakdown in `services/game/src/services/score-calculator.service.ts` (as `calculateCircuitBuilderBreakdown` is), returning the existing `ScoreBreakdown` shape: base x difficulty multiplier (1.0, 1.5, 2.0, 2.5) x a modest time factor x an accuracy factor (0.5 + accuracy). A perfect race tops out at about 3000, 4500, 6000 and 8000 for difficulty 1 to 4, the same ceilings a perfect fast free game reaches on the generic formula. Existing caps apply (6000 for a free game at difficulty 1 to 3, 8000 at difficulty 4 or for a paid game)
-B) Reuse the generic `calculateScoreBreakdown` with server-verified counts
-C) A fixed number of points per correct answer, no multipliers
-D) Other (please describe after [Answer]: tag below)
+A) A dedicated Math Rally breakdown in `services/game/src/services/score-calculator.service.ts` (as `calculateCircuitBuilderBreakdown` is), returning the existing `ScoreBreakdown` shape: base x difficulty multiplier (1.0, 1.5, 2.0, 2.5) x an accuracy factor (0.5 + accuracy), with no time term (`speedBonus` always 1.0). An all-correct race scores exactly 3000, 4500, 6000 and 8000 for difficulty 1 to 4, the same ceilings a perfect fast free game reaches on the generic formula. Existing caps apply (6000 for a free game at difficulty 1 to 3, 8000 at difficulty 4 or for a paid game)
+B) As A, plus a modest time term computed from the server's own expected finish time for the given answers (never from client time)
+C) As A, plus a modest time term from the client-reported race time
+D) Reuse the generic `calculateScoreBreakdown` with server-verified counts
+E) A fixed number of points per correct answer, no multipliers
+F) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). Accuracy stays the dominant factor, as the owner asked (wrong answers lower the score). B's speed factor goes up to 2.0 on a 600 s window, so time would weigh as much as accuracy. C breaks comparability with other games on the leaderboard and Quest Map thresholds.
+[Answer]: A - Recommended (pending owner approval). Revised in iteration 2 after the design review: the kart has no throttle, so race time follows from the answers and a time term rewards nothing the player controls. Accuracy is the only factor, as the owner asked (wrong answers lower the score). B only repeats accuracy in a more complex form. C lets a script that reports the fastest accepted times beat a perfect human by up to the time term's range, and costs players on slow phones points for a hardware reason. D's speed factor goes up to 2.0 on a 600 s window and uses client time. E breaks comparability with other games on the leaderboard and Quest Map thresholds. Consequences of A: only N + 1 scores exist per difficulty, perfect races tie at the ceiling (the leaderboard ranks by score only), and the result screen shows a speed bonus of x1.0; see Q40 for the leaderboard's pattern checks.
 
 ## Question 18
 How does Math Rally join the leaderboard?
 
-A) A new `GameType` `MATH_RALLY` with its own validation entry whose bounds mirror what the Game Service can emit (time from the server's minimum plausible race to 3600 s, score 0 to 8000)
+A) A new `GameType` `MATH_RALLY` with its own validation entry whose bounds mirror what the Game Service can emit (time from the fastest race the Game Service accepts to 3600 s, score 0 to 8000)
 B) A new `GameType` that reuses the Math Challenge window (10 to 600 s, score up to 10000)
 C) No leaderboard
 D) Other (please describe after [Answer]: tag below)
@@ -321,12 +325,12 @@ C) Other (please describe after [Answer]: tag below)
 ## Question 27
 What are the performance and download budgets?
 
-A) 60 fps target on the reference phones (Q28); gate in Q29. Game code chunk (Phaser plus game) at most 450 KB gzip; first-race art and sound at most 1.5 MB; the site's entry chunk grows by at most 2 KB gzip (the lazy route stub); the mobile app grows by at most 4 MB
+A) 60 fps target on the reference phones (Q28); gate in Q29. Game code chunk (Phaser plus game) at most 450 KB gzip; first-race art and sound at most 1.5 MB; the site's entry chunk grows by at most 2 KB gzip of code (both Math Rally routes lazy; the host strings in the main locale files and the registry entries are excluded and reported separately); the mobile app grows by at most 4 MB
 B) Tighter: game code at most 250 KB gzip through a custom Phaser build
 C) No budget; measure later
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). Keeps dashden.app light for everyone who never opens the game. All numbers are targets, not measurements; Phaser 4's size is unverified, so the slice measures it first and B becomes a fallback if A is missed.
+[Answer]: A - Recommended (pending owner approval). Keeps dashden.app light for everyone who never opens the game. All numbers are targets, not measurements; Phaser 4's size is unverified, so the slice measures it first and B becomes a fallback if A is missed. Revised in iteration 2: the entry-chunk figure first assumed only a lazy game-route stub, but `apps/web/src/i18n.ts` imports the main locale files into the entry chunk, so the strings cannot count against a code budget.
 
 ## Question 28
 Which devices decide whether performance is acceptable?
@@ -341,11 +345,11 @@ D) Other (please describe after [Answer]: tag below)
 ## Question 29
 What happens if the slice is too slow on the reference Android phone?
 
-A) Gate: inside the WebView, median frame rate at least 50 fps and the slowest 1% of frames at least 30 fps over a full race, steering visible within 100 ms. If the gate fails after optimisation, stop and present options to the owner (fewer effects, lower resolution, another renderer mode, or the native Flame fallback)
+A) Gate: inside the WebView, median frame rate at least 50 fps and the slowest 1% of frames at least 30 fps over a full race, steering visible within 100 ms, measured on Android in each platform-view composition mode the WebView plugin offers. If the gate fails after optimisation, stop and present options to the owner (fewer effects, lower resolution, another renderer mode, the other Android composition mode, or the native Flame fallback)
 B) Switch to a native Flame port automatically
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). Found during analysis: the Flame fallback is the owner's call per the agreed context, so the requirements define a measurable trigger and an escalation, not an automatic switch.
+[Answer]: A - Recommended (pending owner approval). Found during analysis: the Flame fallback is the owner's call per the agreed context, so the requirements define a measurable trigger and an escalation, not an automatic switch. Revised in iteration 2: the Android composition mode affects WebView and WebGL frame rate and is a cheap lever, so it is measured before any escalation (U18 in the requirements).
 
 ---
 
@@ -363,11 +367,11 @@ C) Other (please describe after [Answer]: tag below)
 ## Question 31
 How is Benji shown, and what data does the game handle about players?
 
-A) Benji is a fictional cartoon driver; no photo, likeness, voice, surname, age or location of the real child appears in assets, text or metadata. The game collects no new personal data: per-fork choices are scored and then discarded (only counts and the score are stored), and the game makes no third-party or remote requests and shows no ads
+A) Benji is a fictional cartoon driver; no photo, likeness, voice, surname, age or location of the real child appears in assets, text or metadata. The game collects no new personal data: per-fork choices are scored and then discarded (only counts and the score are stored), and it shows no ads. The game core and the app bundle make no request outside their own origin (web: dashden.app; app: the app-internal origin) and load no third-party SDK. On web the host page keeps today's site-wide requests (Google Fonts from `apps/web/index.html`; Vercel Analytics and Speed Insights from `apps/web/src/main.tsx`); Math Rally adds none
 B) Benji is a stylised avatar drawn from a photo of the child
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). The audience includes children under 13 and Benji is the owner's son's nickname; A keeps the real child out of the product and the game inside today's data footprint.
+[Answer]: A - Recommended (pending owner approval). The audience includes children under 13 and Benji is the owner's son's nickname; A keeps the real child out of the product and the game inside today's data footprint. Revised in iteration 2: the earlier wording ("no third-party or remote requests") was untrue for web, where every page already loads Google Fonts and the Vercel scripts; self-hosting the font is a backlog item.
 
 ## Question 32
 How many track themes ship in v1?
@@ -431,3 +435,27 @@ B) Backend and registries first, then the game
 C) Other (please describe after [Answer]: tag below)
 
 [Answer]: A - Recommended (pending owner approval). The two biggest unknowns are the forked road's feel and phone performance in a WebView; A tests both before anything is spent on integration, and the gate in Q29 decides whether to continue.
+
+---
+
+## I. Added in iteration 2 (design review)
+
+## Question 39
+While the race is paused, is the question still visible?
+
+A) No. An opaque pause screen covers the road and the HUD; the question banner, the signs and the lane labels are hidden, and the web live region is cleared. On resume they come back and the remaining reading window continues
+B) Yes. The scene is dimmed and the question stays readable; pause is an intended thinking aid and the reading window is only a guide
+C) No, and resuming inside a reading window replaces the question with a spare one the server also issued
+D) Other (please describe after [Answer]: tag below)
+
+[Answer]: A - Recommended (pending owner approval). Found in the design review: with B a player can pause at every fork and think without limit, which empties the reading windows (Q8) and makes scores at one difficulty hard to compare. A keeps pause for real interruptions (a sibling, a phone call). Residual limit: a player who memorises the question can still think while paused; A removes the free look but cannot stop that. C closes the gap but needs spare questions in the server key and more game logic, which is out of proportion for scores that carry no money value.
+
+## Question 40
+The leaderboard flags an entry when its score appears 3 or more times among the player's earlier entries of the same game (up to 20 read), or when those entries' completion times vary by less than 5% (`services/leaderboard/src/services/anomaly.service.ts`). A Math Rally score depends only on the number of correct answers, and the race time only on which forks were right, so honest regular players will be flagged. What should happen?
+
+A) Accept and document for v1. A flagged entry is stored and ranked like any other today (the `suspicious` flag hides nothing in `leaderboard.service.ts`), and no alarm reads the `AnomalyDetected` metric. A test checks that a flagged Math Rally entry still appears, so a later change that hides flagged entries fails first
+B) Skip the two pattern checks for `MATH_RALLY` in the leaderboard service and keep the outlier and velocity checks
+C) Add a varying element to the score (for example a time term) so scores differ between races
+D) Other (please describe after [Answer]: tag below)
+
+[Answer]: A - Recommended (pending owner approval). Found while revising after the design review. A changes no leaderboard code and has no effect players can see today; its cost is a noisier `AnomalyDetected` metric and warning logs that carry user and game ids only. B is a small change if the owner wants clean metrics, at the price of one more game-specific branch in the leaderboard. C brings back the time term that Q17 removes because it rewards nothing the player controls.

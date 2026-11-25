@@ -3,6 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
 **Basis**: `../requirements/math-kart-requirements.md` Section 1. Ids use the `MKP` prefix so they do not collide with Circuit Builder (`P1` to `P5`) or Quest Map (`QP1` to `QP3`).
+**Revision**: iteration 2 (design review findings 1 and 7): MKP2 note on ties at the ceiling; MKP3 privacy wording scoped to what Math Rally adds.
 
 ---
 
@@ -20,13 +21,14 @@
 - **Goal**: Clear Hard and Super Hard with no mistakes and top the leaderboard.
 - **Pain points**: Questions that are too easy for her age; a leaderboard full of impossible scores; input lag that costs her a fork.
 - **Demands of the product**: Harder content with fractions, percentages, negatives and equations (FR-MK-13), fast keyboard lanes (FR-MK-20, NFR-MK-2), a server-decided score others cannot fake (FR-MK-26 to FR-MK-32), her results in History and on the leaderboard (FR-MK-33, FR-MK-38).
+- **Note**: the score counts correct answers only, so her perfect Super Hard race scores 8000 like every other perfect Super Hard race; the top of the board can be a tie (Q17, R17).
 
 ## MKP3 - Ana, the Parent
 
 - **Role**: Holds the account or the subscription; watches the child play now and then.
 - **Goal**: A game that teaches real math, is safe, and does not surprise her with costs or ads.
 - **Pain points**: Games that collect data about children, show ads or copy other brands; a free game that later disappears behind a paywall without explanation.
-- **Demands of the product**: No new data about the child and no ads or third-party calls (NFR-MK-19); original art, no borrowed characters (NFR-MK-20); calm mode for motion sensitivity (NFR-MK-7); Easy staying free if the game becomes paid, with the existing upgrade path for the other levels (FR-MK-54 to FR-MK-56).
+- **Demands of the product**: No new data about the child, no ads, and no third-party request added by Math Rally (in the app the game talks to nothing outside the app; on the website it adds nothing to the requests every dashden.app page already makes, NFR-MK-19); original art, no borrowed characters (NFR-MK-20); calm mode for motion sensitivity (NFR-MK-7); Easy staying free if the game becomes paid, with the existing upgrade path for the other levels (FR-MK-54 to FR-MK-56).
 
 ## MKP4 - The Owner-Operator
 
