@@ -39,7 +39,7 @@ Pre-existing non-compliant rules explicitly accepted as deferred debt for this f
 ## Execution Plan Summary
 - **MVP Scope**: Web application only (responsive design for desktop, tablet, mobile browsers)
 - **Future Release**: iOS and Android mobile applications (Flutter)
-- **Total Stages**: 11 stages (6 INCEPTION + 5 CONSTRUCTION per unit × 9 units + 1 Build and Test)
+- **Total Stages**: 11 stages (6 INCEPTION + 5 CONSTRUCTION per unit Ã— 9 units + 1 Build and Test)
 - **Stages to Execute**: Application Design, Units Generation, Functional Design (per unit), NFR Requirements (per unit), NFR Design (per unit), Infrastructure Design (per unit), Code Planning (per unit), Code Generation (per unit), Build and Test
 - **Stages to Skip**: None - all stages will execute due to project complexity
 - **Estimated Timeline**: 12-16 weeks (reduced from 16-22 weeks)
@@ -55,7 +55,7 @@ Pre-existing non-compliant rules explicitly accepted as deferred debt for this f
   - [x] Unit 1: Shared Components (COMPLETED - Code generated)
   - [~] Unit 2: Infrastructure (CORE COMPLETE - Database Stack + docs, remaining: 6 stacks)
   - [x] Unit 3: Authentication Service (CODE GENERATED - Tests pending)
-  - [~] Unit 4: Game Service (DESIGN COMPLETE - Functional ✅, NFR Requirements ✅, NFR Design ✅)
+  - [~] Unit 4: Game Service (DESIGN COMPLETE - Functional âœ…, NFR Requirements âœ…, NFR Design âœ…)
   - [ ] Unit 5: Leaderboard Service
   - [ ] Unit 6: Payment Service
   - [ ] Unit 7: CMS Service
@@ -117,33 +117,33 @@ Pre-existing non-compliant rules explicitly accepted as deferred debt for this f
   - 7 new levels (cb-02..cb-08) in packages/shared, additive; each proven solvable with the real engine; all of difficulty 1-4 completable
   - Web 613 tests, shared 363, game circuit 125 - verified independently. Bundle +45 kB gzip (+10%).
   - Voltage shown positive (presentation helper); sliders now hide numbers on Easy/Medium (caught in review)
-  - ⚠️ PRODUCT DECISION (defaulted): sandbox has NO tier check, only the setup page redirects Free users. Reachable by direct URL; cannot be server-gated (local-only by FR-CB-31). Alternative worth considering: make the sandbox a deliberate free demo and gate only guided Start.
-  - ⚠️ Level design risk R10: cb-03 (no buzzer) and cb-06 (no return wire) shortcuts out-score the reference solution.
+  - âš ï¸ PRODUCT DECISION (defaulted): sandbox has NO tier check, only the setup page redirects Free users. Reachable by direct URL; cannot be server-gated (local-only by FR-CB-31). Alternative worth considering: make the sandbox a deliberate free demo and gate only guided Start.
+  - âš ï¸ Level design risk R10: cb-03 (no buzzer) and cb-06 (no return wire) shortcuts out-score the reference solution.
   - Not executed: manual playthrough M-U4-1..11, Vercel build, full-tree ESLint
 - [x] U5 Platform Quality (COMPLETE - APPROVED on pass 2)
   - 21 files / 411 tests, `tsc` clean - verified independently
   - Review caught: audio unlocked on mouse-move (would kill audio on Safari/Firefox for the session). Fixed + 4 regression tests.
-  - ⚠️ OPEN PRE-LAUNCH ITEM M12: sliders are 24px vs 44px minimum. Test with a finger on a real phone; if unreliable, add 44px -/+ buttons beside each slider.
+  - âš ï¸ OPEN PRE-LAUNCH ITEM M12: sliders are 24px vs 44px minimum. Test with a finger on a real phone; if unreliable, add 44px -/+ buttons beside each slider.
   - Full-screen mode does NOT enlarge the grid (risk R10).
   - Non-blocking: spark/place/connect cues preloaded but never played; no test ties FaultCode union to faultHelp keys.
 - [x] U6 Backend Integration (COMPLETE incl. hardening - both APPROVED)
   - 4 suites / 125 tests pass, `tsc` exits 0 (verified independently); 2 pre-existing broken suites unchanged
   - Resistor exploit CLOSED: protected 2210 > unprotected 2040 at every reported fault count 0-20, margin >= 85
   - Hardening pass 1 was itself flawed (exploit reopened at fault counts >= 3); review loop caught it
-  - ⚠️ U4 CONSTRAINT: do NOT author a level where a valid solve can leave >= 2 unresolved faults (0.60 cap flattens marginal cost)
-  - ⚠️ U4 TODO: add a test over listLevels() pinning the budget-of-7 floor the ranking depends on
+  - âš ï¸ U4 CONSTRAINT: do NOT author a level where a valid solve can leave >= 2 unresolved faults (0.60 cap flattens marginal cost)
+  - âš ï¸ U4 TODO: add a test over listLevels() pinning the budget-of-7 floor the ranking depends on
   - Production-affecting on merge (deploys MemoryGame-GameService-prod); unreachable until U7 seeds the theme row
 - [~] U7 Reporting and Data - split in two
   - [x] U7a backend slice (leaderboard GameType + seed/verify scripts) - APPROVED
     - gameType string match verified from source: game emits 'CIRCUIT_BUILDER' == leaderboard enum
     - leaderboard: 175 pass / same 9 pre-existing failures; `tsc` clean; scripts pass `bash -n`, LF
-    - ⚠️ NO reachable dev environment: only `-prod` themes/catalog tables exist in the reachable account. Seeding is `--prod` only = real go-live.
-    - ⚠️ SEED LAST: after the frontend route is live. Seeding earlier shows a tile leading nowhere. Rollback = delete BOTH rows.
+    - âš ï¸ NO reachable dev environment: only `-prod` themes/catalog tables exist in the reachable account. Seeding is `--prod` only = real go-live.
+    - âš ï¸ SEED LAST: after the frontend route is live. Seeding earlier shows a tile leading nowhere. Rollback = delete BOTH rows.
     - ESLint timed out in the unit; leaderboard lint for new files unverified
   - [ ] U7b web registries (api/leaderboard.ts, GameTypeFilter, GAME_FILTER_MAP, PREMIUM_GAMES, routes, display metadata, locales) - waits for U5 (apps/web)
 
-### 🚨 FRONTEND DEPLOYMENT BLOCKED - DECISION MADE, OWNER ACTION PENDING
-**Decision: Option A — configure Vercel as a monorepo build.** Full rationale and runbook:
+### ðŸš¨ FRONTEND DEPLOYMENT BLOCKED - DECISION MADE, OWNER ACTION PENDING
+**Decision: Option A â€” configure Vercel as a monorepo build.** Full rationale and runbook:
 `aidlc-docs/construction/game-surface/SHARED-ENGINE-IMPORT-DECISION.md`
 
 **Owner action required (cannot be done from this repo):** in Vercel project `web`, set
@@ -191,3 +191,47 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 
 ### Circuit Builder Extension Status
 - **Security Baseline**: Enabled (inherited from Extension Configuration)
+
+## Quest Map v1 Feature Workflow
+- **Requested**: 2026-10-30 ("can you spec out your recommendation for V1?")
+- **Last Updated**: 2026-11-01 (second inception revision after design review: prod deploy path no longer lets CDK replace Game Lambda code, idempotent boss legs, hub card always shown, optional QuestService injection)
+- **Status**: INCEPTION complete (documentation only). Awaiting owner approval to enter CONSTRUCTION. No application code changed, nothing committed, pushed or deployed.
+- **Branch note**: working tree is on `fix/circuit-builder-max-score-8000`; Quest Map docs are uncommitted.
+- **Security Baseline (Quest Map)**: Enabled, enforced on new design; compliance table in `quest-map-components.md` Section 5; no blocking finding.
+
+### INCEPTION (Quest Map v1)
+- [x] Workspace Detection (reused)
+- [x] Reverse Engineering (reused, HEAD a328c74)
+- [x] Requirements Analysis (APPROVED 2026-10-30: 19 FR, 14 NFR, 13 questions)
+  - `aidlc-docs/inception/requirements/quest-map-requirements.md`, `quest-map-requirement-verification-questions.md`
+- [x] User Stories, minimal (3 personas, 15 stories; plan `plans/quest-map-story-generation-plan.md`)
+  - `user-stories/quest-map-personas.md`, `quest-map-stories.md`
+- [x] Workflow Planning (`plans/quest-map-execution-plan.md`; risk Medium)
+- [x] Application Design (`plans/quest-map-application-design-plan.md`; `application-design/quest-map-components.md`, `quest-map-component-methods.md`, `quest-map-services.md`, `quest-map-component-dependency.md`)
+- [x] Units Generation (`application-design/quest-map-unit-of-work.md`, `quest-map-unit-of-work-dependency.md`, `quest-map-unit-of-work-story-map.md`; merged unit plan lives in the application design plan)
+
+### CONSTRUCTION (Quest Map v1) - PLANNED
+- [x] QM1 Shared Quest Core (`packages/shared`): Functional Design standard, Code Generation (COMPLETED, reviewer APPROVED, pushed feat/quest-map c29c427, no PR yet). Merge redeploys 3 Lambdas (additive only)
+- [x] QM2 Backend and Table (`services/game`, `infrastructure`): Functional Design minimal, Infrastructure Design minimal, Code Generation (COMPLETED, reviewer APPROVED, pushed feat/quest-map 1a993c5, no PR yet; prod steps NOT executed). Release: Merge first (quest fails closed), then `cdk diff` and `cdk deploy MemoryGame-Database-prod --exclusively` (table only), IAM by `put-role-policy`, env var by read-merge-write, then `./scripts/deploy-game-lambda.sh prod` (only Game Lambda code deploy). Never `deploy.sh prod`, `--all` or `cdk deploy MemoryGame-Lambda-prod` (live handler is `dist/index.handler`, CDK declares `handler`; O3)
+- [x] QM3 Web Map and Launch (`apps/web`): Functional Design minimal, Code Generation (COMPLETED, pushed feat/quest-map 08bbe23, no PR yet; review pending). Deploy only after QM2 is live in prod; hub card always shown (FR-QM-16); O2 resolved before merge
+- [x] QM4 Rewards and Polish (`apps/web`): Code Generation (COMPLETED, pushed feat/quest-map 636248b, no PR yet; review pending)
+- [x] Build and Test (DONE after QM4 and the QM-FIX defect fix a2ad57b, reviewer APPROVED). Summary: `aidlc-docs/construction/build-and-test/quest-map-build-and-test-summary.md`. shared 534 tests, game 214 (+2 baseline suites fail to run), web 833, tsc and builds pass.
+- **PR**: https://github.com/dtuleski/turbo-town/pull/26 (base main, head feat/quest-map). NOT merged. DO NOT MERGE until the backend prod steps are done.
+- **Operations readiness**: Quest Map is NOT ready for Operations. Still required: owner-run prod steps (backend Lambda code, quest table, IAM policy, env var `QUEST_PROGRESS_TABLE_NAME`), pre-launch checks PL1 to PL6, and the manual browser checks (QM3, QM4, PL5). Only then merge the PR.
+- NFR Requirements and NFR Design: SKIP for all units (rationale in the execution plan)
+
+### Assumptions Resolved at Inception
+- **U1 launch contract**: URL parameter `quest=<worldId>:<nodeId>:<legIndex>`, read once in `apps/web/src/api/game.ts`. Two central rules cover all 13 pages: R1 (in `startGame`, a failed quest start redirects to the map and never returns to the page, fixing hub/setup-page redirects and Scratch Coding unscored play) and R2 (in `ScoreBreakdownModal`, quest mode hides "Play again" and owns every close path). R1 also returns `canPlay: true` for a valid quest start so the last allowed play works on Bond and Burn, Traffic Lab, Mini Golf and Circuit Builder (they read `canPlay`). Only Memory Match (URL fallback) and Circuit Builder (result buttons) are edited.
+- **U4 infrastructure deploy**: CI never runs CDK; infrastructure is deployed by hand. The CDK `LambdaStack` declares `handler: 'handler'` but the live Game Lambda runs `dist/index.handler` (set by `deploy-game-lambda.sh`), which `cdk diff` cannot see; a CDK deploy of the Lambda stack would break prod until the script re-runs. Decision: CDK for the Database stack only, CLI for env var and IAM, script for code. Whether live prod stacks are CDK-managed is NOT verified (O1).
+- **U7 modal props**: no slot for extra actions; resolved with a result store read by the modal plus rule R2 for `onPlayAgain` and `onClose`.
+- **U6 theme rows in prod**: not resolvable from code; pre-launch check PL1.
+
+### Open Items (Quest Map v1)
+1. **O1**: Confirm the prod Database stack in account 342278407349 is CDK-managed (read-only `cdk diff MemoryGame-Database-prod`, owner approval). Else create the table with `aws dynamodb create-table`.
+1b. **O3**: Reconcile the CDK Game function handler/bundling with the live `dist/index.handler` before anyone deploys `MemoryGame-Lambda-prod`.
+2. **O2**: Whether Vercel also builds on merge to `main` via Git integration (no workflow shows it).
+3. **PL1 to PL6**: theme rows, catalog ids, threshold calibration from real percentiles, `cdk diff`, manual accessibility/mobile/reduced-motion pass, node duration playtest.
+4. **Requirements text correction**: Q2 quotes `RATE_LIMITS` from `packages/shared`; the server enforces `RateLimiterService.getTierLimit` (LIGHT 20, STANDARD 100, PREMIUM 1000). FREE is 3 in both. Decision unchanged.
+5. **NFR-QM-4 gap**: the existing `localeCompleteness.test.ts` checks only the `circuitBuilder` block; QM3 adds a quest block test.
+6. **U8 / U9 / U2 / U3 / U5**: U5 resolved (new read-only `getUsage`); U2, U3, U8 still unverified; U9 (Flutter) out of scope.
+7. **Carried from Circuit Builder**: `apps/web` has no `@memory-game/shared` dependency and the Vercel monorepo setting is unverified; Quest Map web adds no new dependence on it. `apps/web` has no `@types/node`; the quest-themes test uses a Vite `?raw` import (fallback: pinned dev-only `@types/node`).
