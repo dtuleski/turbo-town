@@ -45,7 +45,7 @@ All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
   - **[owner]** The same race once in real Chrome and real Safari on the MacBook, for the frame-rate numbers (step 12): written steps provided.
 - [x] **Step 10. Embed build (spike level)**
   - `vite.math-rally-embed.config.ts`, `scripts/build-math-rally-embed.mjs` (`--gate` includes the overlay); `MR/embed/{index.html,main.ts,pageGuard.ts}` with no inline script or style and the font loaded through `FontFace`.
-- [ ] **Step 11. WebView spike** (branch `spike/math-rally-webview`, `apps/mobile`)
+- [ ] **Step 11. WebView spike** (branch `spike/math-rally-webview`, `apps/mobile`) (Android emulator part done on 6.2.0-beta.3, commit `6de37ae`, see `code/step-11-webview-spike.md`; iPhone part waits for the owner)
   - Add `flutter_inappwebview` `6.1.5`; a spike screen that serves the embed build from the app-internal origin (Android asset loader, iOS custom scheme `dashden-game://` with content type and length); bridge round trip; hardening settings; enforced CSP; loader statuses (image, atlas, audio, missing file); a build without `sys/white.png`; Fault trigger overlay and Back; airplane mode; audio unlock.
   - Android emulator: every functional item, plus the composition modes offered and the default.
   - **[owner]** iPhone: install with `flutter run` from this Mac (phone unlocked); play the checklist and the silent-switch test. CSV and logs come back through the app's Documents folder, pulled with `xcrun devicectl`.

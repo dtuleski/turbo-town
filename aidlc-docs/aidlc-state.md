@@ -224,7 +224,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
   - [x] NFR Requirements: APPROVED (`construction/math-rally-slice/nfr-requirements/`)
   - [x] NFR Design (minimal): APPROVED (`construction/math-rally-slice/nfr-design/`)
   - [x] Code Generation Part 1: plan APPROVED (14 steps)
-  - [ ] Code Generation Part 2: steps 1 to 9 done (web slice playable in dev and gate builds; desktop CSP and fault checks pass; budgets S-1 387 KB, S-2 51 KB, S-3 0 KB); next: step 10 embed build, step 11 WebView spike, step 12 owner gate runs
+  - [ ] Code Generation Part 2: steps 1 to 10 done, step 11 Android part done (6.2.0-beta.3, spike 6de37ae; see code/step-11-webview-spike.md); next: step 11 iPhone part and step 12 gate runs (both need the owner)
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
   - [x] Functional Design: APPROVED (`construction/math-rally-shared-core/functional-design/`)
   - [x] Code Generation Part 1: plan APPROVED (`construction/plans/math-rally-shared-core-code-generation-plan.md`, 15 steps)

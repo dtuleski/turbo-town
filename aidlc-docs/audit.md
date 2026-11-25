@@ -2739,3 +2739,8 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Recorded: Phaser data: probe option B (keep the strict app page policy, one known blocked request); MR3 FD question 1 answer A (displayOrder 24). Continuing MR1 with step 10 (embed build) and step 11 (WebView spike)."
 **Context**: CONSTRUCTION - MR1 Code Generation Part 2; MR3 FD answered
 ---
+## Math Rally - MR1 Code Generation Progress (steps 10 and 11 Android)
+**Timestamp**: 2026-11-25T22:45:02Z
+**AI Response**: "Step 10 done (embed build, fc7e4b8). Step 11 Android emulator part done on spike/math-rally-webview (6de37ae, never merge). flutter_inappwebview 6.1.5 fails the Android build (removed proguard-android.txt), so the spike uses 6.2.0-beta.3 per the approved fallback. All emulator items pass: app-internal origin, bridge round trip, hardening, enforced policy (only the accepted data: probe), loader statuses 200 and 404, no-white build shows the could-not-load overlay, full Hard race with CSV, Back pauses then leaves, Fault overlay and Back, airplane mode, audio stream opens, hybrid and texture-layer composition both render. Bug found and fixed in the spike: maybePop inside PopScope looped and froze the UI on the second Back; pop() fixes it and MR4/MR5 must use it. iPhone part waits for the owner. Findings: construction/math-rally-slice/code/step-11-webview-spike.md"
+**Context**: CONSTRUCTION - MR1 Code Generation Part 2 in progress
+---
