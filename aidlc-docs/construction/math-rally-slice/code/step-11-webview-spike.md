@@ -40,6 +40,13 @@ Cause: the screen uses `PopScope(canPop: false)`. When `_onBack()` decided to le
 
 Fix: call `Navigator.pop()`, which skips the `PopScope` check. After the fix, the second Back leaves at once and the overlay Back works. **MR4 and MR5 must use `pop()` in this path.** A widget test that presses Back twice should cover it.
 
+## iPhone second session (Low Power Mode off, stored profile reset)
+
+- Frame rate, one Hard race, `high` profile throughout: median 58.8 fps, slowest 1% 47.1 fps (frames sit at 16 to 17 ms, max 29 ms). This meets P-1 (median >= 50, 1% low >= 30) but is not a gate run: steering did not work (next point). WKWebView caps `requestAnimationFrame` at 60 Hz on this phone. Files in `spike-ios/session2-frames-run1.csv`.
+- **Bug: no touch input in the `high` profile on a 2x or 3x screen.** The engine sets the canvas CSS size to 100% after Phaser boots, but Phaser keeps the display scale it measured at boot (canvas at backing-store size, up to 2x the CSS size). Every pointer maps to about half its real position, so touches never land in the joystick zone (bottom 40%). The `low` profile hid it: its 0.75 render scale triggers a resize that remeasures. Desktop checks ran at 1x with the keyboard, the emulator dropped to `low` early, and the first iPhone session ran in `low` because of Low Power Mode. Fix: `game.scale.refresh()` after sizing the canvas (`e7cf548`). Checked in headless Chromium at 390x844, 3x, with a joystick drag: without the fix the active lane stays at the left (chip x 193 of 1170); with it the kart moves right (chip x 974).
+- **No way out on iPhone during a race.** There is no Back button and the screen blocks the swipe-back gesture. The spike only leaves through the Fault overlay. MR4 needs an exit on the pause screen (and the pause button must sit below the status bar; the owner could not see it, see next point).
+- **Pause button hidden.** The HUD bar starts at y=0 under the status bar and Dynamic Island. MR4 must pad the HUD by the safe-area inset (or the host must lay the WebView out inside the safe area).
+
 ## Smaller notes
 
 - The WebView requests `/favicon.ico`, which fails (`ERR_NAME_NOT_RESOLVED`, or `ERR_INTERNET_DISCONNECTED` offline). It is harmless. The embed page can ship an empty `favicon.ico` file to silence it; a `data:` icon would break the page policy.
@@ -62,9 +69,9 @@ Device: iPhone, iOS 26.6.1, `flutter run --profile`. Spike branch at `25d76c2` p
 | Fault trigger | Pass. `error` `INTERNAL` twice, owner confirmed the overlay and Back | log, owner |
 | Full Hard race | Pass. `frames-run1.csv` (4,483 frames) and `violations-run1.json` written at the finish, pulled with `xcrun devicectl` | files |
 | Pause and Resume, airplane mode | Owner reported done | owner |
-| Loader test | **Open.** No `loader-test.json` was written | |
-| Sound and silent switch | **Open.** Owner to report | |
-| Frame rate (informational, the gate runs are step 12) | Median 30.3 fps, 1% low 29.4 fps, quality profile `low` from the first frame (likely stored after an earlier race in the session ran at the same rate). Frame times sit flat at 33.0 ms with the 99th percentile at 34 ms. A flat 33 ms is a cap, not load: WebKit throttles `requestAnimationFrame` to 30 fps in Low Power Mode. **Below P-1 as measured; to recheck with the cap ruled out** | `frames-run1.csv` |
+| Loader test | Found files: `status 0, no type` (the plugin answers with a plain `URLResponse`, not an HTTP response, so XHR sees status 0 and no content-type header; bodies are complete). Missing file: the plugin never finishes the request when the app answers null, and the XHR 5 s timeout does not fire either; it ended as a network error after 263 s, when the WebView was destroyed. **MR4 must answer every request** (a real body, or an error the plugin can deliver) and rely on the 20 s `ready` timeout for anything that hangs | log |
+| Sound | Pass. Owner: the chime played | owner |
+| Frame rate (informational, the gate runs are step 12) | Median 30.3 fps, 1% low 29.4 fps, quality profile `low` from the first frame (likely stored after an earlier race in the session ran at the same rate). Frame times sit flat at 33.0 ms with the 99th percentile at 34 ms. A flat 33 ms is a cap, not load: WebKit throttles `requestAnimationFrame` to 30 fps in Low Power Mode. Owner confirmed Low Power Mode was on. **Not a valid P-1 sample; rerun with Low Power Mode off and the stored profile cleared** | `frames-run1.csv` |
 
 The Flutter log on iOS drops lines: the run's `raceFinished` and Violations lines never reached it, though the files prove the race finished. Step 12 relies on the saved files, not the log.
 
