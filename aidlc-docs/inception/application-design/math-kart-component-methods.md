@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Revision**: iteration 3, after the second design review of 2026-11-25. Changed in iteration 3: one-frame margin in the window layout contract and a corrected floor argument; Phaser built-in textures from bundled files (`engineConfigFields`); local update-message copy in `api/game.ts`; `mathRallyProtocol` passed through as `unknown` and checked in the service; `.css` in the iOS MIME table; markup and `sys/` checks in the embed build. Iteration 2 changed: protocol registry and freeze rule, canonical option grammar and value comparison, shared motion and expected-time functions, score without client time, `touchUi` in `init`, `correctCount` in the Dart message, source hash in the embed build. Responses per finding: `math-kart-components.md` Sections 9 and 10.
+**Revision**: iteration 4, after the third design review of 2026-11-25. Changed in iteration 4: fatal-error guard (`core/fatalErrorGuard.ts`, `embed/pageGuard.ts`, `EngineOptions.errorGuard`); built-in texture check in `BootScene.create()`; Phaser's default local schemes and built-in texture keys as literals in `core/engineConfig.ts`; host failure kinds by phase; the app's `backAction` rule. Responses per finding: `math-kart-components.md` Section 11. Changed in iteration 3: one-frame margin in the window layout contract and a corrected floor argument; Phaser built-in textures from bundled files (`engineConfigFields`); local update-message copy in `api/game.ts`; `mathRallyProtocol` passed through as `unknown` and checked in the service; `.css` in the iOS MIME table; markup and `sys/` checks in the embed build. Iteration 2 changed: protocol registry and freeze rule, canonical option grammar and value comparison, shared motion and expected-time functions, score without client time, `touchUi` in `init`, `correctCount` in the Dart message, source hash in the embed build. Responses per finding: `math-kart-components.md` Sections 9 and 10.
 **Note**: Signatures and contracts only. Numbers marked *FD* (Functional Design) are chosen per unit in Construction within the stated constraints; every constraint here is testable. Phaser method and setting names follow the Phaser 3 API and are confirmed against Phaser 4 in MR1 (U1).
 
 ---
@@ -177,6 +177,7 @@ export interface EngineOptions {
   assetBaseUrl: string;           // '/games/math-rally/' on web, './' in the app bundle
   buildId: string;                // ^[A-Za-z0-9._-]{1,40}$; web 'web', app 'app-' + first 12 hex of sourceHash
   localSchemes?: readonly string[]; // app bundle: ['dashden-game://'] (G16); merged into the loader's local schemes
+  errorGuard?: FatalErrorGuard;   // app bundle: the guard of embed/pageGuard.ts (G16); web: absent, mount creates one
   devOverlay?: boolean;           // ignored unless compiled in dev or in the local gate mode (G17)
 }
 export interface EngineHandle { destroy(): void }       // idempotent; never throws
@@ -186,18 +187,53 @@ export function hasWebGL(): boolean;                     // probe used by hosts 
 `mountMathRally` throws `EngineStartError` (no message details) when Phaser cannot create a renderer; the host catches it (Section 5 of the services file).
 
 ```ts
+// core/fatalErrorGuard.ts (G1, pure: type-only imports, so embed/pageGuard.ts can evaluate it before any other module)
+export type GameErrorCode = 'ENGINE_START_FAILED' | 'ASSET_LOAD_FAILED' | 'CONTEXT_LOST' | 'INIT_INVALID' | 'INTERNAL';
+export interface FatalErrorGuard {
+  setStop(stop: () => void): void;   // G1 sets it once the Phaser game exists
+  markReady(): void;                  // G1 calls it when a `ready` message passes through its wrapper of channel.send
+  report(code?: GameErrorCode): void; // first call only: stop() (a throw is swallowed), then send
+                                      // error{ code ?? (ready ? 'INTERNAL' : 'ENGINE_START_FAILED') } (a throw is swallowed);
+                                      // every later call does nothing
+  dispose(): void;                    // after this, report() does nothing
+  tripped(): boolean;
+}
+export function createFatalErrorGuard(send: (message: GameError) => void): FatalErrorGuard;
+export function installPageErrorListeners(target: Pick<EventTarget, 'addEventListener' | 'removeEventListener'>,
+  guard: FatalErrorGuard): () => void;
+// adds 'error' and 'unhandledrejection' listeners in the bubble phase, each calling guard.report();
+// returns a function that removes both. No preventDefault: the browser still logs the error in the console.
+```
+- On web, `mountMathRally` creates the guard around the channel's `send`, installs the listeners on `window`, and its `destroy()` removes them and disposes the guard. On the app page it uses `options.errorGuard`, whose listeners `embed/pageGuard.ts` installed first, and does not install a second set (one guard per page, so at most one message).
+- The stop action G1 sets: `game.loop.stop()`, `game.sound.stopAll()` and clearing the live region (Phaser 3 names, Phaser 4 equivalents confirmed in MR1 step 1, U21). The host then tears the engine down as on any failure path.
+- Every `error` the game core sends (BootScene, `init` validation, context loss, the scenes' `update` try/catch) calls `guard.report(code)` instead of `channel.send`.
+- Unit tests (Vitest, node, AC-44.3): two reports give one message; the code is `ENGINE_START_FAILED` before `markReady()` and `INTERNAL` after, or the code given; a throwing `stop` or `send` neither escapes nor causes a second message; nothing after `dispose()`; on a plain `new EventTarget()`, dispatching `error` and `unhandledrejection` events reaches the guard, and after the remover runs neither does.
+
+```ts
+// embed/pageGuard.ts (G16): first import of embed/main.ts
+export const pageGuard: FatalErrorGuard;      // createFatalErrorGuard(holdThenSend)
+export function attachChannel(channel: HostChannel): void; // holdThenSend keeps at most one message until this call
+// module body: installPageErrorListeners(window, pageGuard); in gate mode also installViolationRecorder(document) (G17)
+```
+
+```ts
 // core/engineConfig.ts (G1, pure, no Phaser import): the CSP-relevant part of the Phaser game config, used by both hosts
 export interface EngineConfigFields {
   images: { default: string; missing: string; white: string };   // Phaser 3 keys images.default / .missing / .white
   loader: { imageLoadType: 'HTMLImageElement'; localScheme: string[] };
 }
+export const PHASER_DEFAULT_LOCAL_SCHEMES: readonly string[] = ['file://', 'capacitor://'];
+// Phaser 3's default loader.localScheme, from knowledge of its source (U19); MR1 step 1 confirms the Phaser 4 default
+// and updates this literal (the module cannot read Phaser's value because it imports no Phaser)
+export const BUILTIN_TEXTURE_KEYS: readonly string[] = ['__DEFAULT', '__MISSING', '__WHITE'];
+// Phaser 3 names; MR1 step 1 confirms the Phaser 4 names and updates this literal; G2 checks them before `ready`
 export function engineConfigFields(options: EngineOptions): EngineConfigFields;
 // images.* = options.assetBaseUrl + 'sys/default.png' | 'sys/missing.png' | 'sys/white.png'
-// loader.localScheme = Phaser's default list plus options.localSchemes (no duplicates)
+// loader.localScheme = [...PHASER_DEFAULT_LOCAL_SCHEMES, ...(options.localSchemes ?? [])], duplicates removed, order kept
 ```
 - Images load as `HTMLImageElement` (Phaser 3 setting `loader.imageLoadType`), so the loader creates no `blob:` URLs (F6, NFR-MK-17, U5).
 - Phaser's built-in default, missing and white textures load from the bundled `sys/` files instead of its `data:` defaults (U20). Phaser 3 sets each of them as the `src` of an `Image` during `TextureManager.boot`, so a path works as well as a data URI. The files are original PNGs listed in `CREDITS.json`: `white.png` 4 x 4 opaque white, `default.png` 32 x 32 transparent, `missing.png` 32 x 32 simple pattern.
-- Unit test (Vitest, node): for web and app options, every `images` value starts with `assetBaseUrl + 'sys/'`, `imageLoadType` is `HTMLImageElement`, the local schemes include `options.localSchemes`, and no string in the result starts with `data:` or `blob:`.
+- Unit test (Vitest, node): for web and app options, every `images` value starts with `assetBaseUrl + 'sys/'`, `imageLoadType` is `HTMLImageElement`, the local schemes are the default list followed by `options.localSchemes` with no duplicate (also when a given scheme repeats a default), and no string in the result starts with `data:` or `blob:`.
 - If Phaser 4 lacks either setting, MR1 records it (U5, U20) and the documented fallback of NFR-MK-17 applies: `blob:` or `data:` in `img-src` (and `media-src`) only.
 
 ### Pure core modules (G5, G7, G10, G11, `core/joystick.ts`, `core/projection.ts`)
@@ -256,7 +292,10 @@ export function createForkController(race: MathRallyRacePayload): ForkController
 
 ### Phaser scenes (G2, G3, G9) - lifecycle hooks only
 ```ts
-class BootScene extends Phaser.Scene { preload(): void; create(): void }   // load all, then channel.send(ready)
+class BootScene extends Phaser.Scene { preload(): void; create(): void }
+// preload: atlases and sounds through the loader, the font through FontFace; any failure -> guard.report('ASSET_LOAD_FAILED')
+// create: if BUILTIN_TEXTURE_KEYS.some(k => !this.textures.exists(k)) -> guard.report('ASSET_LOAD_FAILED'), no ready;
+//         otherwise channel.send(ready)
 class RaceScene extends Phaser.Scene { init(data: RaceInit): void; create(): void; update(time: number, delta: number): void;
   setSignsVisible(visible: boolean): void }
 class HudScene  extends Phaser.Scene { create(): void; showQuestion(q: MathRallyQuestion): void;
@@ -310,7 +349,11 @@ export const READY_TIMEOUT_MS = 20_000;
 export type HostPhase = 'loadingEngine' | 'starting' | 'racing' | 'paused' | 'submitting'
   | 'result' | 'saveFailed' | 'rejected' | 'failed';
 export type HostFailure = 'noWebGL' | 'engine' | 'assets' | 'timeout' | 'start' | 'updateRequired'
-  | 'payload' | 'contextLost';
+  | 'payload' | 'contextLost' | 'internal' | 'boot';
+// 'engine' is the EngineStartError thrown by mountMathRally. A game `error` maps by phase (services Section 2):
+// loadingEngine -> 'assets' (ASSET_LOAD_FAILED) or 'boot' (any other code); both show "The race could not load." with Retry;
+// starting, racing, paused -> 'contextLost' (CONTEXT_LOST) or 'internal' (any other code): "The race stopped unexpectedly.";
+// submitting and later -> ignored
 export function useMathRallyHost(args: { difficulty: 1 | 2 | 3 | 4; container: React.RefObject<HTMLDivElement> }):
   { phase: HostPhase; result: CompleteGameResult | null; retrySubmit(): void; failureKind: HostFailure | null };
 
@@ -497,6 +540,18 @@ String mimeTypeFor(String path); // .html text/html, .css text/css, .js text/jav
                                  // .webp image/webp, .ogg audio/ogg, .m4a audio/mp4, .mp3 audio/mpeg,
                                  // .woff2 font/woff2; any other extension -> refused
 
+// ui/screens/games/math_rally_screens.dart (A2): Back rule, pure so the AC-48.3 test needs no WebView
+const Duration kPauseConfirmTimeout = Duration(seconds: 1);
+enum PlayPhase { loading, racing, paused, submitting, overlay } // loading: before init; racing: from init (countdown
+                                                                // included) to raceFinished; overlay: race stopped,
+                                                                // load failure, update required, save failure
+enum BackAction { sendPauseAndWait, openLeaveConfirm, leave, ignore }
+BackAction backAction(PlayPhase phase, {required bool pausePending});
+// loading -> leave; racing and !pausePending -> sendPauseAndWait; racing and pausePending -> openLeaveConfirm;
+// paused -> openLeaveConfirm; submitting -> ignore (the submission is in flight); overlay -> leave
+// The screen sets pausePending on sendPauseAndWait and starts a kPauseConfirmTimeout timer; pauseChanged{paused: true}
+// clears both; when the timer fires with pausePending still set, the screen opens confirmLeaveGame (AC-48.3).
+
 // game/math_rally/level_locks.dart (A9)
 enum LevelLock { playable, lockedPaid }
 LevelLock lockState(int difficulty, {required bool freeTier, required bool gameIsPaid, required List<int> freeDifficulties});
@@ -514,9 +569,11 @@ bool hasFreeDifficulties(String themeId);
 ## 7. Build tooling (T1)
 
 ```text
-node apps/web/scripts/build-math-rally-embed.mjs [--out <dir>] [--check-only]
+node apps/web/scripts/build-math-rally-embed.mjs [--out <dir>] [--gate] [--check-only]
   default --out: apps/mobile/assets/math_rally
   build: vite build --config vite.math-rally-embed.config.ts (iife, no sourcemap)
+  --gate: same build with --mode gate (G17 overlay, violation recorder and Fault trigger included) and
+          "gate": true in build-info.json; for MR1 and MR5 device checks only, never committed
          copy embed/index.html, embed/page.css and public/games/math-rally/** (including sys/) to --out
          write build-info.json { protocolVersion, buildId, sourceHash, files: [{ path, sha256 }] }
          exit 1 if the build fails or the total --out size is over 4 MB (NFR-MK-3 app budget)
@@ -526,6 +583,7 @@ node apps/web/scripts/build-math-rally-embed.mjs [--out <dir>] [--check-only]
   --check-only (no build; reads only):
          recompute sourceHash from the working tree and compare with build-info.json
          recompute sha256 of every file under --out and compare with build-info.json files (no file missing or extra)
+         exit 3 if build-info.json has "gate": true (a gate build must never be released)
          exit 0 when both match, exit 3 on any difference (message names the first differing input or output file)
   any unknown argument: exit 2
 ```

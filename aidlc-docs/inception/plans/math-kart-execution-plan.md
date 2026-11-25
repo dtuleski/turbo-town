@@ -4,7 +4,7 @@
 **Stage**: INCEPTION - Workflow Planning
 **Basis**: `../reverse-engineering/math-kart-delta-notes.md`, `../requirements/math-kart-requirements.md` (56 FR, 26 NFR), `../requirements/math-kart-requirement-verification-questions.md` (40 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22; Q39 and Q40 added in iteration 2), `../user-stories/math-kart-stories.md` (28 stories), `../user-stories/math-kart-personas.md`, and the application design files
 **Name**: "Math Rally" (Q22). Files keep the `math-kart-` prefix in this inception run; Section 8 schedules the rename.
-**Revision**: iteration 3, after the second design review of 2026-11-25: R3 mitigation and the MR1 NFR Requirements scope include booting under the app page's enforced CSP (U20); the update-message text has a web copy as well as a Dart copy. Iteration 2: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Sections 9 and 10.
+**Revision**: iteration 4, after the third design review of 2026-11-25: risk driver R19 (frozen game) and its mitigation; MR1 NFR Requirements scope includes the fault-injection check. Iteration 3: R3 mitigation and the MR1 NFR Requirements scope include booting under the app page's enforced CSP (U20); the update-message text has a web copy as well as a Dart copy. Iteration 2: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Sections 9 and 10.
 
 ---
 
@@ -51,6 +51,7 @@
 6. **R16 Free-difficulty drift** - one shared constant, copies checked by tests, server decides.
 7. **R18 Race rules change after launch** - rules frozen per protocol version with golden fixtures (PL8); clients send their version to `startGame`; the server keeps every supported version and is deployed first; an unsupported version is refused before a play is used.
 8. **R10 Perfect-play scripts** - the score uses only the server's correct count and times are checked against the kinematics of the given answers, so a script can equal a perfect human race and never exceed one.
+9. **R19 Frozen game** - a fatal-error guard in the game core (and installed first on the app page) stops the game and reports one generic error for any uncaught exception or rejection; the app's Back opens the leave confirmation when the game does not confirm a pause within 1 s; both are exercised with a Fault trigger in MR1. Residual: a hang without an error on iOS (stated limit).
 
 ---
 
@@ -146,7 +147,7 @@ Green means done or always runs, orange means conditional execute, grey means sk
 | Stage | MR1 Slice and gate | MR2 Shared core | MR3 Backend | MR4 Web | MR5 App |
 |---|---|---|---|---|---|
 | Functional Design | **Minimal**: track and speed constants for the slice, fork geometry, quality profiles, gate protocol and devices | **Standard**: operand ranges per question kind, distractor rules per kind, track distances, acceleration and speeds meeting the layout contracts, timing tolerance from the frame-loop property test | **Minimal**: seed `displayOrder`, completion sequence check (score constants and refusal texts are fixed by the design) | **Standard**: HUD layout at 320 and 1280 px, feedback timings, pause panel, setup page, host state transitions, partly-free hub wording | **Standard**: play-screen states and overlays, lifecycle and Back rules, offline round |
-| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method (per Android composition mode), WebView plugin pin and feature checklist (asset loader, custom scheme and loader status, JS handlers, hardening), CSP check method (app page policy on desktop and in the WebView, violations and `data:` URLs recorded) | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
+| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method (per Android composition mode), WebView plugin pin and feature checklist (asset loader, custom scheme and loader status, JS handlers, hardening), CSP check method (app page policy on desktop with a baseline run and in the WebView, violations and `data:` URLs recorded), fault-injection check of the top-level error handler (AC-44.2, AC-48.2) | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
 | NFR Design | **Minimal**: performance patterns (pooling, level of detail, render scale, delta clamp) | SKIP | SKIP | **Minimal**: CSP change if needed, lazy loading and prefetch, accessibility patterns | SKIP |
 | Infrastructure Design | SKIP | SKIP | SKIP | SKIP | SKIP |
 | Code Generation | EXECUTE | EXECUTE | EXECUTE | EXECUTE | EXECUTE |
