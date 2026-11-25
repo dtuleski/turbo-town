@@ -882,6 +882,19 @@
       "INVALID_VOLTAGE": "That voltage cannot be used",
       "INVALID_LIGHT_LEVEL": "That light level cannot be used"
     },
+    "coach": {
+      "title": "How to play",
+      "open": "How to play",
+      "close": "Got it",
+      "step1": "Pick a part, then tap a square.",
+      "step2": "Press a dot and drag to another dot to connect them.",
+      "step3": "Make one closed loop from + back to −. The bulb only works one way round.",
+      "keyboard": "Keyboard: arrow keys move the cursor, Enter places, C starts a link, Enter finishes it (Shift+Enter for the second dot), Delete removes a part, Escape cancels."
+    },
+    "actions": {
+      "removePart": "Remove part",
+      "cancel": "Cancel"
+    },
     "layout": {
       "enterFullScreen": "Full screen",
       "exitFullScreen": "Leave full screen"
@@ -946,19 +959,19 @@
       "cb-01-closed-circuit": {
         "title": "Close the loop",
         "goal": "Light the rover headlight.",
-        "hint": "Join the battery, the resistor and the LED bulb in a ring, and bring a wire back to the battery. If the bulb stays dark, check which way round it is connected.",
+        "hint": "Drag a line from a dot on one part to a dot on the next, until the battery, the resistor and the LED bulb make one loop. You do not need the Wire part. The bulb has a direction: if it stays dark, connect it the other way round.",
         "learn": "Current only flows around a closed loop. The resistor protects the LED bulb from too much current."
       },
       "cb-02-switch-control": {
         "title": "Switch it on",
         "goal": "Light the headlight with the switch closed, then turn it off and on again.",
-        "hint": "The switch is already on the board. Put it in the loop with the battery, the resistor and the LED bulb, then select it to open or close it.",
+        "hint": "The switch is already on the board. Drag lines between the dots to put it in the loop with the battery, the resistor and the LED bulb, then tap the switch to open or close it.",
         "learn": "A switch opens or closes the loop. When it is open the loop is cut, no current flows and the light goes out."
       },
       "cb-03-series-loop": {
         "title": "One loop for two",
         "goal": "Light the headlight and sound the buzzer in the same loop.",
-        "hint": "Put the LED bulb and the buzzer one after the other in the same loop, with the resistor and the switch. Then open the switch and watch both.",
+        "hint": "Drag lines between the dots to put the LED bulb and the buzzer one after the other in the same loop, with the resistor and the switch. Then open the switch and watch both.",
         "learn": "In a series circuit the same current goes through every part, one after the other. Open the switch and everything stops."
       },
       "cb-04-parallel-branches": {
@@ -976,7 +989,7 @@
       "cb-06-short-circuit-recovery": {
         "title": "Beat the short circuit",
         "goal": "Light the headlight even if a short circuit blows the fuse first.",
-        "hint": "A wire straight across the battery blows the fuse. Reset the fuse, take that wire away and put the load back in the loop.",
+        "hint": "A Wire part straight across the battery blows the fuse. Reset the fuse, remove that Wire part and put the load back in the loop.",
         "learn": "A path with almost no resistance lets a huge current through. Always keep a load in the loop, and reset the fuse once the fault is fixed."
       },
       "cb-07-resistance-limits-current": {

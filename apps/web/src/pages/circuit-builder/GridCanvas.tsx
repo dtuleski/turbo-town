@@ -12,7 +12,7 @@ import type { PointerPhase, SelectionState } from '@/utils/circuitBuilderInterac
 import { drawScene, hasLiveAnimation } from '@/utils/circuitBuilderRenderer'
 import type { RenderScene } from '@/utils/circuitBuilderRenderer'
 import type { CircuitBuilderState } from '@/utils/circuitBuilderState'
-import type { CircuitResult } from '@/utils/circuitEngine'
+import type { CircuitResult, ElementKind } from '@/utils/circuitEngine'
 
 interface GridCanvasProps {
   state: CircuitBuilderState
@@ -21,6 +21,8 @@ interface GridCanvasProps {
   viewport: Viewport
   selection: SelectionState
   reducedMotion: boolean
+  /** Localized short part names drawn under each part. Keep the identity stable between renders. */
+  captions?: Readonly<Partial<Record<ElementKind, string>>>
   label: string
   /**
    * Optional handle on the grid canvas itself, for a host that needs to measure it — a touch drop
@@ -54,6 +56,7 @@ export default function GridCanvas({
   viewport,
   selection,
   reducedMotion,
+  captions,
   label,
   canvasRef: forwardedCanvasRef,
   onPointerEvent,
@@ -78,6 +81,7 @@ export default function GridCanvas({
     selection,
     timeMs: 0,
     reducedMotion,
+    captions,
   }
 
   pumpRef.current = () => {
@@ -125,7 +129,7 @@ export default function GridCanvas({
   useEffect(() => {
     dirtyRef.current = true
     pumpRef.current()
-  }, [state, result, viewport, selection, reducedMotion])
+  }, [state, result, viewport, selection, reducedMotion, captions])
 
   useEffect(() => {
     return () => {
