@@ -221,7 +221,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - [x] Step 0: renamed the 16 `math-kart-*` docs to `math-rally-*` and updated every link (0 broken links); MK id labels, branch and worktree names kept
 - [ ] MR1 Vertical slice and performance gate (FD minimal, NFR Req standard, NFR Design minimal, Code) - gate decides whether MR4 and MR5 proceed
   - [x] Functional Design: APPROVED (`construction/math-rally-slice/functional-design/`); question 1a (reference Android phone) still open, blocks only the gate
-  - [ ] NFR Requirements: plan with 6 questions at `construction/plans/math-rally-slice-nfr-requirements-plan.md`, waiting for owner answers
+  - [ ] NFR Requirements: answered (all recommended); artifacts at `construction/math-rally-slice/nfr-requirements/`, awaiting owner approval
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
   - [x] Functional Design: APPROVED (`construction/math-rally-shared-core/functional-design/`)
   - [x] Code Generation Part 1: plan APPROVED (`construction/plans/math-rally-shared-core-code-generation-plan.md`, 15 steps)

@@ -12,10 +12,10 @@
 
 ## Plan
 
-- [ ] 1. Answer the questions below (owner)
-- [ ] 2. Resolve any ambiguous answer
-- [ ] 3. Write `construction/math-rally-slice/nfr-requirements/nfr-requirements.md` (performance, size, reliability, security and measurement methods, with pass rules)
-- [ ] 4. Write `construction/math-rally-slice/nfr-requirements/tech-stack-decisions.md` (Phaser pin, WebView plugin and fallback order, build tooling, licence rules)
+- [x] 1. Answer the questions below (owner): all recommended options (A)
+- [x] 2. Resolve any ambiguous answer: none needed
+- [x] 3. Write `construction/math-rally-slice/nfr-requirements/nfr-requirements.md` (performance, size, reliability, security and measurement methods, with pass rules)
+- [x] 4. Write `construction/math-rally-slice/nfr-requirements/tech-stack-decisions.md` (Phaser pin, WebView plugin and fallback order, build tooling, licence rules)
 - [ ] 5. Present for approval
 
 ## Questions
@@ -28,7 +28,7 @@ B) `flutter_inappwebview` `6.2.0-beta.3` from the start (newer fixes, but a beta
 C) `webview_flutter` with a small local HTTP server inside the app (official and current, but changes the design's app-internal origin and adds a server)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
 
 ## Question 2
 How is the game's download size measured against the budgets (game chunk at most 450 KB gzip, first-race assets at most 1.5 MB, entry chunk growth at most 2 KB)?
@@ -37,7 +37,7 @@ A) A script after `vite build` gzips each output file at level 9 with Node's `zl
 B) Read the sizes Vite prints at the end of the build, by hand
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
 
 ## Question 3
 Which clock feeds the frame-time numbers of the gate?
@@ -46,7 +46,7 @@ A) The `requestAnimationFrame` timestamp of each frame, recorded beside the race
 B) The race clock readings only (simpler, but they exclude paused time and are floored to whole ms)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
 
 ## Question 4
 Which licences are allowed for code and assets added by Math Rally?
@@ -55,7 +55,7 @@ A) Code dependencies: MIT, BSD, Apache-2.0 or ISC. Art and sound: CC0 or made fo
 B) Same as A, and CC-BY assets are also allowed if credited in the app
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
 
 ## Question 5
 If the plugin needs a higher Android minimum version than the app has today, what happens?
@@ -64,7 +64,7 @@ A) Raise the app's Android `minSdk` to what the plugin needs, if it is 24 (Andro
 B) Never raise it; pick another plugin version instead
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
 
 ## Question 6
 How strict is the production-isolation check (no Phaser or Math Rally code in production builds before MR4)?
@@ -73,4 +73,4 @@ A) Automated: a script inspects the production build's chunks and fails if any c
 B) Manual check of the bundle report once at the end of MR1
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "MR1: use the recommendations")
