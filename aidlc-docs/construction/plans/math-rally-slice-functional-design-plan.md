@@ -11,12 +11,12 @@
 
 ## Plan
 
-- [ ] 1. Answer the questions below (owner)
-- [ ] 2. Resolve any ambiguous answer with a follow-up question
-- [ ] 3. Write `construction/math-rally-slice/functional-design/business-logic-model.md` (slice race flow, track and speed constants (from MR2 v1 per Q3), fork geometry, quality profile rule)
-- [ ] 4. Write `construction/math-rally-slice/functional-design/business-rules.md` (gate protocol and pass rule, devices, guard filtering rule, error message rule)
-- [ ] 5. Write `construction/math-rally-slice/functional-design/domain-entities.md` (fixture race shape, quality profile, frame sample and CSV columns, gate report fields)
-- [ ] 6. Write `construction/math-rally-slice/functional-design/frontend-components.md` (slice page, HUD elements, joystick, frame overlay, Fault trigger)
+- [x] 1. Answer the questions below (owner): Q2 to Q8 recommended options (A); Q1 open
+- [ ] 2. Resolve any ambiguous answer with a follow-up question: Q1 follow-up below (blocks only the gate, MR1 step 9)
+- [x] 3. Write `construction/math-rally-slice/functional-design/business-logic-model.md` (slice race flow, track and speed constants (from MR2 v1 per Q3), fork geometry, quality profile rule)
+- [x] 4. Write `construction/math-rally-slice/functional-design/business-rules.md` (gate protocol and pass rule, devices, guard filtering rule, error message rule)
+- [x] 5. Write `construction/math-rally-slice/functional-design/domain-entities.md` (fixture race shape, quality profile, frame sample and CSV columns, gate report fields)
+- [x] 6. Write `construction/math-rally-slice/functional-design/frontend-components.md` (slice page, HUD elements, joystick, frame overlay, Fault trigger)
 - [ ] 7. Present for approval
 
 ## Questions
@@ -30,7 +30,7 @@ C) A phone the family already has (write the model after the tag)
 D) Run the gate on the iPhone and desktop only for now, and add the Android gate before MR5
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: OPEN. The owner accepted the recommendations, but this question had none. Follow-up below.
 
 ## Question 2
 The gate's iPhone is the one paired with this Mac (model id `iPhone18,3`, an iPhone 17 Pro). It is a top-end phone, so it proves little about slower iPhones. Is that enough?
@@ -39,7 +39,7 @@ A) Yes, the owner's iPhone is the only iPhone in the gate; the Android phone is 
 B) Also run the gate on an older iPhone (write the model after the tag)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 3
 MR1 and MR2 both need the motion maths. The units allowed MR1 to keep its own copy until MR2 moves it. Both now run on this Mac. Which order?
@@ -48,7 +48,7 @@ A) MR2's motion and track constants first, then MR1 imports them from `packages/
 B) As in the unit plan: MR1 writes `core/motion.ts`, MR2 later moves it
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 4
 How does the game pick its quality profile (draw distance, render scale, level of detail)?
@@ -58,7 +58,7 @@ B) Pick once from the device (screen size and pixel ratio) before the race, neve
 C) Fixed High profile; the gate measures it as is
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 5
 What does one gate run consist of?
@@ -68,7 +68,7 @@ B) Same as A with 1 run per device and mode
 C) Same as A, plus 3 runs of the Easy race
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 6
 Inception review NIT 1: when a host sends `init` that the game refuses (`INIT_INVALID`), which message does the player see?
@@ -77,7 +77,7 @@ A) "Could not start the race." (it happens before the race starts; matches servi
 B) "The race stopped unexpectedly." (matches the methods mapping and R-D9)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 7
 Inception review NIT 2: on the web, the fatal-error guard listens to every uncaught error on the page, so an error from a browser-extension script could end a race.
@@ -86,13 +86,24 @@ A) Only react to errors whose source file is on the page's own origin (or has no
 B) Keep reacting to every error (safest against a frozen race, may end races because of extensions)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 8
 Placeholder art and sound for the slice (each file listed in `CREDITS.json`):
 
 A) Simple shapes drawn in code plus a few CC0 sprites and sounds (for example from Kenney), with no kart that resembles any existing game's kart (Recommended)
 B) Simple shapes only, no external files (lowest IP risk, least realistic for the gate)
+X) Other (please describe after [Answer]: tag below)
+
+[Answer]: A (owner: "I am ok with the recommendations")
+
+## Follow-up Question 1a
+Question 1 (the reference Android phone) had no recommended option. It is needed only for the gate (MR1 step 9), so the slice can be built first. Which phone?
+
+A) Samsung Galaxy A52 or A53
+B) Google Pixel 6a
+C) A phone the family already has (write the model after the tag)
+D) Gate on the iPhone and desktop only for now; add the Android gate before MR5
 X) Other (please describe after [Answer]: tag below)
 
 [Answer]: 

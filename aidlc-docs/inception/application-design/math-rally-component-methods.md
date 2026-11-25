@@ -352,6 +352,7 @@ export type HostFailure = 'noWebGL' | 'engine' | 'assets' | 'timeout' | 'start' 
   | 'payload' | 'contextLost' | 'internal' | 'boot';
 // 'engine' is the EngineStartError thrown by mountMathRally. A game `error` maps by phase (services Section 2):
 // loadingEngine -> 'assets' (ASSET_LOAD_FAILED) or 'boot' (any other code); both show "The race could not load." with Retry;
+// starting -> 'payload' (INIT_INVALID): "Could not start the race." Back to hub (construction FD MR1, review NIT 1);
 // starting, racing, paused -> 'contextLost' (CONTEXT_LOST) or 'internal' (any other code): "The race stopped unexpectedly.";
 // submitting and later -> ignored
 export function useMathRallyHost(args: { difficulty: 1 | 2 | 3 | 4; container: React.RefObject<HTMLDivElement> }):

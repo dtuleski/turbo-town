@@ -6,12 +6,12 @@
 
 ## Plan
 
-- [ ] 1. Answer the questions below (owner)
-- [ ] 2. Resolve any ambiguous answer with a follow-up question
-- [ ] 3. Write `construction/math-rally-shared-core/functional-design/domain-entities.md` (types, option forms, protocol spec, track layout)
-- [ ] 4. Write `construction/math-rally-shared-core/functional-design/business-rules.md` (operand rules and weights per kind, distractor table per kind, fallback rule, position balance, free-tier gate)
-- [ ] 5. Write `construction/math-rally-shared-core/functional-design/business-logic-model.md` (race build flow, track layout maths with every contract checked against the chosen numbers, motion and expected-time model, tolerance method)
-- [ ] 6. Check every layout contract of the methods file Section 1 against the chosen numbers, by hand, in the business logic model
+- [x] 1. Answer the questions below (owner): all recommended options (A)
+- [x] 2. Resolve any ambiguous answer with a follow-up question: none needed
+- [x] 3. Write `construction/math-rally-shared-core/functional-design/domain-entities.md` (types, option forms, protocol spec, track layout)
+- [x] 4. Write `construction/math-rally-shared-core/functional-design/business-rules.md` (operand rules and weights per kind, distractor table per kind, fallback rule, position balance, free-tier gate)
+- [x] 5. Write `construction/math-rally-shared-core/functional-design/business-logic-model.md` (race build flow, track layout maths with every contract checked against the chosen numbers, motion and expected-time model, tolerance method)
+- [x] 6. Check every layout contract of the methods file Section 1 against the chosen numbers, by hand, in the business logic model
 - [ ] 7. Present for approval
 
 `timingToleranceMs` is not asked: the methods file fixes the method (smallest multiple of 10 ms for which the AC-30.2 property test passes, plus 50 ms, at most 250 ms). The FD records a placeholder of 100 ms; Code Generation runs the test and writes the measured value back into the FD and `v1/track.ts`.
@@ -43,7 +43,7 @@ A) Yes: approach = reading window x top speed for that difficulty (8, 7, 6, 5 s)
 B) No: one approach length for every difficulty, sized for the longest window (8 s). Harder levels get more reading time than their minimum and longer races.
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 2
 How much faster than cruise is the boost after a right answer? A bigger boost feels more rewarding but makes every approach longer (the reading window is measured at top speed), so races get longer.
@@ -53,7 +53,7 @@ B) 1.2 x cruise: milder, Easy race about 1 min 55 s
 C) 1.5 x cruise: strong, Easy race about 2 min 20 s (branch plus gap must then grow to 6800 units to keep the 1.5 s contract)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 3
 Easy (difficulty 1): addition and subtraction within 20, no negative results. Which operand rules?
@@ -63,7 +63,7 @@ B) Same as A, but 0 is allowed as an operand and as an answer
 C) Same as A, but only facts up to 10 + 10 and 20 - 10 (all single-digit operands)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 4
 Medium (difficulty 2): times tables 2 to 10, exact division, addition and subtraction within 100. Which operand rules and mix?
@@ -73,7 +73,7 @@ B) Same operands as A, equal mix (25% each)
 C) Same as A, but multiplication tables use 1 to 10 for the second factor (allows x 1)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 5
 Hard (difficulty 3): two-step expressions, fraction of a quantity, percentages of round numbers, squares up to 12. Which forms?
@@ -88,7 +88,7 @@ B) Same as A without parentheses (left-to-right precedence only through x before
 C) Same as A, but fraction of a quantity uses unit fractions only (1/d)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 6
 Super Hard (difficulty 4): negatives in all four operations, adding simple fractions, percentages, powers and roots, one-step equations. Which forms?
@@ -105,7 +105,7 @@ B) Same as A with an equal mix across the six kinds
 C) Same as A but equation solutions stay positive (1 to 20)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 7
 Which mistake rules build the wrong options for each kind? Every result still passes the canonical and distinct-value filter; when rules run out, near values fill the remaining paths (the existing fallback rule).
@@ -129,7 +129,7 @@ A) (Recommended)
 B) Same as A, but at most one "off by 1 or 2" option per fork (more varied wrong answers)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
 
 ## Question 8
 Where should the first question of a race start? (The kart accelerates from 0 to cruise in the first 3000 units after "Go".)
@@ -138,4 +138,4 @@ A) 3 segments (600 units) after "Go", so the "Go" banner has cleared; the readin
 B) At "Go" (position 0), the question appears with the countdown's end
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I am ok with the recommendations")
