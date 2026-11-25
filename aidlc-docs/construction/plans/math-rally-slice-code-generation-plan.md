@@ -43,7 +43,7 @@ All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
 - [x] **Step 9. Desktop checks** (automated part done, see `code/step-9-desktop-checks.md`; the real-browser race moves into Step 12) (SEC-1, R-1, R-3, R-5)
   - Automated, headless Chromium and WebKit through Playwright run ad hoc with `npx` (not added to `package.json`): baseline run with `?mount=0`, then a race, under each policy; record violations and `data:` URLs; press the Fault trigger and check "The race stopped unexpectedly."
   - **[owner]** The same race once in real Chrome and real Safari on the MacBook, for the frame-rate numbers (step 12): written steps provided.
-- [ ] **Step 10. Embed build (spike level)**
+- [x] **Step 10. Embed build (spike level)**
   - `vite.math-rally-embed.config.ts`, `scripts/build-math-rally-embed.mjs` (`--gate` includes the overlay); `MR/embed/{index.html,main.ts,pageGuard.ts}` with no inline script or style and the font loaded through `FontFace`.
 - [ ] **Step 11. WebView spike** (branch `spike/math-rally-webview`, `apps/mobile`)
   - Add `flutter_inappwebview` `6.1.5`; a spike screen that serves the embed build from the app-internal origin (Android asset loader, iOS custom scheme `dashden-game://` with content type and length); bridge round trip; hardening settings; enforced CSP; loader statuses (image, atlas, audio, missing file); a build without `sys/white.png`; Fault trigger overlay and Back; airplane mode; audio unlock.

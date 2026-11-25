@@ -9,7 +9,7 @@ Display orders today: 1 memory-match, 2 math-challenge, 3 word-puzzle, ..., 16 s
 
 ## Plan
 
-- [ ] 1. Answer the question below (owner)
+- [x] 1. Answer the question below (owner): A, displayOrder 24
 - [ ] 2. Read the Circuit Builder start and completion paths in `services/game/src/services/game.service.ts` and write the Math Rally completion sequence step by step against it
 - [ ] 3. Write `construction/math-rally-backend/functional-design/business-rules.md` (validation order, refusal points, score constants, seed values)
 - [ ] 4. Write `construction/math-rally-backend/functional-design/business-logic-model.md` (start and complete flows)
@@ -24,4 +24,4 @@ B) 2.5: right after Math Challenge near the top, without renumbering other games
 C) 1: first in the list, and every other game moves down by one (changes 23 rows)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I accept all your recommendations")

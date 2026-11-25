@@ -22,3 +22,7 @@ Read from `apps/web/node_modules/phaser` (version `4.2.1`, licence MIT, pinned e
 Phaser alone is 347 KB gzip of the 450 KB game-chunk budget (S-1), which leaves about 100 KB for the game code. The size script measures the real chunk in Step 8.
 
 No missing capability: the unit continues.
+
+## Owner decision (2026-11-25)
+
+Option B: keep the app page policy at 'self' for every source and record the Phaser blend-mode probe as one known, harmless blocked request (owner: "I accept all your recommendations"). The WebView pass rule becomes: no violation other than this probe (one blocked `data:` image at module evaluation, `img-src`). Any other violation still fails.
