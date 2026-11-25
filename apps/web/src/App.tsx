@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ROUTES } from './config/constants'
@@ -81,12 +82,27 @@ import NotFoundPage from './pages/NotFoundPage'
 // Components
 import ProtectedRoute from './components/common/ProtectedRoute'
 
+// Math Rally vertical slice (MR1): dev and gate builds only. The condition is a literal Vite replaces at
+// build time, so production builds drop the route and its lazy import of Phaser (isolation check I-1).
+const MathRallySlicePage =
+  import.meta.env.DEV || import.meta.env.MODE === 'gate' ? lazy(() => import('./pages/dev/MathRallySlicePage')) : null
+
 function App() {
   return (
     <AuthProvider>
       <Routes>
         {/* Public standalone route (reached via QR code on t-shirts) */}
         <Route path="/shirt" element={<ShirtPage />} />
+        {MathRallySlicePage && (
+          <Route
+            path="/dev/math-rally-slice"
+            element={
+              <Suspense fallback={null}>
+                <MathRallySlicePage />
+              </Suspense>
+            }
+          />
+        )}
 
         {/* Public routes with auth layout */}
         <Route element={<AuthLayout />}>

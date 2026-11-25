@@ -34,10 +34,10 @@ All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
   - Shapes drawn in code; a few CC0 sprites and sounds (Kenney); `public/games/math-rally/sys/{default,missing,white}.png`; one texture atlas; `public/games/math-rally/CREDITS.json` listing every file.
 - [x] **Step 6. Dev tools** (G17)
   - `MR/dev/frameOverlay.ts` (ring buffer, median and 1% low, CSV export, device label, Fault trigger on F8 and a button) and `MR/dev/violationRecorder.ts` (CSP violations and `data:` URLs).
-- [ ] **Step 7. Slice page and dev-only route**
+- [x] **Step 7. Slice page and dev-only route**
   - `src/pages/dev/MathRallySlicePage.tsx` with the FD states and test ids; lazy route `/dev/math-rally-slice` in `src/App.tsx` only when `import.meta.env.DEV` or the build mode is `gate`; `?race=`, `?touch=1`, `?mount=0`.
   - Route-table test: the route is absent in production mode (I-2).
-- [ ] **Step 8. Checks and gate build**
+- [x] **Step 8. Checks and gate build**
   - `scripts/check-math-rally-size.mjs` (S-1 to S-3), `scripts/check-math-rally-isolation.mjs` (I-1).
   - `vite build --mode gate` and a preview config that sends either CSP as an enforced header (production web policy, app page policy).
 - [ ] **Step 9. Desktop checks** (SEC-1, R-1, R-3, R-5)
