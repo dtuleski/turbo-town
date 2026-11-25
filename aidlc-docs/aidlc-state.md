@@ -220,7 +220,9 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 ### CONSTRUCTION PHASE (in progress)
 - [x] Step 0: renamed the 16 `math-kart-*` docs to `math-rally-*` and updated every link (0 broken links); MK id labels, branch and worktree names kept
 - [ ] MR1 Vertical slice and performance gate (FD minimal, NFR Req standard, NFR Design minimal, Code) - gate decides whether MR4 and MR5 proceed
+  - [ ] Functional Design: plan with 8 questions at `construction/plans/math-rally-slice-functional-design-plan.md`, waiting for owner answers
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
+  - [ ] Functional Design: plan with 8 questions at `construction/plans/math-rally-shared-core-functional-design-plan.md`, waiting for owner answers
 - [ ] MR3 Backend: Game Service, Leaderboard, seed scripts (FD minimal, Code) - deploys two prod Lambdas on merge; unreachable until the seed
 - [ ] MR4 Web game and host (FD standard, NFR Design minimal, Code)
 - [ ] MR5 App host (FD standard, NFR Req minimal, Code) - iOS steps on the owner's Mac

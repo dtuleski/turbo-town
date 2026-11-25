@@ -2678,3 +2678,8 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **Timestamp**: 2026-11-25T20:38:04Z
 **User Input**: "Resume from aidlc-docs/HANDOFF-2026-11-25.md. First, review PR #36 (payments-multi-provider) and list the production setup it needs before merging. Then start Math Rally construction (MR1 and MR2); I approve the inception."
 **AI Response**: "Recorded owner approval of the Math Rally inception package, including the recommended answers and the 3
+## Math Rally - Construction Step 0 and Functional Design Questions (MR1, MR2)
+**Timestamp**: 2026-11-25T20:42:19Z
+**AI Response**: "Step 0 done (commit 505db46): 16 math-kart-* docs renamed to math-rally-* with git mv, links updated, 0 broken links. Functional Design plans written with questions for the owner: construction/plans/math-rally-shared-core-functional-design-plan.md (MR2, 8 questions: approach length per difficulty, boost ratio, operand rules for each difficulty, distractor rules per kind, first question position; proposed track constants with contract checks) and construction/plans/math-rally-slice-functional-design-plan.md (MR1, 8 questions: reference Android phone, iPhone coverage, MR2-before-MR1 order for the motion maths, quality profile rule, gate run protocol, review NIT 1 INIT_INVALID message, review NIT 2 same-origin guard filter, placeholder art). Found: Phaser 4.2.1 is the npm latest (stable since 4.0.0, MIT). Waiting for answers before writing the artifacts."
+**Context**: CONSTRUCTION - Functional Design, units MR1 and MR2, questions pending
+---
