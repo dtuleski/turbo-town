@@ -16,6 +16,8 @@ Every `[Answer]:` is filled with one of these labels:
 
 **Iteration 2 (after the design review of 2026-11-25)**: Q16, Q17, Q27, Q29 and Q31 were revised (marked "Revised in iteration 2" in their answers), analyst notes were added to the owner answers Q10 and Q11 without changing the owner's choice, and Q39 and Q40 were added. All revised and new answers are Recommended (pending owner approval).
 
+**Iteration 4 (after the third design review)**: Q26 gained an analyst note on Android Back when the game does not answer; no letter changed and no question was added.
+
 ## Map from the brief's open decisions
 
 | Brief decision | Questions | Status |
@@ -316,7 +318,7 @@ A) Portrait first on phones (joystick at the bottom, one hand), landscape also l
 B) Force landscape during the race
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). Matches "joystick on the bottom" and one-handed play, and the app already allows both orientations (`ios/Runner/Info.plist`). How WebView audio reacts to the iOS silent switch is unverified and goes into the mobile spike.
+[Answer]: A - Recommended (pending owner approval). Matches "joystick on the bottom" and one-handed play, and the app already allows both orientations (`ios/Runner/Info.plist`). How WebView audio reacts to the iOS silent switch is unverified and goes into the mobile spike. Analyst note added in iteration 4 (letter unchanged): Android Back must not depend on the game answering, so if the game has not confirmed the pause 1 s after Back, or Back is pressed again, the app opens its leave confirmation directly; on a game error the app shows a "race stopped" message with a way back (FR-MK-48).
 
 ---
 

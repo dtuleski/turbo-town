@@ -3,7 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
 **Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
-**Revision**: iteration 2, after the design review (responses in the requirements, Section 13.1). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. Iteration 3, after the second review (Section 13.2): MK-19 (malformed protocol values) and MK-21 (`data:` sources, inline styles, boot under the enforced CSP). No story was added or removed.
+**Revision**: iteration 2, after the design review (responses in the requirements, Section 13.1). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. Iteration 3, after the second review (Section 13.2): MK-19 (malformed protocol values) and MK-21 (`data:` sources, inline styles, boot under the enforced CSP). Iteration 4, after the third review (Section 13.3): MK-3 (unexpected error during a race) and MK-14 (Back when the game does not answer, "race stopped" message, stated limit). No story was added or removed.
 
 ## Assessment and approach
 
@@ -52,9 +52,10 @@ As a player, I want the race to load, count down and go without wasting a play.
 - **Given** I press Start **Then** the scene loads first (road, hills, Benji's kart from behind) and only then is my game started on the server
 - **When** the race data arrives **Then** I see 3-2-1-Go and the kart drives off by itself
 - **Given** my browser cannot run the game (for example WebGL is off), or the game has not finished loading after 20 s **Then** I see a short message and a way back, and no play was used
+- **Given** the game hits an unexpected error during the race, on web or in the app **Then** the race stops, I see "The race stopped unexpectedly." and a way back, the screen never just freezes, and nothing is saved (the play stays used)
 - **And** nothing in the scene looks like a Nintendo character, kart, item or track
 
-*Requirements: FR-MK-1, FR-MK-2, FR-MK-3, FR-MK-25, FR-MK-26, FR-MK-44*
+*Requirements: FR-MK-1, FR-MK-2, FR-MK-3, FR-MK-25, FR-MK-26, FR-MK-44, NFR-MK-14 · Security: SECURITY-15*
 
 ## MK-4 - Read the question and the answers on the fork
 **P0 · MKP1, MKP2**
@@ -192,11 +193,14 @@ As an app player, I want Math Rally to work in the app just like on the website.
 
 - **When** I switch to another app or lock the phone **Then** the race is paused when I come back
 - **When** I press Android Back during a race **Then** the pause menu opens; a second confirmation quits
+- **Given** the game does not answer (for example it stopped) **When** I press Android Back **Then** the app's leave confirmation opens after about 1 s, or at once if I press Back again
+- **Given** the game reports an error or its page closes unexpectedly **Then** the app shows "The race stopped unexpectedly." with a button that takes me back
 - **When** I leave the Math Rally screen **Then** the game page is closed and no sound keeps playing
 - **And** the game uses the app's sound and reduced-motion settings
 - MANUAL: on iPhone, check what happens to game sound with the silent switch on, and record it (risk R3)
+- Owner note: a game page that hangs without any error is not detected in v1; on iPhone the player would have to close the app (stated limit in FR-MK-48, risk R19)
 
-*Requirements: FR-MK-22, FR-MK-48*
+*Requirements: FR-MK-22, FR-MK-44, FR-MK-48, NFR-MK-14 · Security: SECURITY-15*
 
 ## MK-15 - Race without a connection (unscored)
 **P1 · MKP1**
@@ -374,7 +378,7 @@ As a FREE player (or a parent), I want Easy Math Rally to stay playable even if 
 | FR-MK-5 | MK-9 | FR-MK-23 | MK-4 | FR-MK-41 | MK-24 |
 | FR-MK-6 | MK-4 | FR-MK-24 | MK-10 | FR-MK-42 | MK-13, MK-24 |
 | FR-MK-7 | MK-4 | FR-MK-25 | MK-3 | FR-MK-43 | MK-24 |
-| FR-MK-8 | MK-4, MK-9 | FR-MK-26 | MK-3, MK-13, MK-19 | FR-MK-44 | MK-3 |
+| FR-MK-8 | MK-4, MK-9 | FR-MK-26 | MK-3, MK-13, MK-19 | FR-MK-44 | MK-3, MK-14 |
 | FR-MK-9 | MK-5, MK-6 | FR-MK-27 | MK-10, MK-19 | FR-MK-45 | MK-1, MK-2, MK-13 |
 | FR-MK-10 | MK-7, MK-18 | FR-MK-28 | MK-19 | FR-MK-46 | MK-13, MK-21 |
 | FR-MK-11 | MK-8, MK-18 | FR-MK-29 | MK-10, MK-19 | FR-MK-47 | MK-13, MK-21 |
@@ -387,6 +391,6 @@ As a FREE player (or a parent), I want Easy Math Rally to stay playable even if 
 | FR-MK-18 | MK-12 | FR-MK-36 | MK-1, MK-22, MK-23 | FR-MK-54 | MK-27, MK-28 |
 | FR-MK-55 | MK-28 | FR-MK-56 | MK-28 | | |
 
-All 56 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19; 17 and 18 in MK-21; 19 to 21 in MK-20; 23 (compatibility, protocol versions) in MK-13. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
+All 56 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19 (14 also in MK-3 and MK-14); 17 and 18 in MK-21; 19 to 21 in MK-20; 23 (compatibility, protocol versions) in MK-13. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
 
 **Persona coverage**: MKP1 in MK-1 to MK-4, MK-6 to MK-11, MK-13 to MK-18, MK-28; MKP2 in MK-1 to MK-5, MK-7 to MK-11, MK-19, MK-22; MKP3 in MK-1, MK-8, MK-11, MK-12, MK-16, MK-18, MK-20, MK-24, MK-27, MK-28; MKP4 in MK-12, MK-13, MK-19 to MK-21, MK-23 to MK-28.
