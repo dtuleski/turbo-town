@@ -16,12 +16,12 @@ This plan is the single source of truth for MR1 Code Generation. Steps run in or
 
 All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
 
-- [ ] **Step 1. Pin Phaser and confirm its literals** (U1, U3, U19 to U21)
+- [x] **Step 1. Pin Phaser and confirm its literals** (U1, U3, U19 to U21)
   - Add `phaser@4.2.1` with an exact pin.
   - From Phaser 4's source, record: default `loader.localScheme` list, built-in texture keys, the loop stop and sound stop-all methods, and whether images can load as `HTMLImageElement` and built-in textures can point at files.
   - Measure the gzip size of the build the slice imports.
   - Any missing capability stops the unit and goes to the owner.
-- [ ] **Step 2. Pure core modules with Vitest tests** (G1, G4, G5, G7, G8, G10, G11)
+- [x] **Step 2. Pure core modules with Vitest tests** (G1, G4, G5, G7, G8, G10, G11)
   - `MR/core/shared.ts` (funnel to MR2), `clock.ts`, `trackRuntime.ts`, `lanes.ts`, `joystick.ts`, `quality.ts` (with the `localStorage` adapter), `projection.ts`, `engineConfig.ts`, `fatalErrorGuard.ts` (with `installPageErrorListeners` and the same-origin filter).
   - Tests per the unit's completion criteria: lanes, joystick and visibility, clock (60 s pause adds 0 s), motion through the runtime (clock readings only, clamp, no pause carried), quality rule, projection and `branchOffset` (0 at split and merge), `engineConfigFields` (no `data:` or `blob:`; schemes merged without duplicates), guard and listeners (one error, foreign origin ignored).
   - `MR/core/isolation.test.ts`: `core/` imports neither Phaser nor DOM-only modules.
