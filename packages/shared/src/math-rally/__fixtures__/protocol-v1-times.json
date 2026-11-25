@@ -1,0 +1,574 @@
+{
+  "frozen": false,
+  "protocolVersion": 1,
+  "times": {
+    "1": {
+      "allRight": {
+        "correct": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            11200,
+            23016,
+            34833,
+            46649,
+            58466,
+            70283,
+            82100,
+            93916,
+            105733,
+            117550
+          ],
+          "finishMs": 122300
+        }
+      },
+      "allWrong": {
+        "correct": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            11200,
+            23866,
+            36533,
+            49199,
+            61866,
+            74533,
+            87200,
+            99866,
+            112533,
+            125200
+          ],
+          "finishMs": 130800
+        }
+      },
+      "alternateRightFirst": {
+        "correct": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            11200,
+            23016,
+            35683,
+            47499,
+            60166,
+            71983,
+            84650,
+            96466,
+            109133,
+            120950
+          ],
+          "finishMs": 126550
+        }
+      },
+      "alternateWrongFirst": {
+        "correct": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            11200,
+            23866,
+            35683,
+            48349,
+            60166,
+            72833,
+            84650,
+            97316,
+            109133,
+            121800
+          ],
+          "finishMs": 126550
+        }
+      }
+    },
+    "2": {
+      "allRight": {
+        "correct": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            10000,
+            20616,
+            31233,
+            41850,
+            52466,
+            63083,
+            73700,
+            84316,
+            94933,
+            105550,
+            116166,
+            126783
+          ],
+          "finishMs": 131533
+        }
+      },
+      "allWrong": {
+        "correct": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            10000,
+            21466,
+            32933,
+            44399,
+            55866,
+            67333,
+            78800,
+            90266,
+            101733,
+            113200,
+            124666,
+            136133
+          ],
+          "finishMs": 141733
+        }
+      },
+      "alternateRightFirst": {
+        "correct": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            10000,
+            20616,
+            32083,
+            42700,
+            54166,
+            64783,
+            76250,
+            86866,
+            98333,
+            108950,
+            120416,
+            131033
+          ],
+          "finishMs": 136633
+        }
+      },
+      "alternateWrongFirst": {
+        "correct": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            10000,
+            21466,
+            32083,
+            43549,
+            54166,
+            65633,
+            76250,
+            87716,
+            98333,
+            109800,
+            120416,
+            131883
+          ],
+          "finishMs": 136633
+        }
+      }
+    },
+    "3": {
+      "allRight": {
+        "correct": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            8733,
+            18083,
+            27433,
+            36783,
+            46133,
+            55483,
+            64833,
+            74183,
+            83533,
+            92883,
+            102233,
+            111583,
+            120933,
+            130283,
+            139633
+          ],
+          "finishMs": 144383
+        }
+      },
+      "allWrong": {
+        "correct": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            8733,
+            18933,
+            29133,
+            39333,
+            49533,
+            59733,
+            69933,
+            80133,
+            90333,
+            100533,
+            110733,
+            120933,
+            131133,
+            141333,
+            151533
+          ],
+          "finishMs": 157133
+        }
+      },
+      "alternateRightFirst": {
+        "correct": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            8733,
+            18083,
+            28283,
+            37633,
+            47833,
+            57183,
+            67383,
+            76733,
+            86933,
+            96283,
+            106483,
+            115833,
+            126033,
+            135383,
+            145583
+          ],
+          "finishMs": 150333
+        }
+      },
+      "alternateWrongFirst": {
+        "correct": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            8733,
+            18933,
+            28283,
+            38483,
+            47833,
+            58033,
+            67383,
+            77583,
+            86933,
+            97133,
+            106483,
+            116683,
+            126033,
+            136233,
+            145583
+          ],
+          "finishMs": 151183
+        }
+      }
+    },
+    "4": {
+      "allRight": {
+        "correct": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            7466,
+            15550,
+            23633,
+            31716,
+            39800,
+            47883,
+            55966,
+            64050,
+            72133,
+            80216,
+            88300,
+            96383,
+            104466,
+            112549,
+            120633
+          ],
+          "finishMs": 125383
+        }
+      },
+      "allWrong": {
+        "correct": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            7466,
+            16400,
+            25333,
+            34266,
+            43200,
+            52133,
+            61066,
+            70000,
+            78933,
+            87866,
+            96800,
+            105733,
+            114666,
+            123599,
+            132533
+          ],
+          "finishMs": 138133
+        }
+      },
+      "alternateRightFirst": {
+        "correct": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "expected": {
+          "forkTimesMs": [
+            7466,
+            15550,
+            24483,
+            32566,
+            41500,
+            49583,
+            58516,
+            66600,
+            75533,
+            83616,
+            92550,
+            100633,
+            109566,
+            117649,
+            126583
+          ],
+          "finishMs": 131333
+        }
+      },
+      "alternateWrongFirst": {
+        "correct": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        "expected": {
+          "forkTimesMs": [
+            7466,
+            16400,
+            24483,
+            33416,
+            41500,
+            50433,
+            58516,
+            67450,
+            75533,
+            84466,
+            92549,
+            101483,
+            109566,
+            118499,
+            126583
+          ],
+          "finishMs": 132183
+        }
+      }
+    }
+  }
+}

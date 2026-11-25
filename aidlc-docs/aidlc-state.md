@@ -224,7 +224,8 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
   - [ ] NFR Requirements: plan with 6 questions at `construction/plans/math-rally-slice-nfr-requirements-plan.md`, waiting for owner answers
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
   - [x] Functional Design: APPROVED (`construction/math-rally-shared-core/functional-design/`)
-  - [ ] Code Generation Part 1: plan at `construction/plans/math-rally-shared-core-code-generation-plan.md` (15 steps), awaiting owner approval
+  - [x] Code Generation Part 1: plan APPROVED (`construction/plans/math-rally-shared-core-code-generation-plan.md`, 15 steps)
+  - [ ] Code Generation Part 2: all 15 steps done (summary `construction/math-rally-shared-core/code/implementation-summary.md`; shared 693 tests pass, timingToleranceMs 50); awaiting owner approval. Not merged (merge redeploys three Lambdas, no behaviour change)
 - [ ] MR3 Backend: Game Service, Leaderboard, seed scripts (FD minimal, Code) - deploys two prod Lambdas on merge; unreachable until the seed
 - [ ] MR4 Web game and host (FD standard, NFR Design minimal, Code)
 - [ ] MR5 App host (FD standard, NFR Req minimal, Code) - iOS steps on the owner's Mac

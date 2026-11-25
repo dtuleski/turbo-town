@@ -20,3 +20,6 @@ export * from './constants';
 export * from './circuit';
 // Quest Map shared core
 export * from './quest';
+
+// Math Rally shared race core
+export * from './math-rally';

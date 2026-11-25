@@ -16,6 +16,7 @@ import {
   UITheme,
 } from './enums';
 import type { QuestContext } from '../quest/types';
+import type { MathRallyGameRecord } from '../math-rally/types';
 
 export interface User {
   id: string;
@@ -43,6 +44,8 @@ export interface Game {
   attempts: number;
   score?: number;
   questContext?: QuestContext;
+  /** Math Rally race record (seed, protocol version, answer key); only on MATH_RALLY games. */
+  mathRally?: MathRallyGameRecord;
   createdAt: Date;
   updatedAt: Date;
 }

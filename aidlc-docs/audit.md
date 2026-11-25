@@ -2693,3 +2693,14 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Functional Design approved for MR1 and MR2. MR2 Code Generation Part 1: plan written at construction/plans/math-rally-shared-core-code-generation-plan.md (15 steps, story traceability, no new dependency, no deploy; merge to main would redeploy three Lambdas with no behaviour change and is left to the owner); approval requested. MR1 NFR Requirements: plan with 6 questions at construction/plans/math-rally-slice-nfr-requirements-plan.md (WebView plugin and fallback order, size measurement, frame clock, licences, Android minSdk, production-isolation check). Found: flutter_inappwebview last stable 6.1.5 (2024-10-08), newest 6.2.0-beta.3 (2026-02-04)."
 **Context**: CONSTRUCTION - MR2 Code Generation planning, MR1 NFR Requirements questions
 ---
+## Math Rally - MR2 Code Generation Plan Approved
+**Timestamp**: 2026-11-25T20:56:44Z
+**User Input**: "approved"
+**AI Response**: "MR2 code generation plan approved (construction/plans/math-rally-shared-core-code-generation-plan.md). Starting Part 2, Generation, from Step 1. MR1 NFR Requirements questions not answered in this reply; they stay open."
+**Context**: CONSTRUCTION - MR2 Code Generation Part 2
+---
+## Math Rally - MR2 Code Generation Complete
+**Timestamp**: 2026-11-25T21:27:56Z
+**AI Response**: "MR2 Shared Race Core generated in packages/shared/src/math-rally (types, exact values, mulberry32 RNG, protocol registry, v1 params and track, track layout, motion and closed-form expected times, 14 question generators, mistake-rule distractors with near-value fallback, race builder, golden fixtures and fixture script with freeze refusal), plus FREE_DIFFICULTIES_IN_PAID_GAMES and isBlockedForFreeTier, optional Game.mathRally, and one export line in src/index.ts (all edits additions only). timingToleranceMs measured: 0 ms passes for all difficulties over 3 x 1000 races, set to 50. packages/shared: 36 suites, 693 tests pass (baseline 24/539); tsc and build pass. services/game builds against it; 222 tests pass, same 2 pre-existing suite failures as main. Not merged or deployed. Summary: construction/math-rally-shared-core/code/implementation-summary.md. Presented for approval."
+**Context**: CONSTRUCTION - MR2 Code Generation Part 2 complete, approval pending
+---

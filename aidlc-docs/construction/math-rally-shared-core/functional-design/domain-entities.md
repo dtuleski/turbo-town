@@ -59,7 +59,7 @@ Location: `packages/shared/src/math-rally/`. Type shapes are fixed by `inception
 | `gapLength` | 2000 | FD |
 | `mergeToNextQuestion` | 200 (one segment) | FD (new field, see note) |
 | `finishLength` | 9000 | FD (about 3 s at cruise) |
-| `timingToleranceMs` | 100 (placeholder) | Set in Code Generation by the AC-30.2 property test: smallest multiple of 10 ms that passes, plus 50 ms, at most 250 ms |
+| `timingToleranceMs` | 50 | Measured in Code Generation (MR2 Step 6): the AC-30.2 property test passes with 0 ms for every difficulty over 3 x 1000 races, so 0 + 50 ms margin |
 
 Note on the `TrackConstants` shape: the design lists one `approachLength`. Owner answer Q1 makes it depend on the difficulty, so v1 stores `approachLength` as a record per difficulty, and two fields are added (`firstQuestionAt`, `mergeToNextQuestion`). The change stays inside `TrackConstants`, which is frozen per protocol version like everything else in `v1/`.
 
