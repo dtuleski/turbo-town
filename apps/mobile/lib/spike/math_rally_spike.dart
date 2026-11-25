@@ -17,6 +17,23 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
 
 const _scheme = 'dashden-game';
+
+const _loaderTestJs = r'''
+const out = {};
+for (const f of ['atlas.png', 'atlas.json', 'sfx/chime.wav', 'missing-file.png']) {
+  const t0 = performance.now();
+  out[f] = await new Promise((resolve) => {
+    const x = new XMLHttpRequest();
+    x.open('GET', f);
+    x.timeout = 5000;
+    x.onload = () => resolve('status ' + x.status + ', ' + (x.getResponseHeader('content-type') || 'no type') + ', ' + (x.response ? x.response.length : 0) + ' chars');
+    x.onerror = () => resolve('network error after ' + Math.round(performance.now() - t0) + ' ms');
+    x.ontimeout = () => resolve('timeout after ' + Math.round(performance.now() - t0) + ' ms');
+    x.send();
+  });
+}
+return JSON.stringify(out);
+''';
 const _assetRoot = 'assets/math_rally';
 
 void spikeLog(String line) => debugPrint('MRSPIKE $line');
@@ -238,7 +255,21 @@ class _MathRallySpikeScreenState extends State<MathRallySpikeScreen> with Widget
               top: MediaQuery.of(context).padding.top + 64,
               child: Column(children: [
                 _spikeButton('Fault', () => _web?.evaluateJavascript(source: 'window.mathRallyFault && window.mathRallyFault()')),
-                _spikeButton('Loader test', () => _web?.evaluateJavascript(source: 'window.mathRallyLoaderTest && window.mathRallyLoaderTest()')),
+                // Runs its own XHRs with a 5 s timeout: on iOS a null scheme answer never completes the
+                // request, and evaluateJavascript cannot return the game's Promise.
+                _spikeButton('Loader test', () async {
+                  final r = await _web?.callAsyncJavaScript(functionBody: _loaderTestJs);
+                  final out = '${r?.value ?? r?.error}';
+                  spikeLog('loader-test $out');
+                  final dir = await getApplicationDocumentsDirectory();
+                  final file = File('${dir.path}/math-rally-spike/loader-test.json');
+                  await file.parent.create(recursive: true);
+                  await file.writeAsString(out);
+                }),
+                _spikeButton('Reset quality', () async {
+                  await _web?.evaluateJavascript(source: "localStorage.removeItem('mathRally.quality'); 'ok'");
+                  spikeLog('quality reset');
+                }),
                 _spikeButton('Violations', () async {
                   final v = await _web?.evaluateJavascript(source: 'window.mathRallyViolations && window.mathRallyViolations()');
                   spikeLog('violations $v readyCount=$_readyCount');
