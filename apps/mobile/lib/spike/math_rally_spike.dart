@@ -192,9 +192,10 @@ class _MathRallySpikeScreenState extends State<MathRallySpikeScreen> with Widget
                 allowsInlineMediaPlayback: true,
                 transparentBackground: false,
                 resourceCustomSchemes: const [_scheme],
-                webViewAssetLoader: WebViewAssetLoader(
-                  pathHandlers: [AssetsPathHandler(path: '/assets/')],
-                ),
+                // Android only: on iOS 6.2.0-beta.3 throws UnimplementedError when the handler is built.
+                webViewAssetLoader: Platform.isAndroid
+                    ? WebViewAssetLoader(pathHandlers: [AssetsPathHandler(path: '/assets/')])
+                    : null,
                 useHybridComposition: !const bool.fromEnvironment('MR_TEXTURE_LAYER'),
               ),
               onWebViewCreated: (c) {
