@@ -18,6 +18,8 @@ type Mutation {
   # Subscription mutations
   createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession!
   createPortalSession: PortalSession!
+  # App Store: the app sends the signed StoreKit transaction after a purchase or restore
+  verifyAppleTransaction(signedTransaction: String!): SubscriptionInfo!
 }
 
 # Queries

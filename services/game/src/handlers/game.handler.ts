@@ -19,7 +19,8 @@ import { EventPublisherService } from '../services/event-publisher.service';
 import { ReviewService } from '../services/review.service';
 import { EmailPrefsService } from '../services/email-prefs.service';
 import { ContactService } from '../services/contact.service';
-import { SubscriptionTier } from '@memory-game/shared';
+import { AppError, SubscriptionTier } from '@memory-game/shared';
+import { AppleService } from '../services/apple.service';
 import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -208,6 +209,10 @@ export class GameHandler {
         return this.canStartGame(userId);
 
       case 'getSubscription':
+        return this.getSubscription(userId);
+
+      case 'verifyAppleTransaction':
+        await this.getAppleService().verifyTransaction(userId, variables.signedTransaction);
         return this.getSubscription(userId);
 
       case 'listAvailableGames':
@@ -464,6 +469,14 @@ export class GameHandler {
     };
   }
 
+  private appleService?: AppleService;
+
+  /** Created on first use, so requests that never touch Apple don't pay for it. */
+  private getAppleService(): AppleService {
+    if (!this.appleService) this.appleService = new AppleService(this.subscriptionRepository);
+    return this.appleService;
+  }
+
   /**
    * Query: getSubscription. The user's effective plan and where it comes from,
    * so web and app can show the right "manage subscription" option.
@@ -589,7 +602,12 @@ export class GameHandler {
     const otherSource = otherPaidSource(await this.subscriptionRepository.getRecord(userId), 'stripe');
     if (otherSource) {
       logger.info('Checkout blocked: plan paid through another store', { userId, otherSource });
-      throw new Error(`ALREADY_SUBSCRIBED_${otherSource.toUpperCase()}`);
+      const store = otherSource === 'apple' ? 'the App Store' : 'Google Play';
+      throw new AppError(
+        `ALREADY_SUBSCRIBED_${otherSource.toUpperCase()}`,
+        `You already have a DashDen plan through ${store}. Manage it there.`,
+        409
+      );
     }
 
     logger.info('Creating checkout session', { userId, tier: input.tier });

@@ -97,6 +97,11 @@ RUNTIME_DEPS=(
   call-bound call-bind-apply-helpers
   get-intrinsic es-define-property es-object-atoms
   function-bind get-proto gopd has-symbols hasown math-intrinsics dunder-proto
+  # App Store subscriptions: @apple/app-store-server-library and its tree
+  @apple base64url jsonwebtoken jws jwa buffer-equal-constant-time
+  ecdsa-sig-formatter safe-buffer lodash.includes lodash.isboolean
+  lodash.isinteger lodash.isnumber lodash.isplainobject lodash.isstring
+  lodash.once ms semver jsrsasign node-fetch whatwg-url tr46 webidl-conversions
 )
 
 for dep in "${RUNTIME_DEPS[@]}"; do

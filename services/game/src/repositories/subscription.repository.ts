@@ -120,6 +120,48 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     throw new Error('Unreachable');
   }
 
+  /**
+   * App Store transactions are looked up by their originalTransactionId when
+   * a notification has no appAccountToken. Stored as a small item in the same
+   * table with key `apple#<originalTransactionId>`.
+   */
+  async getAppleBinding(originalTransactionId: string): Promise<string | null> {
+    try {
+      const result = await docClient.send(
+        new GetCommand({ TableName: TABLE_NAME, Key: { userId: appleBindingKey(originalTransactionId) } })
+      );
+      return (result.Item?.ownerUserId as string | undefined)?.toLowerCase() ?? null;
+    } catch (error) {
+      throw mapDynamoDBError(error as Error);
+    }
+  }
+
+  /** Links a transaction to a user. Fails if it is already linked to someone else. */
+  async bindAppleTransaction(originalTransactionId: string, userId: string): Promise<void> {
+    try {
+      await docClient.send(
+        new PutCommand({
+          TableName: TABLE_NAME,
+          Item: {
+            userId: appleBindingKey(originalTransactionId),
+            ownerUserId: userId.toLowerCase(),
+            recordType: 'APPLE_BINDING',
+            createdAt: new Date().toISOString(),
+          },
+          ConditionExpression: 'attribute_not_exists(userId) OR ownerUserId = :o',
+          ExpressionAttributeValues: { ':o': userId.toLowerCase() },
+        })
+      );
+    } catch (error) {
+      if ((error as Error).name === 'ConditionalCheckFailedException') {
+        const e = new Error('This App Store subscription is linked to a different DashDen account');
+        (e as any).code = 'APPLE_PURCHASE_OTHER_ACCOUNT';
+        throw e;
+      }
+      throw mapDynamoDBError(error as Error);
+    }
+  }
+
   private lockFor(current: PlanRecord | null): {
     ConditionExpression: string;
     ExpressionAttributeNames?: Record<string, string>;
@@ -148,4 +190,8 @@ export class SubscriptionRepository implements ISubscriptionRepository {
       ExpressionAttributeValues: { ':u': current.updatedAt },
     };
   }
+}
+
+export function appleBindingKey(originalTransactionId: string): string {
+  return `apple#${originalTransactionId}`;
 }

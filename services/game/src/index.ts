@@ -1,5 +1,6 @@
 import { GameHandler } from './handlers/game.handler';
 import { StripeService } from './services/stripe.service';
+import { AppleService } from './services/apple.service';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -84,6 +85,25 @@ async function handleUnsubscribe(event: any): Promise<any> {
   };
 }
 
+/**
+ * App Store Server Notifications V2. Public route; the payload is signed by
+ * Apple and verified before use. Non-200 makes Apple retry.
+ */
+async function handleAppleNotification(event: any): Promise<any> {
+  try {
+    const raw = event.isBase64Encoded ? Buffer.from(event.body || '', 'base64').toString('utf8') : event.body || '';
+    const signedPayload = JSON.parse(raw || '{}').signedPayload;
+    if (!signedPayload) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Missing signedPayload' }) };
+    }
+    const outcome = await new AppleService().handleNotification(signedPayload);
+    return { statusCode: 200, body: JSON.stringify({ received: true, outcome }) };
+  } catch (error) {
+    logger.error('Apple notification failed', error as Error);
+    return { statusCode: 500, body: JSON.stringify({ error: 'Notification failed' }) };
+  }
+}
+
 async function handleStripeWebhook(event: any): Promise<any> {
   try {
     const signature = event.headers?.['stripe-signature'] || event.headers?.['Stripe-Signature'] || '';
@@ -112,6 +132,9 @@ export async function handler(event: any, context: any): Promise<any> {
     const path = event.rawPath || event.requestContext?.http?.path || '';
     if (path.endsWith('/webhook')) {
       return handleStripeWebhook(event);
+    }
+    if (path.endsWith('/apple/notifications')) {
+      return handleAppleNotification(event);
     }
 
     // Check if this is an unsubscribe request (public, no auth)
