@@ -11,4 +11,4 @@ None. Every choice here is an implementation pattern inside the slice, fixed by 
 
 - [x] 1. Write `construction/math-rally-slice/nfr-design/nfr-design-patterns.md`
 - [x] 2. Write `construction/math-rally-slice/nfr-design/logical-components.md`
-- [ ] 3. Present for approval
+- [x] 3. Present for approval: APPROVED

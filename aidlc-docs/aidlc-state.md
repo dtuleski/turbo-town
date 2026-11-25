@@ -222,7 +222,8 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - [ ] MR1 Vertical slice and performance gate (FD minimal, NFR Req standard, NFR Design minimal, Code) - gate decides whether MR4 and MR5 proceed
   - [x] Functional Design: APPROVED (`construction/math-rally-slice/functional-design/`); question 1a answered: Android gate moved to a later stage (before MR5); MR1 gate on iPhone and desktop
   - [x] NFR Requirements: APPROVED (`construction/math-rally-slice/nfr-requirements/`)
-  - [ ] NFR Design (minimal): artifacts at `construction/math-rally-slice/nfr-design/`, awaiting owner approval
+  - [x] NFR Design (minimal): APPROVED (`construction/math-rally-slice/nfr-design/`)
+  - [ ] Code Generation Part 1: plan at `construction/plans/math-rally-slice-code-generation-plan.md` (14 steps, owner device steps 9, 11, 12), awaiting owner approval
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
   - [x] Functional Design: APPROVED (`construction/math-rally-shared-core/functional-design/`)
   - [x] Code Generation Part 1: plan APPROVED (`construction/plans/math-rally-shared-core-code-generation-plan.md`, 15 steps)

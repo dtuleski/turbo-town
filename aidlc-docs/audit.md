@@ -2716,3 +2716,9 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Recorded approval of MR2 Code Generation (MR2 complete, commit 108a092, not merged) and of MR1 NFR Requirements. MR1 FD follow-up 1a answered D: the Android gate moves to a later stage (before MR5); the MR1 gate runs on the iPhone and desktop. MR1 NFR Design (minimal) written with no owner questions (implementation patterns only): construction/math-rally-slice/nfr-design/nfr-design-patterns.md and logical-components.md; presented for approval. MR3 Backend Functional Design started: plan with 1 question (catalog displayOrder) at construction/plans/math-rally-backend-functional-design-plan.md, from a read-only scan of memory-game-catalog-prod (highest displayOrder 23)."
 **Context**: CONSTRUCTION - MR1 NFR Design approval pending; MR3 Functional Design question pending
 ---
+## Math Rally - MR1 NFR Design Approved; MR1 Code Generation Plan
+**Timestamp**: 2026-11-25T21:37:32Z
+**User Input**: "approved"
+**AI Response**: "MR1 NFR Design approved. MR1 Code Generation Part 1 plan written at construction/plans/math-rally-slice-code-generation-plan.md: 14 steps (Phaser pin and literals, pure core modules with tests, fixtures, Phaser layer, placeholder assets and credits, dev tools, dev-only slice route, size and isolation checks, desktop CSP checks with ad hoc Playwright, embed build, WebView spike on branch spike/math-rally-webview, gate runs on iPhone and desktop, gate report, verify). Owner device time flagged in steps 9, 11, 12. Android gate deferred per owner. Approval requested. MR3 FD question (displayOrder) still unanswered."
+**Context**: CONSTRUCTION - MR1 Code Generation planning
+---
