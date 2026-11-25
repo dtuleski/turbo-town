@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to 56, NFR-MK-1 to 26), `../user-stories/math-kart-stories.md` (MK-1 to 28), `../plans/math-kart-application-design-plan.md` (decisions Q1 to Q15), code read at `c6ccf0f`
+**Basis**: `../requirements/math-rally-requirements.md` (FR-MK-1 to 56, NFR-MK-1 to 26), `../user-stories/math-rally-stories.md` (MK-1 to 28), `../plans/math-rally-application-design-plan.md` (decisions Q1 to Q15), code read at `c6ccf0f`
 **Revision**: iteration 4, after the third design review of 2026-11-25 (`.agents/tasks/math-kart-inception/review.md`): fatal-error guard in G1 and G16, built-in texture check in G2, Phaser's default local schemes as a literal, G17 violation record and listener timing, logging facts F17 and F18. Responses: iteration 1 findings in Section 9, iteration 2 findings in Section 10, iteration 3 findings in Section 11.
 **Name**: "Math Rally" (owner answer Q22). Files keep the `math-kart-` prefix for this inception run. Ids: theme and game type `MATH_RALLY`, catalog `math-rally`, routes `/math-rally/...`, locale namespace `mathRally`.
 **Scope guard**: v1 only. No rivals, items, extra tracks, gamepad, Quest Map node or Flame port.
@@ -69,7 +69,7 @@ apps/mobile/                           A1-A9  screens, bridge, asset server, ses
 apps/web/ (build tooling)              T1     embed build config, source hash and script
 ```
 
-Dependencies and data flows are in `math-kart-component-dependency.md`; signatures in `math-kart-component-methods.md`; orchestration and error handling in `math-kart-services.md`.
+Dependencies and data flows are in `math-rally-component-dependency.md`; signatures in `math-rally-component-methods.md`; orchestration and error handling in `math-rally-services.md`.
 
 ---
 
@@ -116,11 +116,11 @@ Phaser names below follow the Phaser 3 API (Scene, Graphics, Image, Text, Loader
 | Id | Component (file) | Responsibility |
 |---|---|---|
 | H1 | MathRallySetupPage (`pages/math-rally/MathRallySetupPage.tsx`) | Lazy route. Four difficulty cards with path counts; lock state from H3; "How to play" (keys and joystick, plus the screen-reader limitation); Start navigates to `/math-rally/game?difficulty=<name>`; prefetches the game chunk on mount (FR-MK-40, FR-MK-41, NFR-MK-4) |
-| H2 | MathRallyGamePage and host hook (`pages/math-rally/MathRallyGamePage.tsx`, `pages/math-rally/useMathRallyHost.ts`, `pages/math-rally/hostEnv.ts`) | Lazy route. Parses `difficulty`; mounts G1 in a `touch-action: none` container; host state machine (Section 2 of `math-kart-services.md`) with a 20 s `ready` timeout; passes `ready.protocolVersion` to H4; sends `init` with `touchUi` from `initialTouchUi(window)` and the language from `gameLanguage(i18n)`; shows `ScoreBreakdownModal`; pauses on `visibilitychange`; reads and writes the sound preference through `services/presentationPreferences.ts` (FR-MK-21, FR-MK-25, FR-MK-41 to FR-MK-44, FR-MK-50, NFR-MK-7, NFR-MK-9) |
+| H2 | MathRallyGamePage and host hook (`pages/math-rally/MathRallyGamePage.tsx`, `pages/math-rally/useMathRallyHost.ts`, `pages/math-rally/hostEnv.ts`) | Lazy route. Parses `difficulty`; mounts G1 in a `touch-action: none` container; host state machine (Section 2 of `math-rally-services.md`) with a 20 s `ready` timeout; passes `ready.protocolVersion` to H4; sends `init` with `touchUi` from `initialTouchUi(window)` and the language from `gameLanguage(i18n)`; shows `ScoreBreakdownModal`; pauses on `visibilitychange`; reads and writes the sound preference through `services/presentationPreferences.ts` (FR-MK-21, FR-MK-25, FR-MK-41 to FR-MK-44, FR-MK-50, NFR-MK-7, NFR-MK-9) |
 | H3 | Level lock rule (`pages/math-rally/levelLocks.ts`) | Pure: `lockState(difficulty, { tier, gameIsPaid, freeDifficulties })` returns `playable` or `lockedPaid` (FR-MK-56) |
 | H4 | API additions (`api/game.ts`) | `START_MATH_RALLY_GAME` document (operation `StartGame`), `startMathRallyGame()` with `mathRallyProtocol`, sharing the quest helper with `startGame()`; a local `const MATH_RALLY_UPDATE_REQUIRED_MESSAGE = 'Please update the app to play.'` and `isUpdateRequiredError`; `CompleteGameInput.mathRallySubmission`; result types declared locally (the race payload is `unknown` here). `api/game.ts` is imported by eager pages, so it imports nothing from `packages/shared/src/math-rally/*` or the funnel H5; H9 keeps the local message equal to the shared constant (FR-MK-26, FR-MK-43, FR-MK-52) |
 | H5 | Shared funnel (`games/math-rally/shared.ts`) | The only `apps/web` module that names `packages/shared/src/math-rally/*` (per-file imports, no `zod`), same pattern as `utils/questShared.ts`. Used only by the game core and by the setup page (path counts from the client protocol spec); it imports no Phaser. Both users are lazy chunks and no eager module imports the funnel (H4 keeps its own message copy), so the funnel never reaches the entry chunk; the MR4 bundle report confirms it |
-| H6 | Registries and locales | Entries in every web registry of `math-kart-delta-notes.md` Section 2 (routes, `GAME_FILTER_MAP`, leaderboard enum and filter, display maps, `games.math-rally.*`, `mathRally.*`) (FR-MK-35, FR-MK-36) |
+| H6 | Registries and locales | Entries in every web registry of `math-rally-delta-notes.md` Section 2 (routes, `GAME_FILTER_MAP`, leaderboard enum and filter, display maps, `games.math-rally.*`, `mathRally.*`) (FR-MK-35, FR-MK-36) |
 | H7 | Partly-free hub presentation (`components/hub/GameTile.tsx`, `pages/hub/GameHubPage.tsx`) | `FREE_DIFFICULTIES_IN_PREMIUM_GAMES` copy keyed by catalog id, next to the existing `PREMIUM_GAMES` copy and checked against S7 by H9; tile badge "Paid" plus "Easy is free" note; no subscription redirect for partly-free games (FR-MK-56) |
 | H8 | Routes (`config/constants.ts`, `App.tsx`, `utils/lazyWithTimeout.ts`) | `ROUTES.MATH_RALLY_SETUP`, `ROUTES.MATH_RALLY_GAME`; both routes are `lazyWithTimeout(() => import(...), 20 000)` inside `Suspense` with a route error boundary ("The race could not load.", Retry reloads the page); the dev-only slice route exists only under `import.meta.env.DEV` or in the local gate mode of G17 (MR1) |
 | H9 | Consistency test (`__tests__/mathRallyRegistry.test.ts`) | Raw-text checks over web, backend and app registries, paid lists, free-difficulty copies and the two copies of the update-message text (`api/game.ts` and the Dart constant) against the shared constant, with a mutation suite (FR-MK-37) |
@@ -173,7 +173,7 @@ Phaser names below follow the Phaser 3 API (Scene, Graphics, Image, Text, Loader
 - **Protocol versions**: race parameters, track constants, kinds, operand rules and payload shapes are frozen per version after launch (methods file Section 1). The server builds and checks with the version stored on the record; the game validates the payload against its own version, which is the version its host sent.
 - **Submission** (`completeGame` input `mathRallySubmission`): `{ choices: int[N], forkTimesMs: int[N] }` plus the top-level `completionTime` (seconds) and `attempts` (N). The server ignores `correctAnswers`, `totalQuestions` and `score` for this game.
 - **Stored on completion**: `status`, `completedAt`, `completionTime`, `attempts` (N), `score`. Correct count travels in the GameCompleted event only.
-- **Message envelope**: JSON text, at most 16 KB, `{ "v": 1, "type": "<name>", ... }`. The full list and field rules are in `math-kart-component-methods.md` Section 4.
+- **Message envelope**: JSON text, at most 16 KB, `{ "v": 1, "type": "<name>", ... }`. The full list and field rules are in `math-rally-component-methods.md` Section 4.
 - **Seeds**: server seeds come from `crypto.randomInt(0, 2 ** 32)`; offline app races use a seed from `Random.secure()` in Dart, passed in `init`, and the bundled generator at the bundle's protocol version.
 - **Asset URLs**: web `/games/math-rally/...` (Vercel static files, fetched only by the game chunk); app `./` relative to the bundled `index.html`.
 
@@ -222,7 +222,7 @@ Phaser names below follow the Phaser 3 API (Scene, Graphics, Image, Text, Loader
 | FR-MK-51 | T1, A8, G16 |
 | FR-MK-52 | H4, A7, B2 |
 | FR-MK-53 | S7 (launch lists), H7, A7 |
-| FR-MK-54 | Checklist in Build and Test (`math-kart-unit-of-work.md`, pre-launch check PL5) |
+| FR-MK-54 | Checklist in Build and Test (`math-rally-unit-of-work.md`, pre-launch check PL5) |
 | FR-MK-55 | S7, B10 |
 | FR-MK-56 | H3, H7, A7, A9 |
 | NFR-MK-1, 2 | G4, G5, G11, G17, A5 (composition mode) |
@@ -236,7 +236,7 @@ Phaser names below follow the Phaser 3 API (Scene, Graphics, Image, Text, Loader
 | NFR-MK-16 | T1, A8 (pins and audits recorded at MR1 and MR5) |
 | NFR-MK-17, 18 | G1 (image load type, built-in textures from `sys/`), G2 (font through `FontFace`), G16 (markup rules), G17 (violation record in the gate build), T1 (markup check), A5, H2 |
 | NFR-MK-19 to 21 | B2 (no choices stored), H10, G13 |
-| NFR-MK-22 | Section 8 of `math-kart-services.md` |
+| NFR-MK-22 | Section 8 of `math-rally-services.md` |
 | NFR-MK-23 | S1 (protocol registry, freeze rule), B1, B6 (additive mapping), A6 (update block), A7 (older apps) |
 | NFR-MK-24 | G1 (WebGL check), H2 (fallback message) |
 | NFR-MK-25 | Section 0 |
@@ -280,7 +280,7 @@ Every FR-MK-1 to FR-MK-56 has at least one component.
 | SECURITY-12 | N/A | No authentication change |
 | SECURITY-13 | Compliant | No CDN loads; bundle ships inside the signed app, and `--check-only` compares its source hash and file hashes before release; messages parsed with `JSON.parse` / `jsonDecode` then validated against allowlists (no object revival). The stored seed and key let an operator regenerate the race that was issued; the score cannot be re-derived because choices are not stored (NFR-MK-19) |
 | SECURITY-14 | N/A for new code; pre-existing gaps remain | Rejection metric makes a later alarm possible; no alarm added |
-| SECURITY-15 | Compliant | Top-level handler of the game: the G1 fatal-error guard listens on `window` for `error` and `unhandledrejection` while the game is mounted, and on the app page (a new application entry point) G16's `embed/pageGuard.ts` installs it before any other module runs; the first error stops the game and sends one generic code, later ones are ignored (NFR-MK-14, AC-44.3). The existing React error boundary in `main.tsx` stays for render errors (F18). Every external call has explicit handling (tables in `math-kart-services.md` Section 5), including the `ready` timeout and the app's Back fallback, which never depends on the game answering; access checks fail closed; engine teardown in `finally` paths |
+| SECURITY-15 | Compliant | Top-level handler of the game: the G1 fatal-error guard listens on `window` for `error` and `unhandledrejection` while the game is mounted, and on the app page (a new application entry point) G16's `embed/pageGuard.ts` installs it before any other module runs; the first error stops the game and sends one generic code, later ones are ignored (NFR-MK-14, AC-44.3). The existing React error boundary in `main.tsx` stays for render errors (F18). Every external call has explicit handling (tables in `math-rally-services.md` Section 5), including the `ready` timeout and the app's Back fallback, which never depends on the game answering; access checks fail closed; engine teardown in `finally` paths |
 
 No blocking finding.
 
@@ -310,7 +310,7 @@ The other assumptions of requirements Section 10 are resolved at these points: U
 
 ## 9. Responses to the Design Review (iteration 1)
 
-Review: `.agents/tasks/math-kart-inception/review.md`, verdict CHANGES_REQUESTED. Requirement-side responses are in `../requirements/math-kart-requirements.md` Section 13; this table covers the design-side files (`math-kart-execution-plan.md`, `math-kart-application-design-plan.md`, the application design files, the unit files, the concept page and `aidlc-state.md`).
+Review: `.agents/tasks/math-kart-inception/review.md`, verdict CHANGES_REQUESTED. Requirement-side responses are in `../requirements/math-rally-requirements.md` Section 13; this table covers the design-side files (`math-rally-execution-plan.md`, `math-rally-application-design-plan.md`, the application design files, the unit files, the concept page and `aidlc-state.md`).
 
 | Finding | Response | Where |
 |---|---|---|
@@ -340,7 +340,7 @@ Cross-document fix made in this step: none to the requirements text. R-D6 record
 
 ## 10. Responses to the Design Review (iteration 2)
 
-Review: `.agents/tasks/math-kart-inception/review.md` (iteration 2), verdict CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 6 NIT). Requirement-side responses are in `../requirements/math-kart-requirements.md` Section 13.2; this table covers the design-side files.
+Review: `.agents/tasks/math-kart-inception/review.md` (iteration 2), verdict CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 6 NIT). Requirement-side responses are in `../requirements/math-rally-requirements.md` Section 13.2; this table covers the design-side files.
 
 | Finding | Response | Where |
 |---|---|---|
@@ -358,7 +358,7 @@ Cross-document fix made in this step: none to the requirements, questions, delta
 
 ## 11. Responses to the Design Review (iteration 3)
 
-Review: `.agents/tasks/math-kart-inception/review.md` (iteration 3), verdict CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 5 NIT). Requirement-side responses are in `../requirements/math-kart-requirements.md` Section 13.3; this table covers the design-side files.
+Review: `.agents/tasks/math-kart-inception/review.md` (iteration 3), verdict CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 5 NIT). Requirement-side responses are in `../requirements/math-rally-requirements.md` Section 13.3; this table covers the design-side files.
 
 | Finding | Response | Where |
 |---|---|---|

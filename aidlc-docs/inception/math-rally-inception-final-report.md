@@ -14,21 +14,21 @@ The package still needs the owner's approval. It is marked pending in `aidlc-sta
 
 ## Files (all under `aidlc-docs/` in the worktree)
 
-- `inception/reverse-engineering/math-kart-delta-notes.md`
-- `inception/requirements/math-kart-requirement-verification-questions.md`
-- `inception/requirements/math-kart-requirements.md`
-- `inception/user-stories/math-kart-personas.md`
-- `inception/user-stories/math-kart-stories.md`
-- `inception/plans/math-kart-execution-plan.md`
-- `inception/plans/math-kart-application-design-plan.md`
-- `inception/application-design/math-kart-components.md`
-- `inception/application-design/math-kart-component-methods.md`
-- `inception/application-design/math-kart-services.md`
-- `inception/application-design/math-kart-component-dependency.md`
-- `inception/application-design/math-kart-concept.md`
-- `inception/application-design/math-kart-unit-of-work.md`
-- `inception/application-design/math-kart-unit-of-work-dependency.md`
-- `inception/application-design/math-kart-unit-of-work-story-map.md`
+- `inception/reverse-engineering/math-rally-delta-notes.md`
+- `inception/requirements/math-rally-requirement-verification-questions.md`
+- `inception/requirements/math-rally-requirements.md`
+- `inception/user-stories/math-rally-personas.md`
+- `inception/user-stories/math-rally-stories.md`
+- `inception/plans/math-rally-execution-plan.md`
+- `inception/plans/math-rally-application-design-plan.md`
+- `inception/application-design/math-rally-components.md`
+- `inception/application-design/math-rally-component-methods.md`
+- `inception/application-design/math-rally-services.md`
+- `inception/application-design/math-rally-component-dependency.md`
+- `inception/application-design/math-rally-concept.md`
+- `inception/application-design/math-rally-unit-of-work.md`
+- `inception/application-design/math-rally-unit-of-work-dependency.md`
+- `inception/application-design/math-rally-unit-of-work-story-map.md`
 - `aidlc-state.md` (Math Rally section)
 
 The `math-kart-` prefix is intentional. Construction renames the files first.
@@ -42,7 +42,7 @@ The `math-kart-` prefix is intentional. Construction renames the files first.
 | Non-functional requirements | 26 (NFR-MK-1 to 26) |
 | Acceptance criteria | 92 |
 | User stories | 28 (MK-1 to MK-28) |
-| Personas | `math-kart-personas.md` |
+| Personas | `math-rally-personas.md` |
 | Units of work | 5 (MR1 to MR5) plus 8 pre-launch checks (PL1 to PL8) |
 | Risks | R1 to R19 |
 | Unverified assumptions | U1 to U21 |
@@ -128,7 +128,7 @@ Release order: Leaderboard and Game Service, then web, then app, with the seed l
 - Pre-launch checks PL1 to PL8: gate on the full game, credits and IP review, trademark search, owner playtest with a child, paid-switch checklist, prod table verify script, embed `--check-only`, protocol v1 frozen.
 - Backlog: a Quest Map node, which needs the quest validator to honour the Easy-only exception after a paid switch; gamepad; more tracks.
 
-## What the Game Will Look and Feel Like (from `math-kart-concept.md`)
+## What the Game Will Look and Feel Like (from `math-rally-concept.md`)
 
 1. Benji's cartoon kart, seen from behind, drives by itself down a bright countryside road under a blue sky, past rounded green hills, trees and fences.
 2. A large banner at the top asks a question such as "What is 7 x 8 ?".

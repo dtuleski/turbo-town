@@ -2,8 +2,8 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design and Units Generation (planning for both, combined as for Quest Map)
-**Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `../user-stories/math-kart-stories.md` (MK-1 to MK-28), `../reverse-engineering/math-kart-delta-notes.md`, plus code read for this stage at `c6ccf0f` (cited in the design files)
-**Name**: the game is "Math Rally" (owner answer Q22). Files keep the `math-kart-` prefix for this inception run; Construction renames them first (`math-kart-execution-plan.md` Section 8).
+**Basis**: `../requirements/math-rally-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `../user-stories/math-rally-stories.md` (MK-1 to MK-28), `../reverse-engineering/math-rally-delta-notes.md`, plus code read for this stage at `c6ccf0f` (cited in the design files)
+**Name**: the game is "Math Rally" (owner answer Q22). Files keep the `math-kart-` prefix for this inception run; Construction renames them first (`math-rally-execution-plan.md` Section 8).
 **Revision**: iteration 2, after the design review of 2026-11-25: Q3 (bundle drift check by source hash) and Q7 (protocol version passed to `start()`, update block, existing provider reused) reworded; letters unchanged.
 **Answers**: delegated by the owner. Every `[Answer]:` holds a recommendation marked **Recommended (pending owner approval)** with the evidence behind it. Changing a letter means revisiting the linked design section.
 
@@ -157,7 +157,7 @@ D) Other (please describe after [Answer]: tag below)
 
 ## Section B: Ambiguity Analysis
 
-All answers are single letters with a stated reason. Q11 refines the wording of requirement Q18 without changing AC-38.1; this is listed in `math-kart-components.md` Section 6. Q2 and Q3 depend on Q1 = A and are consistent with it. Q6 depends on an unverified plugin capability and has an explicit stop-and-ask rule. No follow-up questions are needed.
+All answers are single letters with a stated reason. Q11 refines the wording of requirement Q18 without changing AC-38.1; this is listed in `math-rally-components.md` Section 6. Q2 and Q3 depend on Q1 = A and are consistent with it. Q6 depends on an unverified plugin capability and has an explicit stop-and-ask rule. No follow-up questions are needed.
 
 ---
 
@@ -167,18 +167,18 @@ All answers are single letters with a stated reason. Q11 refines the wording of 
 - [x] Analyse context: requirements, stories, delta notes; code of the Game Service, Leaderboard, shared package, web API and hub, Flutter session framework, game API, hub logic, router and feedback settings
 - [x] Apply the owner answers of 2026-11-25 (Q7, Q20, Q21, Q22) to the requirements, stories and personas, including new FR-MK-55, FR-MK-56 and story MK-28
 - [x] Apply design-driven corrections: NFR-MK-9 and Q33 (in-race strings outside the entry chunk), NFR-MK-17 and MK-21 (`connect-src 'self'` in the app page)
-- [x] Generate `math-kart-components.md`
-- [x] Generate `math-kart-component-methods.md`
-- [x] Generate `math-kart-services.md`
-- [x] Generate `math-kart-component-dependency.md`
-- [x] Generate `math-kart-concept.md` (screen mock)
-- [x] Validate completeness: every FR-MK maps to a component (`math-kart-components.md` Section 5)
-- [x] Security Baseline compliance summary (`math-kart-components.md` Section 7)
+- [x] Generate `math-rally-components.md`
+- [x] Generate `math-rally-component-methods.md`
+- [x] Generate `math-rally-services.md`
+- [x] Generate `math-rally-component-dependency.md`
+- [x] Generate `math-rally-concept.md` (screen mock)
+- [x] Validate completeness: every FR-MK maps to a component (`math-rally-components.md` Section 5)
+- [x] Security Baseline compliance summary (`math-rally-components.md` Section 7)
 
 ### Units Generation
-- [x] Generate `math-kart-unit-of-work.md`
-- [x] Generate `math-kart-unit-of-work-dependency.md`
-- [x] Generate `math-kart-unit-of-work-story-map.md`
+- [x] Generate `math-rally-unit-of-work.md`
+- [x] Generate `math-rally-unit-of-work-dependency.md`
+- [x] Generate `math-rally-unit-of-work-story-map.md`
 - [x] Validate boundaries and dependencies (no cycles, matrix in the dependency file)
 - [x] Assign all 28 stories to a primary unit
 - [x] Greenfield code-organisation step: not applicable (brownfield)

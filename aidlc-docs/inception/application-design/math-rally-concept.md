@@ -4,7 +4,7 @@
 **Stage**: INCEPTION - Application Design (concept page)
 **Revision**: iteration 2, after the design review of 2026-11-25: mock redrawn with the allowed ASCII drawing set, fork count "3/12" for Medium, joystick visibility rule, opaque pause screen (new mock), "correct result" wording.
 **Purpose**: one page that shows what the race screen looks like and how it behaves, so the owner can judge the "cool scene" and the controls before Construction. It is a layout sketch, not final art.
-**Basis**: FR-MK-1 to FR-MK-24, NFR-MK-6 to NFR-MK-8, NFR-MK-20, Q1, Q2, Q6, Q12, Q39; components G3, G4, G8, G9 in `math-kart-components.md`
+**Basis**: FR-MK-1 to FR-MK-24, NFR-MK-6 to NFR-MK-8, NFR-MK-20, Q1, Q2, Q6, Q12, Q39; components G3, G4, G8, G9 in `math-rally-components.md`
 
 **ASCII note**: every drawing stroke in the mocks below uses only the characters `common/ascii-diagram-standards.md` allows (`+`, `-`, `|`, `^`, `v`, `<`, `>`) plus letters, digits and spaces. Text labels keep their ordinary punctuation (`?`, `!`, `:`, `/`, `.`, `,`), as the standard's own examples do in labels such as "(PHP Runtime)". All lines of each mock have the same width (52 and 42 characters); printable ASCII only, no tabs.
 

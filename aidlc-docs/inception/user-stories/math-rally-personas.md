@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
-**Basis**: `../requirements/math-kart-requirements.md` Section 1. Ids use the `MKP` prefix so they do not collide with Circuit Builder (`P1` to `P5`) or Quest Map (`QP1` to `QP3`).
+**Basis**: `../requirements/math-rally-requirements.md` Section 1. Ids use the `MKP` prefix so they do not collide with Circuit Builder (`P1` to `P5`) or Quest Map (`QP1` to `QP3`).
 **Revision**: iteration 2 (design review findings 1 and 7): MKP2 note on ties at the ceiling; MKP3 privacy wording scoped to what Math Rally adds.
 
 ---
@@ -48,4 +48,4 @@
 | MKP3 Ana | Yes | Yes (wrong-answer learning) | Yes | No | Yes | Yes (child safety) | Yes (light site, paid switch) |
 | MKP4 Owner | No | No | Yes (distractor check) | Yes | No | Yes | Yes |
 
-**Text note:** Benji, the young racer, appears in discovery, racing, content, the app and accessibility stories, and in the "Easy stays free" story (MK-28). Sofia, the older student, appears in discovery, racing and content, plus fair scoring and the leaderboard. Ana, the parent, appears in discovery, the wrong-answer story, content, accessibility, child safety, site weight, the paid switch and Easy staying free. The owner-operator appears in the distractor check, the app embedding, the fairness and safety checks, and operations. The table matches the persona lists on each story in `math-kart-stories.md`.
+**Text note:** Benji, the young racer, appears in discovery, racing, content, the app and accessibility stories, and in the "Easy stays free" story (MK-28). Sofia, the older student, appears in discovery, racing and content, plus fair scoring and the leaderboard. Ana, the parent, appears in discovery, the wrong-answer story, content, accessibility, child safety, site weight, the paid switch and Easy staying free. The owner-operator appears in the distractor check, the app embedding, the fairness and safety checks, and operations. The table matches the persona lists on each story in `math-rally-stories.md`.

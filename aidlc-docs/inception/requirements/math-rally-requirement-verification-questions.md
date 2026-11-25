@@ -1,9 +1,9 @@
 # Math Rally - Requirement Verification Questions
 
 **Feature**: Math Rally (final name, owner answer to Q22 of 2026-11-25), a kart-racing math game where Benji, the in-game driver, picks the road fork whose sign shows the right answer
-**File names**: this inception run keeps the `math-kart-` file prefix so the review and report steps find the files; the first Construction step renames them to `math-rally-` (see `../plans/math-kart-execution-plan.md`). Requirement, story and persona ids keep their `MK` labels.
+**File names**: this inception run keeps the `math-kart-` file prefix so the review and report steps find the files; the first Construction step renames them to `math-rally-` (see `../plans/math-rally-execution-plan.md`). Requirement, story and persona ids keep their `MK` labels.
 **Created**: 2026-11-25
-**Basis**: owner request of 2026-11-25 (logged verbatim in `aidlc-docs/audit.md`), the "Option A" context agreed in conversation, and code read at `c6ccf0f` (see `../reverse-engineering/math-kart-delta-notes.md`).
+**Basis**: owner request of 2026-11-25 (logged verbatim in `aidlc-docs/audit.md`), the "Option A" context agreed in conversation, and code read at `c6ccf0f` (see `../reverse-engineering/math-rally-delta-notes.md`).
 
 ## How to read the answers
 
@@ -11,7 +11,7 @@ Every `[Answer]:` is filled with one of these labels:
 
 - **Owner answer (2026-11-25)**: given by the owner; binding.
 - **Owner context (agreed earlier)**: agreed in the conversation before this stage; binding.
-- **Recommended (pending owner approval)**: the analyst's recommendation with a one-line rationale. The owner delegated these; change the letter to override, then revisit the linked requirements (traceability table in `math-kart-requirements.md` Section 12).
+- **Recommended (pending owner approval)**: the analyst's recommendation with a one-line rationale. The owner delegated these; change the letter to override, then revisit the linked requirements (traceability table in `math-rally-requirements.md` Section 12).
 - **OPEN**: the owner has not decided. A recommendation is given, and the question stays open until the owner answers. No question is OPEN any more: the owner answered Q7, Q20, Q21 and Q22 on 2026-11-25 (relayed by the orchestrator).
 
 **Iteration 2 (after the design review of 2026-11-25)**: Q16, Q17, Q27, Q29 and Q31 were revised (marked "Revised in iteration 2" in their answers), analyst notes were added to the owner answers Q10 and Q11 without changing the owner's choice, and Q39 and Q40 were added. All revised and new answers are Recommended (pending owner approval).

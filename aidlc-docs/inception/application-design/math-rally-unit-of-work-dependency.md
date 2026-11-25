@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Units Generation
-**Basis**: `math-kart-unit-of-work.md`, `math-kart-component-dependency.md`
+**Basis**: `math-rally-unit-of-work.md`, `math-rally-component-dependency.md`
 **Revision**: iteration 2, after the design review of 2026-11-25: contract freeze includes the protocol registry, release step 4 uses the source-hash check, and protocol changes after launch have their own order (Section 3).
 
 ---

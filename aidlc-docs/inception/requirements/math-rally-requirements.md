@@ -4,9 +4,9 @@
 **File names**: the files of this inception run keep the `math-kart-` prefix; the first Construction step renames them to `math-rally-`. Ids keep their `MK` labels (FR-MK, NFR-MK, MK-n, MKP).
 **Created**: 2026-11-25
 **Depth**: Comprehensive (new rendering engine, a second host platform, a new server-scored game type)
-**Source decisions**: `math-kart-requirement-verification-questions.md` (40 questions). Owner answers of 2026-11-25 are binding for Q1, Q2, Q6, Q7, Q10 to Q14 and Q19 to Q22 (Q7 and Q20 to Q22 relayed by the orchestrator later that day); the rest are **Recommended, pending owner approval**. No question is open. Q39 and Q40 were added in iteration 2.
+**Source decisions**: `math-rally-requirement-verification-questions.md` (40 questions). Owner answers of 2026-11-25 are binding for Q1, Q2, Q6, Q7, Q10 to Q14 and Q19 to Q22 (Q7 and Q20 to Q22 relayed by the orchestrator later that day); the rest are **Recommended, pending owner approval**. No question is open. Q39 and Q40 were added in iteration 2.
 **Revision**: iteration 4, after the third design review of 2026-11-25 (`.agents/tasks/math-kart-inception/review.md`). Responses to the findings of all three reviews are in Section 13.
-**Reverse engineering basis**: `../reverse-engineering/math-kart-delta-notes.md` (code read at `c6ccf0f`), on top of the stale baseline at `a328c74`.
+**Reverse engineering basis**: `../reverse-engineering/math-rally-delta-notes.md` (code read at `c6ccf0f`), on top of the stale baseline at `a328c74`.
 **Not written here**: design, components, units. Those follow in Application Design and Units Generation.
 
 ---
@@ -27,7 +27,7 @@ Benji drives a go-kart toward a fork. A math question shows at the top; each pat
 ### Agreed context ("Option A")
 Build the game once with Phaser 4 (pattern: the official React plus Vite template, `phaserjs/template-react`) inside `apps/web` as a lazy-loaded route, and run the same game inside the Flutter app in a WebView with its files bundled in the app. A native Flame port is a fallback only. The game uses the existing `startGame`/`completeGame` flow, a server-computed score, the leaderboard, the hub tile and catalog, and must be launchable from Quest Map later. Audience 8 to 16; languages en, es, pt. "Mario-Kart style" is inspiration only.
 
-### Personas (detail in `../user-stories/math-kart-personas.md`)
+### Personas (detail in `../user-stories/math-rally-personas.md`)
 - **MKP1 Benji, the young racer** (8 to 10, phone in the app, one thumb, Easy and Medium, FREE tier).
 - **MKP2 Sofia, the older student** (12 to 16, laptop keyboard and phone, Hard and Super Hard, chases the leaderboard).
 - **MKP3 Ana, the parent** (decides whether the child plays and whether to pay; cares about safety and learning).
@@ -257,7 +257,7 @@ The correct option is written in lowest terms, and a correct answer whose value 
 **FR-MK-35 Identifiers.** Theme id `MATH_RALLY`; catalog id `math-rally`; web routes `/math-rally/setup` and `/math-rally/game`; app routes `/math-rally/setup` and `/math-rally/play` (registry convention); hub category `Science & Math`; catalog `ageRange` `8-16`; display name "Math Rally"; locale namespace `mathRally` plus `games.math-rally.*` (Q22, owner answer).
 - AC-35.1 The consistency test (FR-MK-37) asserts each form. [U]
 
-**FR-MK-36 Registries.** Every registry in `math-kart-delta-notes.md` Section 2 holds Math Rally, plus the app's `kGameRegistry` and `kGameTypeMeta` (`apps/mobile/lib/stats/game_meta.dart`). Not added: `PREMIUM_GAMES` and the paid lists while free; `daily-email.ts`. Added at launch although inert while the game is free: the Easy-only exception for `MATH_RALLY` in the shared, web and app free-difficulty lists (FR-MK-55, FR-MK-56).
+**FR-MK-36 Registries.** Every registry in `math-rally-delta-notes.md` Section 2 holds Math Rally, plus the app's `kGameRegistry` and `kGameTypeMeta` (`apps/mobile/lib/stats/game_meta.dart`). Not added: `PREMIUM_GAMES` and the paid lists while free; `daily-email.ts`. Added at launch although inert while the game is free: the Easy-only exception for `MATH_RALLY` in the shared, web and app free-difficulty lists (FR-MK-55, FR-MK-56).
 - AC-36.1 The hub shows the tile on web and in the app under "Science & Math", and the leaderboard filter, History, Achievements, Statistics, Recent Improvements and Admin views name the game. [M]
 
 **FR-MK-37 Consistency test.** A test in the style of `apps/web/src/__tests__/circuitBuilderRegistry.test.ts` fails when any web or backend registry lacks Math Rally, including a mutation suite. It also fails when `MATH_RALLY` is in `PAID_GAME_THEME_IDS` but missing from web `PREMIUM_GAMES` or the app's paid copy, or the reverse, and when the free-difficulty exception (FR-MK-55) differs between the shared constant, the web copy and the app copy.
@@ -548,7 +548,7 @@ No web access was available in this session, so external facts below were not ch
 - **U12** Race length estimates (1.5 to 2 minutes) and load-time targets; nothing was measured.
 - **U13** Flutter and the Android SDK are installed on this Windows machine (not checked); iOS needs the owner's Mac.
 - **U14** Production theme and catalog tables accept the new rows as for Circuit Builder; production data was not queried and no AWS call was made.
-- **U15 to U17** are recorded in `../application-design/math-kart-components.md` Section 8 (Vite JSON chunking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite).
+- **U15 to U17** are recorded in `../application-design/math-rally-components.md` Section 8 (Vite JSON chunking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite).
 - **U18** Which Android platform-view composition mode `flutter_inappwebview` 6.x uses by default for its WebView, which other mode it offers, and how much the mode changes WebGL frame rate on the reference Android phone (NFR-MK-1).
 - **U19** Whether Phaser 4's loader accepts the XHR response that an iOS custom-scheme handler produces. Phaser 3 treats any status other than 200 as a failure unless the URL's scheme is listed in its `loader.localScheme` setting (default `['file://', 'capacitor://']`), and a scheme-handler response can reach page script as status 0; Phaser 4's behaviour and default are unknown here (FR-MK-46, AC-46.3). *From knowledge of the Phaser 3 source, not run here.*
 - **U20** Whether Phaser 4 boots under the app page's enforced `img-src 'self'` and `style-src 'self'` (NFR-MK-17). Phaser 3 loads its built-in default, missing and white textures from `data:` URIs unless its `images` configuration names other files, and its white texture backs untextured WebGL fills. Whether Phaser 4 keeps these defaults and the setting, and whether it adds a `<style>` element or a markup `style` attribute (styles set through an element's `style` property are not blocked by CSP), is unknown here. *From knowledge of the Phaser 3 source and the CSP specification, not run here.* The mobile spike records every `data:` URL requested at boot (AC-46.3). Whether a built-in texture that fails to load stops the boot is also unknown: the third review reads Phaser 3's texture manager as counting a failed texture toward "ready", so the game would boot without it and fail later. The requirement does not depend on either reading, because the game must not report `ready` unless its required textures exist (FR-MK-25); Application Design checks the three built-in textures before `ready`.

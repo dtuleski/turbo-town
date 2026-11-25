@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Units Generation
-**Basis**: `../user-stories/math-kart-stories.md` (MK-1 to MK-28), `math-kart-unit-of-work.md` (MR1 to MR5)
+**Basis**: `../user-stories/math-rally-stories.md` (MK-1 to MK-28), `math-rally-unit-of-work.md` (MR1 to MR5)
 **Revision**: iteration 2: contributing units updated for MK-3 (app ready timeout), MK-13 (protocol versions) and MK-19 (shared motion); no primary unit changed. Iteration 4: contributing units updated for MK-3 (fatal-error guard, race-stopped overlay) and MK-14 (MR1 spike check); no primary unit changed.
 
 Each story has exactly one **primary** unit, which owns its acceptance criteria. Contributing units deliver parts the story needs.
@@ -38,6 +38,6 @@ Each story has exactly one **primary** unit, which owns its acceptance criteria.
 | MK-27 | Free now, paid later if the owner decides | P0 and P1 | MR4 | MR3 (cap from paid list), Build and Test (checklist) |
 | MK-28 | Easy stays free after a paid switch | P0 | MR3 | MR2 (gate function), MR4 (web presentation), MR5 (app presentation) |
 
-**Counts by primary unit**: MR1 3 (MK-5, MK-6, MK-25); MR2 2 (MK-11, MK-12); MR3 3 (MK-19, MK-22, MK-28); MR4 16 (MK-1 to MK-4, MK-7 to MK-10, MK-16 to MK-18, MK-20, MK-23, MK-24, MK-26, MK-27); MR5 4 (MK-13 to MK-15, MK-21). Total 28: no story is unassigned and none has two primary units. The contributing-unit column matches the story lists in `math-kart-unit-of-work.md`.
+**Counts by primary unit**: MR1 3 (MK-5, MK-6, MK-25); MR2 2 (MK-11, MK-12); MR3 3 (MK-19, MK-22, MK-28); MR4 16 (MK-1 to MK-4, MK-7 to MK-10, MK-16 to MK-18, MK-20, MK-23, MK-24, MK-26, MK-27); MR5 4 (MK-13 to MK-15, MK-21). Total 28: no story is unassigned and none has two primary units. The contributing-unit column matches the story lists in `math-rally-unit-of-work.md`.
 
 **Units with few primary stories**: MR2 carries most of FR-MK-13 to 18 through two stories; MR1 is measured by the gate story; both are deliberate (risk and contract units).

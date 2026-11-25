@@ -2,8 +2,8 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Revision**: iteration 4, after the third design review of 2026-11-25. Changed in iteration 4: game errors in both host sessions, the app's Back fallback, the fatal-error guard and the built-in texture check in Section 5.2, the existing handler log line in Section 5.4, two invariants, the desktop CSP pass rule in Section 8. Changed in iteration 3: `mathRallyProtocol` passed through as `unknown` and checked in the service with the refused cases listed; built-in textures and the font in the error tables; the window margin in the invariant table. Iteration 2 changed: protocol version at start, timing against expected times, score without client time, `ready` timeout, language reduction, `touchUi`, pause hides the question, source-hash bundle check. Responses per finding: `math-kart-components.md` Sections 9 and 10.
-**Scope**: how the components in `math-kart-components.md` work together at run time, what happens on every failure, which inputs are validated where, and which layer owns each invariant. No new deployable service is added: the work runs in the existing Game Service and Leaderboard Lambdas, the Vercel frontend, and the Flutter app.
+**Revision**: iteration 4, after the third design review of 2026-11-25. Changed in iteration 4: game errors in both host sessions, the app's Back fallback, the fatal-error guard and the built-in texture check in Section 5.2, the existing handler log line in Section 5.4, two invariants, the desktop CSP pass rule in Section 8. Changed in iteration 3: `mathRallyProtocol` passed through as `unknown` and checked in the service with the refused cases listed; built-in textures and the font in the error tables; the window margin in the invariant table. Iteration 2 changed: protocol version at start, timing against expected times, score without client time, `ready` timeout, language reduction, `touchUi`, pause hides the question, source-hash bundle check. Responses per finding: `math-rally-components.md` Sections 9 and 10.
+**Scope**: how the components in `math-rally-components.md` work together at run time, what happens on every failure, which inputs are validated where, and which layer owns each invariant. No new deployable service is added: the work runs in the existing Game Service and Leaderboard Lambdas, the Vercel frontend, and the Flutter app.
 
 ---
 
@@ -19,13 +19,13 @@
 | O6 | Offline race in the app | A2 with G6 and S5 | 3 |
 | O7 | Embed build and bundle check | T1 | 4.4 |
 | O8 | Protocol version change after launch | S1, B1, release order | 4.5 |
-| O9 | Release and data seeding | D1 and the release order | `math-kart-unit-of-work-dependency.md` Section 3 |
+| O9 | Release and data seeding | D1 and the release order | `math-rally-unit-of-work-dependency.md` Section 3 |
 
 ---
 
 ## 2. Web Race Session (O1)
 
-The host is a small state machine in `useMathRallyHost` (phases in `math-kart-component-methods.md` Section 3). The page is reached only through `/math-rally/game?difficulty=<easy|medium|hard|superhard>[&quest=...]`; an invalid or missing `difficulty` redirects to the setup page before anything loads. Both Math Rally routes are lazy with a 20 s load limit (H8).
+The host is a small state machine in `useMathRallyHost` (phases in `math-rally-component-methods.md` Section 3). The page is reached only through `/math-rally/game?difficulty=<easy|medium|hard|superhard>[&quest=...]`; an invalid or missing `difficulty` redirects to the setup page before anything loads. Both Math Rally routes are lazy with a 20 s load limit (H8).
 
 1. **loadingEngine.** The hook checks `hasWebGL()`; then `mountMathRally(container, game, { assetBaseUrl: '/games/math-rally/', buildId: 'web' })` with a `DirectChannel` pair, and starts a `READY_TIMEOUT_MS` (20 s) timer. The effect cleanup calls `handle.destroy()` and clears the timer; under `React.StrictMode` the first mount is destroyed before the second is created, and G1's module guard makes a stray second instance impossible.
 2. **ready.** BootScene sends `ready` after every asset and the font have loaded. The host clears the timer and calls `startMathRallyGame({ themeId: 'MATH_RALLY', difficulty, mathRallyProtocol: ready.protocolVersion })` (FR-MK-25, FR-MK-26). If the timer fires first, the host destroys the engine and shows "The race could not load." with Retry and Back; no `startGame` is sent (AC-25.2). A `ready` that arrives after the timeout is ignored.

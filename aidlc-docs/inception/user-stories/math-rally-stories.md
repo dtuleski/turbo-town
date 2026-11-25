@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
-**Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
+**Basis**: `../requirements/math-rally-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-rally-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
 **Revision**: iteration 2, after the design review (responses in the requirements, Section 13.1). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. Iteration 3, after the second review (Section 13.2): MK-19 (malformed protocol values) and MK-21 (`data:` sources, inline styles, boot under the enforced CSP). Iteration 4, after the third review (Section 13.3): MK-3 (unexpected error during a race) and MK-14 (Back when the game does not answer, "race stopped" message, stated limit). No story was added or removed.
 
 ## Assessment and approach

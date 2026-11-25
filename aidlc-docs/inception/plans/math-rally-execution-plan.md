@@ -2,9 +2,9 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Workflow Planning
-**Basis**: `../reverse-engineering/math-kart-delta-notes.md`, `../requirements/math-kart-requirements.md` (56 FR, 26 NFR), `../requirements/math-kart-requirement-verification-questions.md` (40 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22; Q39 and Q40 added in iteration 2), `../user-stories/math-kart-stories.md` (28 stories), `../user-stories/math-kart-personas.md`, and the application design files
+**Basis**: `../reverse-engineering/math-rally-delta-notes.md`, `../requirements/math-rally-requirements.md` (56 FR, 26 NFR), `../requirements/math-rally-requirement-verification-questions.md` (40 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22; Q39 and Q40 added in iteration 2), `../user-stories/math-rally-stories.md` (28 stories), `../user-stories/math-rally-personas.md`, and the application design files
 **Name**: "Math Rally" (Q22). Files keep the `math-kart-` prefix in this inception run; Section 8 schedules the rename.
-**Revision**: iteration 4, after the third design review of 2026-11-25: risk driver R19 (frozen game) and its mitigation; MR1 NFR Requirements scope includes the fault-injection check. Iteration 3: R3 mitigation and the MR1 NFR Requirements scope include booting under the app page's enforced CSP (U20); the update-message text has a web copy as well as a Dart copy. Iteration 2: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Sections 9 and 10.
+**Revision**: iteration 4, after the third design review of 2026-11-25: risk driver R19 (frozen game) and its mitigation; MR1 NFR Requirements scope includes the fault-injection check. Iteration 3: R3 mitigation and the MR1 NFR Requirements scope include booting under the app page's enforced CSP (U20); the update-message text has a web copy as well as a Dart copy. Iteration 2: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-rally-components.md` Sections 9 and 10.
 
 ---
 
@@ -47,7 +47,7 @@
 2. **R2 Phaser 4 maturity** - pinned at MR1 start; capabilities checked one by one; any change of engine or version goes to the owner.
 3. **R3 WebView quirks** - MR1 spike on both platforms before MR5; plugin features (U6) checked first; the engine must boot under the app page's enforced `'self'` policy with its built-in textures from bundled files (U20), checked first on desktop (MR1 step 7) and then in the WebView.
 4. **R4 iOS on the owner's Mac only** - iOS steps written as owner tasks with exact commands; scheduled at the end of MR1 and MR5.
-5. **Production deploy on merge** - MR2 and MR3 additive; Math Rally paths unreachable until the seed; release order in `../application-design/math-kart-unit-of-work-dependency.md` Section 3.
+5. **Production deploy on merge** - MR2 and MR3 additive; Math Rally paths unreachable until the seed; release order in `../application-design/math-rally-unit-of-work-dependency.md` Section 3.
 6. **R16 Free-difficulty drift** - one shared constant, copies checked by tests, server decides.
 7. **R18 Race rules change after launch** - rules frozen per protocol version with golden fixtures (PL8); clients send their version to `startGame`; the server keeps every supported version and is deployed first; an unsupported version is refused before a play is used.
 8. **R10 Perfect-play scripts** - the score uses only the server's correct count and times are checked against the kinematics of the given answers, so a script can equal a perfect human race and never exceed one.
@@ -155,7 +155,7 @@ Green means done or always runs, orange means conditional execute, grey means sk
 **Rationale**
 - **Functional Design everywhere**: each unit has numbers or rules the requirements leave open on purpose (content ranges, score constants, layout sizes, screen states).
 - **NFR Requirements for MR1 and MR5**: these are where the stack is still being confirmed (Phaser 4 version and size, WebView plugin features). The other units add no NFR beyond what NFR-MK-1 to 26 already state.
-- **NFR Design for MR1 and MR4**: performance patterns for the renderer, and CSP and accessibility patterns for the web host. MR3's security patterns are fully specified in `math-kart-services.md`.
+- **NFR Design for MR1 and MR4**: performance patterns for the renderer, and CSP and accessibility patterns for the web host. MR3's security patterns are fully specified in `math-rally-services.md`.
 - **Infrastructure Design skipped**: no cloud resource is added or changed; one new CloudWatch metric is published from code into the existing namespace.
 - **Code Generation**: always. **Build and Test**: always, once after MR5, including the manual device checklists and pre-launch checks PL1 to PL8.
 
@@ -166,7 +166,7 @@ Green means done or always runs, orange means conditional execute, grey means sk
 
 ## 4. Security Baseline at Each Stage
 
-The Security Baseline extension is enabled (`aidlc-state.md`, Extension Configuration; Q37). The design-stage compliance table is in `../application-design/math-kart-components.md` Section 7: no blocking finding. Construction re-checks SECURITY-03, 04, 05, 08, 09, 10, 11, 13 and 15 per unit at Code Generation and Build and Test; SECURITY-01, 02, 06, 07, 12 and 14 stay N/A unless a unit adds a store, gateway, IAM change, network change, auth change or alarm.
+The Security Baseline extension is enabled (`aidlc-state.md`, Extension Configuration; Q37). The design-stage compliance table is in `../application-design/math-rally-components.md` Section 7: no blocking finding. Construction re-checks SECURITY-03, 04, 05, 08, 09, 10, 11, 13 and 15 per unit at Code Generation and Build and Test; SECURITY-01, 02, 06, 07, 12 and 14 stay N/A unless a unit adds a store, gateway, IAM change, network change, auth change or alarm.
 
 ---
 
@@ -175,7 +175,7 @@ The Security Baseline extension is enabled (`aidlc-state.md`, Extension Configur
 - **Approach**: hybrid. MR1 and MR2 in parallel; MR3 after MR2; MR4 after the gate; MR5 last.
 - **Critical path**: MR1 gate, MR4, MR5.
 - **Coordination points**: start input (`mathRallyProtocol`), start payload, submission, bridge messages and the protocol registry shape (frozen at the end of MR2 Functional Design); the motion maths written in MR1 and moved to `packages/shared` in MR2; free-difficulty constant and its two copies; the update-message text and its web and Dart copies; theme id `MATH_RALLY` across server, leaderboard, web and app.
-- **Testing checkpoints**: `../application-design/math-kart-unit-of-work-dependency.md` Section 5.
+- **Testing checkpoints**: `../application-design/math-rally-unit-of-work-dependency.md` Section 5.
 
 | Order | Package | Unit | Depends on | Production effect on merge |
 |---|---|---|---|---|
@@ -197,7 +197,7 @@ No calendar estimate (no velocity data for this kind of work in this repository)
 ## 7. Success Criteria
 
 - **Primary goal**: a child can race Math Rally on a phone in the app and on dashden.app, pick the road with the right answer using a one-thumb joystick or the keyboard, and get a score the server computed.
-- **Key deliverables**: the five units of `../application-design/math-kart-unit-of-work.md`; seed and verify scripts; the paid-switch checklist (FR-MK-54); the gate report.
+- **Key deliverables**: the five units of `../application-design/math-rally-unit-of-work.md`; seed and verify scripts; the paid-switch checklist (FR-MK-54); the gate report.
 - **Quality gates**
   1. `packages/shared`: `npx jest`, `npx tsc --noEmit`
   2. `services/game` and `services/leaderboard`: `npx jest`, `npx tsc --noEmit`; existing suites unchanged (pre-existing failures unchanged)

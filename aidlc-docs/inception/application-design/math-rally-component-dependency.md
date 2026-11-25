@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Basis**: `math-kart-components.md` (component ids), `math-kart-services.md` (orchestrations)
+**Basis**: `math-rally-components.md` (component ids), `math-rally-services.md` (orchestrations)
 **Revision**: iteration 3, after the second design review of 2026-11-25: the web API module (H4) no longer imports the shared core; it keeps its own copy of the update-message text, checked by the consistency test (Sections 1 and 2). Iteration 2: protocol version in the start call and in both sequence diagrams, timing against expected times, source-hash bundle check and the protocol coupling in Section 6.
 
 ---

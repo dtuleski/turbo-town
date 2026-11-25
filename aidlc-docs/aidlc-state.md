@@ -196,29 +196,29 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - **Requested**: 2026-11-25T14:19:41Z (owner request logged verbatim in `aidlc-docs/audit.md`)
 - **Workflow**: wf_629d46831cd3796b; worktree `.worktrees/math-kart`, branch `feat/math-kart` from `origin/main` `c6ccf0f`
 - **Target**: kart-racing math game for ages 8 to 16, built once with Phaser 4 in `apps/web` (lazy route) and run in the Flutter app through a WebView with bundled files ("Option A"); Flame only as an owner-decided fallback
-- **Name**: "Math Rally" (owner answer Q22, 2026-11-25). Ids `MATH_RALLY`, `math-rally`, `/math-rally/...`, namespace `mathRally`. Inception files keep the `math-kart-` prefix; Construction renames them first (`inception/plans/math-kart-execution-plan.md` Section 8)
-- **Extension**: Security Baseline enabled (Q37); design-stage table in `inception/application-design/math-kart-components.md` Section 7, no blocking finding
+- **Name**: "Math Rally" (owner answer Q22, 2026-11-25). Ids `MATH_RALLY`, `math-rally`, `/math-rally/...`, namespace `mathRally`. Inception files keep the `math-kart-` prefix; Construction renames them first (`inception/plans/math-rally-execution-plan.md` Section 8)
+- **Extension**: Security Baseline enabled (Q37); design-stage table in `inception/application-design/math-rally-components.md` Section 7, no blocking finding
 
 ### INCEPTION PHASE
 - [x] Workspace Detection (COMPLETED; brownfield, worktree created from `origin/main`)
-- [x] Reverse Engineering (COMPLETED as delta: `inception/reverse-engineering/math-kart-delta-notes.md`)
+- [x] Reverse Engineering (COMPLETED as delta: `inception/reverse-engineering/math-rally-delta-notes.md`)
 - [x] Requirements Analysis (COMPLETED, comprehensive)
-  - **Questions**: `inception/requirements/math-kart-requirement-verification-questions.md` (40, Q39 and Q40 added in iteration 2; owner answers Q1, Q2, Q6, Q7, Q10 to Q14, Q19 to Q22; owner context Q30, Q37; the rest Recommended, pending owner approval)
-  - **Requirements**: `inception/requirements/math-kart-requirements.md` (56 FR, 26 NFR)
+  - **Questions**: `inception/requirements/math-rally-requirement-verification-questions.md` (40, Q39 and Q40 added in iteration 2; owner answers Q1, Q2, Q6, Q7, Q10 to Q14, Q19 to Q22; owner context Q30, Q37; the rest Recommended, pending owner approval)
+  - **Requirements**: `inception/requirements/math-rally-requirements.md` (56 FR, 26 NFR)
   - **Owner decisions of 2026-11-25**: pseudo-3D road; red X plus score effect; 2/3/4 paths; Super Hard 4 paths, 5 s, paid-only; free at launch; manual paid switch with checklist; after a switch Easy stays free for FREE users (server per-difficulty gate, normal shared allowance of 3 plays per 24 h); name "Math Rally"
-- [x] User Stories (COMPLETED, standard): `inception/user-stories/math-kart-personas.md` (4 personas), `inception/user-stories/math-kart-stories.md` (28 stories, all 56 FR traced)
-- [x] Workflow Planning (COMPLETED): `inception/plans/math-kart-execution-plan.md` (risk High)
+- [x] User Stories (COMPLETED, standard): `inception/user-stories/math-rally-personas.md` (4 personas), `inception/user-stories/math-rally-stories.md` (28 stories, all 56 FR traced)
+- [x] Workflow Planning (COMPLETED): `inception/plans/math-rally-execution-plan.md` (risk High)
 - [x] Application Design (COMPLETED)
-  - **Plan**: `inception/plans/math-kart-application-design-plan.md` (15 questions, recommendations pending owner approval)
-  - **Artifacts**: `inception/application-design/math-kart-{components,component-methods,services,component-dependency,concept}.md`
-- [x] Units Generation (COMPLETED): `inception/application-design/math-kart-unit-of-work{,-dependency,-story-map}.md`; 5 units, 28 stories assigned, matrix acyclic
-- [x] Design review iteration 1: CHANGES_REQUESTED (1 HIGH, 7 MEDIUM, 11 NIT); iteration 2 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13.1 and `inception/application-design/math-kart-components.md` Section 9)
-- [x] Design review iteration 2: CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 6 NIT); iteration 3 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13.2 and `inception/application-design/math-kart-components.md` Section 10); push of `feat/math-kart` left to the final workflow step
-- [x] Design review iteration 3: CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 5 NIT); iteration 4 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13.3 and `inception/application-design/math-kart-components.md` Section 11): fatal-error guard in the game core and the app page, Back fallback in the app, built-in texture check before `ready`, desktop CSP pass rule with a baseline run; push left to the final workflow step; re-review pending
-- [ ] Owner approval of the inception package (pending; presented by the orchestrator)
+  - **Plan**: `inception/plans/math-rally-application-design-plan.md` (15 questions, recommendations pending owner approval)
+  - **Artifacts**: `inception/application-design/math-rally-{components,component-methods,services,component-dependency,concept}.md`
+- [x] Units Generation (COMPLETED): `inception/application-design/math-rally-unit-of-work{,-dependency,-story-map}.md`; 5 units, 28 stories assigned, matrix acyclic
+- [x] Design review iteration 1: CHANGES_REQUESTED (1 HIGH, 7 MEDIUM, 11 NIT); iteration 2 revisions made on the requirements side and the design side (responses in `inception/requirements/math-rally-requirements.md` Section 13.1 and `inception/application-design/math-rally-components.md` Section 9)
+- [x] Design review iteration 2: CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 6 NIT); iteration 3 revisions made on the requirements side and the design side (responses in `inception/requirements/math-rally-requirements.md` Section 13.2 and `inception/application-design/math-rally-components.md` Section 10); push of `feat/math-kart` left to the final workflow step
+- [x] Design review iteration 3: CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 5 NIT); iteration 4 revisions made on the requirements side and the design side (responses in `inception/requirements/math-rally-requirements.md` Section 13.3 and `inception/application-design/math-rally-components.md` Section 11): fatal-error guard in the game core and the app page, Back fallback in the app, built-in texture check before `ready`, desktop CSP pass rule with a baseline run; push left to the final workflow step; re-review pending
+- [x] Owner approval of the inception package (APPROVED by the owner on the MacBook, recommended answers and the "3 plays per day" interpretation included; see audit.md)
 
-### CONSTRUCTION PHASE (planned, not started)
-- [ ] Step 0: rename `math-kart-*` docs to `math-rally-*`
+### CONSTRUCTION PHASE (in progress)
+- [x] Step 0: renamed the 16 `math-kart-*` docs to `math-rally-*` and updated every link (0 broken links); MK id labels, branch and worktree names kept
 - [ ] MR1 Vertical slice and performance gate (FD minimal, NFR Req standard, NFR Design minimal, Code) - gate decides whether MR4 and MR5 proceed
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
 - [ ] MR3 Backend: Game Service, Leaderboard, seed scripts (FD minimal, Code) - deploys two prod Lambdas on merge; unreachable until the seed
@@ -232,7 +232,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - Error handling (iteration 4): the game core has its own top-level handler (fatal-error guard in G1, installed first on the app page by G16) because the web app's React error boundary covers render errors only and `apps/web/src` has no window-level error listener; the app's Back opens the leave confirmation if the game does not confirm a pause within 1 s. Stated limit: a hang without an error is not detected (on iOS the player closes the app)
 - Pre-existing SECURITY-03 debt (not Math Rally scope, no change in v1): the Game Service handler's catch block (`services/game/src/handlers/game.handler.ts` line 151, `handleRequest`) logs every failed operation of every game at error level with `operationName`, `userId` and `username`, domain refusals included, so Math Rally refusals also write that line
 - Scoring and fairness (iteration 2): score from the server's correct count only; fork and race times checked against the shared kinematics for the given answers; race rules frozen per protocol version after launch, clients send `mathRallyProtocol` to `startGame`
-- Release order: Leaderboard and Game Service, then web, then app, seed last (`inception/application-design/math-kart-unit-of-work-dependency.md` Section 3)
+- Release order: Leaderboard and Game Service, then web, then app, seed last (`inception/application-design/math-rally-unit-of-work-dependency.md` Section 3)
 - Quest Map: no node in v1; a World 1 node after a paid switch would first need the quest validator to honour the Easy-only exception (backlog)
 
 ## Quest Map v1 Feature Workflow
