@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Revision**: iteration 2, after the design review of 2026-11-25. Changed: protocol registry and freeze rule, canonical option grammar and value comparison, shared motion and expected-time functions, score without client time, `touchUi` in `init`, `correctCount` in the Dart message, source hash in the embed build. Responses per finding: `math-kart-components.md` Section 9.
+**Revision**: iteration 3, after the second design review of 2026-11-25. Changed in iteration 3: one-frame margin in the window layout contract and a corrected floor argument; Phaser built-in textures from bundled files (`engineConfigFields`); local update-message copy in `api/game.ts`; `mathRallyProtocol` passed through as `unknown` and checked in the service; `.css` in the iOS MIME table; markup and `sys/` checks in the embed build. Iteration 2 changed: protocol registry and freeze rule, canonical option grammar and value comparison, shared motion and expected-time functions, score without client time, `touchUi` in `init`, `correctCount` in the Dart message, source hash in the embed build. Responses per finding: `math-kart-components.md` Sections 9 and 10.
 **Note**: Signatures and contracts only. Numbers marked *FD* (Functional Design) are chosen per unit in Construction within the stated constraints; every constraint here is testable. Phaser method and setting names follow the Phaser 3 API and are confirmed against Phaser 4 in MR1 (U1).
 
 ---
@@ -97,7 +97,7 @@ Contracts (unit tests for every supported version and difficulty; FR-MK-8, FR-MK
 - `mergeEnd[k] < questionStart[k + 1]`.
 - `(branchLength + gapLength) / maxSpeed >= 1.5` (the correct answer stays visible at least 1.5 s after a wrong pick).
 - `cruiseSpeed^2 / (2 x accel) < decisionLine[0]` (acceleration ends before the first decision line).
-- Window distance `max(maxSpeed x boostSeconds, slowFactor x cruiseSpeed x slowSeconds)` is smaller than every gap `decisionLine[k + 1] - decisionLine[k]` and than `finishLine - decisionLine[N - 1]` (no boost or slowdown spans a decision line or the finish).
+- `max(maxSpeed x boostSeconds, slowFactor x cruiseSpeed x slowSeconds) + maxSpeed x 0.05` is smaller than every gap `decisionLine[k + 1] - decisionLine[k]` and than `finishLine - decisionLine[N - 1]`. The first term is the distance of a boost or slowdown window; `maxSpeed x 0.05` is the most the kart can travel in one clamped frame (50 ms). So no window, opened on time or up to one frame late, reaches the next decision line or the finish, and no line lies within one frame's travel after a window ends.
 
 ### Motion and expected times (S1 `motion.ts`, `timing.ts`; FR-MK-30)
 The game (G5) and the server use the same functions, so they cannot disagree on how the kart moves.
@@ -124,7 +124,12 @@ export function isPlausibleTiming(
 ```
 **Frame rule (owned by G5, stated here because the floor depends on it).** Each running frame: `dt = clamp(clock.elapsedMs(now) - lastElapsed, 0, 50)`, where `lastElapsed` is the clock reading of the previous running frame. The clock excludes paused time, so the first frame after a resume never carries the pause. Motion advances with `advanceMotion(m, dt)`. A decision line or the finish counts as crossed at the end of the first frame in which `position` reaches it; the recorded time is `clock.elapsedMs(now)` of that frame; `applyOutcome` runs in the same frame. Phaser's smoothed `delta` is never used for motion or timing.
 
-**Why honest play never falls below the floor.** Kinematic time never exceeds clock time (the clamp only removes time). Integration inside a frame is exact. A window opened up to one frame late also ends up to one frame late, so the distance covered from the line to the end of the window is unchanged. No window spans a line or the finish (layout contract). So at every line the frame-by-frame kart is at or behind the exact solution, and its recorded time is at or after the exact time. The tolerance only absorbs floating-point and integer rounding.
+**Why honest play never falls below the floor.** Positions are compared at the same kinematic time (race time with paused and clamped-away time removed). Kinematic time never exceeds clock time, because the clamp only removes time. Integration inside a frame is exact, so the frame-by-frame kart differs from the exact solution only because a window opens at the end of the frame in which the kart crossed the line, up to one frame (a lag of at most 50 ms of kinematic time) after the exact crossing:
+- Late boost: during the lag before it opens the kart still runs at cruise speed, so it falls behind the exact kart; it stays behind while both windows run and catches up during the lag after the exact window ends.
+- Late slowdown: during the lag before it opens the kart still runs at cruise speed, so it is ahead of the exact kart by up to `(1 - slowFactor) x cruiseSpeed x lag` (0.4 x cruiseSpeed x 0.05 at most). It stays ahead while both windows run, and the lead closes during the lag after the exact window ends.
+- Once both windows have ended, the frame-by-frame position equals the exact position at the same kinematic time, so nothing carries over to the next fork.
+
+The kart is ahead of the exact solution only during a late slowdown and up to one frame after the exact window ends. The layout contract puts every decision line and the finish beyond that span: beyond the window distance plus one frame's travel at top speed. So at every line the frame-by-frame kart reaches the line at the same kinematic time as the exact kart or later. Its recorded clock time is at or after that kinematic time, hence at or after the exact time. The tolerance only absorbs floating-point and integer rounding.
 
 **Property test (AC-30.2, `motion.property.test.ts`, Jest and `fast-check`, 1000 runs per difficulty):** random right/wrong sequence; frame deltas drawn from [1, 50] ms, with 10% of frames drawn from [51, 500] ms to exercise the clamp; up to 3 pauses of random length at random frames. A harness applies the frame rule above with a clock that sums frame deltas outside pauses. Assertion: `isPlausibleTiming(recorded, expectedRaceTimesMs(...), track.timingToleranceMs)` is true. FD sets `timingToleranceMs` to the smallest round value (multiple of 10 ms) for which the test passes, plus 50 ms margin, and never above 250 ms.
 
@@ -172,13 +177,28 @@ export interface EngineOptions {
   assetBaseUrl: string;           // '/games/math-rally/' on web, './' in the app bundle
   buildId: string;                // ^[A-Za-z0-9._-]{1,40}$; web 'web', app 'app-' + first 12 hex of sourceHash
   localSchemes?: readonly string[]; // app bundle: ['dashden-game://'] (G16); merged into the loader's local schemes
-  devOverlay?: boolean;           // ignored unless compiled with the dev or gate flag (G17)
+  devOverlay?: boolean;           // ignored unless compiled in dev or in the local gate mode (G17)
 }
 export interface EngineHandle { destroy(): void }       // idempotent; never throws
 export function mountMathRally(parent: HTMLElement, channel: HostChannel, options: EngineOptions): EngineHandle;
 export function hasWebGL(): boolean;                     // probe used by hosts before mounting
 ```
-`mountMathRally` throws `EngineStartError` (no message details) when Phaser cannot create a renderer; the host catches it (Section 5 of the services file). Loader configuration in both hosts: images load as `HTMLImageElement` (Phaser 3 setting `loader.imageLoadType`), so the loader creates no `blob:` URLs (F6, NFR-MK-17); if Phaser 4 has no such option, MR1 records it (U5) and the narrow `blob:` fallback applies to both CSPs.
+`mountMathRally` throws `EngineStartError` (no message details) when Phaser cannot create a renderer; the host catches it (Section 5 of the services file).
+
+```ts
+// core/engineConfig.ts (G1, pure, no Phaser import): the CSP-relevant part of the Phaser game config, used by both hosts
+export interface EngineConfigFields {
+  images: { default: string; missing: string; white: string };   // Phaser 3 keys images.default / .missing / .white
+  loader: { imageLoadType: 'HTMLImageElement'; localScheme: string[] };
+}
+export function engineConfigFields(options: EngineOptions): EngineConfigFields;
+// images.* = options.assetBaseUrl + 'sys/default.png' | 'sys/missing.png' | 'sys/white.png'
+// loader.localScheme = Phaser's default list plus options.localSchemes (no duplicates)
+```
+- Images load as `HTMLImageElement` (Phaser 3 setting `loader.imageLoadType`), so the loader creates no `blob:` URLs (F6, NFR-MK-17, U5).
+- Phaser's built-in default, missing and white textures load from the bundled `sys/` files instead of its `data:` defaults (U20). Phaser 3 sets each of them as the `src` of an `Image` during `TextureManager.boot`, so a path works as well as a data URI. The files are original PNGs listed in `CREDITS.json`: `white.png` 4 x 4 opaque white, `default.png` 32 x 32 transparent, `missing.png` 32 x 32 simple pattern.
+- Unit test (Vitest, node): for web and app options, every `images` value starts with `assetBaseUrl + 'sys/'`, `imageLoadType` is `HTMLImageElement`, the local schemes include `options.localSchemes`, and no string in the result starts with `data:` or `blob:`.
+- If Phaser 4 lacks either setting, MR1 records it (U5, U20) and the documented fallback of NFR-MK-17 applies: `blob:` or `data:` in `img-src` (and `media-src`) only.
 
 ### Pure core modules (G5, G7, G10, G11, `core/joystick.ts`, `core/projection.ts`)
 ```ts
@@ -264,6 +284,9 @@ export interface MathRallyStartResult extends StartGameResult { mathRally: unkno
 export const startMathRallyGame: (input: { themeId: 'MATH_RALLY'; difficulty: 1 | 2 | 3 | 4;
   mathRallyProtocol: number }) => Promise<MathRallyStartResult>;
 // shares the internal runStart(document, input) with startGame, so the quest param and rule R1 apply
+const MATH_RALLY_UPDATE_REQUIRED_MESSAGE = 'Please update the app to play.';
+// local copy: api/game.ts is imported by eager pages and must not import the shared race module or the funnel H5;
+// H9 checks this literal against the shared constant (as it does for the Dart copy)
 export function isUpdateRequiredError(error: unknown): boolean;  // message === MATH_RALLY_UPDATE_REQUIRED_MESSAGE
 export interface MathRallySubmissionInput { choices: number[]; forkTimesMs: number[] }
 // CompleteGameInput gains: mathRallySubmission?: MathRallySubmissionInput
@@ -362,15 +385,24 @@ Map<String, dynamic>? validateRacePayload(Object? raw, int difficulty); // shape
 ```ts
 // services/game.service.ts (B1, B2, B10)
 async startGame(userId: string, input: StartGameInput): Promise<StartGameResponse>;
-//   StartGameInput gains: mathRallyProtocol?: number   (read only for MATH_RALLY)
+//   StartGameInput gains: mathRallyProtocol?: unknown   (read only for MATH_RALLY; any value passes the schema)
+//   B1 for MATH_RALLY, right after the difficulty check and before any read (services Section 4.1 step 1):
+//     const v = input.mathRallyProtocol;
+//     if (!(Number.isInteger(v) && MR_SUPPORTED_PROTOCOLS.includes(v as number)))
+//       throw new ValidationError(MATH_RALLY_UPDATE_REQUIRED_MESSAGE);
+//     refused: missing, null, 0, 2 (not supported at launch), 1.5, "1", objects, arrays (AC-26.3)
+//     warn log: { userId, protocol: Number.isInteger(v) ? v : typeof v } (never the raw value)
+//   other themes never read the field, whatever its value (AC-26.2)
 //   StartGameResponse gains: mathRally?: MathRallyRacePayload
 private async completeMathRallyGame(userId: string, input: CompleteGameInput, username: string, game: Game):
   Promise<CompleteGameResponse>;
 
 // utils/validation.ts (B6)
-// startGameInputSchema gains    mathRallyProtocol: z.number().int().min(1).max(99).optional()
-// completeGameInputSchema gains mathRallySubmission: z.unknown().optional()
-// (both are plain z.object schemas, which drop undeclared keys, so both fields must be declared)
+// startGameInputSchema gains    mathRallyProtocol: z.unknown().optional()      (the questContext pattern)
+// completeGameInputSchema gains mathRallySubmission: z.unknown().optional()   (the circuitSubmission pattern)
+// Both are plain z.object schemas, which drop undeclared keys, so both fields must be declared. The handler
+// parses before the service runs and a ZodError becomes INTERNAL_ERROR, so neither field is typed here:
+// B1 and B3 decide, and every refusal keeps its own message.
 
 // utils/math-rally-validation.ts (B3)
 export type MathRallyRejectStage = 'record' | 'validation' | 'timing';
@@ -394,7 +426,7 @@ calculateMathRallyBreakdown(input: { correct: number; forks: number; completionT
 // finalScore = min(cap, max(0, round(baseScore x difficultyMultiplier x accuracyBonus))), NaN or Infinity -> 0
 // cap = (gameIsPaid || difficulty >= 4) ? 8000 : 6000; completionTime is returned for display only
 ```
-Resulting scores (AC-32.1 to AC-32.5): all correct gives 3000, 4500, 6000 and 8000 (difficulty 4: 2134 x 2.5 x 1.5 = 8002.5, rounded 8003, capped 8000, the same pattern as the generic Super Hard base 1100 in the current calculator). Zero correct gives 1000, 1500, 2000 and 2668: exactly one third at difficulty 1 to 3, and one third of the uncapped 8003 at difficulty 4 (the AC-32.3 test compares with the uncapped product). Each extra correct answer adds at least 2000 x 1.0 / 10 = 200 points, so AC-32.1 holds after rounding and capping. Two submissions with the same choices and different valid times score the same (AC-32.2).
+Resulting scores (AC-32.1 to AC-32.5): all correct gives 3000, 4500, 6000 and 8000 (difficulty 4: 2134 x 2.5 x 1.5 = 8002.5, rounded 8003, capped 8000, the same pattern as the generic Super Hard base 1100 in the current calculator). Zero correct gives 1000, 1500, 2000 and 2668, the four values AC-32.3 names: exactly one third at difficulty 1 to 3, and one third of the uncapped 8003 at difficulty 4 (2134 x 2.5 x 0.5 = 2667.5, rounded). Each extra correct answer adds at least 2000 x 1.0 / 10 = 200 points, so AC-32.1 holds after rounding and capping. Two submissions with the same choices and different valid times score the same (AC-32.2).
 
 ```ts
 // utils/metrics.ts (B8)
@@ -461,7 +493,7 @@ const String kIosScheme = 'dashden-game';
 String gameEntryUrl({required bool isIos});
 ({Uint8List bytes, String mimeType})? resolveIosAsset(Uri uri, AssetBundle bundle); // null = request refused
 bool isAllowedNavigation(Uri uri, {required bool isIos});                           // own origin only
-String mimeTypeFor(String path); // .html text/html, .js text/javascript, .json application/json, .png image/png,
+String mimeTypeFor(String path); // .html text/html, .css text/css, .js text/javascript, .json application/json, .png image/png,
                                  // .webp image/webp, .ogg audio/ogg, .m4a audio/mp4, .mp3 audio/mpeg,
                                  // .woff2 font/woff2; any other extension -> refused
 
@@ -485,9 +517,12 @@ bool hasFreeDifficulties(String themeId);
 node apps/web/scripts/build-math-rally-embed.mjs [--out <dir>] [--check-only]
   default --out: apps/mobile/assets/math_rally
   build: vite build --config vite.math-rally-embed.config.ts (iife, no sourcemap)
-         copy embed/index.html and public/games/math-rally/** to --out
+         copy embed/index.html, embed/page.css and public/games/math-rally/** (including sys/) to --out
          write build-info.json { protocolVersion, buildId, sourceHash, files: [{ path, sha256 }] }
          exit 1 if the build fails or the total --out size is over 4 MB (NFR-MK-3 app budget)
+         exit 1 if index.html has a <script> element without src, a <style> element or a style= attribute
+                (case-insensitive scan of the markup; NFR-MK-17), or if sys/default.png, sys/missing.png
+                or sys/white.png is missing from --out (G1)
   --check-only (no build; reads only):
          recompute sourceHash from the working tree and compare with build-info.json
          recompute sha256 of every file under --out and compare with build-info.json files (no file missing or extra)

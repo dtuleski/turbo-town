@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Units Generation
-**Revision**: iteration 2, after the design review of 2026-11-25: MR1 spike and gate steps for the Android composition mode, iOS custom-scheme loading and the app page CSP; MR2 protocol registry, canonical options and shared motion; MR3 protocol check and score without client time; MR4 lazy routes and `ready` timeout; MR5 source-hash bundle check; PL7 reworded, PL8 added. Responses per finding: `math-kart-components.md` Section 9.
+**Revision**: iteration 3, after the second design review of 2026-11-25: MR1 runs the slice under the app page policy on desktop, records every `data:` URL and CSP violation at boot and whether the built-in textures are configurable (U20); MR3 passes `mathRallyProtocol` through as `unknown`; MR4 checks the web copy of the update-message text. Iteration 2: MR1 spike and gate steps for the Android composition mode, iOS custom-scheme loading and the app page CSP; MR2 protocol registry, canonical options and shared motion; MR3 protocol check and score without client time; MR4 lazy routes and `ready` timeout; MR5 source-hash bundle check; PL7 reworded, PL8 added. Responses per finding: `math-kart-components.md` Sections 9 and 10.
 **Project type**: Brownfield. Units are groupings for development, not new deployable services. Deployables stay the existing Game Service and Leaderboard Lambdas, the Vercel frontend and the Flutter app.
 **Basis**: `math-kart-components.md`, `math-kart-stories.md`, plan decisions Q12 and Q13 in `../plans/math-kart-application-design-plan.md`
 **Unit ids**: `MR1` to `MR5` (Math Rally). Requirement and story ids keep their `MK` labels.
@@ -26,27 +26,30 @@ Verification commands come from each package's `package.json` as read for this s
 
 **Scope**
 1. Pin Phaser 4 exactly; record version, licence and gzip size in the unit report (resolves U1, U3). Any blocker (missing capability, no stable 4.x) stops the unit and goes to the owner.
-2. A development-only route `/dev/math-rally-slice` under `import.meta.env.DEV`, lazy-loaded, never in production builds.
+2. A development-only route `/dev/math-rally-slice` under `import.meta.env.DEV` (and in local gate builds, `vite build --mode gate`), lazy-loaded, never in production builds.
 3. One full race: pseudo-3D road with hills and curves, fork with real branches (plan Q5 A), signs, lane chips, kart from behind with lean, boost and bumpy-branch slowdown, countdown, finish line, basic HUD (banner, fork k / N, coins, time, pause button), keyboard and bottom joystick with the visibility rule (`touchUi` or first touch). Motion follows the frame rule of the methods file Section 1 (dt from the race clock, clamped to 50 ms); the maths sit in `core/motion.ts` until MR2 moves them to `packages/shared`.
 4. Questions from two static fixture races (Easy with 2 paths, Hard with 4 paths) in the test folder; the MR2 generator is not required.
 5. Quality profiles (G11) and the development frame-time overlay with CSV export (G17).
 6. Placeholder art and sound from CC0 sources or simple shapes, each file listed in a first credits manifest.
-7. CSP check on web: run the slice under the production CSP value as an enforced header in a local `vite preview` config, with images loaded as `HTMLImageElement`; record every blocked request and whether Phaser 4 has that load option (resolves U5).
+7. CSP check on desktop, with images loaded as `HTMLImageElement` and the built-in textures pointed at `sys/` (G1 `engineConfigFields`), in a local `vite preview` of a gate build (`--mode gate`, step 2) whose preview config sends the policy as an enforced header (`vite preview` because the dev server injects an inline React refresh script):
+   - under the production web policy (`apps/web/vercel.json`), which allows `data:` images and inline styles, so it cannot show a dependency on either;
+   - under the app page policy of G16 (`'self'` for every source, no `data:`, no `blob:`, no inline styles), the stricter test, available on Windows before any phone run;
+   - record every blocked request and every `securitypolicyviolation` event (G17), every `data:` URL requested at boot, and whether Phaser 4 has the image-load option and the built-in texture settings (resolves U5, first evidence for U20).
 8. WebView spike, on Android and on the owner's iPhone (iOS steps run on the owner's Mac with written instructions):
-   - embed build (T1 basic), Android asset loader and iOS custom scheme (A5 sets the content type from the extension and the length of the bytes), G1 with `dashden-game://` as a local scheme;
+   - embed build (T1 basic, in gate mode so that G17 is included), Android asset loader and iOS custom scheme (A5 sets the content type from the extension and the length of the bytes), G1 with `dashden-game://` as a local scheme;
    - loading test over the app-internal origin through the Phaser loader: one image, one atlas JSON file, one audio file and one missing file; record the XHR status each produces on each platform and whether the missing file surfaces as `ASSET_LOAD_FAILED` (resolves U19, AC-46.3);
-   - the app page CSP enforced as written (`'self'` for every source); record any blocked request; `blob:` is added to `img-src` or `media-src` only if the loader cannot avoid it, and documented (U5, NFR-MK-17);
+   - the app page CSP enforced as written (`'self'` for every source), with `embed/index.html` free of inline `<script>`, `<style>` elements and `style=` attributes (G16) and the font loaded through `FontFace` (G2); record every blocked request and CSP violation (G17), every `data:` URL Phaser 4 requests at boot, and whether its default, missing and white textures (and any further built-in texture) are configurable; `blob:` or `data:` is added to `img-src` or `media-src` only if the engine cannot avoid it, and documented (U5, U20, NFR-MK-17, AC-46.3);
    - a bridge round trip (`ready`, `init` with `touchUi: true`, `pauseChanged`, `raceFinished`), hardening settings, airplane mode, audio unlock and the iOS silent switch, CSP `'self'` on the custom scheme (resolves U6, U16);
    - record which Android platform-view composition modes the plugin offers and which one it uses by default (U18).
 9. Gate (NFR-MK-1, NFR-MK-2, Q29): full race on the reference Android phone inside the spike WebView, measured in each composition mode found in step 8; the owner's iPhone (WebView); desktop Chrome and Safari. Pass: median at least 50 fps, slowest 1% of frames at least 30 fps, lane change visible within 100 ms (slow-motion video). The composition mode that ships is the one that passes (the faster one if both pass) and is recorded for MR5.
 
 **Files**
-- New: `apps/web/src/games/math-rally/{MathRallyEngine.ts, core/*, phaser/scenes/RaceScene.ts, phaser/scenes/HudScene.ts, phaser/render/*, phaser/input/*, bridge/hostChannel.ts, dev/frameOverlay.ts, embed/*}`, `apps/web/src/pages/dev/MathRallySlicePage.tsx`, fixtures and Vitest files for every `core/*` module, `apps/web/vite.math-rally-embed.config.ts`, `apps/web/scripts/build-math-rally-embed.mjs` (spike level), `apps/web/public/games/math-rally/` placeholder assets and `CREDITS.json`
+- New: `apps/web/src/games/math-rally/{MathRallyEngine.ts, core/*, phaser/scenes/RaceScene.ts, phaser/scenes/HudScene.ts, phaser/render/*, phaser/input/*, bridge/hostChannel.ts, dev/frameOverlay.ts, embed/*}`, `apps/web/src/pages/dev/MathRallySlicePage.tsx`, fixtures and Vitest files for every `core/*` module, `apps/web/vite.math-rally-embed.config.ts`, `apps/web/scripts/build-math-rally-embed.mjs` (spike level), `apps/web/public/games/math-rally/` placeholder assets, the three `sys/` texture PNGs and `CREDITS.json`
 - Edited: `apps/web/package.json` and `package-lock.json` (Phaser, exact pin), `apps/web/src/App.tsx` (dev-only route)
 
 **Completion criteria**
-- Unit tests pass for lanes, joystick model and visibility rule, clock (60 s pause adds 0 s, AC-5.1), motion (speed never above maximum, delta clamp, first frame after resume carries no pause), quality rule, projection maths
-- Gate report at `aidlc-docs/construction/math-rally-slice/gate-report.md` with per-device median fps, 1% low, input latency, the Android composition mode of each measurement and the one chosen, chunk size, the loader statuses of step 8, and the U1, U3 to U7, U16, U18, U19 findings
+- Unit tests pass for lanes, joystick model and visibility rule, clock (60 s pause adds 0 s, AC-5.1), motion (speed never above maximum, delta clamp, first frame after resume carries no pause), quality rule, projection maths, `engineConfigFields` (no `data:` or `blob:` value)
+- Gate report at `aidlc-docs/construction/math-rally-slice/gate-report.md` with per-device median fps, 1% low, input latency, the Android composition mode of each measurement and the one chosen, chunk size, the loader statuses of step 8, the CSP violations and `data:` URLs of steps 7 and 8 with the built-in texture settings found, and the U1, U3 to U7, U16, U18, U19, U20 findings
 - Production build check: the entry chunk and every production route are unchanged in content (bundle report shows no Phaser module outside the dev chunk)
 - **If the gate fails after the levers** (draw distance, render scale, level of detail, vertex batch, painted-lane fork of plan Q5 B, the other Android composition mode): stop, present options to the owner (fewer effects, lower resolution, other renderer mode, Flame fallback). No automatic switch.
 
@@ -95,8 +98,8 @@ Verification commands come from each package's `package.json` as read for this s
 - **Components**: B1 to B10, L1, D1
 
 **Scope**
-- `startGameInputSchema` gains `mathRallyProtocol`, `completeGameInputSchema` gains `mathRallySubmission` (both are plain `z.object` schemas that drop undeclared keys)
-- `startGame` branch for `MATH_RALLY`: difficulty and protocol checks before any read (update message, no play used), seed, race build with the requested version before `checkLimit`, record with `protocolVersion` on `create`, payload returned; handler mapping
+- `startGameInputSchema` gains `mathRallyProtocol`, `completeGameInputSchema` gains `mathRallySubmission`, both `z.unknown().optional()` (plain `z.object` schemas drop undeclared keys, and a schema failure would become `INTERNAL_ERROR`)
+- `startGame` branch for `MATH_RALLY`: difficulty and protocol checks before any read (anything other than a supported integer gets the update message, no play used; other themes ignore the field), seed, race build with the requested version before `checkLimit`, record with `protocolVersion` on `create`, payload returned; handler mapping
 - `completeMathRallyGame` exit with record (version still supported), validation, correct count from the key, timing against `expectedRaceTimesMs` for those answers, breakdown without client time (`MR_BASE` 2000/2000/2000/2134, `speedBonus` 1.0), caps, achievements, metrics, event with server counts, cache invalidation and `finalizeQuest`
 - Paid gate wired to `isBlockedForFreeTier`
 - `publishMathRallyRejected` metric; `MATH_RALLY` in the review list; `schema.graphql` documentation
@@ -133,8 +136,8 @@ Verification commands come from each package's `package.json` as read for this s
 - Full game core: boot loading, all four difficulties from the shared generator, G5 switched to the shared motion through the funnel (MR1's local copy deleted), fork controller, full HUD, opaque pause screen that hides the question, signs and chips and clears the live region, feedback with reveal text, reduced-motion behaviour, sound bank, game text in three languages, protocol and fixture, payload validation against the client protocol spec
 - Final v1 art (one bright countryside track, original Benji, CC0 roadside objects) and sound, every file in `CREDITS.json`
 - React host: both routes lazy through `lazyWithTimeout` (20 s) with a route error boundary; setup page with lock rule; game page and host hook with the 20 s `ready` timeout, protocol pass-through, update-required handling, `touchUi` and language reduction; prefetch from setup; sound preference; visibility pause; result modal; error states of `math-kart-services.md` Section 5.1
-- `api/game.ts`: `startMathRallyGame` with `mathRallyProtocol`, sharing the quest helper; `isUpdateRequiredError`; `mathRallySubmission`
-- Registries and locales (H6), partly-free hub (H7), routes (H8), consistency test including the Dart update-message constant (H9), credits manifest test (H10)
+- `api/game.ts`: `startMathRallyGame` with `mathRallyProtocol`, sharing the quest helper; local update-message constant and `isUpdateRequiredError` (no import of the shared race module, so the entry chunk stays free of it); `mathRallySubmission`
+- Registries and locales (H6), partly-free hub (H7), routes (H8), consistency test including the web (`api/game.ts`) and Dart copies of the update-message text (H9), credits manifest test (H10)
 - CSP: apply the narrow change found in MR1, if any, to `apps/web/vercel.json`
 - Functional Design (standard) settles: HUD layout at 320 and 1280 px, feedback timings, sign and chip sizes, the pause panel, setup page content, host state transitions, the hub "Easy is free" note
 
@@ -144,7 +147,7 @@ Verification commands come from each package's `package.json` as read for this s
 
 **Completion criteria**
 - Automated: every [U] criterion of FR-MK-6 to 24, 37, 40 to 44, 49 (TypeScript side), 56 (web), NFR-MK-9; G5 frame-rule test (motion follows the clock, not Phaser's delta); host state machine with fake timers (AC-25.2 logic) and the update refusal; import check for FR-MK-42; registry mutation suite
-- Bundle report: Phaser and game code only in the lazy chunks (AC-41.1); code outside the lazy chunks grows by at most 2 KB gzip, measured without the `mathRally` locale strings and the registry and display-map entries, which the report lists separately; game chunk at most 450 KB gzip; first-race assets at most 1.5 MB (NFR-MK-3); any miss is reported to the owner with options
+- Bundle report: Phaser, game code and every module of `packages/shared/src/math-rally/` only in the lazy chunks (AC-41.1); code outside the lazy chunks grows by at most 2 KB gzip, measured without the `mathRally` locale strings and the registry and display-map entries, which the report lists separately; game chunk at most 450 KB gzip; first-race assets at most 1.5 MB (NFR-MK-3); any miss is reported to the owner with options
 - Manual checklist (written in Construction): 320 x 568 and 1280 x 720 layouts, four signs readable on the reference phone, lazy loading in the network panel (AC-41.2), StrictMode remount (AC-43.1), WebGL disabled (AC-44.1), `ready` never arriving (AC-25.2, by blocking the asset folder in devtools), keyboard scroll capture, joystick visible at the countdown on a touch phone in landscape (AC-21.4), pause hides the question (AC-22.3), reduced motion, sound off persists, a `pt-BR` browser races in Portuguese, FREE and paid setup states, enforced-CSP run
 - Gate re-run on desktop Chrome and Safari with the full game
 
@@ -166,7 +169,7 @@ Verification commands come from each package's `package.json` as read for this s
 - Session additions: `start({int? mathRallyProtocol})`, second start document, start payload, `BlockReason.updateRequired` and `isUpdateRequired`, `mathRallySubmission` allowlisted
 - Setup and play screens, 20 s `ready` timeout, local protocol check, lifecycle and Back handling, offline race, error and update overlays, result screen, language reduced to `en`, `es` or `pt`
 - Registry entry, display meta, routes with quest parsing, paid copy with `kFreeDifficultiesInPaidGames`, partly-free hub tile, level lock rule
-- Final embed build: `sourceHash` and per-file output hashes in `build-info.json`, `--check-only`, the AC-51.2 Vitest test of `math-rally-source-hash.mjs`; committed bundle, `pubspec.yaml` asset folders, regenerated ARB files for the host strings
+- Final embed build: markup check of `embed/index.html` and presence of the `sys/` textures (exit 1), `sourceHash` and per-file output hashes in `build-info.json`, `--check-only`, the AC-51.2 Vitest test of `math-rally-source-hash.mjs`; committed bundle, `pubspec.yaml` asset folders, regenerated ARB files for the host strings
 - Functional Design (standard) and NFR Requirements (minimal) settle: play-screen states and overlays, WebView settings per platform as confirmed in the MR1 spike, iOS audio session behaviour
 
 **Files**

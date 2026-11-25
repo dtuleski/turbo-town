@@ -4,7 +4,7 @@
 **Stage**: INCEPTION - Workflow Planning
 **Basis**: `../reverse-engineering/math-kart-delta-notes.md`, `../requirements/math-kart-requirements.md` (56 FR, 26 NFR), `../requirements/math-kart-requirement-verification-questions.md` (40 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22; Q39 and Q40 added in iteration 2), `../user-stories/math-kart-stories.md` (28 stories), `../user-stories/math-kart-personas.md`, and the application design files
 **Name**: "Math Rally" (Q22). Files keep the `math-kart-` prefix in this inception run; Section 8 schedules the rename.
-**Revision**: iteration 2, after the design review of 2026-11-25: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Section 9.
+**Revision**: iteration 3, after the second design review of 2026-11-25: R3 mitigation and the MR1 NFR Requirements scope include booting under the app page's enforced CSP (U20); the update-message text has a web copy as well as a Dart copy. Iteration 2: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Sections 9 and 10.
 
 ---
 
@@ -45,7 +45,7 @@
 **Top risk drivers and mitigations**
 1. **R1 Phone performance** - MR1 runs first and ends at a measurable gate; named levers before any escalation; the owner decides on Flame.
 2. **R2 Phaser 4 maturity** - pinned at MR1 start; capabilities checked one by one; any change of engine or version goes to the owner.
-3. **R3 WebView quirks** - MR1 spike on both platforms before MR5; plugin features (U6) checked first.
+3. **R3 WebView quirks** - MR1 spike on both platforms before MR5; plugin features (U6) checked first; the engine must boot under the app page's enforced `'self'` policy with its built-in textures from bundled files (U20), checked first on desktop (MR1 step 7) and then in the WebView.
 4. **R4 iOS on the owner's Mac only** - iOS steps written as owner tasks with exact commands; scheduled at the end of MR1 and MR5.
 5. **Production deploy on merge** - MR2 and MR3 additive; Math Rally paths unreachable until the seed; release order in `../application-design/math-kart-unit-of-work-dependency.md` Section 3.
 6. **R16 Free-difficulty drift** - one shared constant, copies checked by tests, server decides.
@@ -146,7 +146,7 @@ Green means done or always runs, orange means conditional execute, grey means sk
 | Stage | MR1 Slice and gate | MR2 Shared core | MR3 Backend | MR4 Web | MR5 App |
 |---|---|---|---|---|---|
 | Functional Design | **Minimal**: track and speed constants for the slice, fork geometry, quality profiles, gate protocol and devices | **Standard**: operand ranges per question kind, distractor rules per kind, track distances, acceleration and speeds meeting the layout contracts, timing tolerance from the frame-loop property test | **Minimal**: seed `displayOrder`, completion sequence check (score constants and refusal texts are fixed by the design) | **Standard**: HUD layout at 320 and 1280 px, feedback timings, pause panel, setup page, host state transitions, partly-free hub wording | **Standard**: play-screen states and overlays, lifecycle and Back rules, offline round |
-| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method (per Android composition mode), WebView plugin pin and feature checklist (asset loader, custom scheme and loader status, JS handlers, hardening) | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
+| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method (per Android composition mode), WebView plugin pin and feature checklist (asset loader, custom scheme and loader status, JS handlers, hardening), CSP check method (app page policy on desktop and in the WebView, violations and `data:` URLs recorded) | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
 | NFR Design | **Minimal**: performance patterns (pooling, level of detail, render scale, delta clamp) | SKIP | SKIP | **Minimal**: CSP change if needed, lazy loading and prefetch, accessibility patterns | SKIP |
 | Infrastructure Design | SKIP | SKIP | SKIP | SKIP | SKIP |
 | Code Generation | EXECUTE | EXECUTE | EXECUTE | EXECUTE | EXECUTE |
@@ -173,7 +173,7 @@ The Security Baseline extension is enabled (`aidlc-state.md`, Extension Configur
 
 - **Approach**: hybrid. MR1 and MR2 in parallel; MR3 after MR2; MR4 after the gate; MR5 last.
 - **Critical path**: MR1 gate, MR4, MR5.
-- **Coordination points**: start input (`mathRallyProtocol`), start payload, submission, bridge messages and the protocol registry shape (frozen at the end of MR2 Functional Design); the motion maths written in MR1 and moved to `packages/shared` in MR2; free-difficulty constant and its two copies; the update-message text and its Dart copy; theme id `MATH_RALLY` across server, leaderboard, web and app.
+- **Coordination points**: start input (`mathRallyProtocol`), start payload, submission, bridge messages and the protocol registry shape (frozen at the end of MR2 Functional Design); the motion maths written in MR1 and moved to `packages/shared` in MR2; free-difficulty constant and its two copies; the update-message text and its web and Dart copies; theme id `MATH_RALLY` across server, leaderboard, web and app.
 - **Testing checkpoints**: `../application-design/math-kart-unit-of-work-dependency.md` Section 5.
 
 | Order | Package | Unit | Depends on | Production effect on merge |

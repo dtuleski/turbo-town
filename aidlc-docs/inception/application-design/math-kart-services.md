@@ -2,7 +2,7 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
-**Revision**: iteration 2, after the design review of 2026-11-25. Changed: protocol version at start, timing against expected times, score without client time, `ready` timeout, language reduction, `touchUi`, pause hides the question, source-hash bundle check. Responses per finding: `math-kart-components.md` Section 9.
+**Revision**: iteration 3, after the second design review of 2026-11-25. Changed in iteration 3: `mathRallyProtocol` passed through as `unknown` and checked in the service with the refused cases listed; built-in textures and the font in the error tables; the window margin in the invariant table. Iteration 2 changed: protocol version at start, timing against expected times, score without client time, `ready` timeout, language reduction, `touchUi`, pause hides the question, source-hash bundle check. Responses per finding: `math-kart-components.md` Sections 9 and 10.
 **Scope**: how the components in `math-kart-components.md` work together at run time, what happens on every failure, which inputs are validated where, and which layer owns each invariant. No new deployable service is added: the work runs in the existing Game Service and Leaderboard Lambdas, the Vercel frontend, and the Flutter app.
 
 ---
@@ -54,7 +54,7 @@ Teardown on route change, on result and on every failure path: `handle.destroy()
 
 ### 4.1 Start (O3), inside `GameService.startGame`
 Order for `themeId === 'MATH_RALLY'` (existing steps unchanged for every other theme):
-1. **New, pure input checks before any read**: difficulty must be 1 to 4, otherwise `ValidationError('Invalid difficulty for this game')`; `mathRallyProtocol` must be present and in `MR_SUPPORTED_PROTOCOLS`, otherwise `ValidationError(MATH_RALLY_UPDATE_REQUIRED_MESSAGE)` ("Please update the app to play."). Neither writes anything or counts a play (AC-26.3).
+1. **New, pure input checks before any read**: difficulty must be 1 to 4, otherwise `ValidationError('Invalid difficulty for this game')`; `mathRallyProtocol` arrives as `unknown` (the schema passes any value through, B6) and must satisfy `Number.isInteger(v) && MR_SUPPORTED_PROTOCOLS.includes(v)`, otherwise `ValidationError(MATH_RALLY_UPDATE_REQUIRED_MESSAGE)` ("Please update the app to play."). Missing, `null`, 0, 2 (not supported at launch), 1.5, `"1"`, objects and arrays are all refused this way, never as `INTERNAL_ERROR`. Neither check writes anything or counts a play (AC-26.3). Other themes never read the field, whatever its value (AC-26.2).
 2. Tier lookup; quest validation (existing).
 3. Paid gate with `isBlockedForFreeTier(themeId, difficulty)` (O5); difficulty-4 gate for FREE (existing).
 4. **New**: `seed = crypto.randomInt(0, 2 ** 32)`; `race = buildRace(seed, difficulty, mathRallyProtocol)`. Pure and fast (microseconds, unmeasured); built before step 5 so a failure here never consumes a play.
@@ -100,7 +100,7 @@ Levels: **error** (unexpected, needs a look), **warn** (expected refusal or degr
 | WebGL probe | `hasWebGL()` false | No | "This browser cannot run Math Rally." Back to hub. No `startGame` (AC-44.1) | warn `no-webgl` |
 | Mount engine | `EngineStartError` | No | Same generic engine message, Back to hub; no `startGame` | error `engine-start` |
 | Boot assets | `error{ASSET_LOAD_FAILED}` before `ready` | Yes, by reload | "The race could not load." Retry reloads the page | warn `assets` |
-| Wait for `ready` | No `ready` within 20 s of mounting | Yes, by reload | "The race could not load." Retry reloads the page; no `startGame` (AC-25.2) | warn `ready-timeout` |
+| Wait for `ready` | No `ready` within 20 s of mounting (includes a built-in texture that failed to load, Section 5.2) | Yes, by reload | "The race could not load." Retry reloads the page; no `startGame` (AC-25.2) | warn `ready-timeout` |
 | `startMathRallyGame` | Rate limit | No (today) | Existing rate-limit page | warn `start-rate` |
 | `startMathRallyGame` | Quest param present, any failure | n/a | Rule R1 inside `api/game.ts`: back to the map | (existing) |
 | `startMathRallyGame` | Paid required (FREE at a locked level, `AuthorizationError` text contains "paid subscription") | No | Subscription page with `{ premiumRequired: true }` | warn `start-paid` |
@@ -119,7 +119,8 @@ Levels: **error** (unexpected, needs a look), **warn** (expected refusal or degr
 | Operation | Failure | Recoverable | Result | Logged |
 |---|---|---|---|---|
 | Renderer creation | No WebGL or Phaser throws | No | `mountMathRally` throws `EngineStartError`; inside the app bundle the entry catches it and sends `error{ENGINE_START_FAILED}` | none in game; host logs |
-| Asset or font load | 404, parse or decode error, HTML returned by an SPA rewrite (U17), a missing file served over a local scheme (status not checked, so it surfaces as a parse or decode error) | No | `error{ASSET_LOAD_FAILED}`; no `ready` | none |
+| Built-in textures at engine boot | A `sys/` file (default, missing or white texture, G1) missing or blocked. From knowledge of the Phaser 3 source (not run), the game does not finish booting when a built-in texture fails to load, and the failure appears only as a texture-manager event; Phaser 4 is checked in MR1 (U20) | No | No `ready`; the host's 20 s `ready` timeout shows "The race could not load." (H10 and T1 make a missing file a test or build failure first) | none in game; host logs `ready-timeout` |
+| Asset or font load | 404, parse or decode error, HTML returned by an SPA rewrite (U17), a missing file served over a local scheme (status not checked, so it surfaces as a parse or decode error), the `FontFace` load promise rejecting | No | `error{ASSET_LOAD_FAILED}`; no `ready` | none |
 | `init` | Invalid message, or payload not matching the bundle's protocol spec | No | `error{INIT_INVALID}`; stays on the loading screen | none |
 | WebGL context lost | Browser event | No | Clock stops; `error{CONTEXT_LOST}` | none |
 | Frame hitch | Clock delta above 50 ms | Yes | Motion advances 50 ms; the clock keeps real time, so recorded times can only be later (never below the floor) | none |
@@ -131,7 +132,7 @@ Levels: **error** (unexpected, needs a look), **warn** (expected refusal or degr
 | Operation | Failure | Recoverable | User sees | Logged (debug only) |
 |---|---|---|---|---|
 | WebView creation or page load | Plugin error, asset handler refusal | No | "The race could not load." Back | `load` |
-| Wait for `ready` | No `ready` within 20 s | No | "The race could not load." Back; WebView disposed; no `start()` | `ready-timeout` |
+| Wait for `ready` | No `ready` within 20 s (includes a built-in texture that failed to load or was blocked by the page CSP, Section 5.2) | No | "The race could not load." Back; WebView disposed; no `start()` | `ready-timeout` |
 | JS bridge not ready | Page sends before the plugin bridge is up | Yes | The entry waits for the plugin's ready event, then sends `ready` | none |
 | `ready` version | Not in the app's own list (broken app build) | No | "Please update the app to play." No `start()` | `protocol` |
 | `session.start()` | Update required (server no longer supports the version) | No | "Please update the app to play." No play used; not an offline race | `start-update` |
@@ -150,7 +151,7 @@ Levels: **error** (unexpected, needs a look), **warn** (expected refusal or degr
 | Operation | Failure | Recoverable | Caller receives | Logged |
 |---|---|---|---|---|
 | Start, difficulty outside 1 to 4 | Validation | No | `ValidationError` "Invalid difficulty for this game"; no play used | warn `{ userId, difficulty }` |
-| Start, protocol missing or unsupported | Validation | No (needs an update) | `ValidationError` "Please update the app to play."; no record, no play used | warn `{ userId, protocol }` |
+| Start, protocol not a supported integer (missing, `null`, wrong type, non-integer, unsupported) | Validation | No (needs an update) | `ValidationError` "Please update the app to play."; no record, no play used | warn `{ userId, protocol }`, where `protocol` is the value if it is an integer, otherwise its type name |
 | Start, FREE at a blocked difficulty | Gate | No | Existing `AuthorizationError` paid message; no play used | (existing, no log) |
 | Start, `buildRace` throws | Bug | No | Existing sanitized `INTERNAL_ERROR`; no play used | error `{ userId, difficulty, protocol }` (no seed) |
 | Start, DynamoDB `create` fails | Store | Yes, by retry | Existing mapped error; usage not incremented (increment follows create) | (existing) |
@@ -171,7 +172,7 @@ An event that fails `validateScore` produces no entry (existing behaviour). The 
 |---|---|---|---|---|
 | `startGame.input.themeId` | Existing schema and `validateTheme` | Yes | Non-empty string; published theme | Existing errors |
 | `startGame.input.difficulty` for `MATH_RALLY` | Existing schema (int 1..5) plus B1 (1..4) | Yes | Integer 1 to 4 | `ValidationError`, no play used |
-| `startGame.input.mathRallyProtocol` | B6 schema (int 1..99, optional) plus B1 | Yes for `MATH_RALLY`; ignored otherwise | Integer in `MR_SUPPORTED_PROTOCOLS` | Update message, no record, no play used |
+| `startGame.input.mathRallyProtocol` | B6 passes it through (`z.unknown().optional()`), B1 decides | Yes for `MATH_RALLY`; ignored otherwise, whatever its value | `Number.isInteger(v)` and in `MR_SUPPORTED_PROTOCOLS` | Update message (never `INTERNAL_ERROR`), no record, no play used |
 | `startGame.input.questContext` | Existing Quest Map rules | No | Existing schema | Existing generic quest error |
 | `completeGame.input.completionTime` | Existing schema (positive) plus B3 | Yes | Finite number, 1 to 3600 s | Generic rejection |
 | `completeGame.input.attempts` | Existing schema (positive int) | Yes | Ignored for scoring; stored value is `forks` | Existing error if not a positive integer |
@@ -196,7 +197,7 @@ An event that fails `validateScore` produces no entry (existing behaviour). The 
 | Score and correct count come only from the stored key and verified submission; client time never enters the score | Game Service (B2, B3, B4) | The client is untrusted; the server is the only place a key the client cannot change exists |
 | A FREE user can start only free difficulties of a paid game, and never difficulty 4 | Game Service (B10 with S7) | Access control must be server-side (SECURITY-08); host locks (H3, A9) are presentation |
 | No fork time or race time is more than the tolerance below what the kart needs for the given answers | S1 (motion and expected times) used by B3; G5 frame rule; property test AC-30.2 | One implementation of the motion for game and server, so honest play cannot fall below the floor |
-| Reading window at top speed, rejoin before the next question, no effect window spanning a line | S1 layout contracts, enforced by unit tests | Both the game layout and the server's expected times derive from them |
+| Reading window at top speed, rejoin before the next question, no effect window (plus one clamped frame of travel at top speed) reaching the next line or the finish | S1 layout contracts, enforced by unit tests | Both the game layout and the server's expected times derive from them; the one-frame margin keeps a late slowdown from carrying the kart past a line early |
 | A race built for protocol version N is built and checked with version N's rules for as long as N is supported | S1 freeze rule with golden fixtures; B1 stores the version; B3 reads it | Installed app bundles cannot be updated by the server; the shared module is the only place both sides read |
 | Each fork has exactly one correct option, all options canonical and distinct by value, correct positions balanced | S5 (property tests); re-checked by the game's payload validator | One generator, used by the server for scored races and by the game for offline races |
 | Race length is N forks | S1; B3 checks submission length; G14 checks payload length | Server-side for scoring; game-side so a malformed payload never starts |
@@ -204,6 +205,7 @@ An event that fails `validateScore` produces no entry (existing behaviour). The 
 | One engine instance per page | G1 (module guard) and H2 (effect cleanup) | StrictMode double mounting happens in React; the facade is the last line |
 | The WebView never receives a token or user detail | A3 and A4 (message builders take only allowlisted values) | The Dart side is where tokens exist; a test pins it (AC-47.1) |
 | The app page cannot leave its own origin or reach the network | A5 settings and navigation filter, G16 CSP | Defence in depth: CSP inside the page, filter in the host |
+| The app page needs no inline markup and, unless documented, no `data:` or `blob:` source | G16 markup rules checked by T1; G1 `engineConfigFields` with its unit test; G17 violation record in the MR1 runs | The enforced policy blocks anything else; checking at build and unit level finds it before a device run |
 | Choices are not stored | B2 (update call lists only five fields) | NFR-MK-19; the repository writes only what it is given |
 | Paid lists, free-difficulty copies and the update-message text agree | H9 and the app parity test | Copies exist for presentation; tests stop drift (R16) |
 | The committed app bundle matches its source | T1 `--check-only` in the release checklist (PL7) | App releases cannot be rolled back |
@@ -215,7 +217,7 @@ An event that fails `validateScore` produces no entry (existing behaviour). The 
 | Area | Unit and property tests (automated) | Integration tests (automated) | Manual (written steps in Construction) |
 |---|---|---|---|
 | Shared core (MR2) | Generator, canonical options and value distinctness (AC-14.1, AC-15.2), distractors, positions, determinism, layout contracts, motion integration, expected times, the AC-30.2 frame-loop property test, golden fixtures per protocol version, gate function with injected lists (Jest, `fast-check`) | n/a | Owner playtest of content difficulty (R14) |
-| Game core (MR1, MR4) | Lanes, joystick model and visibility rule, clock, G5 frame rule (motion follows the clock, not Phaser's delta), fork controller, quality rule, projection maths, protocol validators against the shared fixture, game text completeness, import-graph check (no `react`, Apollo or `fetch`) (Vitest, node environment) | Scenes are not run in tests (no browser tooling, finding 12 of the requirements) | Look and feel, fork readability, lane chips at 320 px, pause hides the question, reduced motion, audio, frame-time gate |
-| Web host (MR4) | `lockState`, `parseGameSearch`, `gameLanguage`, `initialTouchUi`, host state machine with a fake channel, fake API and fake timers (ready timeout, update refusal), registry consistency with mutation suite, credits manifest, locale completeness, source hash (AC-51.2) | Bundle report: Phaser absent from the entry chunk; entry code growth measured | Lazy loading in the network panel, StrictMode remount, CSP enforced locally, keyboard scroll capture, joystick on a touch phone in landscape, hub and setup for FREE and paid |
-| Backend (MR3) | Score breakdown (AC-32.1 to 32.5), validator cases (AC-28.1), timing checks at the boundary (AC-30.1), gate wiring, leaderboard window and flagged entry (AC-38.1, AC-38.2) | Start payload, stored record and protocol refusal before the rate limiter (AC-26.1 to 26.3); completion matrix, rejection leaves the game open (AC-31.1); event content (AC-33.1); quest hook with a stub `QuestService` passed through the `questService` constructor parameter (AC-33.2, AC-52.1); existing suites unchanged | Seed and verify script dry runs |
+| Game core (MR1, MR4) | Lanes, joystick model and visibility rule, clock, G5 frame rule (motion follows the clock, not Phaser's delta), fork controller, quality rule, projection maths, `engineConfigFields` (no `data:` or `blob:` value, built-in textures under `sys/`), protocol validators against the shared fixture, game text completeness, import-graph check (no `react`, Apollo or `fetch`) (Vitest, node environment) | Scenes are not run in tests (no browser tooling, finding 12 of the requirements) | Look and feel, fork readability, lane chips at 320 px, pause hides the question, reduced motion, audio, frame-time gate |
+| Web host (MR4) | `lockState`, `parseGameSearch`, `gameLanguage`, `initialTouchUi`, host state machine with a fake channel, fake API and fake timers (ready timeout, update refusal), registry consistency with mutation suite, credits manifest, locale completeness, source hash (AC-51.2) | Bundle report: Phaser absent from the entry chunk; entry code growth measured | Lazy loading in the network panel, StrictMode remount, slice and game under the enforced app page policy on desktop (no CSP violation, AC-46.3 precondition), keyboard scroll capture, joystick on a touch phone in landscape, hub and setup for FREE and paid |
+| Backend (MR3) | Score breakdown (AC-32.1 to 32.5), validator cases (AC-28.1), timing checks at the boundary (AC-30.1), gate wiring, leaderboard window and flagged entry (AC-38.1, AC-38.2) | Start payload and stored record (AC-26.1); other themes unchanged with `mathRallyProtocol` absent, `0` or `"x"` (AC-26.2); update refusal before the rate limiter for missing, `null`, 0, 2, 1.5 and `"1"`, never `INTERNAL_ERROR` (AC-26.3); completion matrix, rejection leaves the game open (AC-31.1); event content (AC-33.1); quest hook with a stub `QuestService` passed through the `questService` constructor parameter (AC-33.2, AC-52.1); existing suites unchanged | Seed and verify script dry runs |
 | App (MR5) | Protocol validators against the shared fixture (including `correctCount`); message builders never carry a token (AC-47.1); level locks; hub tiles for partly-free games; iOS asset resolver allowlist and MIME table; navigation filter; session `start(mathRallyProtocol)`, payload and `updateRequired` block; local protocol check (AC-49.2) | Play-screen state with a fake `WebViewPort`, a fake `GameApi` and fake timers (ready timeout) | Real WebView on the reference Android phone and the owner's iPhone: assets offline, image, atlas and audio over the internal origin (AC-46.3), navigation refused, lifecycle pause, Back, audio and silent switch, joystick at the countdown, gate re-run on the full game |

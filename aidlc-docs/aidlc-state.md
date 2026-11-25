@@ -212,7 +212,8 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
   - **Plan**: `inception/plans/math-kart-application-design-plan.md` (15 questions, recommendations pending owner approval)
   - **Artifacts**: `inception/application-design/math-kart-{components,component-methods,services,component-dependency,concept}.md`
 - [x] Units Generation (COMPLETED): `inception/application-design/math-kart-unit-of-work{,-dependency,-story-map}.md`; 5 units, 28 stories assigned, matrix acyclic
-- [x] Design review iteration 1: CHANGES_REQUESTED (1 HIGH, 7 MEDIUM, 11 NIT); iteration 2 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13 and `inception/application-design/math-kart-components.md` Section 9); re-review pending
+- [x] Design review iteration 1: CHANGES_REQUESTED (1 HIGH, 7 MEDIUM, 11 NIT); iteration 2 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13.1 and `inception/application-design/math-kart-components.md` Section 9)
+- [x] Design review iteration 2: CHANGES_REQUESTED (0 HIGH, 1 MEDIUM, 6 NIT); iteration 3 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13.2 and `inception/application-design/math-kart-components.md` Section 10); push of `feat/math-kart` left to the final workflow step; re-review pending
 - [ ] Owner approval of the inception package (pending; presented by the orchestrator)
 
 ### CONSTRUCTION PHASE (planned, not started)
@@ -226,7 +227,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - Infrastructure Design: SKIP for all units (no cloud resource change)
 
 ### Open Items Carried Into Construction
-- Unverified: U1 to U7 (Phaser 4 version, size, Canvas fallback, `blob:` use; WebView plugin features; WebView frame rate), U13 (Flutter on this Windows machine), U14 (prod tables), U15 to U17 (Vite JSON tree-shaking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite), U18 (Android platform-view composition mode and its frame-rate effect), U19 (Phaser loader and iOS custom-scheme response status)
+- Unverified: U1 to U7 (Phaser 4 version, size, Canvas fallback, `blob:` use; WebView plugin features; WebView frame rate), U13 (Flutter on this Windows machine), U14 (prod tables), U15 to U17 (Vite JSON tree-shaking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite), U18 (Android platform-view composition mode and its frame-rate effect), U19 (Phaser loader and iOS custom-scheme response status), U20 (Phaser 4 boots under the app page's enforced `img-src 'self'` and `style-src 'self'` with its built-in textures from bundled files)
 - Scoring and fairness (iteration 2): score from the server's correct count only; fork and race times checked against the shared kinematics for the given answers; race rules frozen per protocol version after launch, clients send `mathRallyProtocol` to `startGame`
 - Release order: Leaderboard and Game Service, then web, then app, seed last (`inception/application-design/math-kart-unit-of-work-dependency.md` Section 3)
 - Quest Map: no node in v1; a World 1 node after a paid switch would first need the quest validator to honour the Easy-only exception (backlog)

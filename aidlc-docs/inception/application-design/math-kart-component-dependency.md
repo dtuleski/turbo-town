@@ -3,7 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Application Design
 **Basis**: `math-kart-components.md` (component ids), `math-kart-services.md` (orchestrations)
-**Revision**: iteration 2, after the design review of 2026-11-25: protocol version in the start call and in both sequence diagrams, timing against expected times, source-hash bundle check and the protocol coupling in Section 6.
+**Revision**: iteration 3, after the second design review of 2026-11-25: the web API module (H4) no longer imports the shared core; it keeps its own copy of the update-message text, checked by the consistency test (Sections 1 and 2). Iteration 2: protocol version in the start call and in both sequence diagrams, timing against expected times, source-hash bundle check and the protocol coupling in Section 6.
 
 ---
 
@@ -53,7 +53,7 @@ flowchart LR
     H2 --> G1
     H2 --> H4
     H1 --> S1
-    H4 --> S1
+    H4 -.->|"copy checked by test"| S1
     H7 -.->|"copy checked by test"| S7
     B1 --> S1
     B1 --> S5
@@ -71,7 +71,7 @@ flowchart LR
     D1 -.->|"theme and catalog rows"| B1
 ```
 
-**Text alternative:** The shared package holds three groups: the protocol registry with track layout, motion maths and expected times (S1), the seeded race generator (S2 to S5) and the free-tier gate (S7). The game core's scenes and rules (G3 to G13) use S1, the generator and the protocol module (G14). The engine facade (G1) wraps the scenes and the host channel (G15), which uses the protocol. The embed entry (G16) mounts the facade for the app. On the web, the game page (H2) mounts the facade and calls the API module (H4); the setup page (H1) reads the race constants for the path counts, and the API module (H4) reads the shared update-message text; the hub tile (H7) keeps its own copy of the free-difficulty list next to the existing paid list, checked against the shared one by the consistency test. The Game Service start and completion code (B1, B2) uses S1, the generator and the gate, and sends GameCompleted events to the Leaderboard (L1). The web API module and the app's session additions (A6) call the Game Service over HTTPS. The app play screen (A2) uses the bridge and protocol (A3, A4), the asset server (A5) and the session additions. The asset server serves the bundled game (A8), which the embed build (T1) produces from the embed entry. The app bridge exchanges JSON messages with the game's host channel. The seed scripts (D1) write the theme and catalog rows the Game Service reads. Solid arrows are code dependencies; dotted arrows are run-time communication, except the dotted link from the hub tile to the gate, which is a copied list kept equal by a test.
+**Text alternative:** The shared package holds three groups: the protocol registry with track layout, motion maths and expected times (S1), the seeded race generator (S2 to S5) and the free-tier gate (S7). The game core's scenes and rules (G3 to G13) use S1, the generator and the protocol module (G14). The engine facade (G1) wraps the scenes and the host channel (G15), which uses the protocol. The embed entry (G16) mounts the facade for the app. On the web, the game page (H2) mounts the facade and calls the API module (H4); the setup page (H1) reads the race constants for the path counts. The API module (H4) imports nothing from the shared package, because eager pages import it: it keeps its own copy of the update-message text, and the hub tile (H7) keeps its own copy of the free-difficulty list next to the existing paid list; the consistency test checks both copies against the shared originals. The Game Service start and completion code (B1, B2) uses S1, the generator and the gate, and sends GameCompleted events to the Leaderboard (L1). The web API module and the app's session additions (A6) call the Game Service over HTTPS. The app play screen (A2) uses the bridge and protocol (A3, A4), the asset server (A5) and the session additions. The asset server serves the bundled game (A8), which the embed build (T1) produces from the embed entry. The app bridge exchanges JSON messages with the game's host channel. The seed scripts (D1) write the theme and catalog rows the Game Service reads. Solid arrows are code dependencies; dotted arrows are run-time communication, except the two dotted links labelled "copy checked by test" (API module to S1, hub tile to the gate), which are copied values kept equal by a test.
 
 ---
 
@@ -88,7 +88,7 @@ Rows depend on columns. "C" = compile-time import, "R" = run-time call or messag
 | G16 | | | | C | | | C | | | | | | | | |
 | H1, H3 | C | | | | | | | | C | | | | | | |
 | H2 | | | | C | | C | C | | C | | | | | | |
-| H4 | C | | | | | | | | | R | | | | | |
+| H4 | | | | | | | | | | R | | | | | |
 | B1-B2 | C | C | C | | | | | | | | R | | | | |
 | A2 | | | | | | | | | | | | C | C | C | |
 | A3-A4 | | | | | | | R | | | | | | | | |
@@ -96,7 +96,7 @@ Rows depend on columns. "C" = compile-time import, "R" = run-time call or messag
 | A6 | | | | | | | | | | R | | | | | |
 | T1 | | | | | | | | B | | | | | | | B |
 
-Checks: the matrix has no cycle (the shared core depends on nothing; the game core depends only on the shared core; hosts depend on the game core and the API; the backend depends only on the shared core). The game core has no edge to H, A, B or L components (FR-MK-42). `apps/mobile` has no compile-time dependency on TypeScript code; it receives the game only as built files (A8). The leaderboard has no compile-time dependency on the shared package (finding F11).
+Checks: the matrix has no cycle (the shared core depends on nothing; the game core depends only on the shared core; hosts depend on the game core and the API; the backend depends only on the shared core). The game core has no edge to H, A, B or L components (FR-MK-42). No eagerly loaded web module (H4, H6, H7, H8) imports the shared race module or the funnel H5, so neither reaches the entry chunk; H4 and H7 hold copies checked by H9. `apps/mobile` has no compile-time dependency on TypeScript code; it receives the game only as built files (A8). The leaderboard has no compile-time dependency on the shared package (finding F11).
 
 ---
 
