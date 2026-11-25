@@ -133,6 +133,10 @@ export function mountMathRally(parent: HTMLElement, channel: HostChannel, option
     canvas.style.height = '100%';
     canvas.style.display = 'block';
     canvas.style.touchAction = 'none';
+    // The CSS size above differs from the size Phaser measured at boot (backing store is up to 2x the
+    // CSS size). Without a refresh, Phaser keeps the old display scale and maps every touch to the
+    // wrong place: on a 2x screen the joystick zone never receives a pointer.
+    g.scale.refresh();
   }
 
   ctx.setRenderScale = (factor: number) => {
