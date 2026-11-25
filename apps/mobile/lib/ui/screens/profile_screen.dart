@@ -99,7 +99,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const Text('👤', style: TextStyle(fontSize: 56)),
                   const SizedBox(height: 8),
                   Text(
-                    auth.username ?? l10n.common_player,
+                    auth.displayName ?? auth.username ?? l10n.common_player,
                     key: const Key('profile-name'),
                     style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                   ),

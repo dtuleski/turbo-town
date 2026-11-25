@@ -1988,6 +1988,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Pick elements from the periodic table';
 
   @override
+  String get bondAndBurn_swipeHint => 'Swipe sideways to see all elements';
+
+  @override
   String get bondAndBurn_labComplete => 'Lab Mission Complete!';
 
   @override

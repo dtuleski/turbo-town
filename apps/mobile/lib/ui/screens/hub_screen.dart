@@ -48,7 +48,7 @@ class _HubScreenState extends ConsumerState<HubScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final auth = ref.watch(authControllerProvider);
-    final name = auth.username ?? auth.email ?? l10n.common_player;
+    final name = auth.displayName ?? auth.username ?? auth.email ?? l10n.common_player;
     final data = ref.watch(hubDataProvider);
     return Scaffold(
       appBar: AppBar(

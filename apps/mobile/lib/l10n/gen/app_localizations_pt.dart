@@ -1999,6 +1999,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha elementos da tabela periódica';
 
   @override
+  String get bondAndBurn_swipeHint =>
+      'Deslize para os lados para ver todos os elementos';
+
+  @override
   String get bondAndBurn_labComplete => 'Missão no Lab Completa!';
 
   @override

@@ -828,6 +828,7 @@
     }
   },
   "bondAndBurn_pickElements": "Elige elementos de la tabla periódica",
+  "bondAndBurn_swipeHint": "Desliza hacia los lados para ver todos los elementos",
   "bondAndBurn_labComplete": "¡Misión en el Lab Completa!",
   "bondAndBurn_meltdown": "¡FUSIÓN!",
   "bondAndBurn_preparingLab": "Preparando el laboratorio...",
