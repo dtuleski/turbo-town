@@ -47,3 +47,20 @@ String? displayNameFromIdToken(String? jwt) {
     return null;
   }
 }
+
+/// The Cognito user id (`sub` claim) from a raw ID token, or null.
+/// It is a UUID, which StoreKit accepts as a purchase's appAccountToken.
+String? userIdFromIdToken(String? jwt) {
+  if (jwt == null) return null;
+  final parts = jwt.split('.');
+  if (parts.length != 3) return null;
+  try {
+    final payload = utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
+    final claims = json.decode(payload);
+    if (claims is! Map<String, dynamic>) return null;
+    final sub = claims['sub'];
+    return sub is String && sub.isNotEmpty ? sub : null;
+  } on FormatException {
+    return null;
+  }
+}

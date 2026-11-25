@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../subscription/subscription_controller.dart';
 import '../../api/feature_providers.dart';
 import '../../api/game_providers.dart';
 import '../../auth/auth_controller.dart';
@@ -117,6 +118,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                     ],
                   ),
+                  if (ref.watch(storeSubscriptionsEnabledProvider))
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        key: const Key('profile-plans'),
+                        onPressed: () => context.push('/subscription'),
+                        child: Text(l10n.mobileSub_viewPlans),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -1,7 +1,8 @@
 /// How free users see paid games (see FEAT-003). This is the ONE switch for it.
 ///
-/// Open product decision: the default is [neutralUnavailable]. No purchase or
-/// pricing UI exists in the app; payments are deferred.
+/// The default is [neutralUnavailable]. On iOS, where App Store subscriptions
+/// are offered (storeSubscriptionsEnabledProvider), those tiles open the plans
+/// screen instead. Android keeps them inert until Google Play billing exists.
 library;
 
 enum PaidGamePresentation {

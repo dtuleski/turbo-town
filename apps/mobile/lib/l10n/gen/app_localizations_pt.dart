@@ -4752,4 +4752,83 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mobileSpaceCoder_running => 'Executando…';
+
+  @override
+  String get mobileSub_title => 'Planos DashDen';
+
+  @override
+  String get mobileSub_subscribe => 'Assinar';
+
+  @override
+  String mobileSub_pricePerMonth(String price) {
+    return '$price / mês';
+  }
+
+  @override
+  String get mobileSub_restore => 'Restaurar compras';
+
+  @override
+  String get mobileSub_manage => 'Gerenciar assinatura';
+
+  @override
+  String mobileSub_activeApple(String plan) {
+    return 'Seu plano $plan está ativo. A cobrança é feita pela App Store.';
+  }
+
+  @override
+  String mobileSub_activeOutside(String plan) {
+    return 'Seu plano $plan está ativo.';
+  }
+
+  @override
+  String mobileSub_renewsOn(String date) {
+    return 'Renova em $date';
+  }
+
+  @override
+  String mobileSub_endsOn(String date) {
+    return 'Termina em $date';
+  }
+
+  @override
+  String get mobileSub_disclosure =>
+      'O pagamento é cobrado no seu ID Apple quando você confirma a compra. A assinatura é renovada automaticamente todo mês, a menos que você cancele pelo menos 24 horas antes do fim do período atual. Você pode gerenciar ou cancelar nos ajustes da sua conta da App Store.';
+
+  @override
+  String get mobileSub_terms => 'Termos de uso';
+
+  @override
+  String get mobileSub_privacy => 'Política de privacidade';
+
+  @override
+  String get mobileSub_unavailable =>
+      'As assinaturas não estão disponíveis agora. Tente novamente mais tarde.';
+
+  @override
+  String get mobileSub_thanks => 'Obrigado! Seu plano está ativo.';
+
+  @override
+  String get mobileSub_errorPurchase => 'A compra não foi concluída.';
+
+  @override
+  String get mobileSub_errorVerify =>
+      'Ainda não conseguimos confirmar sua compra. Vamos tentar de novo automaticamente. Se continuar acontecendo, fale com a gente.';
+
+  @override
+  String get mobileSub_errorOtherAccount =>
+      'Esta assinatura da App Store pertence a outra conta DashDen. Entre com essa conta para usá-la.';
+
+  @override
+  String get mobileSub_errorNetwork =>
+      'Erro de rede. Verifique sua conexão e tente novamente.';
+
+  @override
+  String get mobileSub_nothingToRestore =>
+      'Nenhuma assinatura da App Store foi encontrada para restaurar.';
+
+  @override
+  String get mobileSub_subscribeToPlay => 'Assine para jogar';
+
+  @override
+  String get mobileSub_viewPlans => 'Planos';
 }

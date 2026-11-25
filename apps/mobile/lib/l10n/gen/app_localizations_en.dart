@@ -4709,4 +4709,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mobileSpaceCoder_running => 'Running…';
+
+  @override
+  String get mobileSub_title => 'DashDen Plans';
+
+  @override
+  String get mobileSub_subscribe => 'Subscribe';
+
+  @override
+  String mobileSub_pricePerMonth(String price) {
+    return '$price / month';
+  }
+
+  @override
+  String get mobileSub_restore => 'Restore Purchases';
+
+  @override
+  String get mobileSub_manage => 'Manage Subscription';
+
+  @override
+  String mobileSub_activeApple(String plan) {
+    return 'Your $plan plan is active. It is billed through the App Store.';
+  }
+
+  @override
+  String mobileSub_activeOutside(String plan) {
+    return 'Your $plan plan is active.';
+  }
+
+  @override
+  String mobileSub_renewsOn(String date) {
+    return 'Renews on $date';
+  }
+
+  @override
+  String mobileSub_endsOn(String date) {
+    return 'Ends on $date';
+  }
+
+  @override
+  String get mobileSub_disclosure =>
+      'Payment is charged to your Apple ID when you confirm the purchase. The subscription renews automatically every month unless you cancel at least 24 hours before the end of the current period. You can manage or cancel it in your App Store account settings.';
+
+  @override
+  String get mobileSub_terms => 'Terms of Use';
+
+  @override
+  String get mobileSub_privacy => 'Privacy Policy';
+
+  @override
+  String get mobileSub_unavailable =>
+      'Subscriptions are not available right now. Please try again later.';
+
+  @override
+  String get mobileSub_thanks => 'Thank you! Your plan is active.';
+
+  @override
+  String get mobileSub_errorPurchase => 'The purchase did not complete.';
+
+  @override
+  String get mobileSub_errorVerify =>
+      'We could not confirm your purchase yet. We will try again automatically. If this keeps happening, contact us.';
+
+  @override
+  String get mobileSub_errorOtherAccount =>
+      'This App Store subscription belongs to a different DashDen account. Sign in with that account to use it.';
+
+  @override
+  String get mobileSub_errorNetwork =>
+      'Network error. Check your connection and try again.';
+
+  @override
+  String get mobileSub_nothingToRestore =>
+      'No App Store subscription was found to restore.';
+
+  @override
+  String get mobileSub_subscribeToPlay => 'Subscribe to play';
+
+  @override
+  String get mobileSub_viewPlans => 'Plans';
 }

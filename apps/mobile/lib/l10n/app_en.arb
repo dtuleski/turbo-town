@@ -2366,5 +2366,61 @@
   },
   "mobileSpaceCoder_loopCount": "Loop count",
   "mobileSpaceCoder_conditionMode": "Condition mode",
-  "mobileSpaceCoder_running": "Running…"
+  "mobileSpaceCoder_running": "Running…",
+  "mobileSub_title": "DashDen Plans",
+  "mobileSub_subscribe": "Subscribe",
+  "mobileSub_pricePerMonth": "{price} / month",
+  "@mobileSub_pricePerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSub_restore": "Restore Purchases",
+  "mobileSub_manage": "Manage Subscription",
+  "mobileSub_activeApple": "Your {plan} plan is active. It is billed through the App Store.",
+  "@mobileSub_activeApple": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSub_activeOutside": "Your {plan} plan is active.",
+  "@mobileSub_activeOutside": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSub_renewsOn": "Renews on {date}",
+  "@mobileSub_renewsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSub_endsOn": "Ends on {date}",
+  "@mobileSub_endsOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "mobileSub_disclosure": "Payment is charged to your Apple ID when you confirm the purchase. The subscription renews automatically every month unless you cancel at least 24 hours before the end of the current period. You can manage or cancel it in your App Store account settings.",
+  "mobileSub_terms": "Terms of Use",
+  "mobileSub_privacy": "Privacy Policy",
+  "mobileSub_unavailable": "Subscriptions are not available right now. Please try again later.",
+  "mobileSub_thanks": "Thank you! Your plan is active.",
+  "mobileSub_errorPurchase": "The purchase did not complete.",
+  "mobileSub_errorVerify": "We could not confirm your purchase yet. We will try again automatically. If this keeps happening, contact us.",
+  "mobileSub_errorOtherAccount": "This App Store subscription belongs to a different DashDen account. Sign in with that account to use it.",
+  "mobileSub_errorNetwork": "Network error. Check your connection and try again.",
+  "mobileSub_nothingToRestore": "No App Store subscription was found to restore.",
+  "mobileSub_subscribeToPlay": "Subscribe to play",
+  "mobileSub_viewPlans": "Plans"
 }

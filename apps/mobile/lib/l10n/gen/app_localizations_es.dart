@@ -4770,4 +4770,83 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get mobileSpaceCoder_running => 'Ejecutando…';
+
+  @override
+  String get mobileSub_title => 'Planes de DashDen';
+
+  @override
+  String get mobileSub_subscribe => 'Suscribirse';
+
+  @override
+  String mobileSub_pricePerMonth(String price) {
+    return '$price / mes';
+  }
+
+  @override
+  String get mobileSub_restore => 'Restaurar compras';
+
+  @override
+  String get mobileSub_manage => 'Gestionar suscripción';
+
+  @override
+  String mobileSub_activeApple(String plan) {
+    return 'Tu plan $plan está activo. Se cobra a través de App Store.';
+  }
+
+  @override
+  String mobileSub_activeOutside(String plan) {
+    return 'Tu plan $plan está activo.';
+  }
+
+  @override
+  String mobileSub_renewsOn(String date) {
+    return 'Se renueva el $date';
+  }
+
+  @override
+  String mobileSub_endsOn(String date) {
+    return 'Termina el $date';
+  }
+
+  @override
+  String get mobileSub_disclosure =>
+      'El pago se cobra a tu Apple ID al confirmar la compra. La suscripción se renueva automáticamente cada mes, salvo que la canceles al menos 24 horas antes del final del período actual. Puedes gestionarla o cancelarla en los ajustes de tu cuenta de App Store.';
+
+  @override
+  String get mobileSub_terms => 'Términos de uso';
+
+  @override
+  String get mobileSub_privacy => 'Política de privacidad';
+
+  @override
+  String get mobileSub_unavailable =>
+      'Las suscripciones no están disponibles ahora. Inténtalo más tarde.';
+
+  @override
+  String get mobileSub_thanks => '¡Gracias! Tu plan está activo.';
+
+  @override
+  String get mobileSub_errorPurchase => 'La compra no se completó.';
+
+  @override
+  String get mobileSub_errorVerify =>
+      'Aún no pudimos confirmar tu compra. Lo intentaremos de nuevo automáticamente. Si sigue pasando, contáctanos.';
+
+  @override
+  String get mobileSub_errorOtherAccount =>
+      'Esta suscripción de App Store pertenece a otra cuenta de DashDen. Inicia sesión con esa cuenta para usarla.';
+
+  @override
+  String get mobileSub_errorNetwork =>
+      'Error de red. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get mobileSub_nothingToRestore =>
+      'No se encontró ninguna suscripción de App Store para restaurar.';
+
+  @override
+  String get mobileSub_subscribeToPlay => 'Suscríbete para jugar';
+
+  @override
+  String get mobileSub_viewPlans => 'Planes';
 }

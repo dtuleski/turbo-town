@@ -10,6 +10,7 @@ import '../../game/hub_providers.dart';
 import '../../l10n/game_text.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../l10n/language_picker.dart';
+import '../../subscription/subscription_controller.dart';
 import '../theme.dart';
 import '../widgets/error_view.dart';
 import '../widgets/loading_view.dart';
@@ -149,6 +150,9 @@ class _HubScreenState extends ConsumerState<HubScreen> {
                 tile: shown[i],
                 rating: hub.ratings[shown[i].entry.reviewType],
                 onTap: () => context.push(shown[i].entry.setupRoute),
+                onSubscribe: ref.watch(storeSubscriptionsEnabledProvider)
+                    ? () => context.push('/subscription')
+                    : null,
               ),
             ),
           ),
@@ -204,11 +208,15 @@ class _QuestCard extends StatelessWidget {
 
 /// One hub tile. Paid tiles for FREE users carry a neutral label and no price.
 class GameTile extends StatelessWidget {
-  const GameTile({super.key, required this.tile, required this.onTap, this.rating});
+  const GameTile({super.key, required this.tile, required this.onTap, this.rating, this.onSubscribe});
 
   final HubTile tile;
   final ReviewStats? rating;
   final VoidCallback onTap;
+
+  /// When set (iOS with App Store subscriptions), a paid tile for a FREE user
+  /// opens the plans instead of being inert.
+  final VoidCallback? onSubscribe;
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +231,8 @@ class GameTile extends StatelessWidget {
     final label = switch (tile.availability) {
       TileAvailability.playable => null,
       TileAvailability.comingSoon => l10n.hub_comingSoon,
-      TileAvailability.paidUnavailable => l10n.mobileGame_notAvailableLabel,
+      TileAvailability.paidUnavailable =>
+        onSubscribe != null ? l10n.mobileSub_subscribeToPlay : l10n.mobileGame_notAvailableLabel,
       TileAvailability.notInApp => l10n.mobileGame_comingToApp,
     };
     return Opacity(
@@ -232,7 +241,9 @@ class GameTile extends StatelessWidget {
         key: Key('tile-${entry.gameId}'),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: playable ? onTap : null,
+          onTap: playable
+              ? onTap
+              : (tile.availability == TileAvailability.paidUnavailable ? onSubscribe : null),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(

@@ -3,6 +3,9 @@ import 'package:dashden_mobile/game/game_registry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:dashden_mobile/subscription/store_gateway.dart';
+import 'package:dashden_mobile/subscription/subscription_api.dart';
+import 'package:dashden_mobile/subscription/subscription_controller.dart';
 import '../helpers/fake_game_api.dart';
 import '../helpers/pump_router.dart';
 
@@ -95,6 +98,27 @@ void main() {
     expect(find.byKey(const Key('game-start-button')), findsNothing);
   });
 
+  testWidgets('on iOS a paid tile for a FREE user opens the plans', (tester) async {
+    useTallSurface(tester);
+    await pumpRouterApp(tester, location: '/', api: _api(), overrides: [
+      storeSubscriptionsEnabledProvider.overrideWithValue(true),
+      subscriptionControllerProvider.overrideWith((ref) => SubscriptionController(
+            api: _NoPlanApi(),
+            store: _NoStore(),
+            userId: () async => null,
+            storeEnabled: false,
+          )),
+    ]);
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(
+      tester.widget<Text>(find.byKey(const Key('tile-label-circuit-builder'))).data,
+      'Subscribe to play',
+    );
+    await tester.tap(_tile('circuit-builder'));
+    await tester.pumpAndSettle();
+    expect(find.text('DashDen Plans'), findsOneWidget);
+  });
+
   testWidgets('every game has app screens: no tile says "coming to the app" and Space Coder opens',
       (tester) async {
     useTallSurface(tester);
@@ -161,4 +185,28 @@ class _FailingOnce extends FakeGameApi {
     if (shouldFail()) throw GameApiException('down');
     return super.listAvailableGames();
   }
+}
+
+class _NoPlanApi implements SubscriptionApi {
+  @override
+  Future<SubscriptionInfo> getSubscription() async => SubscriptionInfo.free;
+  @override
+  Future<SubscriptionInfo> verifyAppleTransaction(String s) async => SubscriptionInfo.free;
+}
+
+class _NoStore implements StoreGateway {
+  @override
+  Stream<List<StorePurchase>> get purchases => const Stream.empty();
+  @override
+  Future<bool> isAvailable() async => false;
+  @override
+  Future<List<StoreProduct>> loadProducts(Set<String> ids) async => const [];
+  @override
+  Future<void> buy(StoreProduct product, {required String accountToken}) async {}
+  @override
+  Future<void> restore({required String accountToken}) async {}
+  @override
+  Future<void> finish(StorePurchase purchase) async {}
+  @override
+  Future<void> showManageSubscriptions() async {}
 }
