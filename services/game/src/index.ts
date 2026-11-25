@@ -122,7 +122,33 @@ async function handleStripeWebhook(event: any): Promise<any> {
  * Lambda handler for Game Service GraphQL API
  * Handles game lifecycle, rate limiting, achievements, and statistics
  */
+/**
+ * Stripe events delivered through Amazon EventBridge (Stripe event destination
+ * -> partner event bus -> rule -> this Lambda). AWS delivers them, so there is
+ * no signature to check. `detail` is the Stripe event. Throwing makes
+ * EventBridge retry and, after that, send the event to the rule's DLQ.
+ */
+export function isStripeEventBridgeEvent(event: any): boolean {
+  return typeof event?.source === 'string' && event.source.startsWith('aws.partner/stripe.com') && !!event.detail;
+}
+
+async function handleStripeEventBridge(event: any): Promise<void> {
+  const stripeEvent = event.detail;
+  if (!stripeEvent?.id || !stripeEvent?.type || !stripeEvent?.data?.object) {
+    logger.error('Stripe EventBridge event without a Stripe event in detail', new Error('Bad detail'), {
+      detailType: event['detail-type'],
+    });
+    return;
+  }
+  await new StripeService().handleWebhook(stripeEvent);
+}
+
 export async function handler(event: any, context: any): Promise<any> {
+  if (isStripeEventBridgeEvent(event)) {
+    logger.setContext({ correlationId: event.id, functionName: context?.functionName });
+    return handleStripeEventBridge(event);
+  }
+
   // Set correlation ID for request tracing
   const correlationId = event.requestContext.requestId;
   logger.setContext({ correlationId, functionName: context.functionName });
