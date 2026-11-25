@@ -418,6 +418,7 @@ describe('drawing a connection', () => {
     )
     expect(up.intent).toBeNull()
     expect(up.selection.pendingTerminal).toEqual({ elementId: sourceId, terminalIndex: 1 })
+    expect(up.selection.pendingSticky).toBe(true)
   })
   it('cancels a half-drawn wire when its own dot is pressed again', () => {
     const { sourceId } = twoElements()
@@ -428,6 +429,60 @@ describe('drawing a connection', () => {
     const again = resolvePointerIntent('down', point, hit, tapped.selection)
     expect(again.intent).toEqual({ type: 'cancel' })
     expect(again.selection.pendingTerminal).toBeNull()
+    expect(again.selection.pendingSticky).toBe(false)
+  })
+
+  it('connects click-click: click one dot, then click another', () => {
+    const { state, sourceId, lampId } = twoElements()
+    const firstHit = terminalHit(sourceId, fromCell, 'battery', 1)
+    const secondHit = terminalHit(lampId, toCell, 'led', 0)
+    const firstPoint = cellToPoint(fromCell, VIEWPORT)
+    const secondPoint = cellToPoint(toCell, VIEWPORT)
+
+    const down1 = resolvePointerIntent('down', firstPoint, firstHit, createInitialSelection())
+    const up1 = resolvePointerIntent('up', firstPoint, firstHit, down1.selection)
+    // The pointer travels to the second dot with no button held: the rubber band follows it.
+    const hover = resolvePointerIntent('move', secondPoint, secondHit, up1.selection)
+    expect(hover.selection.pointer).toEqual(secondPoint)
+    expect(hover.selection.pendingTerminal).toEqual({ elementId: sourceId, terminalIndex: 1 })
+
+    // The second press finishes the link; the release that follows has nothing left to do.
+    const down2 = resolvePointerIntent('down', secondPoint, secondHit, hover.selection)
+    expect(down2.intent).toEqual({ type: 'completeConnection', elementId: lampId, terminalIndex: 0 })
+    expect(down2.selection.pendingTerminal).toBeNull()
+    expect(down2.selection.pointer).toBeNull()
+    expect(intentToAction(down2.intent ?? { type: 'cancel' }, hover.selection, state)).toEqual({
+      type: 'connect',
+      from: { elementId: sourceId, terminalIndex: 1 },
+      to: { elementId: lampId, terminalIndex: 0 },
+    })
+    const up2 = resolvePointerIntent('up', secondPoint, secondHit, down2.selection)
+    expect(up2.intent).toBeNull()
+    expect(up2.selection.pendingTerminal).toBeNull()
+  })
+
+  it('tracks the pointer for the rubber band while a link is pending, and clears it on cancel', () => {
+    const { sourceId } = twoElements()
+    const hit = terminalHit(sourceId, fromCell, 'battery', 1)
+    const down = resolvePointerIntent('down', cellToPoint(fromCell, VIEWPORT), hit, createInitialSelection())
+    const target = cellToPoint({ col: 6, row: 6 }, VIEWPORT)
+    const moved = resolvePointerIntent('move', target, cellHit({ col: 6, row: 6 }), down.selection)
+    expect(moved.selection.pointer).toEqual(target)
+    const escaped = resolveKeyIntent('Escape', false, moved.selection, stateWith())
+    expect(escaped.selection.pointer).toBeNull()
+    expect(escaped.selection.pendingTerminal).toBeNull()
+  })
+
+  it('keeps a click-click link open when the pointer merely leaves the canvas', () => {
+    const { sourceId } = twoElements()
+    const hit = terminalHit(sourceId, fromCell, 'battery', 1)
+    const point = cellToPoint(fromCell, VIEWPORT)
+    const down = resolvePointerIntent('down', point, hit, createInitialSelection())
+    const up = resolvePointerIntent('up', point, hit, down.selection)
+    const left = resolvePointerIntent('cancel', point, hit, up.selection)
+    expect(left.selection.pendingTerminal).toEqual({ elementId: sourceId, terminalIndex: 1 })
+    expect(left.selection.pointer).toBeNull()
+    expect(left.intent).toBeNull()
   })
 
   it('arms a connection from the keyboard, with shift picking the second terminal', () => {

@@ -875,6 +875,19 @@
       "INVALID_VOLTAGE": "Esa tensión no se puede usar",
       "INVALID_LIGHT_LEVEL": "Ese nivel de luz no se puede usar"
     },
+    "coach": {
+      "title": "Cómo se juega",
+      "open": "Cómo se juega",
+      "close": "Entendido",
+      "step1": "Elige una pieza y toca una casilla.",
+      "step2": "Pulsa un punto y arrastra hasta otro punto para conectarlos.",
+      "step3": "Haz un solo circuito cerrado desde + hasta −. La bombilla solo funciona en un sentido.",
+      "keyboard": "Teclado: las flechas mueven el cursor, Enter coloca, C empieza una conexión, Enter la termina (Shift+Enter para el segundo punto), Supr borra una pieza, Esc cancela."
+    },
+    "actions": {
+      "removePart": "Quitar pieza",
+      "cancel": "Cancelar"
+    },
     "layout": {
       "enterFullScreen": "Pantalla completa",
       "exitFullScreen": "Salir de pantalla completa"
@@ -939,19 +952,19 @@
       "cb-01-closed-circuit": {
         "title": "Cierra el circuito",
         "goal": "Enciende el faro del róver.",
-        "hint": "Une la pila, la resistencia y la bombilla LED formando un anillo y vuelve con un cable hasta la pila. Si la bombilla sigue apagada, revisa en qué sentido está conectada.",
+        "hint": "Arrastra una línea desde un punto de una pieza hasta un punto de la siguiente, hasta que la pila, la resistencia y la bombilla LED formen un solo circuito. No necesitas la pieza Cable. La bombilla tiene un sentido: si sigue apagada, conéctala al revés.",
         "learn": "La corriente solo circula por un circuito cerrado. La resistencia protege la bombilla LED de un exceso de corriente."
       },
       "cb-02-switch-control": {
         "title": "Enciende con el interruptor",
         "goal": "Enciende el faro con el interruptor cerrado y luego apágalo y enciéndelo de nuevo.",
-        "hint": "El interruptor ya está en el tablero. Colócalo en el circuito junto con la pila, la resistencia y la bombilla LED, y selecciónalo para abrirlo o cerrarlo.",
+        "hint": "El interruptor ya está en el tablero. Arrastra líneas entre los puntos para colocarlo en el circuito junto con la pila, la resistencia y la bombilla LED, y toca el interruptor para abrirlo o cerrarlo.",
         "learn": "Un interruptor abre o cierra el circuito. Cuando está abierto, el circuito queda cortado, no pasa corriente y la luz se apaga."
       },
       "cb-03-series-loop": {
         "title": "Un circuito para dos",
         "goal": "Enciende el faro y haz sonar el zumbador en el mismo circuito.",
-        "hint": "Pon la bombilla LED y el zumbador uno detrás de otro en el mismo circuito, con la resistencia y el interruptor. Luego abre el interruptor y observa qué pasa con los dos.",
+        "hint": "Arrastra líneas entre los puntos para poner la bombilla LED y el zumbador uno detrás de otro en el mismo circuito, con la resistencia y el interruptor. Luego abre el interruptor y observa qué pasa con los dos.",
         "learn": "En un circuito en serie la misma corriente pasa por todas las partes, una detrás de otra. Si abres el interruptor, todo se detiene."
       },
       "cb-04-parallel-branches": {
@@ -969,7 +982,7 @@
       "cb-06-short-circuit-recovery": {
         "title": "Vence al cortocircuito",
         "goal": "Enciende el faro aunque un cortocircuito funda antes el fusible.",
-        "hint": "Un cable puesto directamente sobre la pila funde el fusible. Repón el fusible, quita ese cable y vuelve a poner el receptor en el circuito.",
+        "hint": "Una pieza Cable puesta directamente sobre la pila funde el fusible. Repón el fusible, quita esa pieza Cable y vuelve a poner el receptor en el circuito.",
         "learn": "Un camino casi sin resistencia deja pasar una corriente enorme. Mantén siempre un receptor en el circuito y repón el fusible cuando arregles el fallo."
       },
       "cb-07-resistance-limits-current": {
