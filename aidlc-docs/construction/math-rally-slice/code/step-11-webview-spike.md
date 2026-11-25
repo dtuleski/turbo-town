@@ -47,6 +47,13 @@ Fix: call `Navigator.pop()`, which skips the `PopScope` check. After the fix, th
 - **No way out on iPhone during a race.** There is no Back button and the screen blocks the swipe-back gesture. The spike only leaves through the Fault overlay. MR4 needs an exit on the pause screen (and the pause button must sit below the status bar; the owner could not see it, see next point).
 - **Pause button hidden.** The HUD bar starts at y=0 under the status bar and Dynamic Island. MR4 must pad the HUD by the safe-area inset (or the host must lay the WebView out inside the safe area).
 
+## iPhone third session (with the touch fix, embed `app-52330e2d318b`)
+
+- Owner confirmed the joystick changes lanes. One Hard race finished: correct=7, 151 s, `high` profile throughout, median 58.8 fps, slowest 1% 52.5 fps, max frame 31 ms, guard reports 0, only the accepted `data:` violation. This race is gate run 1 for the iPhone (`spike-ios/gate-iphone-run1.csv`).
+- Note for step 13: the CSV trailer's `onePercentLowFps` is 1000 / p99 frame time (58.82 here). The step 13 report uses the mean of the slowest 1% of frames, computed from the rows (52.5 here), which is the stricter reading of G-4.
+
+Step 11 is complete on Android (emulator) and iPhone.
+
 ## Smaller notes
 
 - The WebView requests `/favicon.ico`, which fails (`ERR_NAME_NOT_RESOLVED`, or `ERR_INTERNET_DISCONNECTED` offline). It is harmless. The embed page can ship an empty `favicon.ico` file to silence it; a `data:` icon would break the page policy.
