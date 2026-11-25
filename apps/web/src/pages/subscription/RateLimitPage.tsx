@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useMutation } from '@apollo/client'
-import { CREATE_CHECKOUT_SESSION, CREATE_PORTAL_SESSION, CHANGE_PLAN } from '@/api/stripe'
+import { useMutation, useQuery } from '@apollo/client'
+import { CREATE_CHECKOUT_SESSION, CREATE_PORTAL_SESSION, CHANGE_PLAN, GET_SUBSCRIPTION } from '@/api/stripe'
 import { gameClient } from '@/api/client'
 import { ROUTES } from '@/config/constants'
 import { useState, useEffect } from 'react'
@@ -16,6 +16,10 @@ export default function RateLimitPage() {
   const [createCheckout] = useMutation(CREATE_CHECKOUT_SESSION, { client: gameClient })
   const [createPortal] = useMutation(CREATE_PORTAL_SESSION, { client: gameClient })
   const [changePlan] = useMutation(CHANGE_PLAN, { client: gameClient })
+  const { data: subData } = useQuery(GET_SUBSCRIPTION, { client: gameClient, fetchPolicy: 'network-only' })
+  // A plan bought in the iOS or Android app is managed by that store, not Stripe.
+  const planSource: string | null = subData?.getSubscription?.source ?? null
+  const storeName = planSource === 'apple' ? t('subscription.appStore') : planSource === 'google' ? t('subscription.googlePlay') : null
   const isRateLimited = location.state?.rateLimited === true
   const isPremiumRequired = location.state?.premiumRequired === true
 
@@ -74,7 +78,16 @@ export default function RateLimitPage() {
       }
       // UPGRADES and FREE→paid: Always go through Stripe Checkout
       const { data, errors } = await createCheckout({ variables: { input: { tier, priceId } } })
-      if (errors) { alert(`Error: ${errors[0]?.message}`); setLoading(null); return }
+      if (errors) {
+        const code = (errors[0] as any)?.extensions?.code || ''
+        if (code.startsWith('ALREADY_SUBSCRIBED_')) {
+          const store = code.endsWith('APPLE') ? t('subscription.appStore') : t('subscription.googlePlay')
+          alert(t('subscription.alreadySubscribedStore', { store }))
+        } else {
+          alert(`Error: ${errors[0]?.message}`)
+        }
+        setLoading(null); return
+      }
       if (data?.createCheckoutSession?.url) {
         window.location.href = data.createCheckoutSession.url
       } else { alert('Failed to get checkout URL.'); setLoading(null) }
@@ -144,6 +157,12 @@ export default function RateLimitPage() {
           )}
         </div>
 
+        {storeName && (
+          <div data-testid="store-managed-banner" className="mb-8 bg-white rounded-2xl p-4 text-center text-gray-800 font-semibold shadow-lg">
+            📱 {t('subscription.storeManaged', { store: storeName })}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {plans.map((plan) => {
             const planName = t(`subscription.plans.${plan.tierKey}.name`)
@@ -177,6 +196,10 @@ export default function RateLimitPage() {
                 {plan.tier === currentTier ? (
                   <button disabled className="w-full py-3 rounded-xl font-bold text-base bg-gray-200 text-gray-500 cursor-not-allowed">
                     {t('subscription.currentPlan')}
+                  </button>
+                ) : storeName ? (
+                  <button disabled className="w-full py-3 rounded-xl font-bold text-base bg-gray-200 text-gray-500 cursor-not-allowed">
+                    {t('subscription.managedInStore', { store: storeName })}
                   </button>
                 ) : plan.priceId ? (
                   <button onClick={() => handleSubscribe(plan.tier as 'LIGHT' | 'STANDARD' | 'PREMIUM', plan.priceId!)} disabled={loading === plan.tier}
