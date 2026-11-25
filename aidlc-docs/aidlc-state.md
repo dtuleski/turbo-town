@@ -203,7 +203,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - [x] Workspace Detection (COMPLETED; brownfield, worktree created from `origin/main`)
 - [x] Reverse Engineering (COMPLETED as delta: `inception/reverse-engineering/math-kart-delta-notes.md`)
 - [x] Requirements Analysis (COMPLETED, comprehensive)
-  - **Questions**: `inception/requirements/math-kart-requirement-verification-questions.md` (38; owner answers Q1, Q2, Q6, Q7, Q10 to Q14, Q19 to Q22; owner context Q30, Q37; the rest Recommended, pending owner approval)
+  - **Questions**: `inception/requirements/math-kart-requirement-verification-questions.md` (40, Q39 and Q40 added in iteration 2; owner answers Q1, Q2, Q6, Q7, Q10 to Q14, Q19 to Q22; owner context Q30, Q37; the rest Recommended, pending owner approval)
   - **Requirements**: `inception/requirements/math-kart-requirements.md` (56 FR, 26 NFR)
   - **Owner decisions of 2026-11-25**: pseudo-3D road; red X plus score effect; 2/3/4 paths; Super Hard 4 paths, 5 s, paid-only; free at launch; manual paid switch with checklist; after a switch Easy stays free for FREE users (server per-difficulty gate, normal shared allowance of 3 plays per 24 h); name "Math Rally"
 - [x] User Stories (COMPLETED, standard): `inception/user-stories/math-kart-personas.md` (4 personas), `inception/user-stories/math-kart-stories.md` (28 stories, all 56 FR traced)
@@ -212,6 +212,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
   - **Plan**: `inception/plans/math-kart-application-design-plan.md` (15 questions, recommendations pending owner approval)
   - **Artifacts**: `inception/application-design/math-kart-{components,component-methods,services,component-dependency,concept}.md`
 - [x] Units Generation (COMPLETED): `inception/application-design/math-kart-unit-of-work{,-dependency,-story-map}.md`; 5 units, 28 stories assigned, matrix acyclic
+- [x] Design review iteration 1: CHANGES_REQUESTED (1 HIGH, 7 MEDIUM, 11 NIT); iteration 2 revisions made on the requirements side and the design side (responses in `inception/requirements/math-kart-requirements.md` Section 13 and `inception/application-design/math-kart-components.md` Section 9); re-review pending
 - [ ] Owner approval of the inception package (pending; presented by the orchestrator)
 
 ### CONSTRUCTION PHASE (planned, not started)
@@ -221,10 +222,11 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - [ ] MR3 Backend: Game Service, Leaderboard, seed scripts (FD minimal, Code) - deploys two prod Lambdas on merge; unreachable until the seed
 - [ ] MR4 Web game and host (FD standard, NFR Design minimal, Code)
 - [ ] MR5 App host (FD standard, NFR Req minimal, Code) - iOS steps on the owner's Mac
-- [ ] Build and Test (once, after MR5; pre-launch checks PL1 to PL7)
+- [ ] Build and Test (once, after MR5; pre-launch checks PL1 to PL8, PL8 freezes protocol v1 at the launch commit)
 - Infrastructure Design: SKIP for all units (no cloud resource change)
 
 ### Open Items Carried Into Construction
-- Unverified: U1 to U7 (Phaser 4 version, size, Canvas fallback, `blob:` use; WebView plugin features; WebView frame rate), U13 (Flutter on this Windows machine), U14 (prod tables), U15 to U17 (Vite JSON tree-shaking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite)
+- Unverified: U1 to U7 (Phaser 4 version, size, Canvas fallback, `blob:` use; WebView plugin features; WebView frame rate), U13 (Flutter on this Windows machine), U14 (prod tables), U15 to U17 (Vite JSON tree-shaking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite), U18 (Android platform-view composition mode and its frame-rate effect), U19 (Phaser loader and iOS custom-scheme response status)
+- Scoring and fairness (iteration 2): score from the server's correct count only; fork and race times checked against the shared kinematics for the given answers; race rules frozen per protocol version after launch, clients send `mathRallyProtocol` to `startGame`
 - Release order: Leaderboard and Game Service, then web, then app, seed last (`inception/application-design/math-kart-unit-of-work-dependency.md` Section 3)
 - Quest Map: no node in v1; a World 1 node after a paid switch would first need the quest validator to honour the Easy-only exception (backlog)

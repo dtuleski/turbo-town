@@ -4,6 +4,7 @@
 **Stage**: INCEPTION - Application Design and Units Generation (planning for both, combined as for Quest Map)
 **Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `../user-stories/math-kart-stories.md` (MK-1 to MK-28), `../reverse-engineering/math-kart-delta-notes.md`, plus code read for this stage at `c6ccf0f` (cited in the design files)
 **Name**: the game is "Math Rally" (owner answer Q22). Files keep the `math-kart-` prefix for this inception run; Construction renames them first (`math-kart-execution-plan.md` Section 8).
+**Revision**: iteration 2, after the design review of 2026-11-25: Q3 (bundle drift check by source hash) and Q7 (protocol version passed to `start()`, update block, existing provider reused) reworded; letters unchanged.
 **Answers**: delegated by the owner. Every `[Answer]:` holds a recommendation marked **Recommended (pending owner approval)** with the evidence behind it. Changing a letter means revisiting the linked design section.
 
 ---
@@ -33,11 +34,11 @@ D) Other (please describe after [Answer]: tag below)
 ## Question 3
 Is the built app bundle committed to the repository?
 
-A) Yes, under `apps/mobile/assets/math_rally/`, with a `build-info.json` holding the protocol version and source commit
+A) Yes, under `apps/mobile/assets/math_rally/`, with a `build-info.json` holding the protocol version, a hash of the sources it was built from (`sourceHash`) and a hash per bundled file
 B) No; it is git-ignored and every app build runs the web build first
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). iOS builds run only on the owner's Mac; A lets `flutter build` work from a checkout without Node or `npm ci` in `apps/web`, and the app ships exactly the bundle that was tested. Drift is controlled by the build id (FR-MK-51), a Dart test that the bundle's protocol version is one the app supports, and a release checklist step "rebuild and commit the bundle". Cost: about 2 MB of binary assets in git, stored twice (web `public/` and app `assets/`).
+[Answer]: A - Recommended (pending owner approval). iOS builds run only on the owner's Mac; A lets `flutter build` work from a checkout without Node or `npm ci` in `apps/web`, and the app ships exactly the bundle that was tested. Drift is controlled by `sourceHash` (FR-MK-51): `--check-only` recomputes it over the game source, the shared Math Rally module, the assets, the embed config, the build scripts and the web lockfile, and the hashes of the committed files, and fails on the release commit when the bundle was built from other sources or edited by hand (PL7). A git commit id is not used, because the bundle is committed after it is built and would always name the parent commit. A Dart test checks that the bundle's protocol version is one the app supports. Cost: about 2 MB of binary assets in git, stored twice (web `public/` and app `assets/`).
 
 ## Question 4
 How is the pseudo-3D road drawn in Phaser?
@@ -70,12 +71,12 @@ C) Other (please describe after [Answer]: tag below)
 ## Question 7
 How does the app's play screen get the race payload from `startGame`?
 
-A) Reuse `GameSessionController`: an optional constructor flag asks `GameApi.startGame` for the Math Rally selection set, and the state carries the raw start payload; a dedicated provider builds the controller for Math Rally only
+A) Reuse `GameSessionController` and the existing `gameSessionProvider`: an optional `mathRallyProtocol` argument on `start()` makes `GameApi.startGame` use the Math Rally selection set and send the version from `ready`; the state carries the raw start payload; an additive `BlockReason.updateRequired` keeps an unsupported version from turning into an offline race
 B) A new controller copied from `GameSessionController`
 C) The screen calls `GameApi` directly without a session controller
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). The controller already owns the rules FR-MK-47 and FR-MK-50 need (blocked for rate limit, paywall and quest, offline round, recoverable submit with `completeOrRecover`, quest result). A is additive: existing games keep using `gameSessionProvider` unchanged. B duplicates those rules; C loses them.
+[Answer]: A - Recommended (pending owner approval). The controller already owns the rules FR-MK-47 and FR-MK-50 need (blocked for rate limit, paywall and quest, offline round, recoverable submit with `completeOrRecover`, quest result). A is additive: existing games call `start()` without the argument and see no change. The version is known only after the game reports `ready`, which is why it is a `start()` argument and not a constructor flag. B duplicates those rules; C loses them.
 
 ## Question 8
 How does the web ask the server for the race?

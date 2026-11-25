@@ -3,6 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Units Generation
 **Basis**: `math-kart-unit-of-work.md`, `math-kart-component-dependency.md`
+**Revision**: iteration 2, after the design review of 2026-11-25: contract freeze includes the protocol registry, release step 4 uses the source-hash check, and protocol changes after launch have their own order (Section 3).
 
 ---
 
@@ -46,7 +47,7 @@ flowchart LR
 
 - **Critical path**: MR1 (gate) then MR4 then MR5. The gate is the main schedule risk (R1).
 - **Parallel work**: MR2 runs alongside MR1 (pure TypeScript, useful whatever the gate decides, because the server generator is needed in every outcome, including a Flame port). MR3 can start as soon as MR2 merges, still in parallel with MR1.
-- **Contract freeze**: the start payload, the submission and the bridge messages (methods file Sections 1 and 4) are frozen at the end of MR2 Functional Design. MR4 builds against fixtures until MR3 is live.
+- **Contract freeze**: the start input (`mathRallyProtocol`), the start payload, the submission, the bridge messages and the protocol registry shape (methods file Sections 1, 4 and 5) are frozen at the end of MR2 Functional Design. MR4 builds against fixtures until MR3 is live. Protocol v1 itself stays tunable until launch and is frozen by PL8.
 - **If the gate fails**: MR2 and MR3 are kept (the backend does not depend on the renderer). MR4 and MR5 wait for the owner's decision (Q29). A Flame decision would replace MR4's game core and MR5's WebView parts, not the backend.
 
 ---
@@ -60,12 +61,14 @@ Nothing below runs during Inception. Every production AWS command uses `--profil
 | 1 | Merge MR2 | CI `deploy-lambdas.yml` redeploys Game, Leaderboard and Email Sender (no behaviour change) | CI run green; Game Lambda handler still `dist/index.handler` |
 | 2 | Merge MR3 | CI deploys `MemoryGame-LeaderboardService-prod` and `MemoryGame-GameService-prod`. Manual redeploy, if ever needed: `./scripts/deploy-game-lambda.sh prod` (never a hand-made zip) | Existing games start and complete; a FREE start of a paid game is still refused; no `MathRallySubmissionRejected` or errors in logs |
 | 3 | Deploy web MR4 | From `apps/web/`: `npx vercel link --project web-prod --yes && npx vercel --prod --yes`, then `npx vercel link --project web --yes` and restore `.env.local` with dev values | Hub unchanged (no catalog row yet); `/math-rally/setup` loads; entry chunk size as measured |
-| 4 | Release the app MR5 | Android build on Windows; iOS build and submission on the owner's Mac; store review | `--check-only` passed; build id recorded |
+| 4 | Release the app MR5 | Android build on Windows; iOS build and submission on the owner's Mac; store review | PL7 passed on the release commit (`--check-only` exit 0: source hash and bundled file hashes match); build id recorded |
 | 5 | Seed (go-live) | `scripts/seed-math-rally.sh --prod` (typed confirmation), then `scripts/verify-math-rally-seed.sh --prod` | Tile visible on web; one scored race completes and appears on the leaderboard |
 
 Step 4 may follow step 5 if the owner wants web first: older app versions never list Math Rally, and the new app version lists it as soon as it is installed because the catalog row already exists. This choice is the owner's and is recorded at release time.
 
 **Why this order**: the Leaderboard must accept `MATH_RALLY` before any event is published (a rejected event silently produces no entry); the Game Service must return `mathRally` before any host asks for it; the hub tile must lead to a live page, so the seed is last (same rule as the Circuit Builder seed script header).
+
+**After launch, a protocol change** (services Section 4.5) is released in this order: Game Service with the new version added to `MR_SUPPORTED_PROTOCOLS` (old versions kept), then web, then the app. Removing an old version is a separate, later owner decision; a client that still sends it gets the update message before any play is used.
 
 ---
 
@@ -86,8 +89,8 @@ Step 4 may follow step 5 if the owner wants web first: older app versions never 
 | When | What |
 |---|---|
 | End of MR1 | Gate report reviewed by the owner (pass, or decision) |
-| End of MR2 | Shared property tests; contract freeze |
+| End of MR2 | Shared property tests including the frame-loop timing test (AC-30.2); protocol v1 golden fixtures committed; contract freeze |
 | Before merging MR3 | All `services/game` and `services/leaderboard` suites; existing behaviour of the paid gate for every current paid game |
 | Before deploying MR4 | Vitest, `tsc`, build, bundle report, manual web checklist, MR3 live in production |
-| Before releasing MR5 | Dart tests, `flutter analyze`, manual device checklist on Android and iPhone, gate re-run in the WebView, `--check-only` |
-| After the seed | One scored race per host, leaderboard entry, History entry, FREE user refused at Super Hard |
+| Before releasing MR5 | Dart tests, `flutter analyze`, manual device checklist on Android and iPhone, gate re-run in the WebView in the recorded composition mode, `--check-only` on the release commit (PL7) |
+| After the seed | One scored race per host, leaderboard entry, History entry, FREE user refused at Super Hard; PL8 confirmed on the launch commit |

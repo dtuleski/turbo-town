@@ -2,8 +2,9 @@
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - Workflow Planning
-**Basis**: `../reverse-engineering/math-kart-delta-notes.md`, `../requirements/math-kart-requirements.md` (56 FR, 26 NFR), `../requirements/math-kart-requirement-verification-questions.md` (38 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22), `../user-stories/math-kart-stories.md` (28 stories), `../user-stories/math-kart-personas.md`, and the application design files
+**Basis**: `../reverse-engineering/math-kart-delta-notes.md`, `../requirements/math-kart-requirements.md` (56 FR, 26 NFR), `../requirements/math-kart-requirement-verification-questions.md` (40 questions, owner answers of 2026-11-25 including Q7, Q20, Q21, Q22; Q39 and Q40 added in iteration 2), `../user-stories/math-kart-stories.md` (28 stories), `../user-stories/math-kart-personas.md`, and the application design files
 **Name**: "Math Rally" (Q22). Files keep the `math-kart-` prefix in this inception run; Section 8 schedules the rename.
+**Revision**: iteration 2, after the design review of 2026-11-25: protocol-version risk driver, Functional Design scope of MR2 and MR3, quality gates (source-hash check, Android composition mode, PL8). Responses per finding: `../application-design/math-kart-components.md` Section 9.
 
 ---
 
@@ -48,6 +49,8 @@
 4. **R4 iOS on the owner's Mac only** - iOS steps written as owner tasks with exact commands; scheduled at the end of MR1 and MR5.
 5. **Production deploy on merge** - MR2 and MR3 additive; Math Rally paths unreachable until the seed; release order in `../application-design/math-kart-unit-of-work-dependency.md` Section 3.
 6. **R16 Free-difficulty drift** - one shared constant, copies checked by tests, server decides.
+7. **R18 Race rules change after launch** - rules frozen per protocol version with golden fixtures (PL8); clients send their version to `startGame`; the server keeps every supported version and is deployed first; an unsupported version is refused before a play is used.
+8. **R10 Perfect-play scripts** - the score uses only the server's correct count and times are checked against the kinematics of the given answers, so a script can equal a perfect human race and never exceed one.
 
 ---
 
@@ -142,8 +145,8 @@ Green means done or always runs, orange means conditional execute, grey means sk
 
 | Stage | MR1 Slice and gate | MR2 Shared core | MR3 Backend | MR4 Web | MR5 App |
 |---|---|---|---|---|---|
-| Functional Design | **Minimal**: track and speed constants for the slice, fork geometry, quality profiles, gate protocol and devices | **Standard**: operand ranges per question kind, distractor rules per kind, track distances meeting the layout contracts, timing tolerance | **Minimal**: score constants meeting AC-32.4, rejection text, completion sequence check | **Standard**: HUD layout at 320 and 1280 px, feedback timings, setup page, host state transitions, partly-free hub wording | **Standard**: play-screen states and overlays, lifecycle and Back rules, offline round |
-| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method, WebView plugin pin and feature checklist | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
+| Functional Design | **Minimal**: track and speed constants for the slice, fork geometry, quality profiles, gate protocol and devices | **Standard**: operand ranges per question kind, distractor rules per kind, track distances, acceleration and speeds meeting the layout contracts, timing tolerance from the frame-loop property test | **Minimal**: seed `displayOrder`, completion sequence check (score constants and refusal texts are fixed by the design) | **Standard**: HUD layout at 320 and 1280 px, feedback timings, pause panel, setup page, host state transitions, partly-free hub wording | **Standard**: play-screen states and overlays, lifecycle and Back rules, offline round |
+| NFR Requirements | **Standard**: Phaser version pin and licence, size budget method, frame-time measurement method (per Android composition mode), WebView plugin pin and feature checklist (asset loader, custom scheme and loader status, JS handlers, hardening) | SKIP | SKIP | SKIP | **Minimal**: WebView settings per platform as confirmed in MR1, iOS audio session, app size check |
 | NFR Design | **Minimal**: performance patterns (pooling, level of detail, render scale, delta clamp) | SKIP | SKIP | **Minimal**: CSP change if needed, lazy loading and prefetch, accessibility patterns | SKIP |
 | Infrastructure Design | SKIP | SKIP | SKIP | SKIP | SKIP |
 | Code Generation | EXECUTE | EXECUTE | EXECUTE | EXECUTE | EXECUTE |
@@ -153,7 +156,7 @@ Green means done or always runs, orange means conditional execute, grey means sk
 - **NFR Requirements for MR1 and MR5**: these are where the stack is still being confirmed (Phaser 4 version and size, WebView plugin features). The other units add no NFR beyond what NFR-MK-1 to 26 already state.
 - **NFR Design for MR1 and MR4**: performance patterns for the renderer, and CSP and accessibility patterns for the web host. MR3's security patterns are fully specified in `math-kart-services.md`.
 - **Infrastructure Design skipped**: no cloud resource is added or changed; one new CloudWatch metric is published from code into the existing namespace.
-- **Code Generation**: always. **Build and Test**: always, once after MR5, including the manual device checklists and pre-launch checks PL1 to PL7.
+- **Code Generation**: always. **Build and Test**: always, once after MR5, including the manual device checklists and pre-launch checks PL1 to PL8.
 
 ### OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER
@@ -170,7 +173,7 @@ The Security Baseline extension is enabled (`aidlc-state.md`, Extension Configur
 
 - **Approach**: hybrid. MR1 and MR2 in parallel; MR3 after MR2; MR4 after the gate; MR5 last.
 - **Critical path**: MR1 gate, MR4, MR5.
-- **Coordination points**: start payload, submission and bridge messages (frozen at the end of MR2 Functional Design); free-difficulty constant and its two copies; theme id `MATH_RALLY` across server, leaderboard, web and app.
+- **Coordination points**: start input (`mathRallyProtocol`), start payload, submission, bridge messages and the protocol registry shape (frozen at the end of MR2 Functional Design); the motion maths written in MR1 and moved to `packages/shared` in MR2; free-difficulty constant and its two copies; the update-message text and its Dart copy; theme id `MATH_RALLY` across server, leaderboard, web and app.
 - **Testing checkpoints**: `../application-design/math-kart-unit-of-work-dependency.md` Section 5.
 
 | Order | Package | Unit | Depends on | Production effect on merge |
@@ -198,11 +201,11 @@ No calendar estimate (no velocity data for this kind of work in this repository)
   1. `packages/shared`: `npx jest`, `npx tsc --noEmit`
   2. `services/game` and `services/leaderboard`: `npx jest`, `npx tsc --noEmit`; existing suites unchanged (pre-existing failures unchanged)
   3. `apps/web`: `npx vitest run`, `npx tsc --noEmit`, `npm run build`, bundle report within NFR-MK-3
-  4. `apps/mobile`: `flutter analyze`, `flutter test`; embed `--check-only`
-  5. Gate (NFR-MK-1, NFR-MK-2) passed on the reference devices with the full game
-  6. Manual checklists of MR1, MR4 and MR5 recorded; pre-launch checks PL1 to PL7 recorded
+  4. `apps/mobile`: `flutter analyze`, `flutter test`; embed `--check-only` on the release commit (source hash and bundled file hashes, PL7)
+  5. Gate (NFR-MK-1, NFR-MK-2) passed on the reference devices with the full game, Android in the recorded composition mode
+  6. Manual checklists of MR1, MR4 and MR5 recorded; pre-launch checks PL1 to PL8 recorded
   7. Security Baseline holds for all new code
-- **Integration testing**: one scored race per host through to the leaderboard and History; a FREE user refused at Super Hard; with an injected paid list in tests, FREE Easy allowed and Medium refused.
+- **Integration testing**: one scored race per host through to the leaderboard and History; a FREE user refused at Super Hard; with an injected paid list in tests, FREE Easy allowed and Medium refused; a start with an unsupported protocol refused before the rate limiter.
 - **Operational readiness**: existing metrics plus `MathRallySubmissionRejected`; no new alarm (pre-existing SECURITY-14 debt).
 
 ---
