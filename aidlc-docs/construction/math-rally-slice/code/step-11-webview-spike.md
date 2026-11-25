@@ -47,6 +47,27 @@ Fix: call `Navigator.pop()`, which skips the `PopScope` check. After the fix, th
 - The 20 s `ready` timeout also fired in the no-white-texture run. The overlay text is the same, so the user sees no difference.
 - iOS custom scheme `dashden-game://`: the plugin's handler has no status code field. A missing file returns null, which is what the iPhone run will check as the "missing file" case.
 
+## iPhone results (2026-11-25, owner at the phone)
+
+Device: iPhone, iOS 26.6.1, `flutter run --profile`. Spike branch at `25d76c2` plus two fixes needed before it ran:
+
+- The spike branch lacked the iOS 15 minimum (`671954e` from the mobile branch); cherry-picked as `b954dbc`.
+- `WebViewAssetLoader(AssetsPathHandler)` throws `UnimplementedError: createPlatformAssetsPathHandler` on iOS in 6.2.0-beta.3. It is now built on Android only (`25d76c2`). MR4 must do the same.
+
+| Item | Result | Evidence |
+|---|---|---|
+| App-internal origin | Pass. Every file served through `dashden-game://app/` by the custom scheme handler (index, JS bundle, CSS, 3 system textures, atlas, 4 sounds) | log, `scheme 200` lines |
+| Bridge round trip | Pass. `ready` with buildId `app-c70a5d2e5457` in 3 races | log |
+| Enforced page policy | Pass. Only the accepted `data:` probe (`img-src`, source `dashden-game://app/assets/index-CFGAm9AU.js`) | `violations-run1.json` |
+| Fault trigger | Pass. `error` `INTERNAL` twice, owner confirmed the overlay and Back | log, owner |
+| Full Hard race | Pass. `frames-run1.csv` (4,483 frames) and `violations-run1.json` written at the finish, pulled with `xcrun devicectl` | files |
+| Pause and Resume, airplane mode | Owner reported done | owner |
+| Loader test | **Open.** No `loader-test.json` was written | |
+| Sound and silent switch | **Open.** Owner to report | |
+| Frame rate (informational, the gate runs are step 12) | Median 30.3 fps, 1% low 29.4 fps, quality profile `low` from the first frame (likely stored after an earlier race in the session ran at the same rate). Frame times sit flat at 33.0 ms with the 99th percentile at 34 ms. A flat 33 ms is a cap, not load: WebKit throttles `requestAnimationFrame` to 30 fps in Low Power Mode. **Below P-1 as measured; to recheck with the cap ruled out** | `frames-run1.csv` |
+
+The Flutter log on iOS drops lines: the run's `raceFinished` and Violations lines never reached it, though the files prove the race finished. Step 12 relies on the saved files, not the log.
+
 ## iPhone steps (owner)
 
 1. Connect the iPhone by cable, unlock it, keep Developer Mode on.
