@@ -3,7 +3,7 @@
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
 **Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
-**Revision**: iteration 2, after the design review (responses in the requirements, Section 13). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. No story was added or removed.
+**Revision**: iteration 2, after the design review (responses in the requirements, Section 13.1). Stories changed: MK-2, MK-3, MK-6, MK-9, MK-10, MK-12, MK-13, MK-19, MK-20, MK-21, MK-22, MK-24, MK-25, MK-26. Iteration 3, after the second review (Section 13.2): MK-19 (malformed protocol values) and MK-21 (`data:` sources, inline styles, boot under the enforced CSP). No story was added or removed.
 
 ## Assessment and approach
 
@@ -248,7 +248,7 @@ As an app player, I want to race even when the server cannot be reached, knowing
 - [ ] Wrong lengths, out-of-range choices, non-integers, non-increasing times and extra keys are rejected
 - [ ] A fork time or race time more than the tolerance below what the kart needs for the given right and wrong answers is rejected; a property test shows honest frame-by-frame play never falls below it
 - [ ] The score uses only the server's count of correct answers; the same choices with different valid times score the same
-- [ ] A missing or unsupported protocol version at start is refused before the play counter, with the generic update message
+- [ ] A missing, malformed (for example `1.5` or `"1"`) or unsupported protocol version at start is refused before the play counter with the generic update message, never with a generic server error (which the app would turn into an offline race); other games ignore the field
 - [ ] Every rejection returns one generic message, writes nothing, publishes nothing, leaves the game open for a corrected submission, and emits a rejection metric
 - [ ] Completing an already completed game is refused; a FREE user cannot start Super Hard; one race uses one play
 - [ ] Owner note: a script that reads the questions can still play perfectly; because the score ignores client time, it can equal a perfect human race and never exceed one (NFR-MK-13)
@@ -273,8 +273,8 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - [ ] Release builds have web-content debugging off and file access off
 - [ ] Only the app-internal origin loads; external navigation and pop-ups are refused
-- [ ] The bundled page has its own enforced CSP that allows only its own app-internal origin (`'self'` for every source, including `connect-src`), so no request leaves the device; `blob:` appears only in `img-src` or `media-src`, and only if the engine's loader cannot avoid it (documented)
-- [ ] On iOS and Android, an image, an atlas JSON file and an audio file load over the app-internal origin through the engine's loader with no load error
+- [ ] The bundled page has its own enforced CSP that allows only its own app-internal origin (`'self'` for every source, including `connect-src`), so no request leaves the device; the page has no inline script, no `<style>` element and no `style` attribute in its markup; `blob:` or `data:` appear only in `img-src` (and `media-src`), and only if the engine cannot avoid them (documented, with the engine's built-in textures pointed at bundled files first)
+- [ ] On iOS and Android, the engine boots under that CSP with no CSP violation in the WebView console, and an image, an atlas JSON file and an audio file load over the app-internal origin through the engine's loader with no load error
 - [ ] The bridge exposes only the message channel, and both sides reject unknown, oversize or malformed messages
 - [ ] On web, the game works under the current CSP without `unsafe-eval` or inline scripts; any added source is narrow and documented
 

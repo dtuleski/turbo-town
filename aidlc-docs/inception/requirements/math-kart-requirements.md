@@ -5,7 +5,7 @@
 **Created**: 2026-11-25
 **Depth**: Comprehensive (new rendering engine, a second host platform, a new server-scored game type)
 **Source decisions**: `math-kart-requirement-verification-questions.md` (40 questions). Owner answers of 2026-11-25 are binding for Q1, Q2, Q6, Q7, Q10 to Q14 and Q19 to Q22 (Q7 and Q20 to Q22 relayed by the orchestrator later that day); the rest are **Recommended, pending owner approval**. No question is open. Q39 and Q40 were added in iteration 2.
-**Revision**: iteration 2, after the design review of 2026-11-25 (`.agents/tasks/math-kart-inception/review.md`). Responses to its findings are in Section 13.
+**Revision**: iteration 3, after the second design review of 2026-11-25 (`.agents/tasks/math-kart-inception/review.md`). Responses to the findings of both reviews are in Section 13.
 **Reverse engineering basis**: `../reverse-engineering/math-kart-delta-notes.md` (code read at `c6ccf0f`), on top of the stale baseline at `a328c74`.
 **Not written here**: design, components, units. Those follow in Application Design and Units Generation.
 
@@ -164,7 +164,7 @@ All values live in one shared constants module in `packages/shared` so the game 
 - AC-13.1 For 1000 generated races per difficulty, every question is of a kind listed for that difficulty and every correct answer is in range (for example no negative answer below difficulty 4). [U, property]
 
 **FR-MK-14 Answer format.** Every option (correct or not) is a canonical string of at most 4 characters and never a decimal. Two forms exist:
-- an integer from -999 to 999 matching `^-?(0|[1-9][0-9]{0,2})$`, never "-0" and never with a leading zero;
+- an integer from -999 to 999 matching `^(0|-?[1-9][0-9]{0,2})$`, so never "-0" and never with a leading zero;
 - a fraction matching `^-?[1-9][0-9]?/[1-9][0-9]?$` (for example `3/4`, `-1/2`, `10/3`).
 
 The correct option is written in lowest terms, and a correct answer whose value is a whole number is written as an integer (never `4/2`). Questions whose answer does not fit these forms are not generated (for example Super Hard powers stay at or below 999).
@@ -217,10 +217,10 @@ The correct option is written in lowest terms, and a correct answer whose value 
 - AC-25.1 With asset loading forced to fail, no `startGame` request is sent. [M]
 - AC-25.2 If `ready` has not arrived 20 s after the host starts loading the game, the host shows its generic load-failure message (FR-MK-44) and sends no `startGame`. [M]
 
-**FR-MK-26 Server-built race.** For `themeId` `MATH_RALLY`, the `startGame` input carries `mathRallyProtocol`, the protocol version the game reported in `ready` (FR-MK-49). The Game Service checks it against the versions it supports before the rate limiter runs. A missing or unsupported value is refused with one generic message ("Please update the app to play.") and uses no play. Otherwise the service draws a seed from a cryptographic random source, builds the race with that version's generator and parameters (FR-MK-18, Section 4.0), stores the seed, protocol version, path count and answer key on the game record, and returns the race payload (Section 6). Other games' `startGame` requests and responses do not change.
+**FR-MK-26 Server-built race.** For `themeId` `MATH_RALLY`, the `startGame` input carries `mathRallyProtocol`, the protocol version the game reported in `ready` (FR-MK-49). The Game Service checks it against the versions it supports before the rate limiter runs. A supported value is an integer on the supported list. Any other value (missing, `null`, a non-integer, a string, or an integer not on the list) is refused with one generic message ("Please update the app to play.") and uses no play. The start input schema passes the field through unchecked, as it already does for `questContext`, so the Game Service makes this decision rather than the schema. A schema failure would reach the player as the generic `INTERNAL_ERROR` ("An unexpected error occurred", `services/game/src/utils/error-mapper.ts`), which the app treats as a reason to start an offline race (FR-MK-50). Other themes ignore the field, whatever its value. Otherwise the service draws a seed from a cryptographic random source, builds the race with that version's generator and parameters (FR-MK-18, Section 4.0), stores the seed, protocol version, path count and answer key on the game record, and returns the race payload (Section 6). Other games' `startGame` requests and responses do not change.
 - AC-26.1 The response holds N questions with the path count's number of options each; the stored key has N entries in range. [I]
-- AC-26.2 A `startGame` response for any other theme has exactly the fields it has today. [I]
-- AC-26.3 `startGame` for `MATH_RALLY` with a missing or unsupported `mathRallyProtocol` is refused with the generic update message before the rate limiter runs: no game record is written and no usage is counted. [I]
+- AC-26.2 A `startGame` for any other theme behaves and responds exactly as today, both without a `mathRallyProtocol` field and with any value in it (for example `0` or `"x"`). [I]
+- AC-26.3 `startGame` for `MATH_RALLY` with `mathRallyProtocol` missing, `null`, `0`, `2` (not supported at launch), `1.5` or the string `"1"` is refused with the generic update message (never `INTERNAL_ERROR`) before the rate limiter runs: no game record is written and no usage is counted. [I]
 
 **FR-MK-27 Client sends choices, never a score.** `completeGame` for a Math Rally game reads only `gameId`, `completionTime`, `attempts` and a `mathRallySubmission` holding the chosen option per fork and the time each decision line was crossed. Client values for `correctAnswers`, `totalQuestions`, `score` or accuracy are ignored for this game.
 - AC-27.1 A submission that adds `correctAnswers: 15` to a race with 3 correct choices scores as 3 correct. [I]
@@ -241,7 +241,7 @@ The correct option is written in lowest terms, and a correct answer whose value 
 **FR-MK-32 Score breakdown.** A dedicated Math Rally breakdown returns the existing `ScoreBreakdown` shape: base x difficulty multiplier (1.0, 1.5, 2.0, 2.5) x accuracy factor (0.5 + accuracy) (Q17). The client-reported time does not enter the score. Race time already follows from the answers (FR-MK-30), so a time term would only repeat accuracy, and the client could still shave its reported time down to the tolerance. `speedBonus` is always 1.0 so the shape stays the same, and `completionTime` is still returned for display. The base values are chosen so an all-correct race scores exactly the Section 4.0 figure (Application Design fixes them).
 - AC-32.1 One more correct answer always raises the score. [U]
 - AC-32.2 Two submissions with the same choices and different valid times get the same score. [U]
-- AC-32.3 A race with 0 correct answers scores one third of an all-correct race at the same difficulty (0.5 / 1.5). [U]
+- AC-32.3 A race with 0 correct answers scores 1000, 1500, 2000 and 2668 at difficulty 1 to 4 (one third of the uncapped all-correct product, 0.5 / 1.5; at difficulty 4 that product is 8003 before the 8000 cap). [U]
 - AC-32.4 An all-correct race scores exactly 3000, 4500, 6000 and 8000 at difficulty 1, 2, 3 and 4. [U]
 - AC-32.5 The final score never exceeds 6000 at difficulty 1 to 3 while the game is free, nor 8000 otherwise; the cap is chosen from `PAID_GAME_THEME_IDS` membership, so the paid switch needs no score code change. [U]
 
@@ -296,7 +296,7 @@ The correct option is written in lowest terms, and a correct answer whose value 
 **FR-MK-46 Bundled files, app-internal origin.** The game build ships inside the app's assets and is served to the WebView from an app-internal origin (Q23). The page makes no request outside that origin, and every request to it is answered from the bundled files with a response the engine's loader accepts as a success (U19; Application Design fixes how, for example an HTTP 200 response with content type and length). Navigation away from that origin is blocked; pop-ups are blocked.
 - AC-46.1 With the device in airplane mode, a race already started loads and plays with no missing assets. [M]
 - AC-46.2 An attempt by the page to navigate to an external URL is refused. [M]
-- AC-46.3 On iOS and on Android, one image, one atlas JSON file and one audio file load through the engine's loader over the app-internal origin with no load error. [M: mobile spike]
+- AC-46.3 On iOS and on Android, under the page's enforced CSP (NFR-MK-17), the engine boots with no CSP violation in the WebView console, and one image, one atlas JSON file and one audio file load through the engine's loader over the app-internal origin with no load error. [M: mobile spike]
 
 **FR-MK-47 Flutter owns the API.** The play screen calls `startGame` and `completeGame` through the existing `GameSessionController` and `GameApi` (with `mathRallySubmission` added to `completeExtraKeys`), and passes the race payload into the WebView. The WebView never receives a token (Q24).
 - AC-47.1 No message sent to the WebView contains a token or the user's email or username. [U: Dart bridge test]
@@ -363,12 +363,12 @@ The correct option is written in lowest terms, and a correct answer whose value 
 - **NFR-MK-14 Fail closed and safe errors (SECURITY-09, SECURITY-15).** All new external calls have explicit error handling; errors shown to players are generic; game records are only written after validation passes; the existing global error boundary catches render errors.
 - **NFR-MK-15 Logging (SECURITY-03).** New server logs carry ids, difficulty, counts, score and rejection stage only; never choices, the answer key, tokens, emails or usernames. App and game logs never include tokens.
 - **NFR-MK-16 Supply chain (SECURITY-10, SECURITY-13).** Phaser is pinned to an exact version with the lockfile committed; the WebView plugin is pinned through `pubspec.lock`; `npm audit` and `flutter pub outdated` are run and recorded at construction; licences of Phaser, the plugin, any copied template code and every asset are recorded. No script, font or asset loads from a CDN.
-- **NFR-MK-17 Headers and CSP (SECURITY-04).** The game works under the current CSP without `unsafe-eval` and without inline scripts. If the engine needs an extra source (for example `blob:` for images or audio), it is added narrowly to `apps/web/vercel.json` and documented. The app's bundled page carries its own restrictive CSP: every source limited to its own app-internal origin (`'self'`), so nothing leaves the device. `connect-src` is `'self'` rather than `'none'` because the engine loads its own atlases and sounds with XHR from that origin (corrected in Application Design). The app page's CSP is enforced (unlike the site's Report-Only header), so the `blob:` rule above applies to it the same way: first configure the engine's loader so it does not create `blob:` URLs (for example load images as image elements); only if that is not possible add `blob:` to `img-src`, and to `media-src` if audio needs it, and document it (U5).
+- **NFR-MK-17 Headers and CSP (SECURITY-04).** *Web:* the game works under the current CSP without `unsafe-eval` and without inline scripts. If the engine needs an extra source, it is added narrowly to `apps/web/vercel.json` and documented. The web policy already allows `data:` in `img-src` and `'unsafe-inline'` in `style-src`, so a web check cannot show whether the game depends on either; the app page below is the stricter test. *App:* the bundled page carries its own restrictive CSP, enforced (unlike the site's Report-Only header), with every source limited to its own app-internal origin (`'self'`), so nothing leaves the device. `connect-src` is `'self'` rather than `'none'` because the engine loads its own atlases and sounds with XHR from that origin (corrected in Application Design). The page has no inline `<script>`, no `<style>` element and no `style` attribute in its markup; the font loads from a linked file or through a script API. `blob:` or `data:` appear only in `img-src` (and in `media-src` if audio needs them), and only if the engine cannot avoid them. The engine is configured first so that it needs neither: its loader loads images as image elements rather than through `blob:` URLs, and its built-in default, missing and white textures point at bundled image files instead of its `data:` defaults. Any `blob:` or `data:` source that remains is documented with its reason (U5, U20). Such a URL is created on the device and never fetched from outside it, so the aim of the app policy still holds.
 - **NFR-MK-18 WebView hardening (SECURITY-09).** In release builds web-content debugging is off, file access is off, only the app-internal origin loads, pop-ups and external navigation are blocked, and the JavaScript bridge exposes only the message channel.
 
 ### Privacy, IP and content
 - **NFR-MK-19 Child privacy.** No new personal data is collected or stored; per-fork choices are scored and discarded (only counts and score are kept); no ads; Benji is fictional with no likeness or details of the real child (Q31). **Requests:** the game core and the app bundle make no request outside their own origin (web: dashden.app; app: the app-internal origin) and load no third-party SDK. On web the host page keeps the site-wide requests that every dashden.app page makes today (Google Fonts from `apps/web/index.html`; Vercel Analytics and Speed Insights from `apps/web/src/main.tsx`); Math Rally adds none. Self-hosting the font is a backlog item (Section 3).
-- **NFR-MK-20 IP safety.** No Nintendo characters, names, items, sounds, music, track names or trade dress; no item boxes. A credits manifest lists source, licence and URL for every art, sound and font file (Q30). The final name "Math Rally" gets a quick trademark search before launch, and no title may follow the "<Name> Kart" pattern (R6).
+- **NFR-MK-20 IP safety.** No Nintendo characters, names, items, sounds, music, track names or trade dress; no item boxes. A credits manifest lists source, licence and URL for every art, sound and font file (Q30). The final name "Math Rally" gets a quick trademark search before launch, and no title may follow the `<Name> Kart` pattern (R6).
 - **NFR-MK-21 Age-appropriate content.** All text is friendly and non-competitive in tone toward wrong answers (no "you lose"); difficulty labels match the existing games.
 
 ### Quality
@@ -386,9 +386,12 @@ Field names are indicative; Application Design fixes them.
 
 ```text
 startGame(input: { themeId: "MATH_RALLY", difficulty: 1-4, questContext?,
-  mathRallyProtocol: int           (required for MATH_RALLY, from ready;
-                                    unsupported -> refused before the
-                                    rate limiter, no play used) })
+  mathRallyProtocol: unknown       (schema passes it through; for
+                                    MATH_RALLY it must be a supported
+                                    integer from ready, anything else ->
+                                    update message before the rate
+                                    limiter, no play used; other themes
+                                    ignore it) })
   returns the existing fields plus
   mathRally: {
     protocolVersion: 1             (the version the race was built with)
@@ -453,7 +456,7 @@ sequenceDiagram
 | Quest allowlist | `packages/shared/src/quest/themes.ts` | Not changed in v1 (no node) |
 | Game Service | `services/game/src/services/game.service.ts` | `startGame` race build for `MATH_RALLY`; the paid gate calls the shared per-difficulty gate (FR-MK-55); a third completion exit (before generic logic, like `completeCircuitBuilderGame`) that calls `finalizeQuest` |
 | Game Service | `services/game/src/services/score-calculator.service.ts` | Dedicated Math Rally breakdown |
-| Game Service | `services/game/src/utils/validation.ts`, `src/types/index.ts`, `src/handlers/game.handler.ts`, `src/repositories/game.repository.ts` | `mathRallyProtocol` declared in `startGameInputSchema` and `mathRallySubmission` in `completeGameInputSchema` (zod strips undeclared keys), the submission passed as `unknown` then validated; start response mapping; persist the `mathRally` attribute with its protocol version |
+| Game Service | `services/game/src/utils/validation.ts`, `src/types/index.ts`, `src/handlers/game.handler.ts`, `src/repositories/game.repository.ts` | `mathRallyProtocol` declared in `startGameInputSchema` and `mathRallySubmission` in `completeGameInputSchema` (zod strips undeclared keys), both passed as `unknown` (the `questContext` pattern) and validated in the service, because a schema failure becomes `INTERNAL_ERROR` (gap 14); start response mapping; persist the `mathRally` attribute with its protocol version |
 | Game Service | `services/game/src/services/review.service.ts` | Add `MATH_RALLY` |
 | Game Service docs | `services/game/schema.graphql` | Documentation only (handler routes by regex) |
 | Leaderboard | `services/leaderboard/src/types/index.ts`, `src/services/scoring.service.ts` | `GameType.MATH_RALLY`, dedicated validation entry; `src/services/anomaly.service.ts` is not changed (Q40), only covered by AC-38.2 |
@@ -482,7 +485,7 @@ sequenceDiagram
 2. **Two cap layers and duplicated premium lists.** `PREMIUM_GAME_THEMES` appears twice and differs from `PAID_GAME_THEME_IDS`. Math Rally's own completion exit avoids them, and AC-32.5 ties its cap to the shared paid list.
 3. **No lazy loading anywhere.** All routes are eager imports in `App.tsx`; Math Rally sets the first precedent (FR-MK-41).
 4. **StrictMode double mount** in development (`main.tsx`); the React host must guard against two engine instances (FR-MK-43).
-5. **CSP Report-Only, no `blob:` in `img-src`.** Possible engine needs are unverified (U5); handled by NFR-MK-17.
+5. **CSP Report-Only, no `blob:` in `img-src`, but `data:` and `'unsafe-inline'` styles allowed.** The web policy (`apps/web/vercel.json`) cannot reveal an engine that needs `data:` images or inline styles, while the app page's enforced `'self'` policy blocks both. Possible engine needs are unverified (U5, U20); handled by NFR-MK-17.
 6. **Site-wide third-party requests.** `index.html` loads Google Fonts and `main.tsx` mounts Vercel Analytics and Speed Insights on every page. The fonts are not usable by an offline app bundle (NFR-MK-10), and the Math Rally web routes inherit all three requests (NFR-MK-19 is scoped accordingly).
 7. **CORS allows only dashden.app origins.** One reason the app host, not the WebView, calls the API (Q24).
 8. **App games are native Dart ports.** Math Rally is the first WebView-hosted game; the app has no WebView dependency yet.
@@ -491,7 +494,7 @@ sequenceDiagram
 11. **Quest World 1 forbids paid games**, so after a paid switch a Math Rally World 1 node would need the quest config validator to honour the Easy-only exception first (Q35, backlog).
 12. **No browser, viewport or device test tooling** (as for Circuit Builder NFR-CB-26); feel and performance are manual (NFR-MK-22).
 13. **Leaderboard pattern checks expect varied scores and times.** `anomaly.service.ts` flags a score repeated 3 or more times among a player's earlier entries of the same game (up to 20 read) and completion times varying by less than 5% across them (delta notes Section 4). Math Rally has only N + 1 possible scores per difficulty and near-fixed times, so honest players will be flagged; the flag hides nothing today (FR-MK-38, Q40). The leaderboard also ranks by score only, so perfect races at one difficulty tie (R17).
-14. **The start input strips unknown keys.** `startGameInputSchema` in `utils/validation.ts` is a plain zod object, so `mathRallyProtocol` must be declared or it never reaches `startGame` (FR-MK-26).
+14. **The start input strips unknown keys, and a schema failure is a generic server error.** `startGameInputSchema` in `utils/validation.ts` is a plain zod object, so `mathRallyProtocol` must be declared or it never reaches `startGame`. The handler parses the input before the service runs (`handlers/game.handler.ts`), and `sanitizeError` (`utils/error-mapper.ts`) maps a `ZodError` to `INTERNAL_ERROR` "An unexpected error occurred", which the app's session controller treats as a reason for an offline race. The field is therefore declared as `unknown` and checked in the service (FR-MK-26).
 
 ---
 
@@ -501,10 +504,10 @@ sequenceDiagram
 |---|---|---|
 | R1 | The forked pseudo-3D road is harder to draw well, or too slow on phones in a WebView | Vertical slice first with the NFR-MK-1 gate; owner decides on fallback (Q29, Q38) |
 | R2 | Phaser 4 maturity: API gaps, fewer examples than Phaser 3, unknown size | Pin version early; spike verifies size and features; any change of engine version is escalated to the owner, not made silently |
-| R3 | WebView quirks: iOS audio and silent switch, Android WebView version spread, Android platform-view composition mode (U18), iOS custom-scheme responses the engine's loader may reject (U19), touch and zoom behaviour | Mobile spike on both platforms before full integration, including loading an image, an atlas and a sound over the app-internal origin (AC-46.3) and measuring both Android composition modes (NFR-MK-1, NFR-MK-18, FR-MK-46 to 48) |
+| R3 | WebView quirks: iOS audio and silent switch, Android WebView version spread, Android platform-view composition mode (U18), iOS custom-scheme responses the engine's loader may reject (U19), engine built-in `data:` textures or inline styles blocked by the app page's enforced CSP (U20), touch and zoom behaviour | Mobile spike on both platforms before full integration, including booting under the enforced CSP and loading an image, an atlas and a sound over the app-internal origin (AC-46.3) and measuring both Android composition modes (NFR-MK-1, NFR-MK-17, NFR-MK-18, FR-MK-46 to 48) |
 | R4 | iOS builds only on the owner's Mac, so iOS feedback is slow | Schedule iOS checks as explicit owner tasks with written steps |
 | R5 | Bundle budget missed | Measure in the slice; custom Phaser build or lighter assets (Q27 B) |
-| R6 | Name and trademark (reduced by Q22): the title "Math Rally" has no "Benji" and no "Kart"; "Benji" remains as the driver character's name (Benji film franchise exists) | Quick trademark search on "Math Rally" before launch; character shown as an original cartoon with no franchise look; no "<Name> Kart" title |
+| R6 | Name and trademark (reduced by Q22): the title "Math Rally" has no "Benji" and no "Kart"; "Benji" remains as the driver character's name (Benji film franchise exists) | Quick trademark search on "Math Rally" before launch; character shown as an original cartoon with no franchise look; no `<Name> Kart` title |
 | R7 | Look-alike IP: kart racing visuals drifting toward Mario Kart trade dress | NFR-MK-20 manifest and review of every asset; no item boxes, no Nintendo-like tracks or sounds |
 | R8 | Four signs unreadable on 320 px phones | NFR-MK-6 sizes and lane labels; verify on the reference phone |
 | R9 | Motion sickness or photosensitivity from fast scrolling roads | Reduced motion mode and NFR-MK-8 |
@@ -541,6 +544,7 @@ No web access was available in this session, so external facts below were not ch
 - **U15 to U17** are recorded in `../application-design/math-kart-components.md` Section 8 (Vite JSON chunking, CSP `'self'` on a custom scheme, Vercel static files before the SPA rewrite).
 - **U18** Which Android platform-view composition mode `flutter_inappwebview` 6.x uses by default for its WebView, which other mode it offers, and how much the mode changes WebGL frame rate on the reference Android phone (NFR-MK-1).
 - **U19** Whether Phaser 4's loader accepts the XHR response that an iOS custom-scheme handler produces. Phaser 3 treats any status other than 200 as a failure unless the URL's scheme is listed in its `loader.localScheme` setting, and a scheme-handler response can reach page script as status 0; Phaser 4's behaviour is unknown here (FR-MK-46, AC-46.3).
+- **U20** Whether Phaser 4 boots under the app page's enforced `img-src 'self'` and `style-src 'self'` (NFR-MK-17). Phaser 3 loads its built-in default, missing and white textures from `data:` URIs unless its `images` configuration names other files, and its white texture backs untextured WebGL fills. Whether Phaser 4 keeps these defaults and the setting, and whether it adds a `<style>` element or a markup `style` attribute (styles set through an element's `style` property are not blocked by CSP), is unknown here. *From knowledge of the Phaser 3 source and the CSP specification, not run here.* The mobile spike records every `data:` URL requested at boot (AC-46.3).
 
 ---
 
@@ -551,7 +555,7 @@ No web access was available in this session, so external facts below were not ch
 | SECURITY-01 Encryption | N/A for new code | No new store; one new attribute on the existing games table |
 | SECURITY-02 Access logging | N/A | No new network intermediary; existing API Gateway logging covers the operations |
 | SECURITY-03 App logging | Compliant (as specified) | NFR-MK-15 |
-| SECURITY-04 HTTP headers | Compliant for new code; pre-existing CSP Report-Only remains | NFR-MK-17; enforced app page CSP, with `blob:` only as a documented fallback |
+| SECURITY-04 HTTP headers | Compliant for new code; pre-existing CSP Report-Only remains | NFR-MK-17; enforced app page CSP with no inline script or style, and `blob:` or `data:` only as documented fallbacks in `img-src` and `media-src` |
 | SECURITY-05 Input validation | Compliant (as specified) | FR-MK-28, FR-MK-49, NFR-MK-11 |
 | SECURITY-06 Least privilege | N/A | No new IAM role or policy |
 | SECURITY-07 Network | N/A | No VPC or network change |
@@ -617,9 +621,11 @@ No blocking security finding at this stage. Statuses describe requirements as wr
 
 ---
 
-## 13. Responses to the Design Review (iteration 1)
+## 13. Responses to the Design Reviews
 
-Review: `.agents/tasks/math-kart-inception/review.md`, verdict CHANGES_REQUESTED. This table covers the findings that touch the requirements-side files (this file, the question file, the personas, the stories and the delta notes). Findings 9, 10, 14 to 18 and the `aidlc-state.md` part of 19 are design-side; where a design finding also needed a requirement, the requirement is listed.
+### 13.1 Iteration 1
+
+Review: `.agents/tasks/math-kart-inception/review.md` as written for iteration 1 (the file now holds the iteration 2 review), verdict CHANGES_REQUESTED. This table covers the findings that touch the requirements-side files (this file, the question file, the personas, the stories and the delta notes). Findings 9, 10, 14 to 18 and the `aidlc-state.md` part of 19 are design-side; where a design finding also needed a requirement, the requirement is listed.
 
 | Finding | Response | Where |
 |---|---|---|
@@ -638,3 +644,16 @@ Review: `.agents/tasks/math-kart-inception/review.md`, verdict CHANGES_REQUESTED
 | 15 NIT, no `ready` timeout | Design-side fix; requirement added | AC-25.2, MK-3 |
 | 19 NIT, R16 out of order | Addressed. R16 moved after R15 (the `aidlc-state.md` newline is design-side) | Section 9 |
 | Found while revising | The leaderboard's pattern checks will flag honest Math Rally players, and perfect races tie. New Q40 (recommended: accept and document, guard with a test) | FR-MK-38 (AC-38.2), gap 13, R17, Section 3, Q40, MK-22 |
+
+### 13.2 Iteration 2
+
+Review: `.agents/tasks/math-kart-inception/review.md` (iteration 2), verdict CHANGES_REQUESTED, HIGH 0, MEDIUM 1, NIT 6. The reviewer closed iteration 1 findings 1 to 17 and 19. This table covers the findings that touch the requirements-side files. Findings 2 (H4 and the shared module in the entry chunk) and 6 (floor argument and layout margin) concern only design files and need no requirement change.
+
+| Finding | Response | Where |
+|---|---|---|
+| 1 MEDIUM, the app page's `'self'`-only CSP blocks Phaser's built-in `data:` textures | Addressed on the requirements side. NFR-MK-17 now forbids inline `<script>`, `<style>` and markup `style` attributes on the app page, requires the engine's built-in textures to point at bundled files, and allows `blob:` or `data:` only in `img-src` (and `media-src`), only if unavoidable and documented. It also notes that the web policy already allows `data:` and inline styles, so only the app page shows the problem. AC-46.3 now requires a boot with no CSP violation. U20 records the unverified Phaser 4 behaviour. The Phaser configuration, `embed/index.html` rules and the MR1 step are design-side | NFR-MK-17, AC-46.3, gap 5, R3, U20 (Section 10), Section 11 SECURITY-04, MK-21 |
+| 3 NIT, the FR-MK-14 integer pattern accepts "-0" | Addressed. The pattern in FR-MK-14 now puts the optional minus sign inside the non-zero branch, the same pattern as the methods file, so "-0" no longer matches | FR-MK-14 |
+| 4 NIT, out-of-range `mathRallyProtocol` values never reach the update-message check | Addressed. FR-MK-26 states that the schema passes the field through unchecked (the `questContext` pattern) and the Game Service refuses every value other than a supported integer with the update message; other themes ignore the field. AC-26.2 covers other themes with any value; AC-26.3 lists missing, `null`, 0, 2, 1.5 and "1". The handler and error-mapper facts are added to the delta notes and gap 14 | FR-MK-26 (AC-26.2, AC-26.3), Section 6, Section 7 Game Service row, gap 14, delta notes Section 3, MK-19 |
+| 5 NIT, AC-32.3 conflicts with AC-32.4 at Super Hard | Addressed. AC-32.3 names 1000, 1500, 2000 and 2668 (one third of the uncapped all-correct product) | AC-32.3 |
+| 7 NIT, branch not pushed | Not done in this step: its instructions say commit, do not push. The push belongs to the final workflow step, which reports the pushed commit | Final step |
+| Found while revising | The pattern `<Name> Kart` was written as bare text, which Markdown renders as an HTML tag and hides. It is now a code span | NFR-MK-20, R6, Q22 answer |
