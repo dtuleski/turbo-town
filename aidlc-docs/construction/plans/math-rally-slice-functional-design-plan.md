@@ -12,7 +12,7 @@
 ## Plan
 
 - [x] 1. Answer the questions below (owner): Q2 to Q8 recommended options (A); Q1 open
-- [ ] 2. Resolve any ambiguous answer with a follow-up question: Q1 follow-up below (blocks only the gate, MR1 step 9)
+- [x] 2. Resolve any ambiguous answer with a follow-up question: Q1 follow-up 1a answered D
 - [x] 3. Write `construction/math-rally-slice/functional-design/business-logic-model.md` (slice race flow, track and speed constants (from MR2 v1 per Q3), fork geometry, quality profile rule)
 - [x] 4. Write `construction/math-rally-slice/functional-design/business-rules.md` (gate protocol and pass rule, devices, guard filtering rule, error message rule)
 - [x] 5. Write `construction/math-rally-slice/functional-design/domain-entities.md` (fixture race shape, quality profile, frame sample and CSV columns, gate report fields)
@@ -106,4 +106,4 @@ C) A phone the family already has (write the model after the tag)
 D) Gate on the iPhone and desktop only for now; add the Android gate before MR5
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: D (owner: "Android will be for a later stage"). The gate runs on the iPhone and desktop in MR1; the Android gate is added before MR5.

@@ -11,7 +11,7 @@ Owner answers: all recommended options of `construction/plans/math-rally-slice-n
 | P-3 | Android composition modes | Measure P-1 in each platform-view mode the plugin offers (expected: hybrid composition and texture layer); record the default | The shipping mode passes P-1 (the faster median if both pass) |
 | P-4 | Quality fallback | The `low` profile is entered only by the FD rule (120 samples, median > 20 ms) | Recorded per run: start profile, switch frame |
 
-The Android gate waits for the reference phone (FD follow-up question 1a). The emulator is never used for P-1 to P-3.
+Android is a later stage (owner answer 1a D): MR1's gate runs on the iPhone and desktop; P-1 to P-3 on Android run before MR5 on the reference phone named then. The emulator is never used for P-1 to P-3; it still runs the functional spike checks.
 
 ## 2. Size budgets (NFR-MK-3, first measurement)
 

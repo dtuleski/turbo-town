@@ -4,7 +4,7 @@
 
 | Device | Status | How |
 |---|---|---|
-| Reference Android phone | **Open** (owner question 1a) | Spike WebView, each composition mode the plugin offers |
+| Reference Android phone | **Later stage** (owner answer 1a D): not part of the MR1 gate; the Android gate runs before MR5 | Spike WebView, each composition mode the plugin offers |
 | Owner's iPhone (`iPhone18,3`, iPhone 17 Pro) | Confirmed (Q2 A) | Spike WebView |
 | Desktop Chrome and Safari | Confirmed | Gate build in `vite preview` on the MacBook |
 

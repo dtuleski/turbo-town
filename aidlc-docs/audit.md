@@ -2710,3 +2710,9 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Recorded answer A for MR1 NFR questions 1 to 6. Wrote construction/math-rally-slice/nfr-requirements/nfr-requirements.md (performance gate with rAF frame timestamps and per-composition-mode runs, size budgets with a zlib level-9 script, automated production-isolation check, reliability and fault-injection checks, CSP and WebView hardening, licences, Android minSdk rule) and tech-stack-decisions.md (Phaser 4.2.1 exact pin, MIT; flutter_inappwebview 6.1.5 exact pin on the spike branch, per-item fallback to 6.2.0-beta.3, then owner; feature checklist of 8 items; licence rules; plugin licence Apache-2.0 confirmed from GitHub). MR2 code generation approval still pending (not addressed in this reply). Presented MR1 NFR Requirements for approval."
 **Context**: CONSTRUCTION - MR1 NFR Requirements, approval pending
 ---
+## Math Rally - Approvals; MR1 NFR Design; MR3 Functional Design Question
+**Timestamp**: 2026-11-25T21:35:28Z
+**User Input**: "all approved. Android will be for a later stage"
+**AI Response**: "Recorded approval of MR2 Code Generation (MR2 complete, commit 108a092, not merged) and of MR1 NFR Requirements. MR1 FD follow-up 1a answered D: the Android gate moves to a later stage (before MR5); the MR1 gate runs on the iPhone and desktop. MR1 NFR Design (minimal) written with no owner questions (implementation patterns only): construction/math-rally-slice/nfr-design/nfr-design-patterns.md and logical-components.md; presented for approval. MR3 Backend Functional Design started: plan with 1 question (catalog displayOrder) at construction/plans/math-rally-backend-functional-design-plan.md, from a read-only scan of memory-game-catalog-prod (highest displayOrder 23)."
+**Context**: CONSTRUCTION - MR1 NFR Design approval pending; MR3 Functional Design question pending
+---
