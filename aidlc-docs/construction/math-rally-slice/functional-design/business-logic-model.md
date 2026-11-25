@@ -28,7 +28,7 @@ The slice uses protocol v1 from MR2 unchanged (`domain-entities.md` of MR2, Sect
 
 - Before the decision line the road has `paths` lanes. It widens from one lane's width to `paths x laneWidth` over the first 1000 units after `questionStart`, then stays at that width until the decision line.
 - The dashed decision line is drawn across the full width.
-- At the decision line the road splits into `paths` branches. `branchOffset(d, i, paths) = (i - (paths - 1) / 2) x branchSpacing x sin(pi x d / (branchLength + gapLength))`, where d is the distance past the decision line, so the offset is 0 at the split and at the merge. `branchSpacing = 1.6 x laneWidth`, which leaves a strip of grass between branches at the widest point.
+- At the decision line the road splits into `paths` branches. As built (MR1 Code Generation): branch i's centre is `(i - (paths - 1) / 2) x laneWidth x branchFactor(d)`, where d is the distance past the decision line and `branchFactor` is 1 at the split (each branch starts at its lane), rises to 1.6 at the middle of the fork (a strip of grass 0.6 lanes wide between branches), and falls smoothly to 0 over the merge gap (all branches meet in one lane). The first FD formula put every branch at the centre at the split, which conflicted with the lanes being spread at the decision line.
 - One answer sign per branch stands 400 units past the decision line. After the decision, the correct branch's sign shows a check mark until the merge (keeps the correct answer visible at least 1.5 s after a wrong pick).
 - The kart follows its branch's offset; the camera follows the kart.
 

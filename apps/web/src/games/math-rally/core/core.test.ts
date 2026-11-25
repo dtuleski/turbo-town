@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createRaceClock } from './clock';
 import { DEFAULT_JOYSTICK, JOYSTICK_IDLE, joystickStep, joystickVisible } from './joystick';
 import { moveLane, resizeLanes } from './lanes';
-import { branchOffset, cameraDepth, projectPoint } from './projection';
+import { branchCenter, branchFactor, cameraDepth, projectPoint } from './projection';
 import { QUALITY_STORAGE_KEY, chooseProfile, loadStartProfile, median, rememberLowProfile } from './quality';
 import { protocolSpec } from './shared';
 import { createTrackRuntime } from './trackRuntime';
@@ -96,12 +96,15 @@ describe('projection (G4)', () => {
     expect(near.y).toBeGreaterThan(far.y);
     expect(far.x).toBeCloseTo(160, 6);
   });
-  it('branch offset is 0 at split and merge and symmetric', () => {
-    expect(branchOffset(0, 0, 4, 6000, 1.6)).toBe(0);
-    expect(branchOffset(6000, 3, 4, 6000, 1.6)).toBe(0);
-    expect(branchOffset(3000, 0, 4, 6000, 1.6)).toBeCloseTo(-2.4, 6);
-    expect(branchOffset(3000, 3, 4, 6000, 1.6)).toBeCloseTo(2.4, 6);
-    expect(branchOffset(1000, 1, 3, 6000, 1.6)).toBe(0);
+  it('branches start at their lanes, spread, and meet in one lane at the merge', () => {
+    expect(branchFactor(0, 4000, 2000)).toBe(1);
+    expect(branchFactor(3000, 4000, 2000)).toBeCloseTo(1.6, 6);
+    expect(branchFactor(6000, 4000, 2000)).toBe(0);
+    expect(branchFactor(4999, 4000, 2000)).toBeGreaterThan(0);
+    expect(branchCenter(0, 0, 4, 1400, 4000, 2000)).toBeCloseTo(-2100, 6);
+    expect(branchCenter(3000, 3, 4, 1400, 4000, 2000)).toBeCloseTo(3360, 6);
+    expect(branchCenter(6000, 3, 4, 1400, 4000, 2000)).toBe(0);
+    expect(branchCenter(3000, 1, 3, 1400, 4000, 2000)).toBe(0);
   });
 });
 

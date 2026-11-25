@@ -25,14 +25,14 @@ All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
   - `MR/core/shared.ts` (funnel to MR2), `clock.ts`, `trackRuntime.ts`, `lanes.ts`, `joystick.ts`, `quality.ts` (with the `localStorage` adapter), `projection.ts`, `engineConfig.ts`, `fatalErrorGuard.ts` (with `installPageErrorListeners` and the same-origin filter).
   - Tests per the unit's completion criteria: lanes, joystick and visibility, clock (60 s pause adds 0 s), motion through the runtime (clock readings only, clamp, no pause carried), quality rule, projection and `branchOffset` (0 at split and merge), `engineConfigFields` (no `data:` or `blob:`; schemes merged without duplicates), guard and listeners (one error, foreign origin ignored).
   - `MR/core/isolation.test.ts`: `core/` imports neither Phaser nor DOM-only modules.
-- [ ] **Step 3. Fixture races**
+- [x] **Step 3. Fixture races**
   - `MR/__fixtures__/slice-easy.json` (2 paths, 10 forks) and `slice-hard.json` (4 paths, 15 forks), written by hand; a test checks each against MR2's option rules.
-- [ ] **Step 4. Phaser layer** (G1 to G3, G9)
+- [x] **Step 4. Phaser layer** (G1 to G3, G9)
   - `MR/MathRallyEngine.ts` (mount, init, destroy; owns the guard), `MR/phaser/scenes/{BootScene,RaceScene,HudScene}.ts`, `MR/phaser/render/{roadRenderer,spritePool,forkRenderer,kartRenderer}.ts`, `MR/phaser/input/{keyboard,joystickView}.ts`, `MR/bridge/hostChannel.ts` (direct channel).
   - Countdown, pseudo-3D road with hills and curves, real fork branches, signs and lane chips, kart lean, boost and bumpy slowdown, finish line, HUD, pause (opaque), patterns of the NFR design (one road draw call, pools, no allocation per frame, profiles).
-- [ ] **Step 5. Placeholder assets and credits**
+- [x] **Step 5. Placeholder assets and credits**
   - Shapes drawn in code; a few CC0 sprites and sounds (Kenney); `public/games/math-rally/sys/{default,missing,white}.png`; one texture atlas; `public/games/math-rally/CREDITS.json` listing every file.
-- [ ] **Step 6. Dev tools** (G17)
+- [x] **Step 6. Dev tools** (G17)
   - `MR/dev/frameOverlay.ts` (ring buffer, median and 1% low, CSV export, device label, Fault trigger on F8 and a button) and `MR/dev/violationRecorder.ts` (CSP violations and `data:` URLs).
 - [ ] **Step 7. Slice page and dev-only route**
   - `src/pages/dev/MathRallySlicePage.tsx` with the FD states and test ids; lazy route `/dev/math-rally-slice` in `src/App.tsx` only when `import.meta.env.DEV` or the build mode is `gate`; `?race=`, `?touch=1`, `?mount=0`.

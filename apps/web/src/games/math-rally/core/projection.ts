@@ -40,16 +40,27 @@ export function cameraDepth(fovDegrees: number): number {
 }
 
 /**
- * Lateral offset of a fork branch (MR1 FD Section 4), in road-width units:
- * (i - (paths - 1) / 2) x spacing x sin(pi x d / forkLength); 0 at the split (d = 0) and the merge.
+ * Spread factor of the fork branches at distance d past the decision line (MR1 FD Section 4, as built):
+ * 1 at the split (branches start at their lanes), widening to 1 + spread at the middle of the branch,
+ * then narrowing to 0 over the merge gap (all branches meet in one lane).
  */
-export function branchOffset(
-  distanceIntoFork: number,
+export function branchFactor(d: number, branchLength: number, gapLength: number, spread = 0.6): number {
+  if (d <= 0) return 1;
+  if (d <= branchLength) return 1 + spread * Math.sin((Math.PI * d) / (branchLength + gapLength));
+  if (d >= branchLength + gapLength) return 0;
+  const atBranchEnd = 1 + spread * Math.sin((Math.PI * branchLength) / (branchLength + gapLength));
+  const u = (d - branchLength) / gapLength;
+  return atBranchEnd * (1 - u * u * (3 - 2 * u)); // smoothstep down to 0
+}
+
+/** Lateral centre of lane or branch i (world units). */
+export function branchCenter(
+  d: number,
   branchIndex: number,
   paths: number,
-  forkLength: number,
-  spacing: number
+  laneWidth: number,
+  branchLength: number,
+  gapLength: number
 ): number {
-  if (distanceIntoFork <= 0 || distanceIntoFork >= forkLength) return 0;
-  return (branchIndex - (paths - 1) / 2) * spacing * Math.sin((Math.PI * distanceIntoFork) / forkLength);
+  return (branchIndex - (paths - 1) / 2) * laneWidth * branchFactor(d, branchLength, gapLength);
 }
