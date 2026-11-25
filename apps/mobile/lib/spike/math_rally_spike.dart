@@ -135,7 +135,9 @@ class _MathRallySpikeScreenState extends State<MathRallySpikeScreen> with Widget
 
   Future<void> _onDevFile(String payload) async {
     final f = jsonDecode(payload) as Map<String, dynamic>;
-    final name = (f['name'] as String).replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
+    // Every WebView starts at run 1, so a timestamp keeps one race from overwriting the last.
+    final stamp = DateTime.now().toIso8601String().substring(0, 19).replaceAll(':', '');
+    final name = '$stamp-${(f['name'] as String).replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_')}';
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/math-rally-spike/$name');
     await file.parent.create(recursive: true);
