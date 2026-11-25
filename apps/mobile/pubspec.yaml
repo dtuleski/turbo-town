@@ -43,6 +43,8 @@ dependencies:
   flutter_tts: ^4.2.5
   url_launcher: ^6.3.3
   path_drawing: ^1.0.1
+  flutter_inappwebview: 6.2.0-beta.3
+  path_provider: ^2.1.6
 
 dev_dependencies:
   flutter_test:
@@ -52,3 +54,10 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  # Math Rally WebView spike (branch spike/math-rally-webview only)
+  assets:
+    - assets/math_rally/
+    - assets/math_rally/assets/
+    - assets/math_rally/sfx/
+    - assets/math_rally/sys/
+    - assets/math_rally_spike/

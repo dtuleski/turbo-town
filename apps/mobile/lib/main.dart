@@ -9,11 +9,16 @@ import 'l10n/gen/app_localizations.dart';
 import 'l10n/locale_controller.dart';
 import 'ui/router.dart';
 import 'ui/theme.dart';
+import 'spike/math_rally_spike.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize graphql_flutter's Hive-backed cache store.
   await initHiveForFlutter();
+  if (const bool.fromEnvironment('MR_SPIKE')) {
+    runApp(const MathRallySpikeApp());
+    return;
+  }
   runApp(const ProviderScope(child: DashDenApp()));
 }
 

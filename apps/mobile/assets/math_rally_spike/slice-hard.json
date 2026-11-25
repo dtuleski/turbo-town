@@ -1,0 +1,229 @@
+{
+  "protocolVersion": 1,
+  "difficulty": 3,
+  "forks": 15,
+  "paths": 4,
+  "readSeconds": 6,
+  "questions": [
+    {
+      "kind": "square",
+      "operands": [
+        4
+      ],
+      "options": [
+        "16",
+        "8",
+        "25",
+        "17"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        1,
+        3,
+        33
+      ],
+      "options": [
+        "11",
+        "33",
+        "9",
+        "10"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "twoStep",
+      "operands": [
+        1,
+        37,
+        9,
+        4
+      ],
+      "options": [
+        "185",
+        "339",
+        "328",
+        "329"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "kind": "square",
+      "operands": [
+        2
+      ],
+      "options": [
+        "1",
+        "4",
+        "5",
+        "9"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        2,
+        3,
+        42
+      ],
+      "options": [
+        "14",
+        "21",
+        "28",
+        "30"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "kind": "twoStep",
+      "operands": [
+        1,
+        37,
+        3,
+        5
+      ],
+      "options": [
+        "96",
+        "106",
+        "108",
+        "116"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "twoStep",
+      "operands": [
+        2,
+        17,
+        8,
+        8
+      ],
+      "options": [
+        "200",
+        "81",
+        "210",
+        "198"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        4,
+        5,
+        95
+      ],
+      "options": [
+        "19",
+        "77",
+        "78",
+        "76"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        3,
+        5,
+        35
+      ],
+      "options": [
+        "21",
+        "7",
+        "19",
+        "20"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "square",
+      "operands": [
+        12
+      ],
+      "options": [
+        "144",
+        "24",
+        "169",
+        "142"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "twoStep",
+      "operands": [
+        2,
+        15,
+        6,
+        3
+      ],
+      "options": [
+        "63",
+        "33",
+        "53",
+        "61"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "square",
+      "operands": [
+        8
+      ],
+      "options": [
+        "16",
+        "81",
+        "64",
+        "65"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "kind": "percentOf",
+      "operands": [
+        50,
+        38
+      ],
+      "options": [
+        "19",
+        "9",
+        "91",
+        "29"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        2,
+        5,
+        30
+      ],
+      "options": [
+        "6",
+        "15",
+        "12",
+        "13"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "kind": "fractionOf",
+      "operands": [
+        1,
+        2,
+        86
+      ],
+      "options": [
+        "86",
+        "41",
+        "45",
+        "43"
+      ],
+      "correctIndex": 3
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "protocolVersion": 1,
+  "difficulty": 1,
+  "forks": 10,
+  "paths": 2,
+  "readSeconds": 8,
+  "questions": [
+    {
+      "kind": "add",
+      "operands": [
+        1,
+        10
+      ],
+      "options": [
+        "9",
+        "11"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "add",
+      "operands": [
+        17,
+        3
+      ],
+      "options": [
+        "20",
+        "14"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "add",
+      "operands": [
+        10,
+        1
+      ],
+      "options": [
+        "11",
+        "9"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "sub",
+      "operands": [
+        3,
+        1
+      ],
+      "options": [
+        "4",
+        "2"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "add",
+      "operands": [
+        18,
+        1
+      ],
+      "options": [
+        "17",
+        "19"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "sub",
+      "operands": [
+        4,
+        2
+      ],
+      "options": [
+        "2",
+        "6"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "add",
+      "operands": [
+        6,
+        9
+      ],
+      "options": [
+        "3",
+        "15"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "kind": "sub",
+      "operands": [
+        11,
+        4
+      ],
+      "options": [
+        "7",
+        "15"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "add",
+      "operands": [
+        19,
+        1
+      ],
+      "options": [
+        "20",
+        "18"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "kind": "add",
+      "operands": [
+        11,
+        1
+      ],
+      "options": [
+        "10",
+        "12"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
