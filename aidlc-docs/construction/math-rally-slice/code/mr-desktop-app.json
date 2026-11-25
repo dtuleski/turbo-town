@@ -1,0 +1,86 @@
+[
+  {
+    "browser": "chromium",
+    "policy": "app",
+    "baselineViolations": [
+      {
+        "kind": "csp",
+        "directive": "img-src",
+        "blockedScheme": "data",
+        "blockedOrigin": "",
+        "sourceFile": "",
+        "phase": "baseline"
+      }
+    ],
+    "raceViolations": [],
+    "startState": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "stateAfter12s": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "headlessFps": null,
+    "faultMessage": "The race stopped unexpectedly.",
+    "consoleErrors": [
+      "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that ",
+      "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note t",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Loading the image 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABAQMAAADD8p2OAAAAA1BMVEX/AP804Oa6AAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==' violates the following Content Security Polic",
+      "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that ",
+      "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note t",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Loading the image 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABAQMAAADD8p2OAAAAA1BMVEX/AP804Oa6AAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==' violates the following Content Security Polic"
+    ],
+    "pageErrors": [
+      "Math Rally fault trigger"
+    ]
+  },
+  {
+    "browser": "webkit",
+    "policy": "app",
+    "baselineViolations": [
+      {
+        "kind": "csp",
+        "directive": "img-src",
+        "blockedScheme": "data",
+        "blockedOrigin": "",
+        "sourceFile": "http://localhost:4173/assets/MathRallySlicePage-C4RNcN_K.js",
+        "phase": "baseline"
+      }
+    ],
+    "raceViolations": [],
+    "startState": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "stateAfter12s": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "headlessFps": null,
+    "faultMessage": "The race stopped unexpectedly.",
+    "consoleErrors": [
+      "Refused to load https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap because it does not appear in the style-src directive of the Content Security Policy.",
+      "Refused to load https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap because it does not appear in the style-src directive of the Content Security Policy.",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Refused to load data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABAQMAAADD8p2OAAAAA1BMVEX/AP804Oa6AAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg== because it does not appear in the img-src directi",
+      "Refused to load https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap because it does not appear in the style-src directive of the Content Security Policy.",
+      "Refused to load https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap because it does not appear in the style-src directive of the Content Security Policy.",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Refused to load data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABAQMAAADD8p2OAAAAA1BMVEX/AP804Oa6AAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg== because it does not appear in the img-src directi"
+    ],
+    "pageErrors": [
+      "Math Rally fault trigger"
+    ]
+  }
+]

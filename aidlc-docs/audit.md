@@ -2728,3 +2728,8 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "MR1 code generation plan approved. Starting Part 2 at Step 1 (Phaser pin and literals). MR3 FD question still open."
 **Context**: CONSTRUCTION - MR1 Code Generation Part 2
 ---
+## Math Rally - MR1 Code Generation Progress (steps 1 to 9)
+**Timestamp**: 2026-11-25T22:06:43Z
+**AI Response**: "Steps 1 to 9 done. Phaser 4.2.1 literals confirmed (same local schemes and built-in textures as Phaser 3 plus __NORMAL; loop stop and sound stop-all exist; images settable to files; 347 KB gzip). Finding: Phaser's CanvasFeatures probe loads one data: image at module evaluation; blocked under the app page policy, harmless for WebGL; owner decision needed before MR5. Web tests 961 pass; tsc clean; production build has no Phaser or slice code; budgets S-1 387.1 KB, S-2 50.8 KB, S-3 0.0 KB. Headless Chromium and WebKit under the app and web policies: the race adds no violation over the baseline; the fault trigger shows the race-stopped message. Visual fixes after screenshots. FD fork geometry updated as built."
+**Context**: CONSTRUCTION - MR1 Code Generation Part 2 in progress
+---

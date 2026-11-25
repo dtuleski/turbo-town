@@ -85,7 +85,7 @@ export class RaceScene extends Phaser.Scene {
 
     this.drawBackground();
     const g = this.add.graphics().setDepth(0);
-    this.road = new RoadRenderer(g, QUALITY.high.drawDistance, cameraDepth(100));
+    this.road = new RoadRenderer(g, QUALITY.high.drawDistance + 16, cameraDepth(100));
     const layout = this.runtime.layout();
     this.roadFrame = {
       position: 0,
@@ -294,6 +294,7 @@ export class RaceScene extends Phaser.Scene {
         v.outcomeUntilMs = elapsed + FEEDBACK_MS;
         v.coins = this.forks.coins();
         v.question = null;
+        v.options = [];
         this.play(outcome.correct ? 'chime' : 'buzz');
         this.ctx.announce(outcome.correct ? 'Correct!' : `Not quite. The answer is ${correctText}.`);
         event = 'decision';
@@ -375,20 +376,23 @@ export class RaceScene extends Phaser.Scene {
 
     const w = f.viewW;
     const h = f.viewH;
-    const kartScale = (w * 0.3) / 96;
+    const kartScale = Math.min(w * 0.28, h * 0.3) / 96;
+    const u = Math.min(w, h) / 600;
+    const joystick = Boolean(this.ctx.init?.touchUi) || this.view.touchSeen;
+    const kartBottom = joystick ? h - 180 * u : h * 0.95;
     let bump = 0;
     const slowed = m.kinMs < m.slowUntilMs;
     const boosted = m.kinMs < m.boostUntilMs;
     if (slowed && !this.ctx.init?.reducedMotion) bump = Math.sin(time / 25) * 3 * kartScale;
-    this.kart.setPosition(w / 2, h * 0.95 + bump).setScale(kartScale);
+    this.kart.setPosition(w / 2, kartBottom + bump).setScale(kartScale);
     this.kart.setRotation(this.kart.rotation * 0.85);
     if (this.flame) {
-      this.flame.setPosition(w / 2, h * 0.95);
+      this.flame.setPosition(w / 2, kartBottom);
       if (boosted && !this.flame.emitting) this.flame.start();
       if (!boosted && this.flame.emitting) this.flame.stop();
     }
     if (this.dust) {
-      this.dust.setPosition(w / 2, h * 0.95);
+      this.dust.setPosition(w / 2, kartBottom);
       if (slowed && !this.dust.emitting) this.dust.start();
       if (!slowed && this.dust.emitting) this.dust.stop();
     }
@@ -397,7 +401,7 @@ export class RaceScene extends Phaser.Scene {
   private placeSprites(): void {
     const f = this.roadFrame;
     const q = QUALITY[this.profile];
-    const base = Math.floor(f.position / f.segmentLength);
+    const base = this.road.base;
     let used = 0;
     const cutoff = Math.floor(f.drawDistance * q.spriteCutoff);
     for (let n = f.drawDistance; n >= 1 && used < this.sprites.length; n--) {
@@ -436,8 +440,9 @@ export class RaceScene extends Phaser.Scene {
     for (const s of this.signs) s.box.setVisible(false);
     if (decision === undefined || !q || v.phase === 'paused') return;
     const signZ = decision + SIGN_AHEAD;
-    const n = Math.floor(signZ / f.segmentLength) - Math.floor(f.position / f.segmentLength);
-    if (n < 1 || n > f.drawDistance) return;
+    const n = Math.floor(signZ / f.segmentLength) - this.road.base;
+    // Hidden once very close to the camera, where it would cover the screen; the HUD shows the answer.
+    if (n < 4 || n > f.drawDistance) return;
     const seg = this.road.segments[n];
     if (!seg || !seg.visible) return;
     const pxPerUnit = seg.p.w / (LANE_WIDTH / 2);

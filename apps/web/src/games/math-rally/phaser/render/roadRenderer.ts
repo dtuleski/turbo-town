@@ -53,6 +53,8 @@ export interface SegmentProjection {
  */
 export class RoadRenderer {
   readonly segments: SegmentProjection[];
+  /** World segment index of segments[0] in the last draw (first segment in front of the camera). */
+  base = 0;
   private readonly near: Projected = { x: 0, y: 0, w: 0, scale: 0 };
   private readonly cam: Camera = { x: 0, y: CAMERA_HEIGHT, z: 0, depth: 0 };
 
@@ -97,7 +99,8 @@ export class RoadRenderer {
     const g = this.g;
     g.clear();
     const seg = f.segmentLength;
-    const base = Math.floor(f.position / seg);
+    const base = Math.floor((f.position - CAMERA_BEHIND) / seg) + 1;
+    this.base = base;
     const forkLength = f.branchLength + f.gapLength;
     this.cam.x = f.cameraX;
     this.cam.z = f.position - CAMERA_BEHIND;
@@ -105,11 +108,13 @@ export class RoadRenderer {
     let x = 0;
     let dx = 0;
     // Camera height follows the hill under the kart so the road stays in view.
-    this.cam.y = CAMERA_HEIGHT + segmentShape(base, isCalm(f.position, f.decisionLine, forkLength)).hill;
+    const under = Math.floor(f.position / seg);
+    this.cam.y = CAMERA_HEIGHT + segmentShape(under, isCalm(f.position, f.decisionLine, forkLength)).hill;
 
     const prev = this.near;
     let havePrev = false;
-    for (let n = 0; n <= f.drawDistance; n++) {
+    const count = Math.min(this.segments.length - 1, f.drawDistance + Math.ceil(CAMERA_BEHIND / seg));
+    for (let n = 0; n <= count; n++) {
       const s = base + n;
       const z = s * seg;
       const calm = isCalm(z, f.decisionLine, forkLength);
@@ -144,8 +149,8 @@ export class RoadRenderer {
     const g = this.g;
     g.fillStyle(color, 1);
     g.beginPath();
-    g.moveTo(x1 - w1, y1);
-    g.lineTo(x1 + w1, y1);
+    g.moveTo(x1 - w1, y1 + 1);
+    g.lineTo(x1 + w1, y1 + 1);
     g.lineTo(x2 + w2, y2);
     g.lineTo(x2 - w2, y2);
     g.closePath();

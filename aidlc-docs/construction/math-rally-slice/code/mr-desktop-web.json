@@ -1,0 +1,74 @@
+[
+  {
+    "browser": "chromium",
+    "policy": "web",
+    "baselineViolations": [
+      {
+        "kind": "dataUrl",
+        "directive": "img-src",
+        "blockedScheme": "data",
+        "blockedOrigin": "",
+        "sourceFile": "http://localhost:4173/assets/MathRallySlicePage-C4RNcN_K.js:646:585",
+        "phase": "baseline"
+      }
+    ],
+    "raceViolations": [],
+    "startState": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "stateAfter12s": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "headlessFps": null,
+    "faultMessage": "The race stopped unexpectedly.",
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "pageErrors": [
+      "Math Rally fault trigger"
+    ]
+  },
+  {
+    "browser": "webkit",
+    "policy": "web",
+    "baselineViolations": [
+      {
+        "kind": "dataUrl",
+        "directive": "img-src",
+        "blockedScheme": "data",
+        "blockedOrigin": "",
+        "sourceFile": "",
+        "phase": "baseline"
+      }
+    ],
+    "raceViolations": [],
+    "startState": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "stateAfter12s": {
+      "phase": "running",
+      "message": "",
+      "result": null
+    },
+    "headlessFps": null,
+    "faultMessage": "The race stopped unexpectedly.",
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "pageErrors": [
+      "Math Rally fault trigger"
+    ]
+  }
+]

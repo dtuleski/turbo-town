@@ -158,6 +158,7 @@ export class HudScene extends Phaser.Scene {
     const v = this.view();
     if (!v) return;
     const paused = v.phase === 'paused';
+    v.touchSeen = this.touchSeen;
     this.pauseScreen.setVisible(paused);
     this.setText(this.forkText, `${Math.min(v.fork + 1, v.forks)}/${v.forks}`);
     this.setText(this.coinText, `Coins ${v.coins}`);
@@ -186,7 +187,9 @@ export class HudScene extends Phaser.Scene {
       const active = i === v.lane;
       this.setText(chip, active ? `\u25B2 ${v.options[i]}` : (v.options[i] as string));
       chip.setBackgroundColor(active ? '#facc15' : '#ffffff');
-      chip.setPosition(w / 2 + (i - (v.paths - 1) / 2) * Math.min(150 * u, w / (v.paths + 0.5)), h * 0.74).setScale(u);
+      const joystick = joystickVisible(Boolean(this.ctx.init?.touchUi), this.touchSeen);
+      const chipY = joystick ? h - 180 * u - Math.min(w * 0.28, h * 0.3) * 0.75 - 30 * u : h * 0.62;
+      chip.setPosition(w / 2 + (i - (v.paths - 1) / 2) * Math.min(150 * u, w / (v.paths + 0.5)), chipY).setScale(u);
     }
 
     const joyOn = joystickVisible(Boolean(this.ctx.init?.touchUi), this.touchSeen) && !paused && v.phase === 'running';

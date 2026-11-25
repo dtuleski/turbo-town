@@ -40,7 +40,7 @@ All web paths are under `apps/web/`; `MR` = `src/games/math-rally/`.
 - [x] **Step 8. Checks and gate build**
   - `scripts/check-math-rally-size.mjs` (S-1 to S-3), `scripts/check-math-rally-isolation.mjs` (I-1).
   - `vite build --mode gate` and a preview config that sends either CSP as an enforced header (production web policy, app page policy).
-- [ ] **Step 9. Desktop checks** (SEC-1, R-1, R-3, R-5)
+- [x] **Step 9. Desktop checks** (automated part done, see `code/step-9-desktop-checks.md`; the real-browser race moves into Step 12) (SEC-1, R-1, R-3, R-5)
   - Automated, headless Chromium and WebKit through Playwright run ad hoc with `npx` (not added to `package.json`): baseline run with `?mount=0`, then a race, under each policy; record violations and `data:` URLs; press the Fault trigger and check "The race stopped unexpectedly."
   - **[owner]** The same race once in real Chrome and real Safari on the MacBook, for the frame-rate numbers (step 12): written steps provided.
 - [ ] **Step 10. Embed build (spike level)**
