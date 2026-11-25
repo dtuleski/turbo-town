@@ -11,6 +11,11 @@
 // Components are vector glyphs. The only text on the canvas is the + and - polarity marks and the
 // short part captions; the captions arrive already localized through the scene, so nothing here owns
 // any copy.
+//
+// Connections are drawn ABOVE the parts, each with a dark halo and an end-cap on both of its dots, and
+// along `routeConnection`'s path, which bends around any part body a straight line would cross. A
+// line hidden behind a part, or lying on top of another link, made a correctly wired dot look
+// unconnected.
 
 import { ELEMENT_SPECS } from './circuitEngine'
 import { isConnectionEnergized } from './circuitPresentation'
@@ -21,8 +26,15 @@ import type {
   ElementKind,
   ElementResult,
 } from './circuitEngine'
-import type { Point, Viewport } from './circuitBuilderGeometry'
-import { TERMINAL_HIT_RATIO, cellToPoint, terminalAnchor } from './circuitBuilderGeometry'
+import type { ConnectionPath, Point, Viewport } from './circuitBuilderGeometry'
+import {
+  PART_BODY_RATIO,
+  TERMINAL_HIT_RATIO,
+  cellToPoint,
+  routeConnection,
+  sampleConnectionPath,
+  terminalAnchor,
+} from './circuitBuilderGeometry'
 import { connectionTargets, partCaption, polarityMarks } from './circuitBuilderAffordances'
 import type { SelectionState } from './circuitBuilderInteraction'
 import type { CircuitBuilderState } from './circuitBuilderState'
@@ -59,7 +71,11 @@ const PALETTE = {
   minus: '#93c5fd',
   caption: '#cbd5e1',
   target: '#67e8f9',
+  halo: '#0b1220',
 } as const
+
+/** Extra width of the dark outline under every trace, so a trace reads on top of a part glyph. */
+const TRACE_HALO_EXTRA = 3
 
 /** De-energized stroke width. Energized traces are drawn at `LINE_WIDTH_RATIO` times this, which
  * is the first of four non-colour channels separating the two states. */
@@ -155,39 +171,69 @@ function drawBackground(ctx: CanvasRenderingContext2D, viewport: Viewport, width
 }
 
 /** Static direction glyphs along a trace, substituting for the marching dashes when motion is
- * reduced. The channel is replaced, never dropped. */
-function drawChevrons(ctx: CanvasRenderingContext2D, from: Point, to: Point, size: number): void {
-  const dx = to.x - from.x
-  const dy = to.y - from.y
-  const length = Math.hypot(dx, dy)
-  if (length < size) {
+ * reduced. The channel is replaced, never dropped. Walks the polyline, so a curved trace gets
+ * its chevrons along the curve. */
+function drawChevrons(ctx: CanvasRenderingContext2D, points: readonly Point[], size: number): void {
+  let total = 0
+  for (let index = 1; index < points.length; index += 1) {
+    total += Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y)
+  }
+  if (total < size) {
     return
   }
-  const ux = dx / length
-  const uy = dy / length
   const arm = size * 0.26
   ctx.strokeStyle = PALETTE.glyphLive
   ctx.lineWidth = 1.6
   ctx.beginPath()
-  for (let distance = size * 0.5; distance < length; distance += size) {
-    const x = from.x + ux * distance
-    const y = from.y + uy * distance
-    ctx.moveTo(x - ux * arm - uy * arm, y - uy * arm + ux * arm)
-    ctx.lineTo(x, y)
-    ctx.lineTo(x - ux * arm + uy * arm, y - uy * arm - ux * arm)
+  let next = size * 0.5
+  let walked = 0
+  for (let index = 1; index < points.length; index += 1) {
+    const from = points[index - 1]
+    const dx = points[index].x - from.x
+    const dy = points[index].y - from.y
+    const length = Math.hypot(dx, dy)
+    if (length === 0) {
+      continue
+    }
+    const ux = dx / length
+    const uy = dy / length
+    while (next < walked + length) {
+      const x = from.x + ux * (next - walked)
+      const y = from.y + uy * (next - walked)
+      ctx.moveTo(x - ux * arm - uy * arm, y - uy * arm + ux * arm)
+      ctx.lineTo(x, y)
+      ctx.lineTo(x - ux * arm + uy * arm, y - uy * arm - ux * arm)
+      next += size
+    }
+    walked += length
   }
   ctx.stroke()
   resetContext(ctx)
 }
 
+function tracePath(ctx: CanvasRenderingContext2D, path: ConnectionPath): void {
+  ctx.beginPath()
+  ctx.moveTo(path.from.x, path.from.y)
+  if (path.kind === 'curve') {
+    ctx.bezierCurveTo(path.c1.x, path.c1.y, path.c2.x, path.c2.y, path.to.x, path.to.y)
+  } else {
+    ctx.lineTo(path.to.x, path.to.y)
+  }
+}
+
 function drawTrace(
   ctx: CanvasRenderingContext2D,
-  from: Point,
-  to: Point,
+  path: ConnectionPath,
   energized: boolean,
   scene: RenderScene
 ): void {
   ctx.lineCap = 'round'
+  // The halo first: a solid dark outline that separates the trace from whatever part it crosses.
+  ctx.strokeStyle = PALETTE.halo
+  ctx.lineWidth = TRACE_WIDTH_IDLE * (energized ? LINE_WIDTH_RATIO : 1) + TRACE_HALO_EXTRA
+  tracePath(ctx, path)
+  ctx.stroke()
+
   if (energized) {
     ctx.strokeStyle = PALETTE.traceLive
     ctx.lineWidth = TRACE_WIDTH_IDLE * LINE_WIDTH_RATIO
@@ -202,14 +248,12 @@ function drawTrace(
     ctx.lineWidth = TRACE_WIDTH_IDLE
     ctx.setLineDash([])
   }
-  ctx.beginPath()
-  ctx.moveTo(from.x, from.y)
-  ctx.lineTo(to.x, to.y)
+  tracePath(ctx, path)
   ctx.stroke()
   resetContext(ctx)
 
   if (energized && scene.reducedMotion) {
-    drawChevrons(ctx, from, to, scene.viewport.cellSize * 0.5)
+    drawChevrons(ctx, sampleConnectionPath(path), scene.viewport.cellSize * 0.5)
   }
 }
 
@@ -222,13 +266,16 @@ function terminalLookup(layout: CircuitLayout): Map<string, { element: CircuitEl
   return byNode
 }
 
+/** Draws every connection and returns the dots they end on, each marked live when any link that
+ * ends there is live. */
 function drawConnections(
   ctx: CanvasRenderingContext2D,
   scene: RenderScene,
   resultsById: Map<string, ElementResult>,
   suppressed: boolean
-): void {
+): Map<string, { at: Point; energized: boolean }> {
   const byNode = terminalLookup(scene.state.layout)
+  const caps = new Map<string, { at: Point; energized: boolean }>()
   for (const connection of scene.state.layout.connections) {
     const from = byNode.get(connection.from)
     const to = byNode.get(connection.to)
@@ -242,14 +289,36 @@ function drawConnections(
       resultsById.get(to.element.id),
       suppressed
     )
-    drawTrace(
-      ctx,
-      terminalAnchor(from.element, from.index, scene.viewport),
-      terminalAnchor(to.element, to.index, scene.viewport),
-      energized,
-      scene
-    )
+    const path = routeConnection(from, to, scene.state.layout.elements, scene.viewport)
+    drawTrace(ctx, path, energized, scene)
+    for (const [node, at] of [
+      [connection.from, path.from],
+      [connection.to, path.to],
+    ] as const) {
+      caps.set(node, { at, energized: energized || caps.get(node)?.energized === true })
+    }
   }
+  return caps
+}
+
+/** A small filled cap on every dot a connection ends on, drawn last so a linked dot is always
+ * visibly different from a free one. */
+function drawEndCaps(
+  ctx: CanvasRenderingContext2D,
+  caps: Map<string, { at: Point; energized: boolean }>,
+  viewport: Viewport
+): void {
+  const radius = Math.max(2, viewport.cellSize * 0.05)
+  ctx.lineWidth = 1.5
+  ctx.strokeStyle = PALETTE.halo
+  for (const cap of caps.values()) {
+    ctx.beginPath()
+    ctx.arc(cap.at.x, cap.at.y, radius, 0, Math.PI * 2)
+    ctx.fillStyle = cap.energized ? PALETTE.traceLive : PALETTE.traceIdle
+    ctx.fill()
+    ctx.stroke()
+  }
+  resetContext(ctx)
 }
 
 function drawTerminals(
@@ -426,7 +495,7 @@ function drawElement(
   // Only kinds the engine rates get a ramp. Everything else is a binary treatment.
   const intensity =
     !suppressed && hasBrightnessRamp(element.kind) && result !== undefined ? result.intensity : 0
-  const size = viewport.cellSize * 0.78
+  const size = viewport.cellSize * PART_BODY_RATIO
   const radius = Math.max(4, viewport.cellSize * 0.16)
 
   ctx.beginPath()
@@ -486,7 +555,7 @@ function drawAffordances(ctx: CanvasRenderingContext2D, scene: RenderScene): voi
   if (selection.armedKind !== null) {
     const ghostCell = selection.drag?.overCell ?? selection.cursor
     const centre = cellToPoint(ghostCell, viewport)
-    const size = viewport.cellSize * 0.78
+    const size = viewport.cellSize * PART_BODY_RATIO
     ctx.fillStyle = PALETTE.ghost
     ctx.beginPath()
     ctx.roundRect(
@@ -623,10 +692,12 @@ export function drawScene(ctx: CanvasRenderingContext2D, scene: RenderScene): vo
     }
   }
 
-  drawConnections(ctx, scene, resultsById, suppressed)
   for (const element of scene.state.layout.elements) {
     drawElement(ctx, element, scene, resultsById.get(element.id), suppressed)
   }
+  // Above the parts, never behind them, so every link visibly reaches the dot it is attached to.
+  const caps = drawConnections(ctx, scene, resultsById, suppressed)
+  drawEndCaps(ctx, caps, viewport)
   drawAffordances(ctx, scene)
   if (scene.state.fuseBlown) {
     drawFuseBadge(ctx, viewport)

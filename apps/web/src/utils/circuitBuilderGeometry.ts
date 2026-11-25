@@ -69,6 +69,10 @@ export const TERMINAL_OFFSET_RATIO = 0.42
 /** Pointer travel, in logical pixels, above which a press becomes a drag rather than a tap. */
 export const TAP_SLOP = 6
 
+/** Edge length of a drawn part body, as a fraction of `cellSize`. Connection routing steers around
+ * a square of this size, so the renderer must draw bodies at exactly this size too. */
+export const PART_BODY_RATIO = 0.78
+
 /** Square cells, centred in the canvas. Never smaller than one pixel. */
 export function computeViewport(
   canvas: { width: number; height: number },
@@ -178,6 +182,192 @@ export function distanceToSegment(point: Point, a: Point, b: Point): number {
   return Math.hypot(point.x - (a.x + t * dx), point.y - (a.y + t * dy))
 }
 
+/** One end of a connection: an element and which of its two terminals. */
+export interface ConnectionEnd {
+  element: CircuitElement
+  index: 0 | 1
+}
+
+/**
+ * How a connection is drawn and hit-tested: a straight segment between its two dots, or a cubic
+ * curve that bows around a part body the straight segment would cross.
+ */
+export type ConnectionPath =
+  | { kind: 'line'; from: Point; to: Point }
+  | { kind: 'curve'; from: Point; c1: Point; c2: Point; to: Point }
+
+interface Rect {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+
+/** Margin kept between a routed curve and a part body, as a fraction of `cellSize`. Smaller than
+ * the 0.03-cell gap between a body edge and its own dot, so a dot never sits inside its own rect. */
+const ROUTE_CLEARANCE_RATIO = 0.02
+/** How far a curve heads straight out of its dot before bending, as a fraction of `cellSize`. */
+const ROUTE_OUTWARD_RATIO = 0.75
+/** Tried in order, each on both sides, until a curve clears every body. */
+const ROUTE_LIFT_STEPS: readonly number[] = [1, 1.6, 2.4]
+const CURVE_SAMPLES = 24
+
+function bodyRect(element: CircuitElement, viewport: Viewport): Rect {
+  const centre = cellToPoint({ col: element.position.col, row: element.position.row }, viewport)
+  const half = (PART_BODY_RATIO / 2 + ROUTE_CLEARANCE_RATIO) * viewport.cellSize
+  return { left: centre.x - half, top: centre.y - half, right: centre.x + half, bottom: centre.y + half }
+}
+
+/** Liang-Barsky clip: true when any part of segment `a`-`b` lies inside `rect`. */
+function segmentHitsRect(a: Point, b: Point, rect: Rect): boolean {
+  const dx = b.x - a.x
+  const dy = b.y - a.y
+  const edges: ReadonlyArray<readonly [number, number]> = [
+    [-dx, a.x - rect.left],
+    [dx, rect.right - a.x],
+    [-dy, a.y - rect.top],
+    [dy, rect.bottom - a.y],
+  ]
+  let enter = 0
+  let leave = 1
+  for (const [p, q] of edges) {
+    if (p === 0) {
+      if (q < 0) {
+        return false
+      }
+      continue
+    }
+    const t = q / p
+    if (p < 0) {
+      if (t > leave) {
+        return false
+      }
+      enter = Math.max(enter, t)
+    } else {
+      if (t < enter) {
+        return false
+      }
+      leave = Math.min(leave, t)
+    }
+  }
+  return true
+}
+
+/** The path as a polyline: its two ends for a line, evenly spaced curve samples otherwise. */
+export function sampleConnectionPath(path: ConnectionPath): Point[] {
+  if (path.kind === 'line') {
+    return [path.from, path.to]
+  }
+  const points: Point[] = []
+  for (let step = 0; step <= CURVE_SAMPLES; step += 1) {
+    const t = step / CURVE_SAMPLES
+    const u = 1 - t
+    const a = u * u * u
+    const b = 3 * u * u * t
+    const c = 3 * u * t * t
+    const d = t * t * t
+    points.push({
+      x: a * path.from.x + b * path.c1.x + c * path.c2.x + d * path.to.x,
+      y: a * path.from.y + b * path.c1.y + c * path.c2.y + d * path.to.y,
+    })
+  }
+  return points
+}
+
+function polylineHitsAny(points: readonly Point[], rects: readonly Rect[]): boolean {
+  for (let index = 1; index < points.length; index += 1) {
+    const a = points[index - 1]
+    const b = points[index]
+    if (rects.some((rect) => segmentHitsRect(a, b, rect))) {
+      return true
+    }
+  }
+  return false
+}
+
+/** Unit vector from a part's centre out through one of its dots. */
+function outwardOf(end: ConnectionEnd, anchor: Point, viewport: Viewport): Point {
+  const centre = cellToPoint({ col: end.element.position.col, row: end.element.position.row }, viewport)
+  const length = Math.hypot(anchor.x - centre.x, anchor.y - centre.y)
+  return length === 0
+    ? { x: 0, y: 0 }
+    : { x: (anchor.x - centre.x) / length, y: (anchor.y - centre.y) / length }
+}
+
+/**
+ * The path a connection is drawn along.
+ *
+ * Straight when the segment between the two dots crosses no part body. Otherwise a curve that leaves
+ * each dot outward, away from its own part, and bows to one side far enough to clear every body. A
+ * straight line through a part would sit on top of that part's other links and hide which dot it
+ * really ends at (cb-01: battery right to LED right ran through the LED and over the resistor link).
+ * The bow prefers the top of the screen (the left for an upright chord), so the choice does not
+ * depend on which end the player started from, and stays inside the grid. When no tried curve is
+ * clear the straight segment is returned; the renderer draws it above the parts so it still visibly
+ * reaches its dot.
+ */
+export function routeConnection(
+  from: ConnectionEnd,
+  to: ConnectionEnd,
+  elements: readonly CircuitElement[],
+  viewport: Viewport
+): ConnectionPath {
+  const a = terminalAnchor(from.element, from.index, viewport)
+  const b = terminalAnchor(to.element, to.index, viewport)
+  const line: ConnectionPath = { kind: 'line', from: a, to: b }
+  const bodies = elements.map((element) => bodyRect(element, viewport))
+  const length = Math.hypot(b.x - a.x, b.y - a.y)
+  if (length === 0 || !bodies.some((rect) => segmentHitsRect(a, b, rect))) {
+    return line
+  }
+
+  const cell = viewport.cellSize
+  let side: Point = { x: (a.y - b.y) / length, y: (b.x - a.x) / length }
+  if (side.y > 0 || (side.y === 0 && side.x > 0)) {
+    side = { x: -side.x, y: -side.y }
+  }
+  const outA = outwardOf(from, a, viewport)
+  const outB = outwardOf(to, b, viewport)
+  const out = ROUTE_OUTWARD_RATIO * cell
+  const grid: Rect = {
+    left: viewport.originX,
+    top: viewport.originY,
+    right: viewport.originX + viewport.cols * cell,
+    bottom: viewport.originY + viewport.rows * cell,
+  }
+  // Longer links bow higher, so links that span each other nest instead of running together.
+  const baseLift = Math.max(0.7, 0.3 * (length / cell)) * cell
+  for (const step of ROUTE_LIFT_STEPS) {
+    for (const sign of [1, -1]) {
+      const lift = baseLift * step * sign
+      const curve: ConnectionPath = {
+        kind: 'curve',
+        from: a,
+        c1: { x: a.x + outA.x * out + side.x * lift, y: a.y + outA.y * out + side.y * lift },
+        c2: { x: b.x + outB.x * out + side.x * lift, y: b.y + outB.y * out + side.y * lift },
+        to: b,
+      }
+      const points = sampleConnectionPath(curve)
+      const insideGrid = points.every(
+        (point) =>
+          point.x >= grid.left && point.x <= grid.right && point.y >= grid.top && point.y <= grid.bottom
+      )
+      if (insideGrid && !polylineHitsAny(points, bodies)) {
+        return curve
+      }
+    }
+  }
+  return line
+}
+
+function distanceToPolyline(point: Point, points: readonly Point[]): number {
+  let best = Number.POSITIVE_INFINITY
+  for (let index = 1; index < points.length; index += 1) {
+    best = Math.min(best, distanceToSegment(point, points[index - 1], points[index]))
+  }
+  return best
+}
+
 function terminalIndexByNode(layout: CircuitLayout): Map<string, { element: CircuitElement; index: 0 | 1 }> {
   const byNode = new Map<string, { element: CircuitElement; index: 0 | 1 }>()
   for (const element of layout.elements) {
@@ -229,10 +419,10 @@ function nearestConnection(
     if (from === undefined || to === undefined) {
       continue
     }
-    const distance = distanceToSegment(
+    // The same route the renderer draws, so a tap on a curved link lands on that link.
+    const distance = distanceToPolyline(
       point,
-      terminalAnchor(from.element, from.index, viewport),
-      terminalAnchor(to.element, to.index, viewport)
+      sampleConnectionPath(routeConnection(from, to, layout.elements, viewport))
     )
     if (distance <= radius && (best === null || distance < best.distance)) {
       best = { connectionId: connection.id, distance }
