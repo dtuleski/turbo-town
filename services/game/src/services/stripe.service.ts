@@ -3,8 +3,9 @@ import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-sec
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { logger } from '../utils/logger';
-import { SubscriptionTier } from '@memory-game/shared';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
+import { PlanEvent, stripeStatus, toTier } from './entitlement';
+import { tierForStripePrice } from './stripe-prices';
 
 const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -78,7 +79,11 @@ export class StripeService {
   /**
    * Sync tier to rate-limits table (keeps both tables consistent)
    */
-  private async syncRateLimitTier(userId: string, tier: string): Promise<void> {
+  private async syncRateLimitTier(userId: string, record: { tier?: unknown }): Promise<void> {
+    await this.syncRateLimitTierRaw(userId, String(record.tier ?? 'FREE'));
+  }
+
+  private async syncRateLimitTierRaw(userId: string, tier: string): Promise<void> {
     try {
       await dynamoClient.send(new UpdateCommand({
         TableName: RATE_LIMITS_TABLE,
@@ -121,6 +126,13 @@ export class StripeService {
           userId: input.userId,
           tier: input.tier,
         },
+        // Copied onto the subscription, so later subscription events carry the user.
+        subscription_data: {
+          metadata: {
+            userId: input.userId,
+            tier: input.tier,
+          },
+        },
         success_url: `${process.env.FRONTEND_URL}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.FRONTEND_URL}/subscription`,
       };
@@ -157,7 +169,7 @@ export class StripeService {
       const stripe = await getStripeClient();
       const existing = await this.subscriptionRepo.getByUserId(userId);
 
-      if (!existing?.stripeSubscriptionId || existing?.status !== 'ACTIVE') {
+      if (!existing?.stripeSubscriptionId) {
         throw new Error('No active subscription found. Please subscribe first.');
       }
 
@@ -207,24 +219,13 @@ export class StripeService {
         status: updated.status,
       });
 
-      // Map tier to enum
-      const tierMap: Record<string, SubscriptionTier> = {
-        LIGHT: SubscriptionTier.Light,
-        STANDARD: SubscriptionTier.Standard,
-        PREMIUM: SubscriptionTier.Premium,
-      };
-      const subscriptionTier = tierMap[newTier] || SubscriptionTier.Free;
-
-      // Update DynamoDB immediately
-      await this.subscriptionRepo.updateSubscription({
-        userId,
-        tier: subscriptionTier,
-        status: 'ACTIVE',
-        stripeSubscriptionId: updated.id,
+      // Record the change now; the matching webhook event is then a duplicate.
+      const record = await this.applyStripeSubscription(updated, {
+        eventAt: new Date(),
+        eventId: `changePlan:${updated.id}:${Date.now()}`,
+        userIdHint: userId,
       });
-
-      // Sync rate limits
-      await this.syncRateLimitTier(userId, newTier);
+      if (record) await this.syncRateLimitTier(userId, record);
 
       return { success: true, tier: newTier };
     } catch (error) {
@@ -258,193 +259,125 @@ export class StripeService {
   }
 
   /**
-   * Handle Stripe webhook events
+   * Handle a Stripe event (webhook today; EventBridge later uses the same entry).
+   * Subscription events carry the full subscription, so they are the source of
+   * truth. Invoice events are logged only: Stripe follows each one with a
+   * customer.subscription.updated event that carries the new state.
    */
   async handleWebhook(event: Stripe.Event): Promise<void> {
-    logger.info('Processing Stripe webhook', { type: event.type, eventId: event.id });
+    logger.info('Processing Stripe event', { type: event.type, eventId: event.id });
+    const eventAt = new Date(event.created * 1000);
 
     try {
       switch (event.type) {
         case 'checkout.session.completed':
-          await this.handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+          await this.handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session, eventAt, event.id);
           break;
 
         case 'customer.subscription.created':
-          await this.handleSubscriptionCreated(event.data.object as Stripe.Subscription);
-          break;
-
         case 'customer.subscription.updated':
-          await this.handleSubscriptionUpdated(event.data.object as Stripe.Subscription);
+        case 'customer.subscription.deleted': {
+          const subscription = event.data.object as Stripe.Subscription;
+          const record = await this.applyStripeSubscription(subscription, {
+            eventAt,
+            eventId: event.id,
+            ended: event.type === 'customer.subscription.deleted',
+          });
+          if (record) await this.syncRateLimitTier(record.userId, record);
           break;
-
-        case 'customer.subscription.deleted':
-          await this.handleSubscriptionDeleted(event.data.object as Stripe.Subscription);
-          break;
+        }
 
         case 'invoice.payment_succeeded':
-          await this.handlePaymentSucceeded(event.data.object as Stripe.Invoice);
+        case 'invoice.payment_failed': {
+          const invoice = event.data.object as Stripe.Invoice;
+          logger.info('Stripe invoice event', {
+            type: event.type,
+            customerId: invoice.customer,
+            subscriptionId: (invoice as any).subscription,
+            amount: event.type === 'invoice.payment_failed' ? invoice.amount_due : invoice.amount_paid,
+          });
           break;
-
-        case 'invoice.payment_failed':
-          await this.handlePaymentFailed(event.data.object as Stripe.Invoice);
-          break;
+        }
 
         default:
-          logger.info('Unhandled webhook event type', { type: event.type });
+          logger.info('Unhandled Stripe event type', { type: event.type });
       }
 
-      logger.info('Webhook processed successfully', { type: event.type, eventId: event.id });
+      logger.info('Stripe event processed', { type: event.type, eventId: event.id });
     } catch (error) {
-      logger.error('Failed to process webhook', error as Error, { type: event.type, eventId: event.id });
+      logger.error('Failed to process Stripe event', error as Error, { type: event.type, eventId: event.id });
       throw error;
     }
   }
 
   /**
-   * Handle checkout.session.completed event
+   * Checkout finished: record the new subscription from Stripe's own data,
+   * then cancel any older subscription (upgrade through Checkout).
    */
-  private async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
+  async handleCheckoutCompleted(session: Stripe.Checkout.Session, eventAt: Date, eventId: string): Promise<{ userId: string; tier: string } | null> {
     const userId = session.metadata?.userId || session.client_reference_id;
-    const tier = session.metadata?.tier as 'LIGHT' | 'STANDARD' | 'PREMIUM';
-
-    if (!userId || !tier) {
-      logger.error('Missing userId or tier in checkout session', new Error('Missing userId or tier'), { sessionId: session.id });
-      return;
+    if (!userId) {
+      logger.error('Missing userId in checkout session', new Error('Missing userId'), { sessionId: session.id });
+      return null;
+    }
+    const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id;
+    if (!subscriptionId) {
+      logger.error('Checkout session has no subscription', new Error('No subscription'), { sessionId: session.id });
+      return null;
     }
 
-    logger.info('Checkout completed', { userId, tier, customerId: session.customer });
+    const stripe = await getStripeClient();
+    const previous = await this.subscriptionRepo.getRecord(userId);
+    const previousSubscriptionId = previous?.sources?.stripe?.externalId ?? previous?.stripeSubscriptionId;
 
-    // Cancel old subscription if exists (handles upgrade via checkout)
-    const existing = await this.subscriptionRepo.getByUserId(userId);
-    if (existing?.stripeSubscriptionId && existing.stripeSubscriptionId !== session.subscription) {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const record = await this.applyStripeSubscription(subscription, { eventAt, eventId, userIdHint: userId });
+    if (record) await this.syncRateLimitTier(userId, record);
+
+    if (previousSubscriptionId && previousSubscriptionId !== subscriptionId) {
       try {
-        const stripe = await getStripeClient();
-        await stripe.subscriptions.cancel(existing.stripeSubscriptionId, {
-          prorate: false, // Don't prorate — Stripe Checkout already handled pricing
-        });
-        logger.info('Cancelled old subscription on upgrade', {
+        await stripe.subscriptions.cancel(previousSubscriptionId, { prorate: false });
+        logger.info('Cancelled old subscription after checkout', {
           userId,
-          oldSubscriptionId: existing.stripeSubscriptionId,
-          newSubscriptionId: session.subscription,
+          oldSubscriptionId: previousSubscriptionId,
+          newSubscriptionId: subscriptionId,
         });
       } catch (cancelErr) {
-        // Log but don't fail — old sub may already be cancelled
+        // Old subscription may already be cancelled.
         logger.error('Failed to cancel old subscription', cancelErr as Error, {
           userId,
-          oldSubscriptionId: existing.stripeSubscriptionId,
+          oldSubscriptionId: previousSubscriptionId,
         });
       }
     }
 
-    // Map tier to SubscriptionTier enum
-    const tierMap: Record<string, SubscriptionTier> = {
-      LIGHT: SubscriptionTier.Light,
-      STANDARD: SubscriptionTier.Standard,
-      PREMIUM: SubscriptionTier.Premium,
-    };
-    const subscriptionTier = tierMap[tier] || SubscriptionTier.Free;
-
-    // Update subscription in DynamoDB
-    await this.subscriptionRepo.updateSubscription({
-      userId,
-      tier: subscriptionTier,
-      stripeCustomerId: session.customer as string,
-      stripeSubscriptionId: session.subscription as string,
-      status: 'ACTIVE',
-      currentPeriodStart: new Date(),
-      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      effectiveDate: new Date(),
-    });
-
-    // Sync tier to rate-limits table
-    await this.syncRateLimitTier(userId, tier);
+    return record ? { userId, tier: String(record.tier) } : null;
   }
 
   /**
-   * Handle customer.subscription.created event
+   * Turn a Stripe subscription into a plan event and apply it.
+   * Returns the stored record, or null if the user is unknown or the event was ignored.
    */
-  private async handleSubscriptionCreated(subscription: Stripe.Subscription): Promise<void> {
-    const userId = subscription.metadata?.userId;
-
+  async applyStripeSubscription(
+    subscription: Stripe.Subscription,
+    opts: { eventAt: Date; eventId: string; userIdHint?: string; ended?: boolean }
+  ) {
+    const customerId = typeof subscription.customer === 'string' ? subscription.customer : subscription.customer?.id;
+    let userId: string | undefined = opts.userIdHint || subscription.metadata?.userId;
+    if (!userId && customerId) {
+      userId = (await this.subscriptionRepo.getByStripeCustomerId(customerId))?.userId;
+    }
     if (!userId) {
-      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
-      return;
+      logger.error('Cannot find user for Stripe subscription', new Error('Unknown user'), {
+        subscriptionId: subscription.id,
+        customerId,
+      });
+      return null;
     }
 
-    logger.info('Subscription created', { userId, subscriptionId: subscription.id });
-  }
-
-  /**
-   * Handle customer.subscription.updated event
-   */
-  private async handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void> {
-    const userId = subscription.metadata?.userId;
-
-    if (!userId) {
-      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
-      return;
-    }
-
-    const status = subscription.status === 'active' ? 'ACTIVE' : 'INACTIVE';
-
-    logger.info('Subscription updated', { userId, subscriptionId: subscription.id, status });
-
-    await this.subscriptionRepo.updateSubscription({
-      userId,
-      stripeSubscriptionId: subscription.id,
-      status,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
-    });
-  }
-
-  /**
-   * Handle customer.subscription.deleted event
-   */
-  private async handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<void> {
-    const userId = subscription.metadata?.userId;
-
-    if (!userId) {
-      logger.error('Missing userId in subscription metadata', new Error('Missing userId'), { subscriptionId: subscription.id });
-      return;
-    }
-
-    logger.info('Subscription deleted', { userId, subscriptionId: subscription.id });
-
-    // Downgrade to FREE tier
-    await this.subscriptionRepo.updateSubscription({
-      userId,
-      tier: SubscriptionTier.Free,
-      status: 'INACTIVE',
-      stripeSubscriptionId: subscription.id,
-    });
-
-    // Sync tier to rate-limits table
-    await this.syncRateLimitTier(userId, 'FREE');
-  }
-
-  /**
-   * Handle invoice.payment_succeeded event
-   */
-  private async handlePaymentSucceeded(invoice: Stripe.Invoice): Promise<void> {
-    logger.info('Payment succeeded', { 
-      customerId: invoice.customer,
-      subscriptionId: (invoice as any).subscription,
-      amount: invoice.amount_paid,
-    });
-  }
-
-  /**
-   * Handle invoice.payment_failed event
-   */
-  private async handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
-    logger.error('Payment failed', new Error('Payment failed'), {
-      customerId: invoice.customer,
-      subscriptionId: (invoice as any).subscription,
-      amount: invoice.amount_due,
-    });
-
-    // TODO: Send notification to user about payment failure
+    const event: PlanEvent = stripeSubscriptionToPlanEvent(subscription, { ...opts, userId, customerId });
+    const result = await this.subscriptionRepo.applyEvent(event);
+    return result.changed ? result.record : null;
   }
 
   /**
@@ -461,4 +394,33 @@ export class StripeService {
       throw new Error('Invalid webhook signature');
     }
   }
+}
+
+/**
+ * Pure mapping from a Stripe subscription to a plan event (exported for tests).
+ */
+export function stripeSubscriptionToPlanEvent(
+  subscription: Stripe.Subscription,
+  opts: { userId: string; customerId?: string; eventAt: Date; eventId: string; ended?: boolean }
+): PlanEvent {
+  const item = subscription.items?.data?.[0] as any;
+  const priceId: string | undefined = item?.price?.id;
+  const tier = tierForStripePrice(priceId) ?? toTier(subscription.metadata?.tier);
+  if (!tierForStripePrice(priceId)) {
+    logger.warn('Unknown Stripe price, using metadata tier', { subscriptionId: subscription.id, priceId, tier });
+  }
+  // Older API versions put the period on the subscription, newer ones on the item.
+  const periodEnd: number | undefined = (subscription as any).current_period_end ?? item?.current_period_end;
+  return {
+    userId: opts.userId,
+    source: 'stripe',
+    tier,
+    status: opts.ended ? 'EXPIRED' : stripeStatus(subscription.status, Boolean(subscription.cancel_at_period_end)),
+    expiresAt: periodEnd ? new Date(periodEnd * 1000) : undefined,
+    externalId: subscription.id,
+    customerId: opts.customerId,
+    willRenew: !opts.ended && !subscription.cancel_at_period_end && subscription.status !== 'canceled',
+    eventAt: opts.eventAt,
+    eventId: opts.eventId,
+  };
 }
