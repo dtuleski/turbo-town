@@ -1,4 +1,4 @@
-# Math Kart - Personas
+# Math Rally - Personas
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
@@ -26,7 +26,7 @@
 - **Role**: Holds the account or the subscription; watches the child play now and then.
 - **Goal**: A game that teaches real math, is safe, and does not surprise her with costs or ads.
 - **Pain points**: Games that collect data about children, show ads or copy other brands; a free game that later disappears behind a paywall without explanation.
-- **Demands of the product**: No new data about the child and no ads or third-party calls (NFR-MK-19); original art, no borrowed characters (NFR-MK-20); calm mode for motion sensitivity (NFR-MK-7); a clear, existing upgrade path if the game becomes paid (FR-MK-54).
+- **Demands of the product**: No new data about the child and no ads or third-party calls (NFR-MK-19); original art, no borrowed characters (NFR-MK-20); calm mode for motion sensitivity (NFR-MK-7); Easy staying free if the game becomes paid, with the existing upgrade path for the other levels (FR-MK-54 to FR-MK-56).
 
 ## MKP4 - The Owner-Operator
 
@@ -41,9 +41,9 @@
 
 | Persona | A. Discover | B. Race | C. Content | D. In the app | E. Accessibility | F. Fairness and safety | G. Operations |
 |---|---|---|---|---|---|---|---|
-| MKP1 Benji | Yes | Yes | Yes | Yes | Yes | No | No |
+| MKP1 Benji | Yes | Yes | Yes | Yes | Yes | No | Yes (Easy stays free) |
 | MKP2 Sofia | Yes | Yes | Yes | No | No | Yes (fair score) | Yes (leaderboard) |
 | MKP3 Ana | Yes | Yes (wrong-answer learning) | Yes | No | Yes | Yes (child safety) | Yes (light site, paid switch) |
 | MKP4 Owner | No | No | Yes (distractor check) | Yes | No | Yes | Yes |
 
-**Text note:** Benji, the young racer, appears in discovery, racing, content, the app and accessibility stories. Sofia, the older student, appears in discovery, racing and content, plus fair scoring and the leaderboard. Ana, the parent, appears in discovery, the wrong-answer story, content, accessibility, child safety, site weight and the paid switch. The owner-operator appears in the distractor check, the app embedding, the fairness and safety checks, and operations. The table matches the persona lists on each story in `math-kart-stories.md`.
+**Text note:** Benji, the young racer, appears in discovery, racing, content, the app and accessibility stories, and in the "Easy stays free" story (MK-28). Sofia, the older student, appears in discovery, racing and content, plus fair scoring and the leaderboard. Ana, the parent, appears in discovery, the wrong-answer story, content, accessibility, child safety, site weight, the paid switch and Easy staying free. The owner-operator appears in the distractor check, the app embedding, the fairness and safety checks, and operations. The table matches the persona lists on each story in `math-kart-stories.md`.

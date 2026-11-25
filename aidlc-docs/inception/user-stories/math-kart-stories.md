@@ -1,8 +1,8 @@
-# Math Kart - User Stories
+# Math Rally - User Stories
 
 **Created**: 2026-11-25
 **Stage**: INCEPTION - User Stories (standard depth)
-**Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-54, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`
+**Basis**: `../requirements/math-kart-requirements.md` (FR-MK-1 to FR-MK-56, NFR-MK-1 to NFR-MK-26), `math-kart-personas.md`. Game name "Math Rally" (owner answer Q22); file names keep the `math-kart-` prefix for this inception run.
 
 ## Assessment and approach
 
@@ -17,15 +17,15 @@
 
 # A. Discover and set up
 
-## MK-1 - Find Math Kart in the hub
+## MK-1 - Find Math Rally in the hub
 **P0 · MKP1, MKP2, MKP3**
 
-As a player, I want a Math Kart tile in the hub on the website and in the app so I can find the game.
+As a player, I want a Math Rally tile in the hub on the website and in the app so I can find the game.
 
-- **Given** I am signed in **When** I open the hub on web or in the app **Then** I see the Math Kart tile with its icon, title and description in my language
+- **Given** I am signed in **When** I open the hub on web or in the app **Then** I see the Math Rally tile with its icon, title and description in my language
 - **When** I choose the "Science & Math" filter **Then** the tile is still shown
-- **When** I select the tile **Then** I land on the Math Kart setup screen
-- **Given** I use an older app version that does not know Math Kart **Then** no tile appears and nothing breaks
+- **When** I select the tile **Then** I land on the Math Rally setup screen
+- **Given** I use an older app version that does not know Math Rally **Then** no tile appears and nothing breaks
 
 *Requirements: FR-MK-35, FR-MK-36, FR-MK-45*
 
@@ -36,7 +36,7 @@ As a player, I want to pick Easy, Medium, Hard or Super Hard and see how to stee
 
 - **Given** I am on setup **Then** I see four difficulties, each with its number of paths (2, 3, 4, 4)
 - **And** a "How to play" panel shows the keys (arrows or A/D, P to pause) and the bottom joystick
-- **Given** I am on the FREE tier **Then** Super Hard is shown locked with the existing upgrade path, and I cannot start it
+- **Given** I am on the FREE tier **Then** Super Hard is shown locked with the existing upgrade path, and I cannot start it (after a paid switch Medium and Hard are locked too, MK-28)
 - **Given** I open the game from a Quest Map style link with `?difficulty=medium` **Then** setup is skipped and Medium starts
 
 *Requirements: FR-MK-40, FR-MK-45, FR-MK-53, Section 4.0*
@@ -168,12 +168,12 @@ As a player (or parent), I want each difficulty to ask the math that fits the ag
 
 # D. In the app
 
-## MK-13 - Play Math Kart inside the DashDen app
+## MK-13 - Play Math Rally inside the DashDen app
 **P0 · MKP1, MKP4**
 
-As an app player, I want Math Kart to work in the app just like on the website.
+As an app player, I want Math Rally to work in the app just like on the website.
 
-- **Given** I open Math Kart in the app **Then** I pick a difficulty on a native setup screen, race in the same game as on the website, and see the app's usual result screen
+- **Given** I open Math Rally in the app **Then** I pick a difficulty on a native setup screen, race in the same game as on the website, and see the app's usual result screen
 - **And** the game's files come from inside the app, not from the internet
 - **And** the app, not the game page, talks to the DashDen server; the game page never receives my login token, email or username
 - **Given** the game build in the app reports a protocol version the app does not support **Then** I see a short "update the app" message and no play is used
@@ -186,7 +186,7 @@ As an app player, I want Math Kart to work in the app just like on the website.
 
 - **When** I switch to another app or lock the phone **Then** the race is paused when I come back
 - **When** I press Android Back during a race **Then** the pause menu opens; a second confirmation quits
-- **When** I leave the Math Kart screen **Then** the game page is closed and no sound keeps playing
+- **When** I leave the Math Rally screen **Then** the game page is closed and no sound keeps playing
 - **And** the game uses the app's sound and reduced-motion settings
 - MANUAL: on iPhone, check what happens to game sound with the silent switch on, and record it (risk R3)
 
@@ -237,7 +237,7 @@ As an app player, I want to race even when the server cannot be reached, knowing
 ## MK-19 - The server decides the score (verification story)
 **P0 · MKP2, MKP4 · Security**
 
-- [ ] `startGame` for Math Kart builds the race on the server and stores the answer key with the game
+- [ ] `startGame` for Math Rally builds the race on the server and stores the answer key with the game
 - [ ] `completeGame` reads only the chosen lane per fork and the fork times; a sent `correctAnswers` or score is ignored
 - [ ] Wrong lengths, out-of-range choices, non-integers, non-increasing times and extra keys are rejected
 - [ ] A race faster than the kart's top speed allows is rejected
@@ -265,7 +265,7 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 - [ ] Release builds have web-content debugging off and file access off
 - [ ] Only the app-internal origin loads; external navigation and pop-ups are refused
-- [ ] The bundled page has its own CSP with no network access (`connect-src 'none'`)
+- [ ] The bundled page has its own CSP that allows only its own app-internal origin (`'self'` for every source, including `connect-src`), so no request leaves the device
 - [ ] The bridge exposes only the message channel, and both sides reject unknown, oversize or malformed messages
 - [ ] On web, the game works under the current CSP without `unsafe-eval` or inline scripts; any added source is narrow and documented
 
@@ -273,21 +273,21 @@ As an app player, I want to race even when the server cannot be reached, knowing
 
 # G. Platform and operations
 
-## MK-22 - Math Kart on the leaderboard and in my history
+## MK-22 - Math Rally on the leaderboard and in my history
 **P0 · MKP2**
 
-- **Given** I finish a race **Then** it appears on the leaderboard under Math Kart, and in History, Statistics and Achievements, on web and in the app
+- **Given** I finish a race **Then** it appears on the leaderboard under Math Rally, and in History, Statistics and Achievements, on web and in the app
 - **And** the leaderboard accepts every score and time the Game Service can produce (no silent drops)
-- Owner note: adding Math Kart raises the Achievements page's "play every game" total by one, as Circuit Builder did
+- Owner note: adding Math Rally raises the Achievements page's "play every game" total by one, as Circuit Builder did
 
 *Requirements: FR-MK-33, FR-MK-36, FR-MK-38*
 
-## MK-23 - Every registry knows Math Kart (verification story)
+## MK-23 - Every registry knows Math Rally (verification story)
 **P0 · MKP4**
 
-- [ ] Theme id `MATH_KART`, catalog id `math-kart`, routes and category are used consistently
-- [ ] A consistency test fails, naming the registry, when any web or backend registry lacks Math Kart (with a mutation suite)
-- [ ] The same test fails if `MATH_KART` is in the shared paid list but not in web `PREMIUM_GAMES` or the app's paid copy, or the reverse
+- [ ] Theme id `MATH_RALLY`, catalog id `math-rally`, routes and category are used consistently
+- [ ] A consistency test fails, naming the registry, when any web or backend registry lacks Math Rally (with a mutation suite)
+- [ ] The same test fails if `MATH_RALLY` is in the shared paid list but not in web `PREMIUM_GAMES` or the app's paid copy, or the reverse
 - [ ] Seed and verify scripts follow the Circuit Builder safety rules, and the production order (Leaderboard, Game Service, web and app live, seed last) is printed by the seed script
 
 *Requirements: FR-MK-35, FR-MK-36, FR-MK-37, FR-MK-39*
@@ -295,8 +295,8 @@ As an app player, I want to race even when the server cannot be reached, knowing
 ## MK-24 - The rest of dashden.app stays light (verification story)
 **P0 · MKP4, MKP3**
 
-- [ ] Phaser and the game code load only on the Math Kart game route; the entry chunk grows by at most 2 KB gzip
-- [ ] The hub and every other page request no Math Kart file
+- [ ] Phaser and the game code load only on the Math Rally game route; the entry chunk grows by at most 2 KB gzip
+- [ ] The hub and every other page request no Math Rally file
 - [ ] The game core has no React, network or Flutter dependency, and one game instance exists even under React StrictMode
 - [ ] Leaving the game frees the engine, its WebGL context and audio; five races in a row show no steady memory growth
 - [ ] Game code is at most 450 KB gzip and first-race assets at most 1.5 MB, or the miss is reported to the owner with options
@@ -326,14 +326,28 @@ As an app player, I want to race even when the server cannot be reached, knowing
 ## MK-27 - Free now, paid later if the owner decides
 **P0 (free at launch) and P1 (switch checklist) · MKP4, MKP3**
 
-As the owner-operator, I want Math Kart free at launch and a small, safe path to make it paid later.
+As the owner-operator, I want Math Rally free at launch and a small, safe path to make it paid later.
 
-- **Given** launch **Then** a FREE user can start Easy, Medium and Hard; Super Hard needs a paid tier, as in every game
-- **And** `MATH_KART` is in none of the paid lists
-- **Given** the owner decides to make it paid **Then** a written checklist covers the three paid lists, the Game Service and web deploys and the app release, and no score code changes (the cap follows the shared paid list)
-- **And** FREE users then see the existing paid-game behaviour, and their past scores stay (open decision Q21)
+- **Given** launch **Then** a FREE user can start Easy, Medium and Hard; Super Hard needs a paid tier, as in every game (Q7)
+- **And** `MATH_RALLY` is in none of the paid lists
+- **Given** the owner decides to make it paid **Then** a written checklist first confirms the Easy-only exception and its tests (MK-28), then covers the three paid lists, the Game Service and web deploys and the app release, and no score code changes (the cap follows the shared paid list)
+- **And** past scores and leaderboard entries stay
 
 *Requirements: FR-MK-32, FR-MK-37, FR-MK-53, FR-MK-54*
+
+## MK-28 - Easy stays free after a paid switch
+**P0 (gate ships in v1, inert while the game is free) · MKP1, MKP3, MKP4 · Security**
+
+As a FREE player (or a parent), I want Easy Math Rally to stay playable even if the game becomes paid, so a child who loves it is not shut out.
+
+- **Given** Math Rally has been switched to paid and I am on the FREE tier **When** I open the hub **Then** the tile shows the paid badge and "Easy is free", and selecting it opens setup (no redirect to the subscription page on web; the tile is playable in the app)
+- **And** on setup, Easy is playable; Medium, Hard and Super Hard show the paid badge, with the existing upgrade link on web and the app's neutral "not on your plan" state (no price, no purchase button)
+- **When** I start Easy **Then** the server accepts it and it uses one of my normal 3 FREE plays for the day, shared with every other game (no separate counter)
+- **Given** a hand-crafted request or an older app asks for Medium as a FREE user **Then** the server refuses it with the existing paid-required message and no play is used
+- **And** every other paid game still refuses FREE users at every difficulty
+- **And** before the switch (launch state) only Super Hard is locked for FREE users, on both hosts
+
+*Requirements: FR-MK-55, FR-MK-56, FR-MK-40, FR-MK-54 · Security: SECURITY-08, -11*
 
 ---
 
@@ -344,7 +358,7 @@ As the owner-operator, I want Math Kart free at launch and a small, safe path to
 | FR-MK-1 | MK-3, MK-20 | FR-MK-19 | MK-4 | FR-MK-37 | MK-23, MK-27 |
 | FR-MK-2 | MK-3, MK-20 | FR-MK-20 | MK-5 | FR-MK-38 | MK-22 |
 | FR-MK-3 | MK-3 | FR-MK-21 | MK-6 | FR-MK-39 | MK-23 |
-| FR-MK-4 | MK-10 | FR-MK-22 | MK-9, MK-14, MK-18 | FR-MK-40 | MK-2 |
+| FR-MK-4 | MK-10 | FR-MK-22 | MK-9, MK-14, MK-18 | FR-MK-40 | MK-2, MK-28 |
 | FR-MK-5 | MK-9 | FR-MK-23 | MK-4 | FR-MK-41 | MK-24 |
 | FR-MK-6 | MK-4 | FR-MK-24 | MK-10 | FR-MK-42 | MK-13, MK-24 |
 | FR-MK-7 | MK-4 | FR-MK-25 | MK-3 | FR-MK-43 | MK-24 |
@@ -358,8 +372,9 @@ As the owner-operator, I want Math Kart free at launch and a small, safe path to
 | FR-MK-15 | MK-12 | FR-MK-33 | MK-10, MK-22 | FR-MK-51 | MK-13 |
 | FR-MK-16 | MK-12 | FR-MK-34 | MK-19 | FR-MK-52 | MK-26 |
 | FR-MK-17 | MK-11 | FR-MK-35 | MK-1, MK-23 | FR-MK-53 | MK-2, MK-27 |
-| FR-MK-18 | MK-12 | FR-MK-36 | MK-1, MK-22, MK-23 | FR-MK-54 | MK-27 |
+| FR-MK-18 | MK-12 | FR-MK-36 | MK-1, MK-22, MK-23 | FR-MK-54 | MK-27, MK-28 |
+| FR-MK-55 | MK-28 | FR-MK-56 | MK-28 | | |
 
-All 54 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19; 17 and 18 in MK-21; 19 to 21 in MK-20. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 23 (compatibility), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
+All 56 FRs are covered. NFR coverage: NFR-MK-1 and 2 in MK-25; 3 to 5 in MK-24; 6 in MK-17; 7 in MK-16 and MK-18; 8 in MK-16; 11 to 15 in MK-19; 17 and 18 in MK-21; 19 to 21 in MK-20. NFR-MK-9 (localisation), 10 (offline fonts), 16 (supply chain), 22 (testability), 23 (compatibility), 24 (platforms), 25 (stack) and 26 (metrics) are cross-cutting and verified in Build and Test rather than through a single story.
 
-**Persona coverage**: MKP1 in MK-1 to MK-4, MK-6 to MK-11, MK-13 to MK-18; MKP2 in MK-1 to MK-5, MK-7 to MK-11, MK-19, MK-22; MKP3 in MK-1, MK-8, MK-11, MK-12, MK-16, MK-18, MK-20, MK-24, MK-27; MKP4 in MK-12, MK-13, MK-19 to MK-21, MK-23 to MK-27.
+**Persona coverage**: MKP1 in MK-1 to MK-4, MK-6 to MK-11, MK-13 to MK-18, MK-28; MKP2 in MK-1 to MK-5, MK-7 to MK-11, MK-19, MK-22; MKP3 in MK-1, MK-8, MK-11, MK-12, MK-16, MK-18, MK-20, MK-24, MK-27, MK-28; MKP4 in MK-12, MK-13, MK-19 to MK-21, MK-23 to MK-28.

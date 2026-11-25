@@ -1,6 +1,7 @@
-# Math Kart - Requirement Verification Questions
+# Math Rally - Requirement Verification Questions
 
-**Feature**: Math Kart (working name), a kart-racing math game where Benji picks the road fork whose sign shows the right answer
+**Feature**: Math Rally (final name, owner answer to Q22 of 2026-11-25), a kart-racing math game where Benji, the in-game driver, picks the road fork whose sign shows the right answer
+**File names**: this inception run keeps the `math-kart-` file prefix so the review and report steps find the files; the first Construction step renames them to `math-rally-` (see `../plans/math-kart-execution-plan.md`). Requirement, story and persona ids keep their `MK` labels.
 **Created**: 2026-11-25
 **Basis**: owner request of 2026-11-25 (logged verbatim in `aidlc-docs/audit.md`), the "Option A" context agreed in conversation, and code read at `c6ccf0f` (see `../reverse-engineering/math-kart-delta-notes.md`).
 
@@ -11,7 +12,7 @@ Every `[Answer]:` is filled with one of these labels:
 - **Owner answer (2026-11-25)**: given by the owner; binding.
 - **Owner context (agreed earlier)**: agreed in the conversation before this stage; binding.
 - **Recommended (pending owner approval)**: the analyst's recommendation with a one-line rationale. The owner delegated these; change the letter to override, then revisit the linked requirements (traceability table in `math-kart-requirements.md` Section 12).
-- **OPEN**: the owner has not decided. A recommendation is given, and the question stays open until the owner answers.
+- **OPEN**: the owner has not decided. A recommendation is given, and the question stays open until the owner answers. No question is OPEN any more: the owner answered Q7, Q20, Q21 and Q22 on 2026-11-25 (relayed by the orchestrator).
 
 ## Map from the brief's open decisions
 
@@ -19,11 +20,11 @@ Every `[Answer]:` is filled with one of these labels:
 |---|---|---|
 | 1 Road rendering | Q1 | Owner answer |
 | 2 Wrong and right answer, race end | Q2, Q3, Q4, Q5 | Q2 owner; Q3 to Q5 recommended |
-| 3 Fork mechanics | Q6, Q7, Q8, Q9 | Q6 owner; Q7 OPEN; Q8, Q9 recommended |
+| 3 Fork mechanics | Q6, Q7, Q8, Q9 | Q6, Q7 owner; Q8, Q9 recommended |
 | 4 Math content and distractors | Q10, Q11 | Owner answer |
 | 5 Controls and accessibility | Q12, Q13, Q14 | Owner answer |
 | 6 Anti-cheat and scoring | Q16, Q17, Q18 | Recommended |
-| 7 Tier and name | Q19, Q20, Q21, Q22 | Q19 owner; Q20 to Q22 OPEN |
+| 7 Tier and name | Q19, Q20, Q21, Q22 | Owner answer |
 | 8 Flutter embedding | Q23, Q24, Q25, Q26 | Recommended |
 | 9 Performance budget | Q27, Q28, Q29 | Recommended |
 | Found during analysis | Q15, Q30 to Q38 | Q30 owner context; others recommended |
@@ -100,10 +101,10 @@ What does Super Hard (difficulty 4) look like?
 A) 4 paths, a shorter reading window (5 s instead of 6 s) and Super Hard content (Q10)
 B) Same as Hard (4 paths, 6 s) with harder content only
 C) 5 paths
-D) No Super Hard for Math Kart (difficulties 1 to 3 only)
+D) No Super Hard for Math Rally (difficulties 1 to 3 only)
 E) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - OPEN. Recommended (pending owner approval): A, because 5 signs do not fit a 320 px screen (C) and every other game offers 4 levels. Note for the owner: FREE users cannot start difficulty 4 on any game today (`services/game/src/services/game.service.ts`), so even while Math Kart is free, Super Hard is paid-only unless the owner asks for an exception (an exception would need a new per-game rule; not recommended).
+[Answer]: A - Owner answer (2026-11-25, relayed by the orchestrator): A accepted, 4 paths, a 5 s reading window and Super Hard content, paid-only like every difficulty 4 today. Basis kept from the recommendation: 5 signs do not fit a 320 px screen (C) and every other game offers 4 levels; FREE users cannot start difficulty 4 on any game (`services/game/src/services/game.service.ts`), and no exception is made for Math Rally.
 
 ## Question 8
 How long is the question visible before the player must be in a lane?
@@ -210,7 +211,7 @@ D) Other (please describe after [Answer]: tag below)
 ## Question 17
 How is the score computed?
 
-A) A dedicated Math Kart breakdown in `services/game/src/services/score-calculator.service.ts` (as `calculateCircuitBuilderBreakdown` is), returning the existing `ScoreBreakdown` shape: base x difficulty multiplier (1.0, 1.5, 2.0, 2.5) x a modest time factor x an accuracy factor (0.5 + accuracy). A perfect race tops out at about 3000, 4500, 6000 and 8000 for difficulty 1 to 4, the same ceilings a perfect fast free game reaches on the generic formula. Existing caps apply (6000 for a free game at difficulty 1 to 3, 8000 at difficulty 4 or for a paid game)
+A) A dedicated Math Rally breakdown in `services/game/src/services/score-calculator.service.ts` (as `calculateCircuitBuilderBreakdown` is), returning the existing `ScoreBreakdown` shape: base x difficulty multiplier (1.0, 1.5, 2.0, 2.5) x a modest time factor x an accuracy factor (0.5 + accuracy). A perfect race tops out at about 3000, 4500, 6000 and 8000 for difficulty 1 to 4, the same ceilings a perfect fast free game reaches on the generic formula. Existing caps apply (6000 for a free game at difficulty 1 to 3, 8000 at difficulty 4 or for a paid game)
 B) Reuse the generic `calculateScoreBreakdown` with server-verified counts
 C) A fixed number of points per correct answer, no multipliers
 D) Other (please describe after [Answer]: tag below)
@@ -218,9 +219,9 @@ D) Other (please describe after [Answer]: tag below)
 [Answer]: A - Recommended (pending owner approval). Accuracy stays the dominant factor, as the owner asked (wrong answers lower the score). B's speed factor goes up to 2.0 on a 600 s window, so time would weigh as much as accuracy. C breaks comparability with other games on the leaderboard and Quest Map thresholds.
 
 ## Question 18
-How does Math Kart join the leaderboard?
+How does Math Rally join the leaderboard?
 
-A) A new `GameType` `MATH_KART` with its own validation entry whose bounds mirror what the Game Service can emit (time from the server's minimum plausible race to 3600 s, score 0 to 8000)
+A) A new `GameType` `MATH_RALLY` with its own validation entry whose bounds mirror what the Game Service can emit (time from the server's minimum plausible race to 3600 s, score 0 to 8000)
 B) A new `GameType` that reuses the Math Challenge window (10 to 600 s, score up to 10000)
 C) No leaderboard
 D) Other (please describe after [Answer]: tag below)
@@ -232,7 +233,7 @@ D) Other (please describe after [Answer]: tag below)
 ## E. Tier and name
 
 ## Question 19
-Is Math Kart free or paid at launch?
+Is Math Rally free or paid at launch?
 
 A) Free for every signed-in user (difficulty 4 stays paid by the existing cross-game rule)
 B) Paid (any tier)
@@ -241,14 +242,14 @@ C) Other (please describe after [Answer]: tag below)
 [Answer]: A - Owner answer (2026-11-25): "Free for now. Maybe free until 12/31."
 
 ## Question 20
-If Math Kart becomes paid after 2026-12-31, how does the switch happen?
+If Math Rally becomes paid after 2026-12-31, how does the switch happen?
 
-A) Manually: a planned change on or after the date adds `MATH_KART` to `PAID_GAME_THEME_IDS` (`packages/shared/src/constants/paid-games.ts`), web `PREMIUM_GAMES` (`apps/web/src/components/hub/GameTile.tsx`) and the mobile copy (`apps/mobile/lib/config/paid_games.dart`), then deploys, following a written checklist
+A) Manually: a planned change on or after the date adds `MATH_RALLY` to `PAID_GAME_THEME_IDS` (`packages/shared/src/constants/paid-games.ts`), web `PREMIUM_GAMES` (`apps/web/src/components/hub/GameTile.tsx`) and the mobile copy (`apps/mobile/lib/config/paid_games.dart`), then deploys, following a written checklist
 B) Automatically: a date-based gate in code makes the game paid from a fixed instant
 C) A flag in DynamoDB (catalog or config row) that `startGame` reads
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - OPEN. Recommended (pending owner approval): A. The owner said "maybe", so a deliberate decision point fits better than a timer that flips on its own. A reuses the only paid mechanism that exists, the server gate takes effect at the Lambda deploy, and nothing has to be built now. B needs clock injection in tests and the same date logic in three clients. C adds a database read to every `startGame` and a new admin path. Caveat for A: the paid badge in the mobile app changes only with an app release; the server gate does not wait for it.
+[Answer]: A - Owner answer (2026-11-25, relayed by the orchestrator): A accepted, a manual, planned change that follows a written checklist. Because of the Q21 answer the checklist also covers the per-difficulty gate: it confirms that the free-difficulty exception for `MATH_RALLY` (Easy only) is present and tested in the shared constant, the web copy and the app copy before `MATH_RALLY` is added to the three paid lists (FR-MK-54, FR-MK-55, FR-MK-56). The gate itself ships in v1, inert while the game is free, so the switch day changes lists only. Why A over B and C (unchanged): the owner said "maybe", so a deliberate decision point fits better than a timer; B needs clock injection and the same date logic in three clients; C adds a database read to every `startGame` and a new admin path. Caveat: the app's presentation changes only with an app release; the server gate does not wait for it.
 
 ## Question 21
 After a switch to paid, what do FREE users see?
@@ -258,7 +259,7 @@ B) Easy stays free as a taster; the other levels become paid
 C) The game is hidden from FREE users
 D) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - OPEN. Recommended (pending owner approval): A, consistent with every other paid game and nothing new to build. B needs a per-difficulty gate that does not exist. C hides a game the child has already played, which reads as a bug.
+[Answer]: B - Owner answer (2026-11-25, relayed by the orchestrator): a B-like rule. **Easy (difficulty 1) stays available to FREE users permanently**; Medium, Hard and Super Hard become paid. Consequences recorded in the requirements: (1) a new per-game, per-difficulty gate in `startGame` on the server, which is the only enforcement that counts (no reliance on client checks), FR-MK-55; (2) matching presentation: the web tile opens setup for FREE users and shows the paid badge, the web setup page and the app setup screen show Easy as playable and the other levels locked with the paid badge (upgrade link on web; the app keeps its neutral "not on your plan" state with no purchase UI, `kPaidGamePresentation`), FR-MK-56; (3) past scores and leaderboard entries stay. **Interpretation of the owner's note "(3 plays per day)"**: the normal FREE allowance, 3 plays per 24 hours shared across all games and counted by the existing rate limiter (`services/game/src/services/rate-limiter.service.ts`); Easy Math Rally races count against it like any other play. Alternative **not chosen** unless the owner says otherwise: a separate 3-per-day counter just for Math Rally. Original recommendation was A; the owner overrode it.
 
 ## Question 22
 What is the game called?
@@ -269,7 +270,7 @@ C) Benji's Number Racer
 D) Benji-Kart (the owner's example)
 E) Other (please describe after [Answer]: tag below)
 
-[Answer]: OPEN - the orchestrator is proposing names to the owner. Until then the working name is "Math Kart" and every file uses the `math-kart-` prefix. Constraints: no "Mario" and nothing that imitates "Mario Kart" (a "<Name> Kart" pattern such as D is close to it); "kart" as a generic word is fine. "Benji" may be a registered trademark (the Benji dog film franchise), so the final name needs a trademark check before launch (risk R6).
+[Answer]: E - Owner answer (2026-11-25, relayed by the orchestrator): **"Math Rally"**, with no "Benji" in the title; Benji stays the in-game driver character. Identifiers: display name "Math Rally", theme id and leaderboard game type `MATH_RALLY`, catalog id `math-rally`, routes under `/math-rally/` (web `/math-rally/setup` and `/math-rally/game`, app `/math-rally/setup` and `/math-rally/play`), locale namespace `mathRally`. The files of this inception run keep the `math-kart-` prefix so later workflow steps find them; Construction renames them first. Constraints kept: nothing that imitates "Mario Kart" (no "<Name> Kart" title, no Nintendo marks, characters or trade dress); "kart" stays a generic word for the vehicle. Risk R6 is reduced: "Benji" is now a character name only, not part of the title; "Math Rally" is a descriptive phrase and gets a quick trademark search before launch.
 
 ---
 
@@ -380,11 +381,11 @@ C) Other (please describe after [Answer]: tag below)
 ## Question 33
 Where does game text live?
 
-A) In `apps/web/src/locales/{en,es,pt}.json` under one `mathKart` namespace, the single source for the web host, the game canvas and the app (whose ARB files are generated from these JSON files); the host passes the language to the game
+A) In `apps/web/src/locales/{en,es,pt}.json` under one `mathRally` namespace, the single source for the web host, the game canvas and the app (whose ARB files are generated from these JSON files); the host passes the language to the game
 B) A separate strings file inside the game
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). The existing `localeCompleteness.test.ts` and `tools/convert_locales.mjs` then cover Math Kart with no new tooling.
+[Answer]: A - Recommended (pending owner approval), refined in Application Design: host-page strings live in the `mathRally` namespace of the main locale files (and reach the app through `tools/convert_locales.mjs`); in-race strings live in `apps/web/src/games/math-rally/locales/{en,es,pt}.json`, which only the game code imports. Reason: `apps/web/src/i18n.ts` imports the three main locale files into the entry bundle, so in-race text there would grow every page's download (NFR-MK-3). Each string still has one source, and a Math Rally locale completeness test (pattern of `questLocaleCompleteness.test.ts`) covers both sets.
 
 ## Question 34
 What happens if `startGame` fails?
@@ -396,13 +397,13 @@ C) Other (please describe after [Answer]: tag below)
 [Answer]: A - Recommended (pending owner approval). Consistent with every other game in each host. The game bundle already contains the shared generator (needed by the vertical slice), so the offline race costs nothing extra.
 
 ## Question 35
-Is Math Kart placed on the Quest Map in v1?
+Is Math Rally placed on the Quest Map in v1?
 
-A) No node in v1. The game supports the Quest Map launch contract (difficulty in the URL, `questContext` passed to `startGame`, the completion hook) so adding a node later is configuration only. It is not placed in World 1 while the paid switch (Q20) is undecided
+A) No node in v1. The game supports the Quest Map launch contract (difficulty in the URL, `questContext` passed to `startGame`, the completion hook) so adding a node later is configuration only, except in World 1, which needs a small change first: the quest config validator rejects any World 1 leg whose theme is in `PAID_GAME_THEME_IDS`, and after a paid switch only Easy stays free (Q21), so a World 1 Easy leg would require the validator to honour the free-difficulty exception (backlog, not v1)
 B) Add a World 1 node now
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Recommended (pending owner approval). The brief says "launchable from Quest Map later". The quest config test rejects paid games in World 1 (`packages/shared/src/quest/config.test.ts`), so a World 1 node would break on the day the game turns paid.
+[Answer]: A - Recommended (pending owner approval). The brief says "launchable from Quest Map later". The quest config test rejects paid games in World 1 (`packages/shared/src/quest/config.test.ts`), so a World 1 node would break on the day the game turns paid unless the validator first learns the Easy-only exception (Q21).
 
 ## Question 36
 What happens when the player quits mid-race?
@@ -420,10 +421,10 @@ A) Yes - enforce all SECURITY rules as blocking constraints (recommended for pro
 B) No - skip all SECURITY rules (suitable for PoCs, prototypes, and experimental projects)
 C) Other (please describe after [Answer]: tag below)
 
-[Answer]: A - Owner context (agreed earlier): Security Baseline is enabled for the project (`aidlc-docs/aidlc-state.md`, Extension Configuration) and applies to all new Math Kart code. Pre-existing gaps (for example CSP Report-Only) stay recorded as pre-existing.
+[Answer]: A - Owner context (agreed earlier): Security Baseline is enabled for the project (`aidlc-docs/aidlc-state.md`, Extension Configuration) and applies to all new Math Rally code. Pre-existing gaps (for example CSP Report-Only) stay recorded as pre-existing.
 
 ## Question 38
-In which order is Math Kart built?
+In which order is Math Rally built?
 
 A) A vertical slice first: one web race with local questions (road, fork, signs, controls, feedback, HUD), measured on the reference devices in the browser and inside a minimal app WebView, before backend, registry or mobile integration work
 B) Backend and registries first, then the game

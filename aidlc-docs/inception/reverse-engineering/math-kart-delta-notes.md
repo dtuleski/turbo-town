@@ -1,21 +1,22 @@
-# Math Kart - Delta Reverse-Engineering Notes
+# Math Rally - Delta Reverse-Engineering Notes
 
 **Created**: 2026-11-25
-**Stage**: INCEPTION - Reverse Engineering (delta only, for the Math Kart feature)
+**Stage**: INCEPTION - Reverse Engineering (delta only, for the Math Rally feature)
+**Name**: the feature was called Math Kart (working name) when this note was written; the owner named it Math Rally on 2026-11-25 (Q22), and the note was updated to the final name. The file keeps the `math-kart-` prefix for this inception run.
 **Baseline**: the full reverse-engineering set in this folder describes HEAD `a328c74` and is stale.
 **Read for this note**: branch `feat/math-kart` at `c6ccf0f` (origin/main, PR #35 merged). Every fact below was read in that tree unless it is marked *inferred* or *unverified*.
-**Not re-done**: the business overview, architecture, API and dependency documents. This note lists only what changed since `a328c74` in the areas Math Kart touches, plus facts the requirements depend on.
+**Not re-done**: the business overview, architecture, API and dependency documents. This note lists only what changed since `a328c74` in the areas Math Rally touches, plus facts the requirements depend on.
 
 ---
 
 ## 1. What landed since `a328c74`
 
-| PRs | Change | Relevance to Math Kart |
+| PRs | Change | Relevance to Math Rally |
 |---|---|---|
 | #18, #21, #22, #23, #25 | Circuit Builder (leaderboard type, server re-evaluation, web game, score cap 8000) | Precedent for a new game type, a dedicated server-scored completion path, and the registry checklist (units U7a and U7b) |
-| #26, #27, #28, #29 | Quest Map (shared config, `questContext`, progress table, map UI, thresholds, boss fix) | Launch contract Math Kart must support so it can become a node later |
+| #26, #27, #28, #29 | Quest Map (shared config, `questContext`, progress table, map UI, thresholds, boss fix) | Launch contract Math Rally must support so it can become a node later |
 | #24, #30 to #34 | Shirt page, Bond and Burn fix, playtest fixes, language images | Not relevant |
-| #35 (17 mobile commits since `a328c74`) | Flutter app parity: 21 games ported natively to Dart, Quest Map screen, stats, Android build fix (`7f5db13`) | Math Kart is the first game the app would run in a WebView instead of a Dart port |
+| #35 (17 mobile commits since `a328c74`) | Flutter app parity: 21 games ported natively to Dart, Quest Map screen, stats, Android build fix (`7f5db13`) | Math Rally is the first game the app would run in a WebView instead of a Dart port |
 
 At `a328c74` the Flutter app had Memory Match only (`git ls-tree a328c74 apps/mobile/lib`). It now has `lib/game/*` controllers for every web game except Color by Number and Traffic Lab (`lib/game/game_registry.dart` comment).
 
@@ -87,7 +88,7 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 ## 6. Web app facts
 
 - React 18.2, Vite 5.1, TypeScript 5.3, Tailwind, Framer Motion (`apps/web/package.json`). **No Phaser, no canvas game library.**
-- **No lazy routes**: every page is a static import in `App.tsx`, so the whole app ships as one entry bundle today. Math Kart would be the first `React.lazy` route.
+- **No lazy routes**: every page is a static import in `App.tsx`, so the whole app ships as one entry bundle today. Math Rally would be the first `React.lazy` route.
 - `React.StrictMode` wraps the app (`main.tsx`), so effects mount twice in development; an embedded engine must survive that.
 - `@vercel/analytics` and `@vercel/speed-insights` are mounted app-wide (`main.tsx`).
 - **CSP ships as `Content-Security-Policy-Report-Only`** (`apps/web/vercel.json`): `script-src 'self'`, `img-src 'self' data: https://upload.wikimedia.org` (no `blob:`), `connect-src` limited to the API, Cognito and `ipapi.co`, `frame-ancestors 'none'`, plus `X-Frame-Options: DENY`. SECURITY-04 is recorded as partial in `aidlc-state.md`. A game engine that creates `blob:` image URLs would raise reports now and break once CSP is enforced (*whether Phaser 4 does this is unverified*).
@@ -114,7 +115,7 @@ Read in `services/game/src/services/game.service.ts`, `score-calculator.service.
 
 ---
 
-## 8. Touch map for Math Kart
+## 8. Touch map for Math Rally
 
 ```mermaid
 flowchart LR
