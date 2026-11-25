@@ -1,10 +1,9 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { describe, expect, it } from 'vitest';
+// apps/web has no @types/node, so App.tsx is read through Vite's raw import instead of node:fs.
+import app from '../../../App.tsx?raw';
 
 /** I-2: the slice route is declared only behind the DEV or gate-mode literal. */
 describe('slice route', () => {
-  const app = readFileSync(join(__dirname, '../../../App.tsx'), 'utf8');
 
   it('is guarded by import.meta.env.DEV or the gate mode', () => {
     expect(app).toContain(
