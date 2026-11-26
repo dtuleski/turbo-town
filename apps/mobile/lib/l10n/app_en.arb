@@ -2422,5 +2422,17 @@
   "mobileSub_errorNetwork": "Network error. Check your connection and try again.",
   "mobileSub_nothingToRestore": "No App Store subscription was found to restore.",
   "mobileSub_subscribeToPlay": "Subscribe to play",
-  "mobileSub_viewPlans": "Plans"
+  "mobileSub_viewPlans": "Plans",
+  "profile_deleteAccount": "Delete account",
+  "profile_deleteConfirmTitle": "Delete your account?",
+  "profile_deleteConfirmBody": "This permanently deletes your DashDen account, your game history, scores and settings. A subscription bought on dashden.app is cancelled at once. This cannot be undone.",
+  "profile_deleteAppleNote": "A subscription bought in the App Store keeps billing until you cancel it in Settings > Apple Account > Subscriptions.",
+  "profile_deleteConfirmAction": "Delete",
+  "profile_deleteFailed": "Could not delete your account. Check your connection and try again.",
+  "profile_deletedTitle": "Account deleted",
+  "profile_deletedBody": "Your account and data have been deleted.",
+  "profile_deletedAppleBody": "Your App Store subscription is still active. Cancel it in Settings > Apple Account > Subscriptions so Apple stops billing you.",
+  "profile_manageSubscriptions": "Manage subscriptions",
+  "profile_privacy": "Privacy Policy",
+  "profile_terms": "Terms of Service"
 }

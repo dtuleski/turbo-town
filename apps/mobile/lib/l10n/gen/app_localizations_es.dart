@@ -4849,4 +4849,44 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get mobileSub_viewPlans => 'Planes';
+
+  @override
+  String get profile_deleteAccount => 'Eliminar cuenta';
+
+  @override
+  String get profile_deleteConfirmTitle => '¿Eliminar tu cuenta?';
+
+  @override
+  String get profile_deleteConfirmBody =>
+      'Esto elimina para siempre tu cuenta de DashDen, tu historial de juegos, puntuaciones y ajustes. Una suscripción comprada en dashden.app se cancela de inmediato. No se puede deshacer.';
+
+  @override
+  String get profile_deleteAppleNote =>
+      'Una suscripción comprada en el App Store se sigue cobrando hasta que la canceles en Ajustes > Cuenta de Apple > Suscripciones.';
+
+  @override
+  String get profile_deleteConfirmAction => 'Eliminar';
+
+  @override
+  String get profile_deleteFailed =>
+      'No se pudo eliminar tu cuenta. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get profile_deletedTitle => 'Cuenta eliminada';
+
+  @override
+  String get profile_deletedBody => 'Tu cuenta y tus datos se han eliminado.';
+
+  @override
+  String get profile_deletedAppleBody =>
+      'Tu suscripción del App Store sigue activa. Cancélala en Ajustes > Cuenta de Apple > Suscripciones para que Apple deje de cobrarte.';
+
+  @override
+  String get profile_manageSubscriptions => 'Gestionar suscripciones';
+
+  @override
+  String get profile_privacy => 'Política de privacidad';
+
+  @override
+  String get profile_terms => 'Términos del servicio';
 }

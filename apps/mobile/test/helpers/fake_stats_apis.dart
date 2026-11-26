@@ -109,8 +109,18 @@ class FakeLeaderboardApi implements LeaderboardApi {
 }
 
 class FakeProfileApi implements ProfileApi {
-  FakeProfileApi({this.digest = false, this.failLoad = false, this.failSave = false, this.failContact = false});
+  FakeProfileApi({
+    this.digest = false,
+    this.failLoad = false,
+    this.failSave = false,
+    this.failContact = false,
+    this.failDelete = false,
+    this.appleActive = false,
+  });
   bool digest;
+  bool failDelete;
+  bool appleActive;
+  int deletes = 0;
   bool failLoad;
   bool failSave;
   bool failContact;
@@ -129,6 +139,13 @@ class FakeProfileApi implements ProfileApi {
     saves.add(dailyDigest);
     digest = dailyDigest;
     return EmailPrefs(dailyDigest: dailyDigest);
+  }
+
+  @override
+  Future<bool> deleteMyAccount() async {
+    if (failDelete) throw GameApiException('boom');
+    deletes++;
+    return appleActive;
   }
 
   @override

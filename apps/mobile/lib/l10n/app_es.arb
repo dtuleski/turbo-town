@@ -2387,5 +2387,17 @@
   "mobileSub_errorNetwork": "Error de red. Revisa tu conexión e inténtalo de nuevo.",
   "mobileSub_nothingToRestore": "No se encontró ninguna suscripción de App Store para restaurar.",
   "mobileSub_subscribeToPlay": "Suscríbete para jugar",
-  "mobileSub_viewPlans": "Planes"
+  "mobileSub_viewPlans": "Planes",
+  "profile_deleteAccount": "Eliminar cuenta",
+  "profile_deleteConfirmTitle": "¿Eliminar tu cuenta?",
+  "profile_deleteConfirmBody": "Esto elimina para siempre tu cuenta de DashDen, tu historial de juegos, puntuaciones y ajustes. Una suscripción comprada en dashden.app se cancela de inmediato. No se puede deshacer.",
+  "profile_deleteAppleNote": "Una suscripción comprada en el App Store se sigue cobrando hasta que la canceles en Ajustes > Cuenta de Apple > Suscripciones.",
+  "profile_deleteConfirmAction": "Eliminar",
+  "profile_deleteFailed": "No se pudo eliminar tu cuenta. Revisa tu conexión e inténtalo de nuevo.",
+  "profile_deletedTitle": "Cuenta eliminada",
+  "profile_deletedBody": "Tu cuenta y tus datos se han eliminado.",
+  "profile_deletedAppleBody": "Tu suscripción del App Store sigue activa. Cancélala en Ajustes > Cuenta de Apple > Suscripciones para que Apple deje de cobrarte.",
+  "profile_manageSubscriptions": "Gestionar suscripciones",
+  "profile_privacy": "Política de privacidad",
+  "profile_terms": "Términos del servicio"
 }

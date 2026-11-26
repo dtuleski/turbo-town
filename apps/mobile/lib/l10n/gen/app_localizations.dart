@@ -64,7 +64,7 @@ import 'app_localizations_pt.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -87,17 +87,17 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('es'),
-    Locale('pt')
+    Locale('pt'),
   ];
 
   /// No description provided for @games_memory_match_title.
@@ -8565,6 +8565,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Plans'**
   String get mobileSub_viewPlans;
+
+  /// No description provided for @profile_deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get profile_deleteAccount;
+
+  /// No description provided for @profile_deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get profile_deleteConfirmTitle;
+
+  /// No description provided for @profile_deleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your DashDen account, your game history, scores and settings. A subscription bought on dashden.app is cancelled at once. This cannot be undone.'**
+  String get profile_deleteConfirmBody;
+
+  /// No description provided for @profile_deleteAppleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A subscription bought in the App Store keeps billing until you cancel it in Settings > Apple Account > Subscriptions.'**
+  String get profile_deleteAppleNote;
+
+  /// No description provided for @profile_deleteConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get profile_deleteConfirmAction;
+
+  /// No description provided for @profile_deleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete your account. Check your connection and try again.'**
+  String get profile_deleteFailed;
+
+  /// No description provided for @profile_deletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get profile_deletedTitle;
+
+  /// No description provided for @profile_deletedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account and data have been deleted.'**
+  String get profile_deletedBody;
+
+  /// No description provided for @profile_deletedAppleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your App Store subscription is still active. Cancel it in Settings > Apple Account > Subscriptions so Apple stops billing you.'**
+  String get profile_deletedAppleBody;
+
+  /// No description provided for @profile_manageSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscriptions'**
+  String get profile_manageSubscriptions;
+
+  /// No description provided for @profile_privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get profile_privacy;
+
+  /// No description provided for @profile_terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get profile_terms;
 }
 
 class _AppLocalizationsDelegate
@@ -8596,8 +8668,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

@@ -31,3 +31,6 @@ const String kTermsOfUseUrl = 'https://www.apple.com/legal/internet-services/itu
 
 /// Privacy policy. The page must exist before App Store submission.
 const String kPrivacyPolicyUrl = 'https://dashden.app/privacy';
+
+/// DashDen's own terms of service (accounts, acceptable use, web billing).
+const String kServiceTermsUrl = 'https://dashden.app/terms';
