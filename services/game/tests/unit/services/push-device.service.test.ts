@@ -14,6 +14,7 @@ import { DeleteEndpointCommand } from '@aws-sdk/client-sns';
 import { ValidationError } from '@memory-game/shared';
 import { PushDeviceRepository } from '../../../src/repositories/push-device.repository';
 import {
+  MAX_DEVICES_PER_USER,
   PushDeviceService,
   createPushDeviceService,
   deviceIdFor,
@@ -128,6 +129,42 @@ describe('PushDeviceService.register', () => {
     await service.register('u1', input());
     expect(items.get(deviceIdFor('IOS', TOKEN))!.endpointArn).toBeUndefined();
     expect(sns.send.mock.calls[0][0]).toBeInstanceOf(DeleteEndpointCommand);
+  });
+  it(`keeps at most ${MAX_DEVICES_PER_USER} devices per user, evicting the least recently updated`, async () => {
+    const { service, items, sns } = rig();
+    const tok = (n: number) => n.toString(16).padStart(64, '0');
+    for (let n = 1; n <= MAX_DEVICES_PER_USER; n++) {
+      items.set(deviceIdFor('IOS', tok(n)), {
+        deviceId: deviceIdFor('IOS', tok(n)), userId: 'u1', platform: 'IOS', token: tok(n), environment: 'production',
+        endpointArn: `arn:ep/${n}`, createdAt: 'c', updatedAt: `2026-11-0${n}T00:00:00.000Z`,
+      });
+    }
+    items.set('other-user', {
+      deviceId: 'other-user', userId: 'u2', platform: 'IOS', token: tok(99), environment: 'production',
+      createdAt: 'c', updatedAt: '2020-01-01T00:00:00.000Z',
+    });
+    await service.register('u1', input());
+    const mine = [...items.values()].filter((d) => d.userId === 'u1');
+    expect(mine).toHaveLength(MAX_DEVICES_PER_USER);
+    expect(items.has(deviceIdFor('IOS', tok(1)))).toBe(false);
+    expect(items.has(deviceIdFor('IOS', TOKEN))).toBe(true);
+    expect(items.has('other-user')).toBe(true);
+    expect(sns.send).toHaveBeenCalledTimes(1);
+    expect((sns.send.mock.calls[0][0] as DeleteEndpointCommand).input).toEqual({ EndpointArn: 'arn:ep/1' });
+  });
+  it('re-registering a device the user already has evicts nothing', async () => {
+    const { service, items, sns } = rig();
+    const tok = (n: number) => n.toString(16).padStart(64, '0');
+    for (let n = 1; n < MAX_DEVICES_PER_USER; n++) {
+      items.set(deviceIdFor('IOS', tok(n)), {
+        deviceId: deviceIdFor('IOS', tok(n)), userId: 'u1', platform: 'IOS', token: tok(n), environment: 'production',
+        createdAt: 'c', updatedAt: `2026-11-0${n}T00:00:00.000Z`,
+      });
+    }
+    await service.register('u1', input());
+    await service.register('u1', input());
+    expect([...items.values()].filter((d) => d.userId === 'u1')).toHaveLength(MAX_DEVICES_PER_USER);
+    expect(sns.send).not.toHaveBeenCalled();
   });
   it.each([
     ['no input', null],
