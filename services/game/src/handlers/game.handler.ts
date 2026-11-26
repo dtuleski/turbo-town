@@ -21,6 +21,7 @@ import { EmailPrefsService } from '../services/email-prefs.service';
 import { ContactService } from '../services/contact.service';
 import { AppError, SubscriptionTier } from '@memory-game/shared';
 import { AppleService } from '../services/apple.service';
+import { AccountDeletionService, createAccountDeletionService } from '../services/account-deletion.service';
 import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -60,6 +61,7 @@ export class GameHandler {
   private emailPrefsService: EmailPrefsService;
   private contactService: ContactService;
   private questService: QuestService;
+  private accountDeletion?: AccountDeletionService;
 
   constructor() {
     // Initialize repositories
@@ -279,6 +281,9 @@ export class GameHandler {
       // Admin - Subscription Management
       case 'updateUserSubscription':
         return this.updateUserSubscription(userId, variables.input, username, email);
+
+      case 'deleteMyAccount':
+        return this.deleteMyAccount(userId);
 
       case 'adminDeleteUser':
         return this.adminDeleteUser(userId, variables.userId, username, email);
@@ -831,6 +836,19 @@ export class GameHandler {
       tier: input.tier,
       status: input.status,
     };
+  }
+
+  /**
+   * Mutation: deleteMyAccount
+   * The signed-in user deletes their own account and data (App Store Guideline 5.1.1(v)).
+   * Only ever acts on the caller's own id from the verified token.
+   */
+  private async deleteMyAccount(userId: string): Promise<any> {
+    if (!userId) {
+      throw new Error('Unauthorized');
+    }
+    this.accountDeletion ??= createAccountDeletionService(() => this.stripeService.getStripeClientPublic());
+    return this.accountDeletion.deleteAccount(userId);
   }
 
   /**

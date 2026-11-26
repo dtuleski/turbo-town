@@ -20,6 +20,8 @@ type Mutation {
   createPortalSession: PortalSession!
   # App Store: the app sends the signed StoreKit transaction after a purchase or restore
   verifyAppleTransaction(signedTransaction: String!): SubscriptionInfo!
+  # Deletes the caller's account, data and login; cancels Stripe billing.
+  deleteMyAccount: AccountDeletionResult!
 }
 
 # Queries
@@ -603,4 +605,11 @@ enum Timeframe {
   WEEKLY
   MONTHLY
   ALL_TIME
+}
+
+type AccountDeletionResult {
+  deleted: Boolean!
+  # An App Store subscription is still active; only the user can cancel it in iPhone Settings.
+  appleSubscriptionActive: Boolean!
+  stripeSubscriptionsCancelled: Int!
 }
