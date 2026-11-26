@@ -3006,3 +3006,35 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **Context**: Construction - integration verification across DC2, DC3, DC1, DC4, DC5; no fixes required
 
 ---
+
+## Review Fix 1 (MEDIUM, DC1): setPrefs PutItem fallback
+**Timestamp**: 2026-11-26T20:36:43Z
+**User Input**: "Review iteration 2: fix every finding in verdict.json (CHANGES_REQUESTED)."
+**AI Response**: "setPrefs (services/game/src/services/email-prefs.service.ts) now falls back, on AccessDeniedException from UpdateItem, to a GetItem plus PutItem merged over the current item (time zone, language and claims kept), with one warning per container. Behavior is unchanged for users: the Profile toggle keeps working whether or not production step P0 is done. Commit e05fc89 on feat/dc1-notifications-backend; S8 note in daily-challenge-services.md (40d1b27 on feat/dc2-challenge-core); P0 row and section in daily-challenge-production-steps.md (0cdd6ab). Verified: game tsc exit 0, game jest 30 suites / 459 tests pass, only the two known suites fail."
+**Context**: Construction, cross-unit review fix
+
+---
+
+## Review Fix 2 (LOW, DC1): push device cap per user
+**Timestamp**: 2026-11-26T20:36:43Z
+**User Input**: "Review iteration 2: fix every finding in verdict.json (CHANGES_REQUESTED)."
+**AI Response**: "PushDeviceService.register keeps at most MAX_DEVICES_PER_USER = 5 devices per user: before the upsert it lists the user's other devices and deletes the least recently updated (owner-checked delete plus SNS endpoint delete) while there are 5 or more. Re-registering a known device evicts nothing. Commit 30626e4 on feat/dc1-notifications-backend, with tests."
+**Context**: Construction, cross-unit review fix
+
+---
+
+## Review Fix 3 (LOW, DC1): digest deploy script preconditions
+**Timestamp**: 2026-11-26T20:36:43Z
+**User Input**: "Review iteration 2: fix every finding in verdict.json (CHANGES_REQUESTED)."
+**AI Response**: "scripts/deploy-daily-email-lambda.sh deploy mode now checks, read-only and before any write, iam simulate-principal-policy for dynamodb:UpdateItem on memory-game-email-prefs-prod with the function role (P5), the env vars DAILY_CHALLENGE_TABLE_NAME, PUSH_DEVICES_TABLE_NAME and APNS_SECRET_ID and a 300 s timeout (P6), and prints a P8 reminder before and after the deploy. Only --build-only was run (exit 0, no AWS call). Commit 0cdd6ab on feat/dc1-notifications-backend; P7 row updated."
+**Context**: Construction, cross-unit review fix
+
+---
+
+## Review Fix 4 (LOW, DC2): rotation eligibility and client support
+**Timestamp**: 2026-11-26T20:36:43Z
+**User Input**: "Review iteration 2: fix every finding in verdict.json (CHANGES_REQUESTED)."
+**AI Response**: "daily-challenge-unit-of-work.md (Deferred) now requires each deferred game's web and App Store app given-content modes to ship before its generator is registered, and the digest Lambda to be redeployed after the Game Lambda on any rotation change; the C2 row in daily-challenge-components.md points to it. Docs only. Commit b743d80 on feat/dc2-challenge-core."
+**Context**: Construction, cross-unit review fix. All fixes merged forward with git merge: dc2 -> dc3 (9e61f36) -> dc1 (5d33f8a) -> dc4 (11b43d7) -> dc5 (e9916bc). Nothing pushed, no production write.
+
+---
