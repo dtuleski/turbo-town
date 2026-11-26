@@ -224,7 +224,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
   - [x] NFR Requirements: APPROVED (`construction/math-rally-slice/nfr-requirements/`)
   - [x] NFR Design (minimal): APPROVED (`construction/math-rally-slice/nfr-design/`)
   - [x] Code Generation Part 1: plan APPROVED (14 steps)
-  - [ ] Code Generation Part 2: steps 1 to 11 done (spike on 6.2.0-beta.3, Android emulator and iPhone; touch-scale fix e7cf548; see code/step-11-webview-spike.md); step 12 gate runs in progress (iPhone run 1 done: 58.8 / 52.5 fps)
+  - [ ] Code Generation Part 2: steps 1 to 11 done (spike on 6.2.0-beta.3, Android emulator and iPhone; touch-scale fix e7cf548; see code/step-11-webview-spike.md); step 12 gate runs mostly done (iPhone 3/3 pass, Chrome 3/3 pass in low profile, Safari 2/3 pass with first-run hitches; latency measurement built, iPhone run not done). **PARKED 2026-11-25 by owner**: not engaging enough (no music, basic kart look). Resume point: step 12 (iPhone latency race, Safari first-run fix), then steps 13 and 14; MR3 FD answered, not started
 - [ ] MR2 Shared race core (FD standard, Code) - can run in parallel with MR1
   - [x] Functional Design: APPROVED (`construction/math-rally-shared-core/functional-design/`)
   - [x] Code Generation Part 1: plan APPROVED (`construction/plans/math-rally-shared-core-code-generation-plan.md`, 15 steps)
