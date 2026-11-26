@@ -489,15 +489,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_emailPrefs => 'Email Preferences';
 
   @override
-  String get profile_dailyDigest => 'Daily Digest';
+  String get profile_dailyDigest => 'Daily emails and notifications';
 
   @override
   String get profile_dailyDigestDesc =>
-      'Get daily leaderboard highlights and game updates';
+      'The morning summary with yesterday\'s challenge results, and the daily challenge reminder at noon in the iPhone app';
 
   @override
-  String get profile_dailyDigestOn =>
-      '✓ You\'ll receive daily updates at 8pm EST';
+  String get profile_dailyDigestOn => '✓ Every morning at 8am your time';
 
   @override
   String get auth_createAccount => 'Create Account';
@@ -4843,4 +4842,86 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_continueWithApple => 'Continue with Apple';
+
+  @override
+  String get push_softAsk_title => 'Turn on notifications?';
+
+  @override
+  String get push_softAsk_body =>
+      'DashDen can send you a morning summary with yesterday\'s challenge results and a reminder of the daily challenge at noon. You can turn them off any time in Profile.';
+
+  @override
+  String get push_softAsk_allow => 'Allow';
+
+  @override
+  String get push_softAsk_notNow => 'Not now';
+
+  @override
+  String get challenge_card_title => 'Daily Challenge';
+
+  @override
+  String get challenge_card_play => 'Play the challenge';
+
+  @override
+  String challenge_card_best(String score, String rank) {
+    return 'Your best today: $score (rank #$rank)';
+  }
+
+  @override
+  String get challenge_card_notPlayed =>
+      'You have not played today\'s challenge yet.';
+
+  @override
+  String get challenge_card_endsAt =>
+      'Ends at midnight Eastern Time. Everyone plays the same puzzle.';
+
+  @override
+  String get challenge_card_top => 'Today\'s top 5';
+
+  @override
+  String get challenge_card_noScores => 'No scores yet. Be the first!';
+
+  @override
+  String get challenge_card_allResults => 'See all results';
+
+  @override
+  String get challenge_card_failed =>
+      'This challenge is not available right now.';
+
+  @override
+  String get challenge_you => '(you)';
+
+  @override
+  String get challenge_results_title => 'Daily Challenge results';
+
+  @override
+  String get challenge_results_loading => 'Loading results...';
+
+  @override
+  String get challenge_results_none =>
+      'There are no challenge results for this day.';
+
+  @override
+  String get challenge_results_live =>
+      'The challenge is still running. These are the scores so far.';
+
+  @override
+  String challenge_results_winner(String username, String score) {
+    return 'Winner: $username with $score points';
+  }
+
+  @override
+  String get challenge_results_noScores => 'Nobody played this challenge.';
+
+  @override
+  String challenge_results_me(String rank, String score) {
+    return 'You finished #$rank with $score points.';
+  }
+
+  @override
+  String get challenge_results_notPlayed =>
+      'You did not play this challenge. Today\'s challenge is waiting in the game hub.';
+
+  @override
+  String get challenge_results_toHub => 'Go to today\'s challenge';
 }

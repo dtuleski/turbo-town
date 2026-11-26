@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../push/push_controller.dart';
+
 import 'cognito_service.dart';
 import 'display_name.dart';
 import 'token_storage.dart';
@@ -61,11 +63,17 @@ class AuthState {
 }
 
 class AuthController extends StateNotifier<AuthState> {
-  AuthController(this._cognito) : super(const AuthState()) {
+  AuthController(this._cognito, {Future<void> Function()? beforeSignOut})
+      : _beforeSignOut = beforeSignOut,
+        super(const AuthState()) {
     _restore();
   }
 
   final CognitoService _cognito;
+
+  /// Runs while the session is still valid (push device unregister). A
+  /// failure there never blocks sign-out.
+  final Future<void> Function()? _beforeSignOut;
   TokenStorage get _storage => _cognito.storage;
 
   /// On launch, try to restore a valid session from secure storage.
@@ -213,6 +221,11 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> signOut() async {
+    try {
+      await _beforeSignOut?.call();
+    } catch (_) {
+      // Sign-out goes on.
+    }
     await _cognito.signOut();
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
@@ -222,5 +235,8 @@ class AuthController extends StateNotifier<AuthState> {
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, AuthState>((ref) {
-  return AuthController(ref.watch(cognitoServiceProvider));
+  return AuthController(
+    ref.watch(cognitoServiceProvider),
+    beforeSignOut: () => ref.read(pushControllerProvider).unregister(),
+  );
 });

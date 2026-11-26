@@ -1,6 +1,5 @@
 import 'package:dashden_mobile/api/challenge_models.dart';
 import 'package:dashden_mobile/api/game_models.dart';
-import 'package:dashden_mobile/api/game_providers.dart';
 import 'package:dashden_mobile/game/code_a_bot/bot_controller.dart';
 import 'package:dashden_mobile/game/code_a_bot/logic.dart';
 import 'package:dashden_mobile/game/hangman/hangman_controller.dart';
@@ -48,7 +47,7 @@ Future<RouterHarness> _launch(
     location: path,
     api: api,
     locale: locale,
-    overrides: [challengeApiProvider.overrideWithValue(challengeApi ?? FakeChallengeApi(view))],
+    challengeApi: challengeApi ?? FakeChallengeApi(view),
   );
   await settleStart(tester);
   return h;
@@ -292,7 +291,8 @@ void main() {
       final challengeApi = FakeChallengeApi(dailyChallengeView(sudokuContentJson()));
       final api = FakeGameApi();
       await _launch(tester, path, null, api, challengeApi: challengeApi);
-      expect(challengeApi.dailyCalls, 0, reason: path);
+      // The hub card (mounted first by the harness) reads the challenge with its top 5; the game never does.
+      expect(challengeApi.dailyCalls, challengeApi.leaderboardCalls.length, reason: path);
       final starts = api.calls.where((c) => c.startsWith('startGame')).toList();
       expect(starts, hasLength(1), reason: path);
       expect(starts.single, isNot(contains('challenge=')), reason: path);

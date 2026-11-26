@@ -29,6 +29,74 @@ class ProfileApi {
     mutation DeleteMyAccount { deleteMyAccount { deleted appleSubscriptionActive } }
   ''';
 
+  static const String _saveSettings = r'''
+    mutation SaveNotificationSettings($input: NotificationSettingsInput!) {
+      saveNotificationSettings(input: $input) { timeZone language }
+    }
+  ''';
+
+  static const String _registerDevice = r'''
+    mutation RegisterPushDevice($input: RegisterPushDeviceInput!) {
+      registerPushDevice(input: $input) { ok }
+    }
+  ''';
+
+  static const String _unregisterDevice = r'''
+    mutation UnregisterPushDevice($token: String!) {
+      unregisterPushDevice(token: $token) { ok }
+    }
+  ''';
+
+  /// Saves the device time zone and app language used for the 8am digest and
+  /// the noon challenge push (web `saveNotificationSettings`). Only the given
+  /// fields are written. Throws on any error.
+  Future<void> saveNotificationSettings({String? timeZone, String? language}) async {
+    final result = await _client.mutate(MutationOptions(
+      document: gql(_saveSettings),
+      variables: {
+        'input': {
+          if (timeZone != null) 'timeZone': timeZone,
+          if (language != null) 'language': language,
+        },
+      },
+    ));
+    throwIfGraphQLError(result);
+  }
+
+  /// Registers this iPhone's APNs token. False when push is off on the
+  /// server. Throws on any error.
+  Future<bool> registerPushDevice({
+    required String token,
+    required String environment,
+    String? timeZone,
+    String? language,
+  }) async {
+    final result = await _client.mutate(MutationOptions(
+      document: gql(_registerDevice),
+      variables: {
+        'input': {
+          'token': token,
+          'platform': 'IOS',
+          'environment': environment,
+          if (timeZone != null) 'timeZone': timeZone,
+          if (language != null) 'language': language,
+        },
+      },
+    ));
+    throwIfGraphQLError(result);
+    return (result.data?['registerPushDevice'] as Map<String, dynamic>?)?['ok'] == true;
+  }
+
+  /// Removes this device from the signed-in user's devices. Throws on any error.
+  Future<bool> unregisterPushDevice(String token) async {
+    final result = await _client.mutate(MutationOptions(
+      document: gql(_unregisterDevice),
+      variables: {'token': token},
+    ));
+    throwIfGraphQLError(result);
+    return (result.data?['unregisterPushDevice'] as Map<String, dynamic>?)?['ok'] == true;
+  }
+
   /// Deletes the signed-in user's account, data and login, and cancels web
   /// (Stripe) billing. Returns whether an App Store subscription is still
   /// active: only the user can cancel that, in iPhone Settings.

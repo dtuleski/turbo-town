@@ -208,4 +208,32 @@ void main() {
       throwsA(isA<StateError>()),
     );
   });
+
+  test('profile api sends notification settings and push device payloads', () async {
+    final link = _ScriptedLink([
+      {'saveNotificationSettings': {'timeZone': 'America/Chicago', 'language': 'es'}},
+      {'saveNotificationSettings': {'timeZone': null, 'language': 'pt'}},
+      {'registerPushDevice': {'ok': true}},
+      {'unregisterPushDevice': {'ok': false}},
+    ]);
+    final api = ProfileApi(_client(link));
+    await api.saveNotificationSettings(timeZone: 'America/Chicago', language: 'es');
+    await api.saveNotificationSettings(language: 'pt');
+    expect(link.requests[0].variables['input'], {'timeZone': 'America/Chicago', 'language': 'es'});
+    expect(link.requests[1].variables['input'], {'language': 'pt'});
+    final token = 'ab' * 32;
+    expect(
+      await api.registerPushDevice(token: token, environment: 'sandbox', timeZone: 'America/Chicago', language: 'en'),
+      isTrue,
+    );
+    expect(link.requests[2].variables['input'], {
+      'token': token,
+      'platform': 'IOS',
+      'environment': 'sandbox',
+      'timeZone': 'America/Chicago',
+      'language': 'en',
+    });
+    expect(await api.unregisterPushDevice(token), isFalse);
+    expect(link.requests[3].variables, {'token': token});
+  });
 }

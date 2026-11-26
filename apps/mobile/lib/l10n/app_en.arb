@@ -175,9 +175,9 @@
   "profile_accountTier": "Account Tier",
   "profile_memberSince": "Member Since",
   "profile_emailPrefs": "Email Preferences",
-  "profile_dailyDigest": "Daily Digest",
-  "profile_dailyDigestDesc": "Get daily leaderboard highlights and game updates",
-  "profile_dailyDigestOn": "✓ You''ll receive daily updates at 8pm EST",
+  "profile_dailyDigest": "Daily emails and notifications",
+  "profile_dailyDigestDesc": "The morning summary with yesterday''s challenge results, and the daily challenge reminder at noon in the iPhone app",
+  "profile_dailyDigestOn": "✓ Every morning at 8am your time",
   "auth_createAccount": "Create Account",
   "auth_login": "Login",
   "auth_email": "Email",
@@ -2438,5 +2438,58 @@
   "auth_adultConfirm": "I’m 18 or older (a parent or guardian) and I agree to the Terms of Service and Privacy Policy.",
   "auth_adultRequired": "Please confirm you are 18 or older and agree to the terms.",
   "auth_socialConsent": "By continuing, you confirm you are 18 or older and agree to the Terms of Service and Privacy Policy.",
-  "auth_continueWithApple": "Continue with Apple"
+  "auth_continueWithApple": "Continue with Apple",
+  "push_softAsk_title": "Turn on notifications?",
+  "push_softAsk_body": "DashDen can send you a morning summary with yesterday''s challenge results and a reminder of the daily challenge at noon. You can turn them off any time in Profile.",
+  "push_softAsk_allow": "Allow",
+  "push_softAsk_notNow": "Not now",
+  "challenge_card_title": "Daily Challenge",
+  "challenge_card_play": "Play the challenge",
+  "challenge_card_best": "Your best today: {score} (rank #{rank})",
+  "@challenge_card_best": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_card_notPlayed": "You have not played today''s challenge yet.",
+  "challenge_card_endsAt": "Ends at midnight Eastern Time. Everyone plays the same puzzle.",
+  "challenge_card_top": "Today''s top 5",
+  "challenge_card_noScores": "No scores yet. Be the first!",
+  "challenge_card_allResults": "See all results",
+  "challenge_card_failed": "This challenge is not available right now.",
+  "challenge_you": "(you)",
+  "challenge_results_title": "Daily Challenge results",
+  "challenge_results_loading": "Loading results...",
+  "challenge_results_none": "There are no challenge results for this day.",
+  "challenge_results_live": "The challenge is still running. These are the scores so far.",
+  "challenge_results_winner": "Winner: {username} with {score} points",
+  "@challenge_results_winner": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_results_noScores": "Nobody played this challenge.",
+  "challenge_results_me": "You finished #{rank} with {score} points.",
+  "@challenge_results_me": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_results_notPlayed": "You did not play this challenge. Today''s challenge is waiting in the game hub.",
+  "challenge_results_toHub": "Go to today''s challenge"
 }

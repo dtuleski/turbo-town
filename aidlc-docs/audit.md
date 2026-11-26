@@ -2956,3 +2956,45 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **AI Response**: "DC4 Build and Test APPROVED (self-approved). DC4 committed on feat/dc4-web-challenge, not pushed. Next: DC5 App."
 **Context**: CONSTRUCTION - DC4 Build and Test gate
 ---
+## Daily Challenge and Push - DC5 Code Generation Plan
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(workflow instruction, FEAT-006) plan.md items 28 to 31"
+**AI Response**: "Code Generation plan written: construction/plans/daily-challenge-app-code-generation-plan.md (M5/M8 iOS push bridge, method channel app.dashden/push, Runner.entitlements and CODE_SIGN_ENTITLEMENTS in Debug, Release, Profile; M6 PushController with the plan Q10 soft-ask, registration, sign-out unregister, tap routing; M7 ProfileApi notification settings and device operations, toggle texts; M4 hub card and /challenge/results screen). Approval prompt: 'DC5 Code Generation plan ready. Approve and generate?'"
+**Context**: CONSTRUCTION - DC5 Code Generation part 1 (Daily Challenge and Push)
+
+---
+## Daily Challenge and Push - DC5 Code Generation Plan Approval
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC5 Code Generation plan APPROVED (self-approved). Next: generate."
+**Context**: CONSTRUCTION - DC5 Code Generation part 1 gate
+
+---
+## Daily Challenge and Push - DC5 Code Generation
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(workflow instruction, FEAT-006) plan.md items 28 to 30"
+**AI Response**: "Generated (apps/mobile): ios/Runner/AppDelegate.swift PushBridge (requestPermission, getToken, getTimeZone, takeLaunchTap, onTap events), ios/Runner/Runner.entitlements, project.pbxproj CODE_SIGN_ENTITLEMENTS x3; lib/push/push_channel.dart (fails soft), lib/push/push_controller.dart (soft-ask flag push.softAskShown, environment production in release else sandbox, unregister before Cognito sign-out, settings and registration after sign-in and on resume, tap allow list); lib/api/profile_api.dart saveNotificationSettings, registerPushDevice, unregisterPushDevice; lib/challenge/challenge_card_data.dart, lib/ui/widgets/daily_challenge_card.dart above the quest card, lib/ui/screens/challenge_results_screen.dart at /challenge/results; ARB strings en/es/pt and lib/l10n/gen regenerated. Tests: 3 new files and 1 extended, 42 tests. Summary: construction/daily-challenge-app/code/code-summary.md. Approval prompt: 'DC5 Code Generation complete. Continue to Build and Test?'"
+**Context**: CONSTRUCTION - DC5 Code Generation (Daily Challenge and Push)
+
+---
+## Daily Challenge and Push - DC5 Code Generation Approval
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC5 Code Generation APPROVED (self-approved). Next: DC5 Build and Test."
+**Context**: CONSTRUCTION - DC5 Code Generation gate
+
+---
+## Daily Challenge and Push - DC5 Build and Test
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(workflow instruction, FEAT-006) cd apps/mobile && flutter analyze && flutter test; cd apps/web && npx vitest run; cd services/game && npx jest"
+**AI Response**: "Ran: flutter analyze no issues; flutter test 805 tests pass (baseline 763, +42); web vitest 61 files / 1033 tests pass; game jest 30 suites pass / 454 tests, only the known failures event-publisher.service.test.ts and tests/integration/event-flow.test.ts; shared jest 29 suites / 617 tests; Swift type-check of AppDelegate.swift against the Flutter simulator framework exit 0; plutil lint OK. Owner verifies with an Xcode build (Swift and entitlements are not compiled by flutter test). Summary with SECURITY-01 to SECURITY-15: construction/build-and-test/daily-challenge-app-build-and-test-summary.md. Approval prompt: 'DC5 Build and Test complete. Continue to Publish?'"
+**Context**: CONSTRUCTION - DC5 Build and Test (Daily Challenge and Push)
+
+---
+## Daily Challenge and Push - DC5 Build and Test Approval
+**Timestamp**: 2026-11-26T20:05:30Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC5 Build and Test APPROVED (self-approved). DC5 committed on feat/dc5-app-challenge-push, not pushed. Next: Publish (plan item 32), handled by the workflow."
+**Context**: CONSTRUCTION - DC5 Build and Test gate
+
+---

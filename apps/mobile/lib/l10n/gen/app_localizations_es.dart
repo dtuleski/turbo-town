@@ -493,15 +493,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profile_emailPrefs => 'Preferencias de Email';
 
   @override
-  String get profile_dailyDigest => 'Resumen Diario';
+  String get profile_dailyDigest => 'Correos y notificaciones diarios';
 
   @override
   String get profile_dailyDigestDesc =>
-      'Recibe actualizaciones diarias de clasificación y juegos';
+      'El resumen de la mañana con los resultados del desafío de ayer, y el recordatorio del desafío diario al mediodía en la app de iPhone';
 
   @override
   String get profile_dailyDigestOn =>
-      '✓ Recibirás actualizaciones diarias a las 8pm EST';
+      '✓ Cada mañana a las 8am en tu hora local';
 
   @override
   String get auth_createAccount => 'Crear Cuenta';
@@ -4904,4 +4904,86 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get auth_continueWithApple => 'Continuar con Apple';
+
+  @override
+  String get push_softAsk_title => '¿Activar notificaciones?';
+
+  @override
+  String get push_softAsk_body =>
+      'DashDen puede enviarte un resumen por la mañana con los resultados del desafío de ayer y un recordatorio del desafío diario al mediodía. Puedes desactivarlas cuando quieras en Perfil.';
+
+  @override
+  String get push_softAsk_allow => 'Permitir';
+
+  @override
+  String get push_softAsk_notNow => 'Ahora no';
+
+  @override
+  String get challenge_card_title => 'Desafío Diario';
+
+  @override
+  String get challenge_card_play => 'Jugar el desafío';
+
+  @override
+  String challenge_card_best(String score, String rank) {
+    return 'Tu mejor resultado hoy: $score (puesto #$rank)';
+  }
+
+  @override
+  String get challenge_card_notPlayed => 'Aún no has jugado el desafío de hoy.';
+
+  @override
+  String get challenge_card_endsAt =>
+      'Termina a medianoche, hora del Este de EE. UU. Todos juegan el mismo desafío.';
+
+  @override
+  String get challenge_card_top => 'Los 5 mejores de hoy';
+
+  @override
+  String get challenge_card_noScores =>
+      'Aún no hay puntuaciones. ¡Sé el primero!';
+
+  @override
+  String get challenge_card_allResults => 'Ver todos los resultados';
+
+  @override
+  String get challenge_card_failed =>
+      'Este desafío no está disponible en este momento.';
+
+  @override
+  String get challenge_you => '(tú)';
+
+  @override
+  String get challenge_results_title => 'Resultados del Desafío Diario';
+
+  @override
+  String get challenge_results_loading => 'Cargando resultados...';
+
+  @override
+  String get challenge_results_none =>
+      'No hay resultados del desafío para este día.';
+
+  @override
+  String get challenge_results_live =>
+      'El desafío sigue en curso. Estas son las puntuaciones hasta ahora.';
+
+  @override
+  String challenge_results_winner(String username, String score) {
+    return 'Ganador: $username con $score puntos';
+  }
+
+  @override
+  String get challenge_results_noScores => 'Nadie jugó este desafío.';
+
+  @override
+  String challenge_results_me(String rank, String score) {
+    return 'Quedaste en el puesto #$rank con $score puntos.';
+  }
+
+  @override
+  String get challenge_results_notPlayed =>
+      'No jugaste este desafío. El desafío de hoy te espera en el centro de juegos.';
+
+  @override
+  String get challenge_results_toHub => 'Ir al desafío de hoy';
 }

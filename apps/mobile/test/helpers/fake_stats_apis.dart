@@ -141,6 +141,36 @@ class FakeProfileApi implements ProfileApi {
     return EmailPrefs(dailyDigest: dailyDigest);
   }
 
+  final List<({String? timeZone, String? language})> settingsSaves = [];
+  final List<({String token, String environment, String? timeZone, String? language})> registrations = [];
+  final List<String> unregistrations = [];
+  bool failPush = false;
+
+  @override
+  Future<void> saveNotificationSettings({String? timeZone, String? language}) async {
+    if (failPush) throw GameApiException('boom');
+    settingsSaves.add((timeZone: timeZone, language: language));
+  }
+
+  @override
+  Future<bool> registerPushDevice({
+    required String token,
+    required String environment,
+    String? timeZone,
+    String? language,
+  }) async {
+    if (failPush) throw GameApiException('boom');
+    registrations.add((token: token, environment: environment, timeZone: timeZone, language: language));
+    return true;
+  }
+
+  @override
+  Future<bool> unregisterPushDevice(String token) async {
+    if (failPush) throw GameApiException('boom');
+    unregistrations.add(token);
+    return true;
+  }
+
   @override
   Future<bool> deleteMyAccount() async {
     if (failDelete) throw GameApiException('boom');

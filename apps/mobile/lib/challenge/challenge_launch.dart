@@ -28,3 +28,26 @@ const Map<int, String> _difficultyNames = {1: 'easy', 2: 'medium', 3: 'hard'};
 
 /// Screen difficulty name for a challenge difficulty number (2 = medium).
 String challengeDifficultyName(int difficulty) => _difficultyNames[difficulty] ?? 'medium';
+
+/// Launch table (web `CHALLENGE_LAUNCH_TABLE`): server theme id -> play
+/// route, for the games with an app challenge mode.
+const Map<String, String> kChallengeLaunchTable = {
+  'CODE_A_BOT': '/code-a-bot/play',
+  'SUDOKU': '/sudoku/play',
+  'MATH_CHALLENGE': '/math-challenge/play',
+  'MATH_MAZE': '/math-maze/play',
+  'WORD_PUZZLE': '/word-puzzle/play',
+  'HANGMAN': '/hangman/play',
+};
+
+/// The play path of [challenge]: `<route>?difficulty=medium&challenge=<day>`
+/// (web `buildChallengeUrl`). Null for a theme without an app challenge mode
+/// or an invalid day.
+String? buildChallengePath(DailyChallengeView challenge) {
+  final route = kChallengeLaunchTable[challenge.themeId];
+  if (route == null || !isChallengeDay(challenge.day)) return null;
+  return Uri(path: route, queryParameters: {'difficulty': 'medium', 'challenge': challenge.day}).toString();
+}
+
+/// The results screen of [day] (the digest push route).
+String challengeResultsPath(String day) => Uri(path: '/challenge/results', queryParameters: {'day': day}).toString();
