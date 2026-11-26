@@ -8661,6 +8661,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue with Apple'**
   String get auth_continueWithApple;
+
+  /// No description provided for @auth_showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get auth_showPassword;
+
+  /// No description provided for @auth_hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get auth_hidePassword;
 }
 
 class _AppLocalizationsDelegate

@@ -116,6 +116,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                       key: const Key('reset-email'),
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
+                      autofillHints: const [AutofillHints.email],
+                      autocorrect: false,
                       decoration: InputDecoration(
                         labelText: l10n.auth_email,
                         prefixIcon: const Icon(Icons.email_outlined),
@@ -135,26 +137,19 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                       validator: fieldValidator(l10n, validateResetCode),
                     ),
                     const SizedBox(height: 12),
-                    TextFormField(
+                    PasswordField(
                       key: const Key('reset-password'),
                       controller: _password,
-                      obscureText: true,
+                      label: l10n.mobileAuth_newPassword,
                       autofillHints: const [AutofillHints.newPassword],
-                      decoration: InputDecoration(
-                        labelText: l10n.mobileAuth_newPassword,
-                        prefixIcon: const Icon(Icons.lock_outline),
-                      ),
                       validator: fieldValidator(l10n, validateNewPassword),
                     ),
                     const SizedBox(height: 12),
-                    TextFormField(
+                    PasswordField(
                       key: const Key('reset-confirm'),
                       controller: _confirm,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: l10n.auth_confirmPassword,
-                        prefixIcon: const Icon(Icons.lock_outline),
-                      ),
+                      label: l10n.auth_confirmPassword,
+                      autofillHints: const [AutofillHints.newPassword],
                       validator: fieldValidator(
                           l10n, (v) => validateConfirmPassword(_password.text, v)),
                       onFieldSubmitted: (_) => _submit(),
