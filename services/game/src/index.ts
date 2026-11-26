@@ -5,6 +5,7 @@ import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import { handlePostConfirmation, isPostConfirmationEvent } from './post-confirmation';
 
 // Allowed origins for CORS
 const allowedOrigins = [
@@ -144,6 +145,12 @@ async function handleStripeEventBridge(event: any): Promise<void> {
 }
 
 export async function handler(event: any, context: any): Promise<any> {
+  // Cognito trigger (new account): digest on by default. Returns the event Cognito expects.
+  if (isPostConfirmationEvent(event)) {
+    logger.setContext({ correlationId: context?.awsRequestId, functionName: context?.functionName });
+    return handlePostConfirmation(event);
+  }
+
   if (isStripeEventBridgeEvent(event)) {
     logger.setContext({ correlationId: event.id, functionName: context?.functionName });
     return handleStripeEventBridge(event);
