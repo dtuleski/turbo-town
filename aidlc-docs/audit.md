@@ -2998,3 +2998,11 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **Context**: CONSTRUCTION - DC5 Build and Test gate
 
 ---
+
+## Daily Challenge - Cross-unit integration verification (iteration 1)
+**Timestamp**: 2026-11-26T20:17:03Z
+**User Input**: "I want to defer to all your recommendations. Just go!!" (owner delegation; workflow step: cross-FEAT integration verification on the DC5 tip)
+**AI Response**: "Ran all five command sets on feat/dc5-app-challenge-push 52e0965. shared: npx jest 29 suites / 617 tests pass, npm run build pass. game: npx tsc --noEmit pass, npx jest 30 suites pass / 454 tests, only the known event-publisher.service.test.ts and tests/integration/event-flow.test.ts fail. web: tsc pass, vitest 61 files / 1033 tests pass, npm run build pass. app: flutter analyze no issues, flutter test 805 tests pass. infrastructure: npx tsc --noEmit pass. scripts/deploy-daily-email-lambda.sh --build-only exit 0, zip has dist/daily-email.js, nothing deployed. Seam checks: GraphQL documents in web and app match the handler operations and returned shapes (getDailyChallenge, getChallengeLeaderboard, completeGame.challenge, saveNotificationSettings, registerPushDevice, unregisterPushDevice); theme ids and play routes in the web and app launch tables match the shared rotation and the app router; challengeFailed=1 paths match between launch and hub on both clients; APNs payload {aps, route} from push-sender matches AppDelegate didTap and the app tap allow list ('/', '/challenge/results?day='); digest email link matches the web results route; env var names in code match the production steps; flutter gen-l10n and tools/export_code_a_bot_levels.mjs produce no diff. One-off contract check (temporary, not committed): 360 real payloads (6 games x 60 days) from the shared generators parse in the app DailyChallengeView.fromJson and its converters, with totals equal to expectedTotals in en/es/pt and every word-puzzle word located in its grid. No seam defect found; no code change."
+**Context**: Construction - integration verification across DC2, DC3, DC1, DC4, DC5; no fixes required
+
+---
