@@ -20,3 +20,6 @@ export * from './constants';
 export * from './circuit';
 // Quest Map shared core
 export * from './quest';
+
+// Daily Challenge shared core
+export * from './challenge';

@@ -43,6 +43,8 @@ export interface Game {
   attempts: number;
   score?: number;
   questContext?: QuestContext;
+  /** Daily Challenge day (`YYYY-MM-DD`, US Eastern); set only on a validated challenge start. */
+  challengeDay?: string;
   createdAt: Date;
   updatedAt: Date;
 }

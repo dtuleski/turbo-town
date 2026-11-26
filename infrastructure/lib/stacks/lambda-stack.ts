@@ -25,6 +25,7 @@ export interface LambdaStackProps extends cdk.StackProps {
   languageProgressTable: dynamodb.Table;
   languageResultsTable: dynamodb.Table;
   questProgressTable: dynamodb.ITable;
+  dailyChallengeTable: dynamodb.ITable;
   // Cognito
   userPool: cognito.UserPool;
   userPoolClient: cognito.UserPoolClient;
@@ -144,6 +145,7 @@ export class LambdaStack extends cdk.Stack {
         LANGUAGE_PROGRESS_TABLE_NAME: props.languageProgressTable.tableName,
         LANGUAGE_RESULTS_TABLE_NAME: props.languageResultsTable.tableName,
         QUEST_PROGRESS_TABLE_NAME: props.questProgressTable.tableName,
+        DAILY_CHALLENGE_TABLE_NAME: props.dailyChallengeTable.tableName,
         COGNITO_USER_POOL_ID: props.userPool.userPoolId,
         EVENT_BUS_NAME: props.eventBus.eventBusName,
         LOG_LEVEL: props.environment === 'prod' ? 'INFO' : 'DEBUG',
@@ -212,6 +214,23 @@ export class LambdaStack extends cdk.Stack {
         effect: iam.Effect.ALLOW,
         actions: ['dynamodb:PutItem'],
         resources: [props.questProgressTable.tableArn],
+      })
+    );
+
+    // Daily Challenge table: Game Lambda only, the actions the code uses. Query also runs on the
+    // rank-index and user-index GSIs; BatchWriteItem is account deletion.
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['dynamodb:GetItem', 'dynamodb:Query'],
+        resources: [props.dailyChallengeTable.tableArn, `${props.dailyChallengeTable.tableArn}/index/*`],
+      })
+    );
+    this.gameFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['dynamodb:PutItem', 'dynamodb:BatchWriteItem'],
+        resources: [props.dailyChallengeTable.tableArn],
       })
     );
 

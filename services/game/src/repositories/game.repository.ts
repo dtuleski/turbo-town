@@ -49,6 +49,8 @@ export class GameRepository implements IGameRepository {
       score: game.score,
       // Quest Map: the validated, stripped context only; absent for ordinary games.
       ...(game.questContext ? { questContext: game.questContext } : {}),
+      // Daily Challenge: the validated day only; absent for ordinary games.
+      ...(game.challengeDay ? { challengeDay: game.challengeDay } : {}),
       createdAt: nowISO,
       updatedAt: nowISO,
     };
@@ -74,6 +76,7 @@ export class GameRepository implements IGameRepository {
         attempts: game.attempts,
         score: game.score,
         ...(game.questContext ? { questContext: game.questContext } : {}),
+        ...(game.challengeDay ? { challengeDay: game.challengeDay } : {}),
         createdAt: now,
         updatedAt: now,
       };

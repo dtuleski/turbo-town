@@ -8,6 +8,7 @@ import { GameCatalogRepository } from '../repositories/game-catalog.repository';
 import { GameService } from '../services/game.service';
 import { QuestService } from '../services/quest.service';
 import { QuestProgressRepository } from '../repositories/quest-progress.repository';
+import { ChallengeService, createChallengeService } from '../services/challenge.service';
 import { AdminService } from '../services/admin.service';
 import { StripeService } from '../services/stripe.service';
 import { LanguageHandler } from './language.handler';
@@ -61,6 +62,8 @@ export class GameHandler {
   private emailPrefsService: EmailPrefsService;
   private contactService: ContactService;
   private questService: QuestService;
+  /** Undefined when DAILY_CHALLENGE_TABLE_NAME is unset: the challenge operations return null. */
+  private challengeService?: ChallengeService;
   private accountDeletion?: AccountDeletionService;
 
   constructor() {
@@ -88,6 +91,9 @@ export class GameHandler {
       rateLimiter
     );
 
+    // Daily Challenge (optional; off without its table env var)
+    this.challengeService = createChallengeService(process.env);
+
     // Initialize game service
     this.gameService = new GameService(
       gameRepository,
@@ -97,7 +103,8 @@ export class GameHandler {
       rateLimiter,
       achievementTracker,
       eventPublisher,
-      this.questService
+      this.questService,
+      this.challengeService
     );
 
     // Initialize admin service
@@ -196,6 +203,13 @@ export class GameHandler {
 
       case 'getQuestProgress':
         return this.getQuestProgress(userId);
+
+      // Daily Challenge (null when the feature is off)
+      case 'getDailyChallenge':
+        return this.getDailyChallenge(userId);
+
+      case 'getChallengeLeaderboard':
+        return this.getChallengeLeaderboard(userId, variables.day, variables.limit);
 
       // Queries
       case 'getGame':
@@ -381,6 +395,7 @@ export class GameHandler {
       score: result.game.score,
       scoreBreakdown: result.scoreBreakdown || null,
       quest: result.quest ?? null,
+      challenge: result.challenge ?? null,
       leaderboardRank: null,
       achievements: result.achievements.map((a) => ({
         type: a.achievementType,
@@ -396,6 +411,23 @@ export class GameHandler {
   private async getQuestProgress(userId: string): Promise<any> {
     const tier = await this.subscriptionRepository.getTier(userId);
     return this.questService.getProgressView(userId, tier);
+  }
+
+  /**
+   * Query: getDailyChallenge. `settings` and `content` are JSON text; clients parse them.
+   */
+  private async getDailyChallenge(userId: string): Promise<any> {
+    if (!this.challengeService) return null;
+    const view = await this.challengeService.getToday(userId);
+    return { ...view, settings: JSON.stringify(view.settings), content: JSON.stringify(view.content) };
+  }
+
+  /**
+   * Query: getChallengeLeaderboard(day, limit). Validation and clamping happen in the service.
+   */
+  private async getChallengeLeaderboard(userId: string, day: unknown, limit: unknown): Promise<any> {
+    if (!this.challengeService) return null;
+    return this.challengeService.getLeaderboard(userId, day, limit);
   }
 
   /**
