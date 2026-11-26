@@ -241,8 +241,8 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - **Scope**: digest as a push for app users; daily challenge with leaderboard, 12pm local push, results in the next digest; one toggle for email and all pushes; digest email at 8am local time. Phase 1 (digest on for new accounts) is PR #41, outside this workflow.
 - **Extensions**: Security Baseline enabled (project setting)
 - [x] INCEPTION - Workspace Detection (brownfield; reverse-engineering artifacts reused)
-- [ ] INCEPTION - Requirements Analysis (IN PROGRESS: owner decisions D1 to D6 recorded; questions in `inception/requirements/daily-challenge-requirement-verification-questions.md`)
-- [ ] INCEPTION - User Stories
-- [ ] INCEPTION - Workflow Planning
+- [x] INCEPTION - Requirements Analysis (all 13 questions answered A by owner delegation; `inception/requirements/daily-challenge-requirements.md`)
+- [x] INCEPTION - User Stories (SKIPPED: one persona, concrete approved requirements; acceptance criteria per unit)
+- [x] INCEPTION - Workflow Planning (self-approved under owner delegation; `inception/plans/daily-challenge-workflow-planning.md`; units DC1 to DC5)
 - [ ] INCEPTION - Application Design
 - [ ] INCEPTION - Units Generation

@@ -45,7 +45,7 @@ A) Yes, the 16 games above (recommended)
 B) No (please describe after [Answer]: tag below)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 2
 A fair challenge leaderboard needs everyone to play the same puzzle. Some games pick their content at random on the device today. What should happen with a game in the list that cannot repeat the exact same puzzle yet?
@@ -55,7 +55,7 @@ B) Leave it out of the rotation for now; only games that are already repeatable 
 C) Use it anyway; players get different puzzles and scores are compared as they are
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 3
 Which day does a challenge belong to? One shared day is needed for one leaderboard.
@@ -65,7 +65,7 @@ B) UTC midnight to midnight
 C) Each player's local day, with separate leaderboards per time zone
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 4
 How are ties on the challenge leaderboard broken (same best score)?
@@ -75,7 +75,7 @@ B) Shorter game time ranks higher
 C) Tied players share the rank
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 5
 When does the digest push arrive?
@@ -84,7 +84,7 @@ A) At 8am local time, together with the email (recommended)
 B) At a different time (please give it after [Answer]: tag below)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 6
 Many users have never shared a time zone (web users today, and app users before the update). Which time is used for them until their time zone is known?
@@ -93,7 +93,7 @@ A) US Eastern; the web and the app save the user's time zone at their next visit
 B) Skip the digest and pushes until the time zone is known
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 7
 When does the app ask for permission to send notifications? iOS shows its prompt only once; a short explanation first improves the yes rate, and Apple requires clear opt-in wording for non-essential pushes.
@@ -103,7 +103,7 @@ B) At first launch, before the first game
 C) Only when the user turns on the toggle in Profile
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 8
 Android has no app release yet. Should push support for Android be built now?
@@ -112,7 +112,7 @@ A) No, iOS only now; the backend is built so Android can be added later (recomme
 B) Yes, Android too (adds Firebase Cloud Messaging)
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 9
 Where can users see and play the challenge?
@@ -121,7 +121,7 @@ A) In the app and on the website, as a card at the top of the game list with tod
 B) In the app only
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 10
 What does the next morning's digest show about yesterday's challenge for a user who did not play it?
@@ -130,7 +130,7 @@ A) The winner and the top 3, plus an invitation to play today's challenge (recom
 B) Nothing about the challenge
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 11
 In which language are the pushes and the challenge texts?
@@ -139,7 +139,7 @@ A) The user's app or site language (English, Spanish or Portuguese), English whe
 B) English only
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 12
 Should the challenge push go to a user who already played today's challenge before noon?
@@ -148,7 +148,7 @@ A) No, skip the push for users who already played (recommended)
 B) Yes, send it anyway, with their current rank
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Question 13
 Who picks each day's challenge?
@@ -157,7 +157,7 @@ A) The backend picks at random from the rotation, never the same game two days i
 B) The backend picks at random, and the admin page lets you override any upcoming day
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A (owner: "I want to defer to all your recommendations. Just go!!")
 
 ## Security Baseline
 
