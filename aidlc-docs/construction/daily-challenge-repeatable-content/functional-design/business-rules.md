@@ -55,6 +55,21 @@
   the six themes (`CODE_A_BOT`, `SUDOKU`, `MATH_CHALLENGE`, `MATH_MAZE`, `WORD_PUZZLE`, `HANGMAN`) and
   null otherwise; values go through `URLSearchParams`.
 
+## App given-content mode (M1 to M3)
+- **BR-M1 Off without the param.** Play routes pass `challengeDay` only for a real `challenge=<YYYY-MM-DD>`
+  and no valid `quest` param (BR-W5); otherwise the screens build exactly as before and nothing is loaded.
+- **BR-M2 Load before start.** `ChallengeGate` loads today's challenge and builds the game only when the
+  content is for this game and the param's day, with the challenge difficulty. Anything else goes to
+  `/?challengeFailed=1` (the app hub) before any start.
+- **BR-M3 Start failure.** A rate-limit error shows the limit screen; any other failure blocks with
+  `BlockReason.challengeFailed`, which goes to `/?challengeFailed=1`. A challenge round never falls back to
+  offline play. An accepted start is playable even with `canPlay: false` (as quest rule R1).
+- **BR-M4 Same content on Play again.** Restart replays the served content and starts again with the day
+  (best attempt counts on the server).
+- **BR-M5 Language.** Word Puzzle and Hangman use the base code of the app locale, fallback `en`.
+- **BR-M6 Code-a-Bot parity.** Content carries level numbers only, so the app's medium levels are pinned to
+  the web's by `test/games/code_a_bot_parity_test.dart`.
+
 ## Security notes
 
 - Content is produced server-side from the day; a client cannot choose it (SECURITY-13). The server

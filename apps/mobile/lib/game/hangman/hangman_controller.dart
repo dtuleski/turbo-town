@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../api/challenge_models.dart';
 import '../../api/quest_models.dart';
+import '../../challenge/challenge_content.dart';
 import '../data/quiz_data.dart';
 import '../framework/game_feedback.dart';
 import '../framework/game_session.dart';
@@ -12,10 +14,15 @@ import 'hangman_logic.dart';
 /// `lang` is the app language code; it picks the word list.
 typedef HangmanArgs = ({String difficulty, String lang, QuestContext? quest});
 
-GameSessionArgs hangmanSessionArgs(HangmanArgs args) => (
+/// A Daily Challenge round: [args] carries the challenge difficulty and the
+/// language that picks the word list.
+typedef HangmanChallengeArgs = ({HangmanArgs args, GivenChallenge<HangmanContent> challenge});
+
+GameSessionArgs hangmanSessionArgs(HangmanArgs args, {String? challengeDay}) => (
       themeId: 'HANGMAN',
       difficulty: quizDifficultyNumber(args.difficulty),
       questContext: args.quest,
+      challengeDay: challengeDay,
     );
 
 enum RoundPhase { playing, won, lost }
@@ -63,18 +70,23 @@ class HangmanState {
 }
 
 /// Hangman board: five rounds, six wrong guesses per round. The game is
-/// always played to the end; the server scores from rounds won.
+/// always played to the end; the server scores from rounds won. [given] (a
+/// Daily Challenge) replaces the random words, in the list for `args.lang`.
 class HangmanController extends StateNotifier<HangmanState> {
-  HangmanController(this._session, this._feedback, this.args, {Random? random})
+  HangmanController(this._session, this._feedback, this.args, {Random? random, HangmanContent? given})
       : _rng = random ?? Random(),
+        _given = given,
         super(HangmanState(
-          words: pickHangmanWords(args.difficulty, kHangmanRounds, args.lang, random ?? Random()),
+          words: given != null
+              ? hangmanWordsFromChallenge(given, args.lang)
+              : pickHangmanWords(args.difficulty, kHangmanRounds, args.lang, random ?? Random()),
         ));
 
   final GameSessionController _session;
   final GameFeedback _feedback;
   final HangmanArgs args;
   final Random _rng;
+  final HangmanContent? _given;
 
   void guess(String letter) {
     final l = letter.toUpperCase();
@@ -126,8 +138,11 @@ class HangmanController extends StateNotifier<HangmanState> {
 
   /// New words for another game.
   void restart() {
+    final given = _given;
     state = HangmanState(
-      words: pickHangmanWords(args.difficulty, kHangmanRounds, args.lang, _rng),
+      words: given != null
+          ? hangmanWordsFromChallenge(given, args.lang)
+          : pickHangmanWords(args.difficulty, kHangmanRounds, args.lang, _rng),
     );
   }
 }
@@ -136,4 +151,14 @@ final hangmanControllerProvider = StateNotifierProvider.family
     .autoDispose<HangmanController, HangmanState, HangmanArgs>((ref, args) {
   final session = ref.watch(gameSessionProvider(hangmanSessionArgs(args)).notifier);
   return HangmanController(session, ref.watch(gameFeedbackProvider), args);
+});
+
+/// The board of a Daily Challenge round: the served words.
+final hangmanChallengeControllerProvider = StateNotifierProvider.family
+    .autoDispose<HangmanController, HangmanState, HangmanChallengeArgs>((ref, key) {
+  final session = ref.watch(
+    gameSessionProvider(hangmanSessionArgs(key.args, challengeDay: key.challenge.day)).notifier,
+  );
+  return HangmanController(session, ref.watch(gameFeedbackProvider), key.args,
+      given: key.challenge.content);
 });

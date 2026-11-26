@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../challenge/challenge_launch.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../quest/quest_launch.dart';
 import 'blocked_view.dart';
@@ -82,11 +83,14 @@ class _GameSessionFrameState extends ConsumerState<GameSessionFrame> {
     final session = ref.watch(gameSessionProvider(widget.args));
     final quest = widget.args.questContext != null;
 
-    // After a blocked quest start the player returns to the map, as on web.
+    // After a blocked quest start the player returns to the map, and after a
+    // blocked challenge start to the hub, as on web.
     ref.listen(gameSessionProvider(widget.args), (prev, next) {
-      if (next.phase == SessionPhase.blocked &&
-          next.blockReason == BlockReason.questFailed) {
+      if (next.phase != SessionPhase.blocked) return;
+      if (next.blockReason == BlockReason.questFailed) {
         context.go('/quest-map?startFailed=quest');
+      } else if (next.blockReason == BlockReason.challengeFailed) {
+        context.go(kChallengeFailedPath);
       }
     });
 

@@ -14,6 +14,7 @@ GameSessionArgs bondSessionArgs(BondArgs a) => (
       themeId: 'BOND_AND_BURN',
       difficulty: bondDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 /// Heat is checked once per step of this length (web: every 100 ms).

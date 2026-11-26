@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/framework/game_setup_scaffold.dart';
@@ -78,36 +80,69 @@ class _WordPuzzleSetupScreenState extends State<WordPuzzleSetupScreen> {
   }
 }
 
-class WordPuzzleGameScreen extends ConsumerWidget {
-  const WordPuzzleGameScreen({super.key, required this.difficulty, this.questContext});
+/// [challengeDay] plays that day's Daily Challenge grid in the app language
+/// (English when the challenge has no variant for it).
+class WordPuzzleGameScreen extends StatelessWidget {
+  const WordPuzzleGameScreen({super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, locale: locale, quest: questContext);
+      return _WordPuzzleGame(
+          args: args, sessionArgs: wordPuzzleSessionArgs(args), provider: wordPuzzleControllerProvider(args));
+    }
+    final l10n = AppLocalizations.of(context);
+    return ChallengeGate<WordPuzzleContent>(
+      day: day,
+      title: gameTitle(l10n, 'word-puzzle') ?? l10n.wordPuzzle_title,
+      builder: (context, challenge, difficulty) {
+        final args = (difficulty: difficulty, locale: locale, quest: null);
+        return _WordPuzzleGame(
+          args: args,
+          sessionArgs: wordPuzzleSessionArgs(args, challengeDay: challenge.day),
+          provider: wordPuzzleChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _WordPuzzleProvider = AutoDisposeStateNotifierProvider<WordPuzzleController, WordPuzzleState>;
+
+class _WordPuzzleGame extends ConsumerWidget {
+  const _WordPuzzleGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final WordPuzzleArgs args;
+  final GameSessionArgs sessionArgs;
+  final _WordPuzzleProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (
-      difficulty: difficulty,
-      locale: Localizations.localeOf(context).languageCode,
-      quest: questContext,
-    );
-    final provider = wordPuzzleControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: wordPuzzleSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'word-puzzle') ?? l10n.wordPuzzle_title,
       reviewType: gameById('word-puzzle')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
-      boardBuilder: (context, session) => _WordPuzzleBoard(args: args, session: session),
+      boardBuilder: (context, session) =>
+          _WordPuzzleBoard(args: args, provider: provider, session: session),
     );
   }
 }
 
 class _WordPuzzleBoard extends ConsumerStatefulWidget {
-  const _WordPuzzleBoard({required this.args, required this.session});
+  const _WordPuzzleBoard({required this.args, required this.provider, required this.session});
 
   final WordPuzzleArgs args;
+  final _WordPuzzleProvider provider;
   final GameSessionState session;
 
   @override
@@ -123,8 +158,8 @@ class _WordPuzzleBoardState extends ConsumerState<_WordPuzzleBoard> {
   Widget build(BuildContext context) {
     final args = widget.args;
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(wordPuzzleControllerProvider(args));
-    final controller = ref.read(wordPuzzleControllerProvider(args).notifier);
+    final state = ref.watch(widget.provider);
+    final controller = ref.read(widget.provider.notifier);
     final puzzle = state.puzzle;
     final config = wordPuzzleDifficultyById(args.difficulty);
     return ListView(

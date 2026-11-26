@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/fake_game_api.dart';
 
-const _args = (themeId: 'ANIMALS', difficulty: 1, questContext: null);
+const _args = (themeId: 'ANIMALS', difficulty: 1, questContext: null, challengeDay: null);
 const _quest = QuestContext(worldId: 'brain-peaks', nodeId: 'bp-01-memory', legIndex: 0);
 
 CompleteGameResult _completed(int score, {Map<String, dynamic>? quest}) =>
@@ -176,7 +176,7 @@ void main() {
   });
 
   group('quest launch', () {
-    const questArgs = (themeId: 'ANIMALS', difficulty: 1, questContext: _quest);
+    const questArgs = (themeId: 'ANIMALS', difficulty: 1, questContext: _quest, challengeDay: null);
 
     sessionTest('sends the context and treats an accepted start as playable',
         (tester) async {
@@ -226,6 +226,64 @@ void main() {
       final result = await c.complete();
       expect(published.last?.stars, 3);
       expect(result?.quest?.newlyUnlocked, ['bp-02-math']);
+    });
+  });
+
+  group('challenge launch', () {
+    const challengeArgs =
+        (themeId: 'SUDOKU', difficulty: 2, questContext: null, challengeDay: '2026-11-26');
+
+    sessionTest('sends the day and treats an accepted start as playable', (tester) async {
+      final api = FakeGameApi(
+        onStartGame: (t, d, q) async => StartGameResult(
+            id: 'g', themeId: t, difficulty: d, status: 'IN_PROGRESS', canPlay: false),
+      );
+      final c = _ctrl(api, challengeArgs);
+      await c.start();
+      expect(api.calls.single, 'startGame:SUDOKU:2:challenge=2026-11-26');
+      expect(c.state.phase, SessionPhase.playing);
+      expect(c.state.gameId, 'g');
+    });
+
+    sessionTest('a normal start sends no challenge day', (tester) async {
+      final api = FakeGameApi();
+      final c = _ctrl(api, _args);
+      await c.start();
+      expect(api.calls.single, 'startGame:ANIMALS:1');
+    });
+
+    sessionTest('a rate limit shows the limit screen as for any play', (tester) async {
+      final c = _ctrl(
+        FakeGameApi(onStartGame: (t, d, q) async =>
+            throw GameApiException('Rate limit exceeded', code: 'RATE_LIMIT_EXCEEDED')),
+        challengeArgs,
+      );
+      await c.start();
+      expect(c.state.blockReason, BlockReason.rateLimited);
+    });
+
+    sessionTest('any other failure blocks with challengeFailed instead of offline play',
+        (tester) async {
+      for (final error in <Object>[
+        GameApiException('Challenge not available'),
+        GameApiException('This game requires a paid subscription', code: 'PAID_FEATURE_REQUIRED'),
+        StateError('boom'),
+      ]) {
+        final c = _ctrl(FakeGameApi(onStartGame: (t, d, q) async => throw error), challengeArgs);
+        await c.start();
+        expect(c.state.phase, SessionPhase.blocked, reason: '$error');
+        expect(c.state.blockReason, BlockReason.challengeFailed, reason: '$error');
+      }
+    });
+
+    sessionTest('the quest context wins over a challenge day', (tester) async {
+      final api = FakeGameApi(onStartGame: (t, d, q) async => throw GameApiException('nope'));
+      final c = _ctrl(
+        api,
+        (themeId: 'SUDOKU', difficulty: 2, questContext: _quest, challengeDay: '2026-11-26'),
+      );
+      await c.start();
+      expect(c.state.blockReason, BlockReason.questFailed);
     });
   });
 

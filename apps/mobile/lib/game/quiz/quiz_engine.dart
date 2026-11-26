@@ -41,7 +41,7 @@ class QuizSpec {
   final List<QuizQuestion> Function(Random rng) build;
 
   GameSessionArgs sessionArgs(QuestContext? quest) =>
-      (themeId: themeId, difficulty: difficulty, questContext: quest);
+      (themeId: themeId, difficulty: difficulty, questContext: quest, challengeDay: null);
 }
 
 enum QuizPhase { answering, feedback }

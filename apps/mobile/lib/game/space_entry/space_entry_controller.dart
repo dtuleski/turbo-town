@@ -16,6 +16,7 @@ GameSessionArgs spaceEntrySessionArgs(SpaceEntryArgs a) => (
       themeId: 'SPACE_ENTRY',
       difficulty: spaceEntryDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 enum SpacePhase { setup, reentry, results }

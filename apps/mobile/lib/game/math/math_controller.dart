@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../api/challenge_models.dart';
 import '../../api/quest_models.dart';
+import '../../challenge/challenge_content.dart';
 import '../framework/game_feedback.dart';
 import '../framework/game_session.dart';
 import 'math_logic.dart';
@@ -13,10 +15,14 @@ const Duration kMathFeedbackDelay = Duration(milliseconds: 1500);
 
 typedef MathArgs = ({String difficulty, QuestContext? quest});
 
-GameSessionArgs mathSessionArgs(MathArgs args) => (
+/// A Daily Challenge round: [args] carries the challenge difficulty.
+typedef MathChallengeArgs = ({MathArgs args, GivenChallenge<MathChallengeContent> challenge});
+
+GameSessionArgs mathSessionArgs(MathArgs args, {String? challengeDay}) => (
       themeId: 'MATH_CHALLENGE',
       difficulty: mathDifficultyById(args.difficulty).apiValue,
       questContext: args.quest,
+      challengeDay: challengeDay,
     );
 
 class MathState {
@@ -57,10 +63,13 @@ class MathState {
 }
 
 /// Math Challenge board: one timer for the whole round (web), a fixed number
-/// of questions, a short message after each answer.
+/// of questions, a short message after each answer. [given] (a Daily
+/// Challenge) is played in order instead of generated questions.
 class MathController extends StateNotifier<MathState> {
-  MathController(this._session, this._feedback, this.args, {Random? random})
+  MathController(this._session, this._feedback, this.args,
+      {Random? random, List<MathQuestion>? given})
       : _rng = random ?? Random(),
+        _given = given,
         _config = mathDifficultyById(args.difficulty),
         super(const MathState(
           question: MathQuestion(question: '', answer: 0, operation: MathOperation.addition),
@@ -75,14 +84,18 @@ class MathController extends StateNotifier<MathState> {
   final MathArgs args;
   final Random _rng;
   final MathDifficulty _config;
+  final List<MathQuestion>? _given;
   Timer? _ticker;
   Timer? _advance;
   int _generation = 0;
 
   MathDifficulty get config => _config;
 
+  /// Questions in the round (what the server gets as `totalQuestions`).
+  int get totalQuestions => _given?.length ?? _config.questions;
+
   MathState _fresh() => MathState(
-        question: generateMathQuestion(_config.operations, _config.id, _rng),
+        question: _given?.first ?? generateMathQuestion(_config.operations, _config.id, _rng),
         timeRemaining: _config.timeLimit,
       );
 
@@ -126,19 +139,21 @@ class MathController extends StateNotifier<MathState> {
       return;
     }
     if (phase != SessionPhase.playing) return;
-    if (state.number >= _config.questions) {
+    if (state.number >= totalQuestions) {
       _finish();
       return;
     }
     state = state.copyWith(
       number: state.number + 1,
       feedbackShown: false,
-      question: generateMathQuestion(
-        _config.operations,
-        _config.id,
-        _rng,
-        previous: state.question.question,
-      ),
+      // `number` is 1-based, so it is the index of the next given question.
+      question: _given?[state.number] ??
+          generateMathQuestion(
+            _config.operations,
+            _config.id,
+            _rng,
+            previous: state.question.question,
+          ),
     );
   }
 
@@ -147,7 +162,7 @@ class MathController extends StateNotifier<MathState> {
     _advance?.cancel();
     _feedback.play(SoundCue.celebration);
     _session.complete(
-      extra: {'correctAnswers': state.correctCount, 'totalQuestions': _config.questions},
+      extra: {'correctAnswers': state.correctCount, 'totalQuestions': totalQuestions},
       attempts: state.number,
     );
   }
@@ -173,4 +188,14 @@ final mathControllerProvider =
     StateNotifierProvider.family.autoDispose<MathController, MathState, MathArgs>((ref, args) {
   final session = ref.watch(gameSessionProvider(mathSessionArgs(args)).notifier);
   return MathController(session, ref.watch(gameFeedbackProvider), args);
+});
+
+/// The board of a Daily Challenge round: the served question list.
+final mathChallengeControllerProvider = StateNotifierProvider.family
+    .autoDispose<MathController, MathState, MathChallengeArgs>((ref, key) {
+  final session = ref.watch(
+    gameSessionProvider(mathSessionArgs(key.args, challengeDay: key.challenge.day)).notifier,
+  );
+  return MathController(session, ref.watch(gameFeedbackProvider), key.args,
+      given: mathQuestionsFromChallenge(key.challenge.content));
 });

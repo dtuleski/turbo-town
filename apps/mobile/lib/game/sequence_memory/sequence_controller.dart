@@ -14,6 +14,7 @@ GameSessionArgs sequenceSessionArgs(SequenceArgs a) => (
       themeId: 'SEQUENCE_MEMORY',
       difficulty: seqDifficulty(a.difficulty).apiValue,
       questContext: a.quest,
+      challengeDay: null,
     );
 
 enum SeqPhase { showing, answering, correct, gameOver }

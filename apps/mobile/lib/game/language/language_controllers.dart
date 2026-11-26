@@ -19,6 +19,7 @@ GameSessionArgs languageSessionArgs(LanguageArgs args) => (
       themeId: languageThemeId(args.mode),
       difficulty: languageDifficultyById(args.difficulty).apiValue,
       questContext: null,
+      challengeDay: null,
     );
 
 /// The words for a round. Loaded before the round starts so an empty or failed

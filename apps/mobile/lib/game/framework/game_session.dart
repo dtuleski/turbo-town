@@ -30,6 +30,9 @@ enum BlockReason {
 
   /// A Quest Map launch was rejected; the player goes back to the map.
   questFailed,
+
+  /// A Daily Challenge launch was rejected; the player goes back to the hub.
+  challengeFailed,
 }
 
 /// Why a recoverable submit did not finish the round (see
@@ -69,10 +72,12 @@ class GameResult {
 }
 
 /// Identifies one round. Records compare by value, so this is a provider key.
+/// [challengeDay] is set only for a Daily Challenge launch (`challenge=<day>`).
 typedef GameSessionArgs = ({
   String themeId,
   int difficulty,
   QuestContext? questContext,
+  String? challengeDay,
 });
 
 class GameSessionState {
@@ -154,6 +159,9 @@ class GameSessionController extends StateNotifier<GameSessionState> {
   /// Current phase, readable by helpers that are not StateNotifiers.
   SessionPhase get phase => state.phase;
 
+  /// A Daily Challenge start (the quest context wins when both are set).
+  bool get _challenge => args.questContext == null && args.challengeDay != null;
+
   /// Calls `startGame`, then begins play. Safe to call again after [reset].
   Future<void> start() async {
     if (state.phase != SessionPhase.idle) return;
@@ -166,11 +174,13 @@ class GameSessionController extends StateNotifier<GameSessionState> {
         themeId: args.themeId,
         difficulty: args.difficulty,
         questContext: args.questContext,
+        challengeDay: args.challengeDay,
       );
       if (!mounted || generation != _generation) return;
-      // A quest start the server accepted is playable even when it used the
-      // last allowed play (web rule R1).
-      final playable = result.canPlay || (args.questContext != null && result.id.isNotEmpty);
+      // A quest or challenge start the server accepted is playable even when it
+      // used the last allowed play (web rule R1).
+      final playable = result.canPlay ||
+          ((args.questContext != null || _challenge) && result.id.isNotEmpty);
       if (!playable) {
         _block(BlockReason.rateLimited, rateLimit: result.rateLimit);
         return;
@@ -183,6 +193,9 @@ class GameSessionController extends StateNotifier<GameSessionState> {
       } else if (args.questContext != null) {
         // Any other quest start failure goes back to the map.
         _block(BlockReason.questFailed, message: e.message);
+      } else if (_challenge) {
+        // Any other challenge start failure goes back to the hub; no offline play.
+        _block(BlockReason.challengeFailed, message: e.message);
       } else if (e.isPaywall) {
         _block(BlockReason.paidRequired, message: e.message);
       } else {
@@ -193,6 +206,8 @@ class GameSessionController extends StateNotifier<GameSessionState> {
       if (!mounted || generation != _generation) return;
       if (args.questContext != null) {
         _block(BlockReason.questFailed);
+      } else if (_challenge) {
+        _block(BlockReason.challengeFailed);
       } else {
         _beginPlay(null);
       }

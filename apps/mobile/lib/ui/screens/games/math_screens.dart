@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/framework/game_setup_scaffold.dart';
@@ -72,24 +74,56 @@ class _MathSetupScreenState extends State<MathSetupScreen> {
   }
 }
 
-class MathGameScreen extends ConsumerWidget {
-  const MathGameScreen({super.key, required this.difficulty, this.questContext});
+/// [challengeDay] plays that day's Daily Challenge questions.
+class MathGameScreen extends StatelessWidget {
+  const MathGameScreen({super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, quest: questContext);
+      return _MathGame(args: args, sessionArgs: mathSessionArgs(args), provider: mathControllerProvider(args));
+    }
+    final l10n = AppLocalizations.of(context);
+    return ChallengeGate<MathChallengeContent>(
+      day: day,
+      title: gameTitle(l10n, 'math-challenge') ?? l10n.setup_mathChallenge_title,
+      builder: (context, challenge, difficulty) {
+        final args = (difficulty: difficulty, quest: null);
+        return _MathGame(
+          args: args,
+          sessionArgs: mathSessionArgs(args, challengeDay: challenge.day),
+          provider: mathChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _MathProvider = AutoDisposeStateNotifierProvider<MathController, MathState>;
+
+class _MathGame extends ConsumerWidget {
+  const _MathGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final MathArgs args;
+  final GameSessionArgs sessionArgs;
+  final _MathProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (difficulty: difficulty, quest: questContext);
-    final provider = mathControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: mathSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'math-challenge') ?? l10n.setup_mathChallenge_title,
       reviewType: gameById('math-challenge')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
-      boardBuilder: (context, session) => _MathBoard(args: args, session: session),
+      boardBuilder: (context, session) => _MathBoard(args: args, provider: provider, session: session),
     );
   }
 }
@@ -101,9 +135,10 @@ String _clock(int seconds) {
 }
 
 class _MathBoard extends ConsumerStatefulWidget {
-  const _MathBoard({required this.args, required this.session});
+  const _MathBoard({required this.args, required this.provider, required this.session});
 
   final MathArgs args;
+  final _MathProvider provider;
   final GameSessionState session;
 
   @override
@@ -123,13 +158,14 @@ class _MathBoardState extends ConsumerState<_MathBoard> {
   }
 
   void _submit() {
-    ref.read(mathControllerProvider(widget.args).notifier).submit(_input.text);
+    ref.read(widget.provider.notifier).submit(_input.text);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(mathControllerProvider(widget.args));
+    final state = ref.watch(widget.provider);
+    final total = ref.read(widget.provider.notifier).totalQuestions;
     final config = mathDifficultyById(widget.args.difficulty);
     if (state.number != _shownNumber) {
       // New question: clear the field and keep the keyboard up.
@@ -153,7 +189,7 @@ class _MathBoardState extends ConsumerState<_MathBoard> {
             StatChip(
               key: const Key('math-number'),
               label: l10n.setup_mathChallenge_question,
-              value: '${state.number} / ${config.questions}',
+              value: '${state.number} / $total',
             ),
             StatChip(
               key: const Key('math-time'),

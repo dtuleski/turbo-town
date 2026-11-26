@@ -15,6 +15,7 @@ GameSessionArgs golfSessionArgs(GolfArgs a) => (
       themeId: 'MINI_GOLF',
       difficulty: golfDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 /// Pauses of the web round.

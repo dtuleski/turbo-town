@@ -19,8 +19,8 @@ your recommendations. Just go!!") and flagged for owner review. Depth: standard.
 - [x] Write `construction/daily-challenge-repeatable-content/functional-design/business-rules.md`
 - [x] Write `construction/daily-challenge-repeatable-content/functional-design/business-logic-model.md`
 - [x] Code Generation, shared and web (plan.md items 11 to 13)
-- [ ] Code Generation, app (plan.md items 14 and 15)
-- [ ] Build and Test (`construction/build-and-test/daily-challenge-repeatable-content-build-and-test-summary.md`, plan.md item 16)
+- [x] Code Generation, app (plan.md items 14 and 15)
+- [x] Build and Test (`construction/build-and-test/daily-challenge-repeatable-content-build-and-test-summary.md`, plan.md item 16)
 
 ## Questions and answers
 

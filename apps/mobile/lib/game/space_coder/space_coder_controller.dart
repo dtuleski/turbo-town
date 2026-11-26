@@ -14,6 +14,7 @@ GameSessionArgs spaceCoderSessionArgs(SpaceCoderArgs a) => (
       themeId: 'SCRATCH_CODING',
       difficulty: spaceCoderDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 /// Time between animation steps (web 350 ms).

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/game_registry.dart';
@@ -48,39 +50,72 @@ class SudokuSetupScreen extends StatelessWidget {
   }
 }
 
-class SudokuGameScreen extends ConsumerWidget {
-  const SudokuGameScreen({super.key, required this.difficulty, this.questContext});
+/// [challengeDay] plays that day's Daily Challenge puzzle.
+class SudokuGameScreen extends StatelessWidget {
+  const SudokuGameScreen({super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, quest: questContext);
+      return _SudokuGame(
+          args: args, sessionArgs: sudokuSessionArgs(args), provider: sudokuControllerProvider(args));
+    }
+    return ChallengeGate<SudokuContent>(
+      day: day,
+      title: gameTitle(AppLocalizations.of(context), 'sudoku') ?? 'Sudoku',
+      builder: (context, challenge, difficulty) {
+        final args = (difficulty: difficulty, quest: null);
+        return _SudokuGame(
+          args: args,
+          sessionArgs: sudokuSessionArgs(args, challengeDay: challenge.day),
+          provider: sudokuChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _SudokuProvider = AutoDisposeStateNotifierProvider<SudokuController, SudokuState>;
+
+class _SudokuGame extends ConsumerWidget {
+  const _SudokuGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final SudokuArgs args;
+  final GameSessionArgs sessionArgs;
+  final _SudokuProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (difficulty: difficulty, quest: questContext);
-    final provider = sudokuControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: sudokuSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'sudoku') ?? 'Sudoku',
       reviewType: gameById('sudoku')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
-      boardBuilder: (context, session) => _SudokuBoard(args: args, session: session),
+      boardBuilder: (context, session) => _SudokuBoard(args: args, provider: provider, session: session),
     );
   }
 }
 
 class _SudokuBoard extends ConsumerWidget {
-  const _SudokuBoard({required this.args, required this.session});
+  const _SudokuBoard({required this.args, required this.provider, required this.session});
 
   final SudokuArgs args;
+  final _SudokuProvider provider;
   final GameSessionState session;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(sudokuControllerProvider(args));
-    final ctrl = ref.read(sudokuControllerProvider(args).notifier);
+    final state = ref.watch(provider);
+    final ctrl = ref.read(provider.notifier);
     return LayoutBuilder(builder: (context, box) {
       final side = (box.maxWidth - 16).clamp(0.0, 460.0);
       return SingleChildScrollView(

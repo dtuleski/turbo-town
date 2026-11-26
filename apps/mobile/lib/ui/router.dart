@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../auth/auth_controller.dart';
 import '../api/quest_models.dart';
+import '../challenge/challenge_launch.dart';
 import '../config/constants.dart';
 import '../game/jigsaw/logic.dart';
 import '../game/language/language_data.dart';
@@ -151,6 +152,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return MathGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),
@@ -165,6 +167,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return WordPuzzleGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),
@@ -206,6 +209,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return SudokuGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),
@@ -380,6 +384,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return CodeABotGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),
@@ -394,6 +399,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return MathMazeGameScreen(
             difficulty: mazeDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),
@@ -408,6 +414,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return HangmanGameScreen(
             difficulty: quizDifficultyParam(query['difficulty']),
             questContext: QuestContext.parse(query['quest']),
+            challengeDay: parseChallengeParam(query),
           );
         },
       ),

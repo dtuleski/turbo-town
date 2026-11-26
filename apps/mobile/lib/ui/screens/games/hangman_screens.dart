@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/framework/game_setup_scaffold.dart';
@@ -66,28 +68,59 @@ class _HangmanSetupScreenState extends State<HangmanSetupScreen> {
   }
 }
 
-class HangmanGameScreen extends ConsumerWidget {
-  const HangmanGameScreen({super.key, required this.difficulty, this.questContext});
+/// [challengeDay] plays that day's Daily Challenge words in the app language
+/// (English when the challenge has no list for it).
+class HangmanGameScreen extends StatelessWidget {
+  const HangmanGameScreen({super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = Localizations.localeOf(context).languageCode;
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, lang: lang, quest: questContext);
+      return _HangmanGame(
+          args: args, sessionArgs: hangmanSessionArgs(args), provider: hangmanControllerProvider(args));
+    }
+    final l10n = AppLocalizations.of(context);
+    return ChallengeGate<HangmanContent>(
+      day: day,
+      title: gameTitle(l10n, 'hangman') ?? l10n.setup_hangman_title,
+      builder: (context, challenge, difficulty) {
+        final args = (difficulty: difficulty, lang: lang, quest: null);
+        return _HangmanGame(
+          args: args,
+          sessionArgs: hangmanSessionArgs(args, challengeDay: challenge.day),
+          provider: hangmanChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _HangmanProvider = AutoDisposeStateNotifierProvider<HangmanController, HangmanState>;
+
+class _HangmanGame extends ConsumerWidget {
+  const _HangmanGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final HangmanArgs args;
+  final GameSessionArgs sessionArgs;
+  final _HangmanProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (
-      difficulty: difficulty,
-      lang: Localizations.localeOf(context).languageCode,
-      quest: questContext,
-    );
-    final provider = hangmanControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: hangmanSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'hangman') ?? l10n.setup_hangman_title,
       reviewType: gameById('hangman')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
-      boardBuilder: (context, session) => _HangmanBoard(args: args, session: session),
+      boardBuilder: (context, session) => _HangmanBoard(args: args, provider: provider, session: session),
     );
   }
 }
@@ -99,16 +132,17 @@ String _clock(int seconds) {
 }
 
 class _HangmanBoard extends ConsumerWidget {
-  const _HangmanBoard({required this.args, required this.session});
+  const _HangmanBoard({required this.args, required this.provider, required this.session});
 
   final HangmanArgs args;
+  final _HangmanProvider provider;
   final GameSessionState session;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(hangmanControllerProvider(args));
-    final controller = ref.read(hangmanControllerProvider(args).notifier);
+    final state = ref.watch(provider);
+    final controller = ref.read(provider.notifier);
     final word = state.word;
     final wrong = state.wrongCount;
     final lost = state.phase == RoundPhase.lost;
