@@ -235,3 +235,14 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 5. **NFR-QM-4 gap**: the existing `localeCompleteness.test.ts` checks only the `circuitBuilder` block; QM3 adds a quest block test.
 6. **U8 / U9 / U2 / U3 / U5**: U5 resolved (new read-only `getUsage`); U2, U3, U8 still unverified; U9 (Flutter) out of scope.
 7. **Carried from Circuit Builder**: `apps/web` has no `@memory-game/shared` dependency and the Vercel monorepo setting is unverified; Quest Map web adds no new dependence on it. `apps/web` has no `@types/node`; the quest-themes test uses a Vite `?raw` import (fallback: pinned dev-only `@types/node`).
+
+## Daily Challenge and Push Feature Workflow
+- **Started**: 2026-11-26 (branch `feat/daily-challenge`)
+- **Scope**: digest as a push for app users; daily challenge with leaderboard, 12pm local push, results in the next digest; one toggle for email and all pushes; digest email at 8am local time. Phase 1 (digest on for new accounts) is PR #41, outside this workflow.
+- **Extensions**: Security Baseline enabled (project setting)
+- [x] INCEPTION - Workspace Detection (brownfield; reverse-engineering artifacts reused)
+- [ ] INCEPTION - Requirements Analysis (IN PROGRESS: owner decisions D1 to D6 recorded; questions in `inception/requirements/daily-challenge-requirement-verification-questions.md`)
+- [ ] INCEPTION - User Stories
+- [ ] INCEPTION - Workflow Planning
+- [ ] INCEPTION - Application Design
+- [ ] INCEPTION - Units Generation

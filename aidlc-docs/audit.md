@@ -2674,3 +2674,43 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Code-generation plan written and self-approved under owner delegation (aidlc-docs/construction/plans/quest-map-shared-core-code-generation-plan.md). Implemented packages/shared/src/quest (types, themes, config, schema, evaluator, gauntlet, validate, index), constants/paid-games.ts, optional Game.questContext. packages/shared: jest 23 suites / 532 tests pass (baseline 18 / 363), tsc --noEmit exit 0, npm run build exit 0; 39/39 hand mutants killed. Summary in aidlc-docs/construction/quest-map-shared-core/code/implementation-summary.md."
 **Context**: CONSTRUCTION - Code Generation, unit QM1 Shared Quest Core
 ---
+
+## Daily Challenge and Push - Initial Request
+**Timestamp**: 2026-11-26T17:03:29Z
+**User Input**: "We have a daily digest email. Can we have that as a push notification as well for users that have the app?
+
+ 
+
+Also, I would like a feature where a daily challenge is proposed and a push notification is sent at 12pm local time. Help me with a suggested scope. Maybe a random challenge is defined and a speciifc challenge leaderboard is setup? Next morning, as part of the daily digest you get a specific section with the results of yesterday's challenge? Also, the toggle for daily diget must apply for all push notifications.
+
+ 
+
+Last thing. When a new user is setup, daily diggest toggle must be on by default
+
+ 
+
+Yes, I did buy light"
+**AI Response**: "Verified the TestFlight Light purchase (account 94c834a8, Apple source ACTIVE, Sandbox). Proposed three phases: (1) digest on by default for new accounts; (2) push foundation (APNs via Amazon SNS, permission soft-ask, device registry, one toggle for email and all pushes) and the digest as a push; (3) daily challenge (same game and settings for everyone, US Eastern challenge day, 12pm local push, challenge leaderboard, results in the next digest). Asked: existing users without a choice, email send time, first vs best attempt, free plays, game rotation list."
+**Context**: Pre-inception scoping in chat (owner asked for a suggested scope)
+
+---
+
+## Daily Challenge and Push - Owner Decisions
+**Timestamp**: 2026-11-26T17:03:29Z
+**User Input**: "let's start sending the daily email at 8am local time always
+
+ 
+
+best attempt
+
+ 
+
+free users are still limited to 3 plays
+
+ 
+
+memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, Geo Quiz, History Quiz, Civics Quiz, Hangman, Space Coder, Math Maze, PAttern, Recall, Space Entry, Bond & Burn, Mini Golf"
+**AI Response**: "Phase 1 implemented outside the AI-DLC feature flow as a small change (PR #41: Cognito Post Confirmation trigger sets the digest on for new accounts; existing users unchanged; Resend added to the privacy policy). Phases 2 and 3 started as the AI-DLC feature 'Daily Challenge and Push': workspace detection (brownfield, reverse-engineering artifacts present, reused), requirements analysis with the owner's decisions recorded and the remaining open points in daily-challenge-requirement-verification-questions.md."
+**Context**: INCEPTION - Workspace Detection and Requirements Analysis (Daily Challenge and Push)
+
+---
