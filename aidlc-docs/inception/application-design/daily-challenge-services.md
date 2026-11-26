@@ -103,6 +103,9 @@ The digest email links to `https://dashden.app/challenge/results?day=<yesterday>
 
 1. Merge DC2, DC3, DC1, DC4 in order (CI deploys the Game Lambda and the web). Features stay off: no
    table env vars yet, `getDailyChallenge` returns null, the card is hidden, device APIs answer `ok: false`.
+   DC1 changes `setPrefs` (the Profile toggle) from PutItem to UpdateItem. Production step P0 grants
+   UpdateItem before DC1 is merged; if P0 has not been done, `setPrefs` falls back to a read-merge
+   PutItem on `AccessDeniedException`, so the toggle (and the digest opt-out) keeps working.
 2. Owner runs the production steps (tables, IAM, env vars). The challenge appears on the web.
 3. Owner deploys the digest Lambda with `scripts/deploy-daily-email-lambda.sh` and changes the schedule
    to every 15 minutes in the same session, between 00:00 and 11:45 UTC: the old 12:00 UTC run then never
