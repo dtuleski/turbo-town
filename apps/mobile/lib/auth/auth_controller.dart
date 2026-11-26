@@ -100,10 +100,14 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   /// Sign in with Google via the Cognito Hosted UI (OAuth + PKCE).
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle() => _federatedSignIn(_cognito.signInWithGoogle);
+
+  Future<void> signInWithApple() => _federatedSignIn(_cognito.signInWithApple);
+
+  Future<void> _federatedSignIn(Future<AuthTokens> Function() signIn) async {
     state = state.copyWith(isBusy: true, clearError: true);
     try {
-      await _cognito.signInWithGoogle();
+      await signIn();
       state = state.copyWith(
         status: AuthStatus.authenticated,
         email: await _storage.email,

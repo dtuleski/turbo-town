@@ -66,6 +66,8 @@ export const ROUTES = {
   LEADERBOARD: '/leaderboard',
   PROFILE: '/profile',
   CONTACT: '/contact',
+  PRIVACY: '/privacy',
+  TERMS: '/terms',
   ADMIN: '/admin',
 } as const
 

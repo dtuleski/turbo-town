@@ -8565,6 +8565,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Plans'**
   String get mobileSub_viewPlans;
+
+  /// No description provided for @profile_deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get profile_deleteAccount;
+
+  /// No description provided for @profile_deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get profile_deleteConfirmTitle;
+
+  /// No description provided for @profile_deleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your DashDen account, your game history, scores and settings. A subscription bought on dashden.app is cancelled at once. This cannot be undone.'**
+  String get profile_deleteConfirmBody;
+
+  /// No description provided for @profile_deleteAppleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A subscription bought in the App Store keeps billing until you cancel it in Settings > Apple Account > Subscriptions.'**
+  String get profile_deleteAppleNote;
+
+  /// No description provided for @profile_deleteConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get profile_deleteConfirmAction;
+
+  /// No description provided for @profile_deleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete your account. Check your connection and try again.'**
+  String get profile_deleteFailed;
+
+  /// No description provided for @profile_deletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get profile_deletedTitle;
+
+  /// No description provided for @profile_deletedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account and data have been deleted.'**
+  String get profile_deletedBody;
+
+  /// No description provided for @profile_deletedAppleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your App Store subscription is still active. Cancel it in Settings > Apple Account > Subscriptions so Apple stops billing you.'**
+  String get profile_deletedAppleBody;
+
+  /// No description provided for @profile_manageSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscriptions'**
+  String get profile_manageSubscriptions;
+
+  /// No description provided for @profile_privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get profile_privacy;
+
+  /// No description provided for @profile_terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get profile_terms;
+
+  /// No description provided for @auth_adultConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'I’m 18 or older (a parent or guardian) and I agree to the Terms of Service and Privacy Policy.'**
+  String get auth_adultConfirm;
+
+  /// No description provided for @auth_adultRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm you are 18 or older and agree to the terms.'**
+  String get auth_adultRequired;
+
+  /// No description provided for @auth_socialConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you confirm you are 18 or older and agree to the Terms of Service and Privacy Policy.'**
+  String get auth_socialConsent;
+
+  /// No description provided for @auth_continueWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get auth_continueWithApple;
 }
 
 class _AppLocalizationsDelegate

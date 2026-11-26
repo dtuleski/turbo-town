@@ -21,6 +21,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('')
   const [confirmationCode, setConfirmationCode] = useState('')
   const [emailOptIn, setEmailOptIn] = useState(true)
+  const [isAdult, setIsAdult] = useState(false)
   const [resendCooldown, setResendCooldown] = useState(0)
 
   const {
@@ -32,6 +33,11 @@ const RegisterPage = () => {
   })
 
   const onSubmit = async (data: RegisterInput) => {
+    // Accounts are for adults (parents and guardians); see the Terms of Service.
+    if (!isAdult) {
+      setError(t('auth.adultRequired'))
+      return
+    }
     try {
       setIsLoading(true)
       setError('')
@@ -186,6 +192,23 @@ const RegisterPage = () => {
           />
           <label htmlFor="emailOptIn" className="text-sm text-text-secondary cursor-pointer">
             {t('auth.emailOptIn')}
+          </label>
+        </div>
+
+        <div className="flex items-start gap-2">
+          <input
+            type="checkbox"
+            id="isAdult"
+            data-testid="register-adult"
+            checked={isAdult}
+            onChange={(e) => setIsAdult(e.target.checked)}
+            className="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+          />
+          <label htmlFor="isAdult" className="text-sm text-text-secondary cursor-pointer">
+            {t('auth.adultConfirm')}{' '}
+            <Link to={ROUTES.TERMS} target="_blank" className="underline">{t('auth.termsLink')}</Link>
+            {' · '}
+            <Link to={ROUTES.PRIVACY} target="_blank" className="underline">{t('auth.privacyLink')}</Link>
           </label>
         </div>
 

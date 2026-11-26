@@ -25,6 +25,21 @@ class ProfileApi {
     }
   ''';
 
+  static const String _deleteAccount = r'''
+    mutation DeleteMyAccount { deleteMyAccount { deleted appleSubscriptionActive } }
+  ''';
+
+  /// Deletes the signed-in user's account, data and login, and cancels web
+  /// (Stripe) billing. Returns whether an App Store subscription is still
+  /// active: only the user can cancel that, in iPhone Settings.
+  Future<bool> deleteMyAccount() async {
+    final result = await _client.mutate(MutationOptions(document: gql(_deleteAccount)));
+    throwIfGraphQLError(result);
+    final data = result.data?['deleteMyAccount'] as Map<String, dynamic>?;
+    if (data?['deleted'] != true) throw StateError('Account was not deleted.');
+    return data?['appleSubscriptionActive'] == true;
+  }
+
   Future<EmailPrefs> getEmailPrefs() async {
     final result = await _client.query(QueryOptions(
       document: gql(_getPrefs),

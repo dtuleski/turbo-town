@@ -4788,4 +4788,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mobileSub_viewPlans => 'Plans';
+
+  @override
+  String get profile_deleteAccount => 'Delete account';
+
+  @override
+  String get profile_deleteConfirmTitle => 'Delete your account?';
+
+  @override
+  String get profile_deleteConfirmBody =>
+      'This permanently deletes your DashDen account, your game history, scores and settings. A subscription bought on dashden.app is cancelled at once. This cannot be undone.';
+
+  @override
+  String get profile_deleteAppleNote =>
+      'A subscription bought in the App Store keeps billing until you cancel it in Settings > Apple Account > Subscriptions.';
+
+  @override
+  String get profile_deleteConfirmAction => 'Delete';
+
+  @override
+  String get profile_deleteFailed =>
+      'Could not delete your account. Check your connection and try again.';
+
+  @override
+  String get profile_deletedTitle => 'Account deleted';
+
+  @override
+  String get profile_deletedBody => 'Your account and data have been deleted.';
+
+  @override
+  String get profile_deletedAppleBody =>
+      'Your App Store subscription is still active. Cancel it in Settings > Apple Account > Subscriptions so Apple stops billing you.';
+
+  @override
+  String get profile_manageSubscriptions => 'Manage subscriptions';
+
+  @override
+  String get profile_privacy => 'Privacy Policy';
+
+  @override
+  String get profile_terms => 'Terms of Service';
+
+  @override
+  String get auth_adultConfirm =>
+      'I’m 18 or older (a parent or guardian) and I agree to the Terms of Service and Privacy Policy.';
+
+  @override
+  String get auth_adultRequired =>
+      'Please confirm you are 18 or older and agree to the terms.';
+
+  @override
+  String get auth_socialConsent =>
+      'By continuing, you confirm you are 18 or older and agree to the Terms of Service and Privacy Policy.';
+
+  @override
+  String get auth_continueWithApple => 'Continue with Apple';
 }

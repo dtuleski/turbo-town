@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../auth/auth_controller.dart';
 import '../../auth/validation.dart';
 import '../../config/env.dart';
+import '../../config/feature_flags.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../subscription/store_products.dart';
 import '../auth_text.dart';
 import '../theme.dart';
 import '../widgets/auth_widgets.dart';
@@ -137,6 +140,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w800)),
                       label: Text(l10n.auth_continueWithGoogle),
+                    ),
+                    if (kSignInWithAppleEnabled) ...[
+                      const SizedBox(height: 12),
+                      // Apple's style: black button, white Apple logo and label.
+                      FilledButton.icon(
+                        key: const Key('login-apple'),
+                        onPressed: auth.isBusy
+                            ? null
+                            : () => ref
+                                .read(authControllerProvider.notifier)
+                                .signInWithApple(),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size.fromHeight(52),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        icon: const Icon(Icons.apple, size: 22),
+                        label: Text(l10n.auth_continueWithApple),
+                      ),
+                    ],
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.auth_socialConsent,
+                      key: const Key('login-social-consent'),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () => launchUrl(Uri.parse(kServiceTermsUrl), mode: LaunchMode.inAppBrowserView),
+                          child: Text(l10n.profile_terms),
+                        ),
+                        TextButton(
+                          onPressed: () => launchUrl(Uri.parse(kPrivacyPolicyUrl), mode: LaunchMode.inAppBrowserView),
+                          child: Text(l10n.profile_privacy),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 12),
                     TextButton(

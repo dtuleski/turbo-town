@@ -4831,4 +4831,59 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get mobileSub_viewPlans => 'Planos';
+
+  @override
+  String get profile_deleteAccount => 'Excluir conta';
+
+  @override
+  String get profile_deleteConfirmTitle => 'Excluir sua conta?';
+
+  @override
+  String get profile_deleteConfirmBody =>
+      'Isso exclui para sempre sua conta DashDen, seu histórico de jogos, pontuações e configurações. Uma assinatura comprada em dashden.app é cancelada na hora. Não dá para desfazer.';
+
+  @override
+  String get profile_deleteAppleNote =>
+      'Uma assinatura comprada na App Store continua sendo cobrada até você cancelá-la em Ajustes > Conta Apple > Assinaturas.';
+
+  @override
+  String get profile_deleteConfirmAction => 'Excluir';
+
+  @override
+  String get profile_deleteFailed =>
+      'Não foi possível excluir sua conta. Verifique sua conexão e tente de novo.';
+
+  @override
+  String get profile_deletedTitle => 'Conta excluída';
+
+  @override
+  String get profile_deletedBody => 'Sua conta e seus dados foram excluídos.';
+
+  @override
+  String get profile_deletedAppleBody =>
+      'Sua assinatura da App Store continua ativa. Cancele em Ajustes > Conta Apple > Assinaturas para a Apple parar de cobrar.';
+
+  @override
+  String get profile_manageSubscriptions => 'Gerenciar assinaturas';
+
+  @override
+  String get profile_privacy => 'Política de Privacidade';
+
+  @override
+  String get profile_terms => 'Termos de Serviço';
+
+  @override
+  String get auth_adultConfirm =>
+      'Tenho 18 anos ou mais (sou pai, mãe ou responsável) e aceito os Termos de Serviço e a Política de Privacidade.';
+
+  @override
+  String get auth_adultRequired =>
+      'Confirme que você tem 18 anos ou mais e aceita os termos.';
+
+  @override
+  String get auth_socialConsent =>
+      'Ao continuar, você confirma que tem 18 anos ou mais e aceita os Termos de Serviço e a Política de Privacidade.';
+
+  @override
+  String get auth_continueWithApple => 'Continuar com a Apple';
 }

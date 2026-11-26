@@ -25,6 +25,10 @@ class FakeAuthController extends StateNotifier<AuthState>
   Future<void> signInWithGoogle() async {
     state = state.copyWith(status: AuthStatus.authenticated);
   }
+  @override
+  Future<void> signInWithApple() async {
+    state = state.copyWith(status: AuthStatus.authenticated);
+  }
 
   @override
   Future<SignUpOutcome> signUp({

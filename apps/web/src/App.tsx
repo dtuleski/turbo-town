@@ -75,6 +75,8 @@ import AchievementsPage from './pages/dashboard/AchievementsPage'
 import LeaderboardPage from './pages/leaderboard/LeaderboardPage'
 import ProfilePage from './pages/profile/ProfilePage'
 import ContactPage from './pages/contact/ContactPage'
+import PrivacyPage from './pages/legal/PrivacyPage'
+import TermsPage from './pages/legal/TermsPage'
 import ShirtPage from './pages/shirt/ShirtPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -87,6 +89,10 @@ function App() {
       <Routes>
         {/* Public standalone route (reached via QR code on t-shirts) */}
         <Route path="/shirt" element={<ShirtPage />} />
+
+        {/* Public legal pages (linked from the App Store listing and the app) */}
+        <Route path={ROUTES.PRIVACY} element={<PrivacyPage />} />
+        <Route path={ROUTES.TERMS} element={<TermsPage />} />
 
         {/* Public routes with auth layout */}
         <Route element={<AuthLayout />}>

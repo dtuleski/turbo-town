@@ -18,3 +18,8 @@ enum PaidGamePresentation {
 
 const PaidGamePresentation kPaidGamePresentation =
     PaidGamePresentation.neutralUnavailable;
+
+/// Shows "Continue with Apple" on the login screen. Turn on only once the
+/// Cognito user pool has the SignInWithApple identity provider configured,
+/// otherwise the Hosted UI returns an error.
+const bool kSignInWithAppleEnabled = bool.fromEnvironment('SIGN_IN_WITH_APPLE', defaultValue: false);

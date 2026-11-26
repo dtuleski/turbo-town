@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../subscription/store_products.dart';
 import '../../subscription/subscription_controller.dart';
 import '../../api/feature_providers.dart';
 import '../../api/game_providers.dart';
@@ -38,6 +40,77 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool _digest = false;
   bool _loadFailed = false;
   bool _saveFailed = false;
+  bool _deleting = false;
+
+  /// Apple's page for the user's subscriptions (the same place as Settings).
+  static final Uri _appleSubscriptions = Uri.parse('https://apps.apple.com/account/subscriptions');
+
+  Future<void> _confirmDelete() async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const Key('delete-confirm-dialog'),
+        title: Text(l10n.profile_deleteConfirmTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.profile_deleteConfirmBody),
+            const SizedBox(height: 12),
+            Text(l10n.profile_deleteAppleNote, style: const TextStyle(fontSize: 13)),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(l10n.common_cancel)),
+          TextButton(
+            key: const Key('delete-confirm-button'),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(ctx).colorScheme.error),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l10n.profile_deleteConfirmAction),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+    setState(() => _deleting = true);
+    bool appleActive;
+    try {
+      appleActive = await ref.read(profileApiProvider).deleteMyAccount();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _deleting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(key: const Key('delete-failed'), content: Text(l10n.profile_deleteFailed)),
+      );
+      return;
+    }
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        key: const Key('deleted-dialog'),
+        title: Text(l10n.profile_deletedTitle),
+        content: Text(appleActive ? l10n.profile_deletedAppleBody : l10n.profile_deletedBody),
+        actions: [
+          if (appleActive)
+            TextButton(
+              key: const Key('deleted-manage-subscriptions'),
+              onPressed: () => launchUrl(_appleSubscriptions, mode: LaunchMode.externalApplication),
+              child: Text(l10n.profile_manageSubscriptions),
+            ),
+          TextButton(
+            key: const Key('deleted-ok'),
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    // The login no longer exists: clear local tokens and return to sign-in.
+    await ref.read(authControllerProvider.notifier).signOut();
+  }
 
   @override
   void initState() {
@@ -192,12 +265,39 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 onTap: () => context.push('/contact'),
               ),
             ),
+            Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    key: const Key('profile-privacy'),
+                    title: Text(l10n.profile_privacy),
+                    trailing: const Icon(Icons.open_in_new, size: 18),
+                    onTap: () => launchUrl(Uri.parse(kPrivacyPolicyUrl), mode: LaunchMode.inAppBrowserView),
+                  ),
+                  ListTile(
+                    key: const Key('profile-terms'),
+                    title: Text(l10n.profile_terms),
+                    trailing: const Icon(Icons.open_in_new, size: 18),
+                    onTap: () => launchUrl(Uri.parse(kServiceTermsUrl), mode: LaunchMode.inAppBrowserView),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
               key: const Key('profile-sign-out'),
               icon: const Icon(Icons.logout),
               label: Text(l10n.mobileStats_signOut),
               onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              key: const Key('profile-delete-account'),
+              style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+              onPressed: _deleting ? null : _confirmDelete,
+              child: _deleting
+                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Text(l10n.profile_deleteAccount),
             ),
           ],
         ),

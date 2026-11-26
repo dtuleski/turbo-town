@@ -2387,5 +2387,21 @@
   "mobileSub_errorNetwork": "Erro de rede. Verifique sua conexão e tente novamente.",
   "mobileSub_nothingToRestore": "Nenhuma assinatura da App Store foi encontrada para restaurar.",
   "mobileSub_subscribeToPlay": "Assine para jogar",
-  "mobileSub_viewPlans": "Planos"
+  "mobileSub_viewPlans": "Planos",
+  "profile_deleteAccount": "Excluir conta",
+  "profile_deleteConfirmTitle": "Excluir sua conta?",
+  "profile_deleteConfirmBody": "Isso exclui para sempre sua conta DashDen, seu histórico de jogos, pontuações e configurações. Uma assinatura comprada em dashden.app é cancelada na hora. Não dá para desfazer.",
+  "profile_deleteAppleNote": "Uma assinatura comprada na App Store continua sendo cobrada até você cancelá-la em Ajustes > Conta Apple > Assinaturas.",
+  "profile_deleteConfirmAction": "Excluir",
+  "profile_deleteFailed": "Não foi possível excluir sua conta. Verifique sua conexão e tente de novo.",
+  "profile_deletedTitle": "Conta excluída",
+  "profile_deletedBody": "Sua conta e seus dados foram excluídos.",
+  "profile_deletedAppleBody": "Sua assinatura da App Store continua ativa. Cancele em Ajustes > Conta Apple > Assinaturas para a Apple parar de cobrar.",
+  "profile_manageSubscriptions": "Gerenciar assinaturas",
+  "profile_privacy": "Política de Privacidade",
+  "profile_terms": "Termos de Serviço",
+  "auth_adultConfirm": "Tenho 18 anos ou mais (sou pai, mãe ou responsável) e aceito os Termos de Serviço e a Política de Privacidade.",
+  "auth_adultRequired": "Confirme que você tem 18 anos ou mais e aceita os termos.",
+  "auth_socialConsent": "Ao continuar, você confirma que tem 18 anos ou mais e aceita os Termos de Serviço e a Política de Privacidade.",
+  "auth_continueWithApple": "Continuar com a Apple"
 }

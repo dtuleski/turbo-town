@@ -118,19 +118,25 @@ class CognitoService {
   /// flow with PKCE). Opens an in-app browser tab to the Hosted UI, captures
   /// the redirect to [Env.oauthRedirectUri], exchanges the code for tokens,
   /// and stores them — matching the web app's federated login.
-  Future<AuthTokens> signInWithGoogle() async {
+  Future<AuthTokens> signInWithGoogle() => _signInWithProvider('Google', 'Google');
+
+  /// Sign in with Apple through the same Hosted UI flow (Cognito IdP
+  /// `SignInWithApple`). Required by App Store Guideline 4.8 next to Google.
+  Future<AuthTokens> signInWithApple() => _signInWithProvider('SignInWithApple', 'Apple');
+
+  Future<AuthTokens> _signInWithProvider(String identityProvider, String label) async {
     // 1. PKCE: generate a code verifier + S256 challenge.
     final codeVerifier = _generateCodeVerifier();
     final codeChallenge = _codeChallengeS256(codeVerifier);
 
-    // 2. Build the Hosted UI authorize URL (force the Google IdP).
+    // 2. Build the Hosted UI authorize URL (force the chosen IdP).
     final authorizeUrl = Uri.parse('${Env.hostedUiBaseUrl}/oauth2/authorize').replace(
       queryParameters: {
         'response_type': 'code',
         'client_id': Env.cognitoClientId,
         'redirect_uri': Env.oauthRedirectUri,
         'scope': Env.oauthScopes.join(' '),
-        'identity_provider': 'Google',
+        'identity_provider': identityProvider,
         'code_challenge': codeChallenge,
         'code_challenge_method': 'S256',
       },
@@ -144,7 +150,7 @@ class CognitoService {
         callbackUrlScheme: Env.oauthRedirectScheme,
       );
     } catch (e) {
-      throw AuthException('Google sign-in was cancelled or failed.', code: 'OAUTH_CANCELLED');
+      throw AuthException('$label sign-in was cancelled or failed.', code: 'OAUTH_CANCELLED');
     }
 
     // 4. Extract the authorization code from the redirect.
@@ -152,13 +158,13 @@ class CognitoService {
     final error = returned.queryParameters['error'];
     if (error != null) {
       throw AuthException(
-        returned.queryParameters['error_description'] ?? 'Google sign-in failed: $error',
+        returned.queryParameters['error_description'] ?? '$label sign-in failed: $error',
         code: 'OAUTH_ERROR',
       );
     }
     final code = returned.queryParameters['code'];
     if (code == null || code.isEmpty) {
-      throw AuthException('Google sign-in failed: no authorization code returned.');
+      throw AuthException('$label sign-in failed: no authorization code returned.');
     }
 
     // 5. Exchange the code for tokens at the token endpoint (PKCE, no secret).
@@ -187,7 +193,7 @@ class CognitoService {
     final refreshToken = tokens['refresh_token'] as String?;
 
     if (idToken == null || accessToken == null) {
-      throw AuthException('Google sign-in failed: missing tokens in response.');
+      throw AuthException('$label sign-in failed: missing tokens in response.');
     }
 
     // 6. Pull email/username from the ID token claims for display.

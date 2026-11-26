@@ -302,6 +302,67 @@ void main() {
       expect(find.byKey(const Key('prefs-save-failed')), findsNothing);
     });
 
+    testWidgets('delete account: cancel keeps the account', (tester) async {
+      useTallSurface(tester);
+      final profile = FakeProfileApi();
+      await pumpApp(tester, const ProfileScreen(), overrides: featureOverrides(profile: profile));
+      await settle(tester);
+      await tester.ensureVisible(find.byKey(const Key('profile-delete-account')));
+      await tester.tap(find.byKey(const Key('profile-delete-account')));
+      await settle(tester);
+      expect(find.byKey(const Key('delete-confirm-dialog')), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await settle(tester);
+      expect(profile.deletes, 0);
+    });
+
+    testWidgets('delete account: confirm deletes and shows the done dialog', (tester) async {
+      useTallSurface(tester);
+      final profile = FakeProfileApi();
+      await pumpApp(tester, const ProfileScreen(), overrides: featureOverrides(profile: profile));
+      await settle(tester);
+      await tester.ensureVisible(find.byKey(const Key('profile-delete-account')));
+      await tester.tap(find.byKey(const Key('profile-delete-account')));
+      await settle(tester);
+      await tester.tap(find.byKey(const Key('delete-confirm-button')));
+      await settle(tester);
+      expect(profile.deletes, 1);
+      expect(find.byKey(const Key('deleted-dialog')), findsOneWidget);
+      expect(find.text('Your account and data have been deleted.'), findsOneWidget);
+      expect(find.byKey(const Key('deleted-manage-subscriptions')), findsNothing);
+      await tester.tap(find.byKey(const Key('deleted-ok')));
+      await settle(tester);
+    });
+
+    testWidgets('delete account: an active App Store plan gets the cancel reminder', (tester) async {
+      useTallSurface(tester);
+      final profile = FakeProfileApi(appleActive: true);
+      await pumpApp(tester, const ProfileScreen(), overrides: featureOverrides(profile: profile));
+      await settle(tester);
+      await tester.ensureVisible(find.byKey(const Key('profile-delete-account')));
+      await tester.tap(find.byKey(const Key('profile-delete-account')));
+      await settle(tester);
+      await tester.tap(find.byKey(const Key('delete-confirm-button')));
+      await settle(tester);
+      expect(find.byKey(const Key('deleted-manage-subscriptions')), findsOneWidget);
+      expect(find.textContaining('App Store subscription is still active'), findsOneWidget);
+    });
+
+    testWidgets('delete account: a failure keeps the user on the screen', (tester) async {
+      useTallSurface(tester);
+      final profile = FakeProfileApi(failDelete: true);
+      await pumpApp(tester, const ProfileScreen(), overrides: featureOverrides(profile: profile));
+      await settle(tester);
+      await tester.ensureVisible(find.byKey(const Key('profile-delete-account')));
+      await tester.tap(find.byKey(const Key('profile-delete-account')));
+      await settle(tester);
+      await tester.tap(find.byKey(const Key('delete-confirm-button')));
+      await settle(tester);
+      expect(find.byKey(const Key('delete-failed')), findsOneWidget);
+      expect(find.byKey(const Key('deleted-dialog')), findsNothing);
+      expect(find.byKey(const Key('profile-delete-account')), findsOneWidget);
+    });
+
     testWidgets('empty: preferences off by default', (tester) async {
       useTallSurface(tester);
       await pumpApp(tester, const ProfileScreen(), overrides: featureOverrides());
