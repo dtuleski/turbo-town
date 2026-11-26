@@ -2860,3 +2860,63 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **Context**: CONSTRUCTION - DC3 Build and Test gate
 
 ---
+## Daily Challenge and Push - DC1 NFR Requirements
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(workflow instruction) Your part: FEAT-004 (unit DC1, notifications backend). ... Implement only FEAT-004's steps, including its AI-DLC docs, its self-approved gates ..." (owner delegation 2026-11-26: "I want to defer to all your recommendations. Just go!!")
+**AI Response**: "Branch feat/dc1-notifications-backend cut from feat/dc3-repeatable-content (26dcfbb). NFR Requirements written: construction/daily-challenge-notifications-backend/nfr-requirements/nfr-requirements.md (one-hour local windows 08:00 and 12:00, claims per kind and local date, 15-minute schedule, 10,000-user sizing with one paginated prefs scan and one device scan per run, push concurrency 10, sequential Resend, 300 s timeout with a 30 s stop margin, APNs secret handling, reliability, logging, compatibility). Known limit flagged for owner review: Resend's API rate limit bounds email throughput at several thousand users in one zone; the scale path is a sender change behind TickDeps.sendEmail. Plan: construction/plans/daily-challenge-notifications-backend-nfr-and-infrastructure-plan.md. Approval prompt: 'DC1 NFR Requirements complete. Continue to NFR Design?'"
+**Context**: CONSTRUCTION - DC1 NFR Requirements (Daily Challenge and Push)
+---
+## Daily Challenge and Push - DC1 NFR Requirements Approval
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC1 NFR Requirements APPROVED (self-approved, flagged for owner review: Resend throughput limit). Next: DC1 NFR Design."
+**Context**: CONSTRUCTION - DC1 NFR Requirements gate
+---
+## Daily Challenge and Push - DC1 NFR Design
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(workflow instruction, FEAT-004) plan.md item 17"
+**AI Response**: "NFR Design written: construction/daily-challenge-notifications-backend/nfr-design/nfr-design.md (claim before send and release on failure, pure due planner, shared data once, bounded concurrency with isolation, time budget, lazy idempotent SNS endpoints, fail-closed configuration, safe logging, ownership by conditional delete, device identity by token hash). Decisions for owner review: the prefs scan now paginates; saveNotificationSettings does not touch updatedAt; getEmailPrefs reads a missing toggle as off; subject date in the user's zone; the challenge section in the user's language; no smoke invoke in the deploy script. Approval prompt: 'DC1 NFR Design complete. Continue to Infrastructure Design?'"
+**Context**: CONSTRUCTION - DC1 NFR Design (Daily Challenge and Push)
+---
+## Daily Challenge and Push - DC1 NFR Design Approval
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC1 NFR Design APPROVED (self-approved). Next: DC1 Infrastructure Design."
+**Context**: CONSTRUCTION - DC1 NFR Design gate
+---
+## Daily Challenge and Push - DC1 Infrastructure Design
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(workflow instruction, FEAT-004) plan.md items 17 and 22"
+**AI Response**: "Infrastructure Design written: construction/daily-challenge-notifications-backend/infrastructure-design/infrastructure-design.md (memory-game-push-devices-<stage>: deviceId key, GSI user-index, PAY_PER_REQUEST, AWS-managed encryption, PITR, RETAIN; IAM JSON for MemoryGame-GameService-prod (push-devices statements and sns:DeleteEndpoint added to DailyChallengeAccess) and DashDen-DailyEmail-prod (inline DailyChallengeNotifications); env vars DAILY_CHALLENGE_TABLE_NAME, PUSH_DEVICES_TABLE_NAME, APNS_SECRET_ID; timeout 300 s; schedule cron(0/15 * * * ? *); APNs key in dashden/apns/prod and SNS platform application dashden-ios-prod (optional dashden-ios-sandbox); alarm; deploy script). Production steps completed: P0 added (read-only check that the Game Lambda role may UpdateItem email prefs, required before DC1 is merged because setPrefs moves to UpdateItem), push-devices parts of P1 to P3, P5 to P12 with commands. Nothing run. Approval prompt: 'DC1 Infrastructure Design complete. Continue to Code Generation?'"
+**Context**: CONSTRUCTION - DC1 Infrastructure Design (Daily Challenge and Push)
+---
+## Daily Challenge and Push - DC1 Infrastructure Design Approval
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC1 Infrastructure Design APPROVED (self-approved, flagged for owner review: P0 must run before the DC1 merge). Next: DC1 Code Generation."
+**Context**: CONSTRUCTION - DC1 Infrastructure Design gate
+---
+## Daily Challenge and Push - DC1 Code Generation
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(workflow instruction, FEAT-004) plan.md items 18 to 22"
+**AI Response**: "Generated (services/game): email-prefs.service.ts (setPrefs UpdateItem, setLocale, claimSend, releaseSend, CLAIM_ATTRIBUTES), repositories/push-device.repository.ts, services/push-device.service.ts (createPushDeviceService(env), deviceIdFor, deleteEndpointQuietly), GameHandler routes registerPushDevice, unregisterPushDevice, saveNotificationSettings (and getEmailPrefs reads a missing toggle as off), schema.graphql docs, account deletion of devices and SNS endpoints when PUSH_DEVICES_TABLE_NAME is set, ChallengeService.getMyEntry and hasPlayed, notifications/{due,texts,apns-config,push-sender,challenge-section}.ts, daily-email.ts runTick(deps, now) with the exported handler and all existing content kept; @aws-sdk/client-sns dev dependency ^3.1009.0. scripts/deploy-daily-email-lambda.sh (--build-only makes no AWS call). infrastructure/lib/stacks/database-stack.ts pushDevicesTable and PushDevicesTableName output. Tests: email-prefs.service, push-device.service, game.handler.push, account-deletion (+2), notifications/{due,texts,apns-config,push-sender}, daily-email.tick (100 new tests). Plan: construction/plans/daily-challenge-notifications-backend-code-generation-plan.md. Approval prompt: 'DC1 Code Generation complete. Continue to Build and Test?'"
+**Context**: CONSTRUCTION - DC1 Code Generation (Daily Challenge and Push)
+---
+## Daily Challenge and Push - DC1 Code Generation Approval
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC1 Code Generation APPROVED (self-approved). Next: DC1 Build and Test."
+**Context**: CONSTRUCTION - DC1 Code Generation gate
+---
+## Daily Challenge and Push - DC1 Build and Test
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(workflow instruction, FEAT-004) DC1 Build and Test: run the shared, game, digest build-only and infra commands"
+**AI Response**: "Ran: shared npx jest 29 suites / 617 tests pass, npm run build pass; game npx tsc --noEmit pass, npx jest 30 suites pass / 454 tests, only the known failures event-publisher.service.test.ts and tests/integration/event-flow.test.ts; scripts/deploy-daily-email-lambda.sh --build-only exit 0, zip /tmp/daily-email-lambda-prod.zip contains dist/daily-email.js, zero aws calls (PATH shim); infrastructure npx tsc --noEmit pass. Summary with SECURITY-01 to SECURITY-15: construction/build-and-test/daily-challenge-notifications-backend-build-and-test-summary.md. Approval prompt: 'DC1 Build and Test complete. Continue to DC4?'"
+**Context**: CONSTRUCTION - DC1 Build and Test (Daily Challenge and Push)
+---
+## Daily Challenge and Push - DC1 Build and Test Approval
+**Timestamp**: 2026-11-26T19:24:44Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC1 Build and Test APPROVED (self-approved). DC1 committed on feat/dc1-notifications-backend, not pushed. Next: DC4 Web."
+**Context**: CONSTRUCTION - DC1 Build and Test gate
+---

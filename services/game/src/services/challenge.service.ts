@@ -187,6 +187,14 @@ export class ChallengeService {
     return { day, gameId: challenge.gameId, themeId: challenge.themeId, final: day < today, entries, me };
   }
 
+  /** The user's best and rank on a day, or null when they did not play it (digest, DC1). */
+  async getMyEntry(day: ChallengeDay, userId: string): Promise<ChallengeMyEntry | null> {
+    return this.myEntry(day, userId);
+  }
+  /** True when the user has a score for the day (the noon push skips them, FR-DC-22). */
+  async hasPlayed(day: ChallengeDay, userId: string): Promise<boolean> {
+    return (await this.repo.getScore(day, userId)) !== null;
+  }
   /** A finished day for the digest (DC1): the challenge, the top players and the user's own entry. */
   async getDayResults(
     day: ChallengeDay,
