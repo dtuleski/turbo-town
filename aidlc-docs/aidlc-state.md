@@ -244,5 +244,15 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 - [x] INCEPTION - Requirements Analysis (all 13 questions answered A by owner delegation; `inception/requirements/daily-challenge-requirements.md`)
 - [x] INCEPTION - User Stories (SKIPPED: one persona, concrete approved requirements; acceptance criteria per unit)
 - [x] INCEPTION - Workflow Planning (self-approved under owner delegation; `inception/plans/daily-challenge-workflow-planning.md`; units DC1 to DC5)
-- [ ] INCEPTION - Application Design
-- [ ] INCEPTION - Units Generation
+- [x] INCEPTION - Application Design (self-approved 2026-11-26; `inception/plans/daily-challenge-application-design-plan.md`, `inception/application-design/daily-challenge-{components,component-methods,services,component-dependency}.md`; Security Baseline compliant or N/A, SECURITY-11 limit stated)
+- [x] INCEPTION - Units Generation (self-approved 2026-11-26; `inception/plans/daily-challenge-unit-of-work-plan.md`, `inception/application-design/daily-challenge-unit-of-work{,-dependency,-story-map}.md`)
+- **Open points decided (owner review)**: fixed settings medium (difficulty 2) for every game; DC3 this run = first batch (code-a-bot, sudoku, math-challenge, math-maze, word-puzzle, hangman), other 10 games deferred one per PR; privacy text drafted (application design plan Q9), implemented in DC4; soft-ask only when the toggle is on (Q10)
+- **Branch base**: origin/main 47400b9 merged into `feat/daily-challenge` (the branch had been cut from 161f157)
+- **Production steps**: draft `construction/plans/daily-challenge-production-steps.md` (P1 to P14), none run
+### CONSTRUCTION (Daily Challenge and Push) - PLANNED
+Linear branch chain, one PR per unit against `main`, merge in this order; each merge is safe alone.
+- [ ] DC2 Challenge core (`feat/dc2-challenge-core`): Functional Design, Infrastructure Design, Code Generation, Build and Test
+- [ ] DC3 Repeatable content, first batch (`feat/dc3-repeatable-content`): Functional Design, Code Generation, Build and Test
+- [ ] DC1 Notifications backend (`feat/dc1-notifications-backend`): NFR Requirements, NFR Design, Infrastructure Design, Code Generation, Build and Test
+- [ ] DC4 Web (`feat/dc4-web-challenge`): Code Generation, Build and Test
+- [ ] DC5 App (`feat/dc5-app-challenge-push`): Code Generation, Build and Test
