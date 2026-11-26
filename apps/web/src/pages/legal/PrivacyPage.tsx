@@ -66,7 +66,8 @@ export default function PrivacyPage() {
       <h2>Who we share it with</h2>
       <p>Only the service providers that run DashDen for us, each for its own part:</p>
       <ul>
-        <li>Amazon Web Services: hosting, data storage, sign-in (Cognito) and email delivery.</li>
+        <li>Amazon Web Services: hosting, data storage, sign-in (Cognito) and account emails.</li>
+        <li>Resend: delivery of the daily summary email.</li>
         <li>Stripe: payments on the website.</li>
         <li>Apple: payments in the iPhone app, and Sign in with Apple.</li>
         <li>Google: Sign in with Google.</li>
