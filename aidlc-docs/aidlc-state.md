@@ -252,7 +252,7 @@ unaffected because the Lambda bundler already includes `@memory-game/shared`.
 ### CONSTRUCTION (Daily Challenge and Push) - PLANNED
 Linear branch chain, one PR per unit against `main`, merge in this order; each merge is safe alone.
 - [x] DC2 Challenge core (`feat/dc2-challenge-core`): Functional Design, Infrastructure Design, Code Generation, Build and Test (self-approved 2026-11-26; `construction/daily-challenge-challenge-core/`, `construction/plans/daily-challenge-challenge-core-functional-design-plan.md`, `construction/build-and-test/daily-challenge-challenge-core-build-and-test-summary.md`; shared 28 suites / 591 tests, game 21 suites pass / 351 tests (2 known failures), infra tsc pass; production steps P1 to P4 filled, none run)
-- [ ] DC3 Repeatable content, first batch (`feat/dc3-repeatable-content`): Functional Design, Code Generation, Build and Test
+- [ ] DC3 Repeatable content, first batch (`feat/dc3-repeatable-content`): Functional Design, Code Generation, Build and Test (in progress: Functional Design and shared + web Code Generation self-approved; `construction/daily-challenge-repeatable-content/functional-design/`, `construction/plans/daily-challenge-repeatable-content-functional-design-plan.md`; shared 29 suites / 617 tests, game 22 suites pass / 354 tests (2 known failures), web 55 files / 961 tests; app part and Build and Test pending)
 - [ ] DC1 Notifications backend (`feat/dc1-notifications-backend`): NFR Requirements, NFR Design, Infrastructure Design, Code Generation, Build and Test
 - [ ] DC4 Web (`feat/dc4-web-challenge`): Code Generation, Build and Test
 - [ ] DC5 App (`feat/dc5-app-challenge-push`): Code Generation, Build and Test

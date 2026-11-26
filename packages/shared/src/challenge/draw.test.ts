@@ -75,7 +75,22 @@ describe('rotation (FR-DC-14, plan Q7)', () => {
     expect(CHALLENGE_ROTATION.filter((e) => e.languageDependent).map((e) => e.gameId)).toEqual(['word-puzzle', 'hangman']);
   });
 
-  it('only games with a generator are eligible (FR-DC-15)', () => {
-    expect(eligibleRotation().map((e) => e.gameId)).toEqual(['code-a-bot']);
+  it('only games with a generator are eligible (FR-DC-15): the first batch', () => {
+    expect(eligibleRotation().map((e) => e.gameId)).toEqual([
+      'math-challenge',
+      'word-puzzle',
+      'sudoku',
+      'code-a-bot',
+      'hangman',
+      'math-maze',
+    ]);
+  });
+
+  it('draws every first-batch game over a year, never the same game two days running', () => {
+    const games = chain('2026-11-26', 365, eligibleRotation());
+    expect(new Set(games).size).toBe(6);
+    games.forEach((g, i) => {
+      if (i > 0) expect(g).not.toBe(games[i - 1]);
+    });
   });
 });

@@ -2800,3 +2800,35 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **Context**: CONSTRUCTION - DC2 Build and Test gate
 
 ---
+## Daily Challenge and Push - DC3 Functional Design
+**Timestamp**: 2026-11-26T18:33:52Z
+**User Input**: "(workflow instruction) Your part: FEAT-002 (unit DC3, repeatable content: shared generators and web). ... Implement only FEAT-002's steps, including its AI-DLC docs, its self-approved gates ..." (owner delegation 2026-11-26: "I want to defer to all your recommendations. Just go!!")
+**AI Response**: "Branch feat/dc3-repeatable-content cut from feat/dc2-challenge-core (cf15e32). Written: construction/plans/daily-challenge-repeatable-content-functional-design-plan.md (R1 to R8 self-answered), construction/daily-challenge-repeatable-content/functional-design/{domain-entities,business-rules,business-logic-model}.md. Decisions: medium word lists only in generators/data; unplaceable Word Puzzle words are skipped so every listed word is in the grid and all languages have 8 words; Math Maze rebuilt from the same rng until 5 to 8 gates and at least 4 collectibles; one sub-rng per language (en, es, pt order); expected totals code-a-bot 5, sudoku blanks in puzzle, math-challenge 15, math-maze gates.length, word-puzzle words.length, hangman 5; web pages load the challenge before starting the game with the challenge difficulty; a rate-limit error on a challenge start reaches the page (rate-limit screen), any other failure goes to /hub?challengeFailed=1. Approval prompt: 'DC3 Functional Design complete. Continue to Code Generation?'"
+**Context**: CONSTRUCTION - DC3 Functional Design (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - DC3 Functional Design Approval
+**Timestamp**: 2026-11-26T18:33:52Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC3 Functional Design APPROVED (self-approved, flagged for owner review: medium-only word lists, Word Puzzle skip rule, rate-limit handling on a challenge start). Next: DC3 Code Generation (shared and web)."
+**Context**: CONSTRUCTION - DC3 Functional Design gate
+
+---
+
+## Daily Challenge and Push - DC3 Code Generation (shared and web)
+**Timestamp**: 2026-11-26T18:33:52Z
+**User Input**: "(workflow instruction, FEAT-002) implement plan.md items 11 to 13"
+**AI Response**: "Generated: packages/shared/src/challenge/generators/{sudoku,math-challenge,math-maze,word-puzzle,hangman}.ts and generators/data/{word-puzzle-words,hangman-words}.ts (verbatim copies of the web medium lists), registered in generators/index.ts with expectedTotals per kind; ChallengeContent union extended in types.ts; six games eligible. Tests: src/challenge/content.test.ts (new), generators.test.ts and draw.test.ts updated; services/game tests/unit/services/challenge.service.rotation.test.ts (real six-game rotation), the DC2 Code-a-Bot fixture suites pin eligibleRotation to code-a-bot. Web: src/utils/challengeShared.ts (only importer of packages/shared/src/challenge), src/types/challenge.ts, src/api/challenge.ts (getDailyChallenge, getChallengeLeaderboard, null on error), src/utils/challengeLaunch.ts, src/api/game.ts (challengeContext from ?challenge=, quest wins, failure redirect, COMPLETE_GAME selects challenge), src/hooks/useChallengeContent.ts, src/utils/challengeContent.ts, given-content mode in the six first-batch pages; tests challengeLaunch, challengeContent, gameChallenge. The web's own generators are unchanged. App part (plan.md items 14 and 15) follows in FEAT-003. Approval prompt: 'DC3 Code Generation (shared and web) complete. Continue?'"
+**Context**: CONSTRUCTION - DC3 Code Generation, part 1 of 2 (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - DC3 Code Generation (shared and web) Approval
+**Timestamp**: 2026-11-26T18:33:52Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC3 Code Generation (shared and web) APPROVED (self-approved). Verification on this commit: shared npx jest 29 suites / 617 tests pass, npm run build pass; game npx tsc --noEmit pass, npx jest 22 suites pass / 354 tests, only the known failures event-publisher.service.test.ts and tests/integration/event-flow.test.ts; web tsc pass, vitest 55 files / 961 tests pass, npm run build pass. Committed on feat/dc3-repeatable-content, not pushed. Next: DC3 app part (FEAT-003), then DC3 Build and Test."
+**Context**: CONSTRUCTION - DC3 Code Generation gate, part 1 of 2
+
+---
+

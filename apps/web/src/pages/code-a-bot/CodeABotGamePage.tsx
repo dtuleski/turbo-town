@@ -9,6 +9,8 @@ import {
 } from '@/utils/codeABotUtils'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { codeABotPlan } from '@/utils/challengeContent'
 
 type Phase = 'building' | 'running' | 'success' | 'fail' | 'submitting' | 'completed'
 
@@ -16,8 +18,12 @@ export default function CodeABotGamePage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const difficulty = (searchParams.get('difficulty') || 'easy') as BotDifficulty
-  const totalLevels = getTotalLevels(difficulty)
+  const challenge = useChallengeContent('code-a-bot')
+  // Challenge mode plays the served level list; otherwise the difficulty's levels 1..N as before.
+  const plan = challenge.status === 'ready' ? codeABotPlan(challenge.content) : null
+  const difficulty = plan ? plan.difficulty : (searchParams.get('difficulty') || 'easy') as BotDifficulty
+  const totalLevels = plan ? plan.levelNumbers.length : getTotalLevels(difficulty)
+  const levelNumberAt = (index: number) => (plan ? plan.levelNumbers[index - 1] : index)
 
   const [gameId, setGameId] = useState('')
   const [currentLevel, setCurrentLevel] = useState(1)
@@ -38,8 +44,9 @@ export default function CodeABotGamePage() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Start game on mount
+  // Start game on mount (challenge mode: once the challenge is loaded)
   useEffect(() => {
+    if (challenge.status === 'loading') return
     const init = async () => {
       try {
         const game = await startGame({
@@ -54,11 +61,12 @@ export default function CodeABotGamePage() {
       }
     }
     init()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   // Timer
   useEffect(() => {
+    if (challenge.status === 'loading') return
     if (phase === 'building') {
       if (!timerRef.current) {
         timerRef.current = setInterval(() => setTimer(t => t + 1), 1000)
@@ -67,11 +75,11 @@ export default function CodeABotGamePage() {
       if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
     }
     return () => {}
-  }, [phase])
+  }, [phase, challenge.status])
 
   // Load level
   useEffect(() => {
-    const lv = getLevel(difficulty, currentLevel)
+    const lv = getLevel(difficulty, levelNumberAt(currentLevel))
     setLevel(lv)
     setBotPos(lv.start)
     setBotDir(lv.startDir)
@@ -81,7 +89,7 @@ export default function CodeABotGamePage() {
     setAnimStep(-1)
     setShowHint(false)
     setFailMessage('')
-  }, [currentLevel, difficulty])
+  }, [currentLevel, difficulty, challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Animate simulation
   useEffect(() => {
@@ -212,6 +220,14 @@ export default function CodeABotGamePage() {
 
 
   // ── Render ───────────────────────────────────────────────────────────────────
+
+  if (challenge.status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-teal-900 flex items-center justify-center">
+        <div className="text-white text-2xl font-bold animate-pulse">{t('common.loading')}</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-teal-900 py-4 px-2 md:px-4 select-none">

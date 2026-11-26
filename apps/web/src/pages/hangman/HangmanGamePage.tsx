@@ -5,6 +5,8 @@ import { ROUTES } from '@/config/constants'
 import { pickRandomWords, MAX_WRONG, ROUNDS_PER_GAME, type HangmanWord } from '@/utils/hangmanData'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { difficultyName, hangmanWordsFor } from '@/utils/challengeContent'
 
 type RoundPhase = 'playing' | 'won' | 'lost'
 type GamePhase = 'playing' | 'submitting' | 'completed'
@@ -50,7 +52,8 @@ export default function HangmanGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { t, i18n } = useTranslation()
-  const difficulty = searchParams.get('difficulty') || 'easy'
+  const challenge = useChallengeContent('hangman')
+  const difficulty = challenge.status === 'ready' ? difficultyName(challenge.difficulty) : searchParams.get('difficulty') || 'easy'
 
   const [gameId, setGameId] = useState('')
   const [words, setWords] = useState<HangmanWord[]>([])
@@ -67,14 +70,22 @@ export default function HangmanGamePage() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const currentWord = words[currentRound]
+  // Challenge mode plays the served words (one round each); otherwise ROUNDS_PER_GAME random words.
+  const rounds = challenge.status === 'ready' ? words.length : ROUNDS_PER_GAME
   const wrongLetters = currentWord ? [...guessedLetters].filter(l => !currentWord.word.includes(l)) : []
   const wrongCount = wrongLetters.length
 
   useEffect(() => {
-    setWords(pickRandomWords(difficulty, ROUNDS_PER_GAME, i18n.language))
-  }, [difficulty, i18n.language])
+    if (challenge.status === 'loading') return
+    setWords(
+      challenge.status === 'ready'
+        ? hangmanWordsFor(challenge.content, i18n.language)
+        : pickRandomWords(difficulty, ROUNDS_PER_GAME, i18n.language)
+    )
+  }, [difficulty, i18n.language, challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    if (challenge.status === 'loading') return
     const init = async () => {
       try {
         const diffMap: Record<string, number> = { easy: 1, medium: 2, hard: 3 }
@@ -86,12 +97,13 @@ export default function HangmanGamePage() {
       }
     }
     init()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    if (challenge.status === 'loading') return
     timerRef.current = setInterval(() => setTimer(t => t + 1), 1000)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [])
+  }, [challenge.status])
 
   const guessLetter = useCallback((letter: string) => {
     if (roundPhase !== 'playing' || !currentWord || guessedLetters.has(letter)) return
@@ -130,7 +142,7 @@ export default function HangmanGamePage() {
   }, [guessLetter])
 
   const nextRound = () => {
-    if (currentRound + 1 >= ROUNDS_PER_GAME) {
+    if (currentRound + 1 >= rounds) {
       finishGame()
     } else {
       setCurrentRound(r => r + 1)
@@ -148,7 +160,7 @@ export default function HangmanGamePage() {
         completionTime: Math.max(1, timer),
         attempts: totalWrong + roundsWon * 6, // total guesses approximation
         correctAnswers: roundsWon,
-        totalQuestions: ROUNDS_PER_GAME,
+        totalQuestions: rounds,
       })
       setScoreBreakdown(result.scoreBreakdown)
       setLeaderboardRank(result.leaderboardRank)
@@ -179,14 +191,14 @@ export default function HangmanGamePage() {
           <button onClick={() => navigate(ROUTES.HANGMAN_SETUP)} className="text-white text-lg font-bold hover:underline">{t('game.back')}</button>
           <div className="flex items-center gap-3 text-white font-bold text-sm md:text-base">
             <span>⏱️ {formatTime(timer)}</span>
-            <span>{t('game.round')} {currentRound + 1}/{ROUNDS_PER_GAME}</span>
+            <span>{t('game.round')} {currentRound + 1}/{rounds}</span>
             <span className="text-yellow-300">⭐ {totalScore}</span>
           </div>
         </div>
 
         {/* Progress */}
         <div className="w-full bg-white/10 rounded-full h-2 mb-2 mx-2">
-          <div className="bg-yellow-400 h-2 rounded-full transition-all" style={{ width: `${((currentRound + (roundPhase !== 'playing' ? 1 : 0)) / ROUNDS_PER_GAME) * 100}%` }} />
+          <div className="bg-yellow-400 h-2 rounded-full transition-all" style={{ width: `${((currentRound + (roundPhase !== 'playing' ? 1 : 0)) / rounds) * 100}%` }} />
         </div>
 
         {/* Hint + Category */}
@@ -235,7 +247,7 @@ export default function HangmanGamePage() {
             </div>
             <button onClick={nextRound}
               className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-lg">
-              {currentRound + 1 >= ROUNDS_PER_GAME ? t('game.seeResults') : t('game.nextRound')}
+              {currentRound + 1 >= rounds ? t('game.seeResults') : t('game.nextRound')}
             </button>
           </div>
         )}
