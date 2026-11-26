@@ -1,5 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, GetCommand, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, GetCommand, PutCommand, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { CHALLENGE_LANGUAGES, ValidationError, isValidTimeZone } from '@memory-game/shared';
 import type { ChallengeLanguage } from '@memory-game/shared';
 import { logger } from '../utils/logger';
@@ -32,6 +32,9 @@ export const CLAIM_ATTRIBUTES: Readonly<Record<SendKind, string>> = Object.freez
 });
 export const INVALID_NOTIFICATION_SETTINGS_MESSAGE = 'Invalid notification settings';
 const isConditionFailure = (error: unknown) => (error as Error)?.name === 'ConditionalCheckFailedException';
+const isAccessDenied = (error: unknown) => (error as Error)?.name === 'AccessDeniedException';
+/** The PutItem fallback of setPrefs is logged once per container. */
+let putFallbackLogged = false;
 export function isChallengeLanguage(value: unknown): value is ChallengeLanguage {
   return typeof value === 'string' && (CHALLENGE_LANGUAGES as readonly string[]).includes(value);
 }
@@ -54,7 +57,11 @@ export class EmailPrefsService {
     }));
     return (result.Item as EmailPrefs) || null;
   }
-  /** Sets the toggle and contact fields; time zone, language and claims are kept. */
+  /**
+   * Sets the toggle and contact fields; time zone, language and claims are kept. When the role may not
+   * UpdateItem yet (production step P0 not done), falls back to the earlier PutItem, merged over the
+   * current item so the other fields survive, and the toggle keeps working.
+   */
   async setPrefs(userId: string, email: string, username: string, dailyDigest: boolean): Promise<EmailPrefs> {
     const prefs: EmailPrefs = {
       userId,
@@ -63,13 +70,26 @@ export class EmailPrefsService {
       dailyDigest,
       updatedAt: new Date().toISOString(),
     };
-    await this.client.send(new UpdateCommand({
-      TableName: this.tableName,
-      Key: { userId },
-      UpdateExpression: 'SET #e = :e, #n = :n, #d = :d, #t = :t',
-      ExpressionAttributeNames: { '#e': 'email', '#n': 'username', '#d': 'dailyDigest', '#t': 'updatedAt' },
-      ExpressionAttributeValues: { ':e': email, ':n': username, ':d': dailyDigest, ':t': prefs.updatedAt },
-    }));
+    try {
+      await this.client.send(new UpdateCommand({
+        TableName: this.tableName,
+        Key: { userId },
+        UpdateExpression: 'SET #e = :e, #n = :n, #d = :d, #t = :t',
+        ExpressionAttributeNames: { '#e': 'email', '#n': 'username', '#d': 'dailyDigest', '#t': 'updatedAt' },
+        ExpressionAttributeValues: { ':e': email, ':n': username, ':d': dailyDigest, ':t': prefs.updatedAt },
+      }));
+    } catch (error) {
+      if (!isAccessDenied(error)) throw error;
+      if (!putFallbackLogged) {
+        putFallbackLogged = true;
+        logger.warn('Email prefs UpdateItem denied, using PutItem (production step P0 pending)');
+      }
+      const current = await this.getPrefs(userId);
+      await this.client.send(new PutCommand({
+        TableName: this.tableName,
+        Item: { ...(current ?? {}), ...prefs },
+      }));
+    }
     logger.info('Email prefs updated', { userId, dailyDigest });
     return prefs;
   }
