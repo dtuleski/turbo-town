@@ -20,6 +20,8 @@ set -e
 #   - AWS profile "dashden-new" configured for account 342278407349
 #   - Production steps P5 (IAM) and P6 (env vars, timeout 300 s) done first;
 #     P8 (schedule) right after this deploy, in the same session
+#   Deploy mode checks P5 and P6 with read-only calls (iam simulate-principal-policy,
+#   lambda get-function-configuration) and stops before any write if one is missing.
 # ============================================================
 BUILD_ONLY=false
 case "${1:-}" in
@@ -32,6 +34,9 @@ HANDLER="dist/daily-email.handler"
 REGION="us-east-1"
 AWS_PROFILE_NAME="dashden-new"
 EXPECTED_ACCOUNT="342278407349"
+PREFS_TABLE_ARN="arn:aws:dynamodb:us-east-1:342278407349:table/memory-game-email-prefs-prod"
+REQUIRED_ENV_VARS=(DAILY_CHALLENGE_TABLE_NAME PUSH_DEVICES_TABLE_NAME APNS_SECRET_ID)
+REQUIRED_TIMEOUT="300"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 GAME_DIR="${ROOT_DIR}/services/game"
 SHARED_DIR="${ROOT_DIR}/packages/shared"
@@ -65,6 +70,34 @@ if [ "${BUILD_ONLY}" = false ]; then
     exit 1
   fi
   echo -e "${GREEN}  ✓ Account ${ACCOUNT}${NC}"
+  # Read-only prerequisite checks: without P5 every send claim fails (no digest at all);
+  # without P6 the tick runs with challenge and push off and may time out before all users are handled.
+  ROLE_ARN=$(aws lambda get-function-configuration --function-name "${FUNCTION_NAME}" "${AWS_ARGS[@]}" \
+    --query Role --output text)
+  DECISION=$(aws iam simulate-principal-policy --policy-source-arn "${ROLE_ARN}" \
+    --action-names dynamodb:UpdateItem --resource-arns "${PREFS_TABLE_ARN}" "${AWS_ARGS[@]}" \
+    --query 'EvaluationResults[0].EvalDecision' --output text)
+  if [ "${DECISION}" != "allowed" ]; then
+    echo -e "${RED}  ✗ Function role may not dynamodb:UpdateItem on memory-game-email-prefs-prod (${DECISION}). Run production step P5 first.${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}  ✓ Role may UpdateItem on email prefs (P5)${NC}"
+  for var in "${REQUIRED_ENV_VARS[@]}"; do
+    VALUE=$(aws lambda get-function-configuration --function-name "${FUNCTION_NAME}" "${AWS_ARGS[@]}" \
+      --query "Environment.Variables.${var}" --output text)
+    if [ -z "${VALUE}" ] || [ "${VALUE}" = "None" ]; then
+      echo -e "${RED}  ✗ Env var ${var} is not set. Run production step P6 first.${NC}"
+      exit 1
+    fi
+  done
+  TIMEOUT=$(aws lambda get-function-configuration --function-name "${FUNCTION_NAME}" "${AWS_ARGS[@]}" \
+    --query Timeout --output text)
+  if [ "${TIMEOUT}" != "${REQUIRED_TIMEOUT}" ]; then
+    echo -e "${RED}  ✗ Timeout is ${TIMEOUT} s, expected ${REQUIRED_TIMEOUT} s. Run production step P6 first.${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}  ✓ Env vars ${REQUIRED_ENV_VARS[*]} set, timeout ${TIMEOUT} s (P6)${NC}"
+  echo -e "${YELLOW}  ! Production step P8 (schedule every 15 minutes) must follow this deploy in the same session${NC}"
 else
   echo -e "${YELLOW}[1/8]${NC} Build-only: skipping AWS account check"
 fi
@@ -192,4 +225,7 @@ echo ""
 echo -e "${GREEN}=========================================="
 echo "  Deploy complete!"
 echo "==========================================${NC}"
+echo ""
+echo -e "${YELLOW}Next, in this session: production step P8 (DashDen-DailyDigest-Schedule to cron(0/15 * * * ? *)).${NC}"
+echo -e "${YELLOW}Until then the old cron(0 12 * * ? *) runs, which is 7am Eastern in winter.${NC}"
 echo ""
