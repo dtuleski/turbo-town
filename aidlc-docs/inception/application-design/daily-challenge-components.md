@@ -13,7 +13,7 @@ live).
 | Component | File | Responsibility |
 |---|---|---|
 | C1 Challenge types | `types.ts` | `ChallengeDay` (`YYYY-MM-DD`), `RotationEntry`, `DailyChallenge`, per-game content types, `ChallengeContent` union, `ChallengeLanguage` (`en`, `es`, `pt`) |
-| C2 Rotation config | `rotation.ts` | The 16 rotation entries (game id, theme id, difficulty 2, settings, `enabled` = has a generator); `eligibleRotation()` |
+| C2 Rotation config | `rotation.ts` | The 16 rotation entries (game id, theme id, difficulty 2, settings, `enabled` = has a generator); `eligibleRotation()`. A generator is registered only after the game's web and app given-content modes have shipped (unit-of-work, Deferred) |
 | C3 Challenge clock | `day.ts` | US Eastern challenge day for an instant, day bounds, previous and next day, local date and time in any IANA zone, IANA zone check; DST-safe through `Intl.DateTimeFormat` |
 | C4 Seeded random | `rng.ts` | String seed hash to 32-bit state, `mulberry32`, `randInt`, `shuffle`, `pick`; the only randomness the generators use |
 | C5 Daily draw | `draw.ts` | Deterministic pick for a day from the eligible rotation, excluding the previous day's game when at least 2 are eligible |
