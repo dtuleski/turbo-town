@@ -81,6 +81,15 @@ new behavior stays off until the production steps set the table env vars.
 DC3 increments for geo-quiz, history-quiz, civics-quiz, sequence-memory, pattern-recall, memory-match,
 scratch-coding, space-entry, bond-and-burn, mini-golf (one pull request per game). Android push.
 
+Rule for each deferred increment (FR-DC-15). `eligibleRotation()` admits any game with a registered
+generator, and nothing records which app builds can play which content kind, so the order is:
+1. Ship the game's given-content mode on the web (deployed) and in the app (build released on the App
+   Store), with no generator registered. Pages without `?challenge=` behave as today.
+2. Then, in a separate pull request, register the generator in `packages/shared/src/challenge/generators`.
+3. After CI deploys that Game Lambda, redeploy the digest Lambda (`scripts/deploy-daily-email-lambda.sh`),
+   because it bundles its own copy of the rotation and pre-draws tomorrow's challenge. Do the same for
+   any other rotation change (a game removed, settings changed).
+
 ## Production steps
 
 Drafted in `../../construction/plans/daily-challenge-production-steps.md`; DC2 and DC1 Infrastructure
