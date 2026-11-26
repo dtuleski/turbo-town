@@ -4871,4 +4871,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get profile_terms => 'Termos de Serviço';
+
+  @override
+  String get auth_adultConfirm =>
+      'Tenho 18 anos ou mais (sou pai, mãe ou responsável) e aceito os Termos de Serviço e a Política de Privacidade.';
+
+  @override
+  String get auth_adultRequired =>
+      'Confirme que você tem 18 anos ou mais e aceita os termos.';
+
+  @override
+  String get auth_socialConsent =>
+      'Ao continuar, você confirma que tem 18 anos ou mais e aceita os Termos de Serviço e a Política de Privacidade.';
+
+  @override
+  String get auth_continueWithApple => 'Continuar com a Apple';
 }

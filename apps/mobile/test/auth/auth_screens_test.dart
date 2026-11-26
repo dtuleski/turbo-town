@@ -281,6 +281,9 @@ void main() {
       await enter(tester, 'register-username', 'ana_s');
       await enter(tester, 'register-password', 'Passw0rdx');
       await enter(tester, 'register-confirm-password', 'Passw0rdx');
+      await tester.ensureVisible(find.byKey(const Key('register-adult-checkbox')));
+      await tester.tap(find.byKey(const Key('register-adult-checkbox')));
+      await tester.pumpAndSettle();
     }
 
     testWidgets('applies the web validation rules', (tester) async {
@@ -300,11 +303,28 @@ void main() {
       expect(auth.calls, isEmpty);
     });
 
+    testWidgets('requires the 18+ confirmation', (tester) async {
+      final auth = await pumpAuth(tester, start: '/register');
+      final l10n = l10nOf(tester);
+      await enter(tester, 'register-email', 'a@b.co');
+      await enter(tester, 'register-first-name', 'Ana');
+      await enter(tester, 'register-last-name', 'Silva');
+      await enter(tester, 'register-username', 'ana_s');
+      await enter(tester, 'register-password', 'Passw0rdx');
+      await enter(tester, 'register-confirm-password', 'Passw0rdx');
+      await tester.ensureVisible(find.widgetWithText(FilledButton, l10n.auth_createAccount));
+      await tester.tap(find.widgetWithText(FilledButton, l10n.auth_createAccount));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('register-adult-error')), findsOneWidget);
+      expect(auth.calls, isEmpty);
+    });
+
     testWidgets('confirmation step: code, resend, confirm and sign in',
         (tester) async {
       final auth = await pumpAuth(tester, start: '/register');
       final l10n = l10nOf(tester);
       await fillValid(tester);
+      await tester.ensureVisible(find.widgetWithText(FilledButton, l10n.auth_createAccount));
       await tester.tap(find.widgetWithText(FilledButton, l10n.auth_createAccount));
       await tester.pumpAndSettle();
       expect(auth.calls.single, 'signUp:a@b.co:ana_s:Ana:Silva');
@@ -329,6 +349,7 @@ void main() {
       final auth = await pumpAuth(tester, start: '/register', locale: const Locale('pt'));
       final l10n = l10nOf(tester);
       await fillValid(tester);
+      await tester.ensureVisible(find.widgetWithText(FilledButton, l10n.auth_createAccount));
       await tester.tap(find.widgetWithText(FilledButton, l10n.auth_createAccount));
       await tester.pumpAndSettle();
       auth.failWith = 'CodeMismatchException';

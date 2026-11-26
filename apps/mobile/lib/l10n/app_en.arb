@@ -2434,5 +2434,9 @@
   "profile_deletedAppleBody": "Your App Store subscription is still active. Cancel it in Settings > Apple Account > Subscriptions so Apple stops billing you.",
   "profile_manageSubscriptions": "Manage subscriptions",
   "profile_privacy": "Privacy Policy",
-  "profile_terms": "Terms of Service"
+  "profile_terms": "Terms of Service",
+  "auth_adultConfirm": "I’m 18 or older (a parent or guardian) and I agree to the Terms of Service and Privacy Policy.",
+  "auth_adultRequired": "Please confirm you are 18 or older and agree to the terms.",
+  "auth_socialConsent": "By continuing, you confirm you are 18 or older and agree to the Terms of Service and Privacy Policy.",
+  "auth_continueWithApple": "Continue with Apple"
 }

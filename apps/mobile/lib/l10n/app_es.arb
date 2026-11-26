@@ -2399,5 +2399,9 @@
   "profile_deletedAppleBody": "Tu suscripción del App Store sigue activa. Cancélala en Ajustes > Cuenta de Apple > Suscripciones para que Apple deje de cobrarte.",
   "profile_manageSubscriptions": "Gestionar suscripciones",
   "profile_privacy": "Política de privacidad",
-  "profile_terms": "Términos del servicio"
+  "profile_terms": "Términos del servicio",
+  "auth_adultConfirm": "Tengo 18 años o más (soy madre, padre o tutor) y acepto los Términos del servicio y la Política de privacidad.",
+  "auth_adultRequired": "Confirma que tienes 18 años o más y aceptas los términos.",
+  "auth_socialConsent": "Al continuar, confirmas que tienes 18 años o más y aceptas los Términos del servicio y la Política de privacidad.",
+  "auth_continueWithApple": "Continuar con Apple"
 }

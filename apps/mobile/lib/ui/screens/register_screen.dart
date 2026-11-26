@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../auth/auth_controller.dart';
 import '../../auth/validation.dart';
+import '../../subscription/store_products.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../auth_text.dart';
 import '../widgets/auth_widgets.dart';
@@ -194,6 +196,43 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
             validator: fieldValidator(
                 l10n, (v) => validateConfirmPassword(_password.text, v)),
+          ),
+          const SizedBox(height: 12),
+          // Accounts are for adults (parents and guardians); see the Terms of Service.
+          FormField<bool>(
+            key: const Key('register-adult'),
+            initialValue: false,
+            validator: (v) => v == true ? null : l10n.auth_adultRequired,
+            builder: (field) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CheckboxListTile(
+                  key: const Key('register-adult-checkbox'),
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: field.value ?? false,
+                  onChanged: (v) => field.didChange(v ?? false),
+                  title: Text(l10n.auth_adultConfirm, style: const TextStyle(fontSize: 14)),
+                ),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    TextButton(
+                      onPressed: () => launchUrl(Uri.parse(kServiceTermsUrl), mode: LaunchMode.inAppBrowserView),
+                      child: Text(l10n.profile_terms),
+                    ),
+                    TextButton(
+                      onPressed: () => launchUrl(Uri.parse(kPrivacyPolicyUrl), mode: LaunchMode.inAppBrowserView),
+                      child: Text(l10n.profile_privacy),
+                    ),
+                  ],
+                ),
+                if (field.hasError)
+                  Text(field.errorText!,
+                      key: const Key('register-adult-error'),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12)),
+              ],
+            ),
           ),
           AuthErrorText(authErrorText(l10n, auth)),
           const SizedBox(height: 24),
