@@ -55,6 +55,7 @@ export class RaceScene extends Phaser.Scene {
   private kartX = 0;
   private lockedBranch = -1;
   private lastRaf = -1;
+  private pendingLatencyMs: number | undefined;
   private samples = new Float32Array(MAX_SAMPLES);
   private sampleCount = 0;
   private nextQualityCheck = 0;
@@ -117,14 +118,16 @@ export class RaceScene extends Phaser.Scene {
     if (QUALITY[this.profile].particles) this.createParticles();
 
     const kb = this.input.keyboard;
-    kb?.on('keydown-LEFT', () => this.laneAction('left'));
-    kb?.on('keydown-A', () => this.laneAction('left'));
-    kb?.on('keydown-RIGHT', () => this.laneAction('right'));
-    kb?.on('keydown-D', () => this.laneAction('right'));
+    // Key repeat is not a new input, so it carries no timestamp for the latency measurement.
+    const ts = (e: KeyboardEvent) => (e.repeat ? undefined : e.timeStamp);
+    kb?.on('keydown-LEFT', (e: KeyboardEvent) => this.laneAction('left', ts(e)));
+    kb?.on('keydown-A', (e: KeyboardEvent) => this.laneAction('left', ts(e)));
+    kb?.on('keydown-RIGHT', (e: KeyboardEvent) => this.laneAction('right', ts(e)));
+    kb?.on('keydown-D', (e: KeyboardEvent) => this.laneAction('right', ts(e)));
     kb?.on('keydown-P', () => this.setPaused(this.view.phase !== 'paused'));
     kb?.on('keydown-ESC', () => this.setPaused(this.view.phase !== 'paused'));
     if (this.ctx.devFaults) kb?.on('keydown-F8', () => this.fault());
-    this.events.on(RACE_EVENTS.laneAction, (a: 'left' | 'right') => this.laneAction(a));
+    this.events.on(RACE_EVENTS.laneAction, (a: 'left' | 'right', inputTs?: number) => this.laneAction(a, inputTs));
     this.events.on(RACE_EVENTS.togglePause, () => this.setPaused(this.view.phase !== 'paused'));
     this.events.on('mr-fault', () => this.fault());
     this.offMessage = this.ctx.channel.onMessage((m: HostToGame) => this.onHostMessage(m));
@@ -179,12 +182,26 @@ export class RaceScene extends Phaser.Scene {
     this.ctx.channel.send({ v: 1, type: 'pauseChanged', paused, sound: this.ctx.sound });
   }
 
-  private laneAction(a: 'left' | 'right'): void {
+  private laneAction(a: 'left' | 'right', inputTs?: number): void {
     if (this.view.phase !== 'running' || this.lockedBranch >= 0) return;
     this.lanes = moveLane(this.lanes, a);
     this.view.lane = this.lanes.lane;
     // Lean at once, so the change is visible in the next frame (P-2).
     this.kart.setRotation(a === 'left' ? -0.14 : 0.14);
+    if (inputTs !== undefined && this.ctx.onFrame) this.measureLatency(inputTs);
+  }
+
+  /**
+   * Gate builds only (P-2 without a camera). The next draw contains the lean; the browser shows that
+   * draw at the following frame, whose rAF timestamp is the display time. Event and rAF timestamps
+   * share the performance.now() clock. Touch-panel and display-panel delay are not included.
+   */
+  private measureLatency(inputTs: number): void {
+    this.game.events.once(Phaser.Core.Events.POST_RENDER, () => {
+      requestAnimationFrame((shownAt) => {
+        this.pendingLatencyMs = shownAt - inputTs;
+      });
+    });
   }
 
   private play(key: string): void {
@@ -330,7 +347,15 @@ export class RaceScene extends Phaser.Scene {
       }
     }
 
-    this.ctx.onFrame?.({ rafMs: time, clockMs: elapsed, profile: this.profile, fork: v.phase === 'finished' ? -1 : v.fork, event });
+    this.ctx.onFrame?.({
+      rafMs: time,
+      clockMs: elapsed,
+      profile: this.profile,
+      fork: v.phase === 'finished' ? -1 : v.fork,
+      event,
+      inputLatencyMs: this.pendingLatencyMs,
+    });
+    this.pendingLatencyMs = undefined;
     this.render(time);
   }
 

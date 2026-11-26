@@ -26,6 +26,7 @@ export class HudScene extends Phaser.Scene {
   private joy: JoystickState = { ...JOYSTICK_IDLE };
   private joyPointer: number | null = null;
   private joyDx: number | null = null;
+  private joyCrossTs: number | undefined;
   private touchSeen = false;
 
   constructor() {
@@ -133,13 +134,23 @@ export class HudScene extends Phaser.Scene {
   private pointerMove(p: Phaser.Input.Pointer): void {
     if (p.id !== this.joyPointer) return;
     const radius = 70 * (Math.min(this.scale.width, this.scale.height) / 600);
+    const before = this.sideOf(this.joyDx);
     this.joyDx = Math.max(-1.5, Math.min(1.5, (p.x - this.joyBase.x) / radius));
+    // Timestamp of the touch that crossed the threshold, for the gate's latency measurement (P-2).
+    const after = this.sideOf(this.joyDx);
+    if (after !== 0 && after !== before) this.joyCrossTs = p.event?.timeStamp;
+  }
+
+  private sideOf(dx: number | null): -1 | 0 | 1 {
+    const t = DEFAULT_JOYSTICK.thresholdRatio;
+    return dx === null ? 0 : dx <= -t ? -1 : dx >= t ? 1 : 0;
   }
 
   private pointerUp(p: Phaser.Input.Pointer): void {
     if (p.id !== this.joyPointer) return;
     this.joyPointer = null;
     this.joyDx = null;
+    this.joyCrossTs = undefined;
   }
 
   update(time: number): void {
@@ -196,9 +207,12 @@ export class HudScene extends Phaser.Scene {
     this.joyBase.setVisible(joyOn);
     this.joyKnob.setVisible(joyOn);
     if (joyOn) {
+      const sideBefore = this.joy.side;
       const r = this.joystickStepAt(time);
       this.joyKnob.x = this.joyBase.x + (this.joyDx ?? 0) * 40 * u;
-      for (const a of r) this.race()?.events.emit(RACE_EVENTS.laneAction, a);
+      // Only the first action of a push is a fresh input; repeats from holding carry no timestamp.
+      const fresh = this.joy.side !== sideBefore ? this.joyCrossTs : undefined;
+      r.forEach((a, i) => this.race()?.events.emit(RACE_EVENTS.laneAction, a, i === 0 ? fresh : undefined));
     }
   }
 

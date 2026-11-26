@@ -5,6 +5,7 @@ import type { FrameSample } from '../phaser/context';
  * (no allocation per frame); statistics and CSV only on demand (NFR design Section 3).
  */
 export const FRAME_CAPACITY = 20000;
+export const LATENCY_CAPACITY = 512;
 const EVENTS = ['', 'decision', 'merge', 'finish', 'profileLow'] as const;
 
 export interface FrameStats {
@@ -35,6 +36,9 @@ export function createFrameRecorder(capacity = FRAME_CAPACITY): FrameRecorder {
   const low = new Uint8Array(capacity);
   const ev = new Uint8Array(capacity);
   let n = 0;
+  // Lane-change input latencies (P-2); a race has a few dozen.
+  const latency = new Float64Array(LATENCY_CAPACITY);
+  let nl = 0;
 
   function frameTimes(): Float64Array {
     const out = new Float64Array(Math.max(0, n - 1));
@@ -44,6 +48,7 @@ export function createFrameRecorder(capacity = FRAME_CAPACITY): FrameRecorder {
 
   return {
     record(s) {
+      if (s.inputLatencyMs !== undefined && nl < LATENCY_CAPACITY) latency[nl++] = s.inputLatencyMs;
       if (n >= capacity) return;
       raf[n] = s.rafMs;
       clock[n] = s.clockMs;
@@ -79,10 +84,17 @@ export function createFrameRecorder(capacity = FRAME_CAPACITY): FrameRecorder {
       rows.push(`# onePercentLowFps,${st.onePercentLowFps.toFixed(2)}`);
       rows.push(`# frames,${st.frames}`);
       rows.push(`# guardReports,${meta.guardReports}`);
+      const lat = Array.from(latency.subarray(0, nl));
+      const latSorted = lat.slice().sort((a, b) => a - b);
+      rows.push(`# inputLatencyCount,${nl}`);
+      rows.push(`# inputLatencyMedianMs,${percentile(latSorted, 50).toFixed(1)}`);
+      rows.push(`# inputLatencyMaxMs,${(latSorted[latSorted.length - 1] ?? 0).toFixed(1)}`);
+      rows.push(`# inputLatencyMs,${lat.map((x) => x.toFixed(1)).join(' ')}`);
       return rows.join('\n') + '\n';
     },
     reset() {
       n = 0;
+      nl = 0;
     },
   };
 }

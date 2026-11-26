@@ -11,6 +11,11 @@ export interface FrameSample {
   profile: QualityProfile;
   fork: number;
   event: '' | 'decision' | 'merge' | 'finish' | 'profileLow';
+  /**
+   * Input to screen for a lane change finished since the last sample (P-2, gate builds): from the
+   * input event's timestamp to the first frame after the one that drew the lean (display time).
+   */
+  inputLatencyMs?: number;
 }
 
 /** Everything the scenes share for one mount. */

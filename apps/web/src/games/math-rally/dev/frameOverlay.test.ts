@@ -36,6 +36,21 @@ describe('frame recorder (G17)', () => {
     expect(csv).toContain('# device,iPhone  test');
   });
 
+  it('lists lane-change latencies in the CSV summary and clears them on reset', () => {
+    const r = createFrameRecorder();
+    r.record({ rafMs: 0, clockMs: 0, profile: 'high', fork: 0, event: '' });
+    r.record({ rafMs: 16, clockMs: 16, profile: 'high', fork: 0, event: '', inputLatencyMs: 40 });
+    r.record({ rafMs: 32, clockMs: 32, profile: 'high', fork: 0, event: '', inputLatencyMs: 25.25 });
+    r.record({ rafMs: 48, clockMs: 48, profile: 'high', fork: 0, event: '', inputLatencyMs: 31 });
+    const csv = r.toCsv({ device: 'd', compositionMode: 'n/a', run: 1, guardReports: 0 });
+    expect(csv).toContain('# inputLatencyCount,3');
+    expect(csv).toContain('# inputLatencyMedianMs,31.0');
+    expect(csv).toContain('# inputLatencyMaxMs,40.0');
+    expect(csv).toContain('# inputLatencyMs,40.0 25.3 31.0');
+    r.reset();
+    expect(r.toCsv({ device: 'd', compositionMode: 'n/a', run: 1, guardReports: 0 })).toContain('# inputLatencyCount,0');
+  });
+
   it('percentile picks the nearest rank', () => {
     expect(percentile([1, 2, 3, 4], 50)).toBe(2);
     expect(percentile([1, 2, 3, 4], 99)).toBe(4);
