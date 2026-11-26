@@ -11,14 +11,14 @@ IAM by `put-role-policy`; Game Lambda code only through CI on merge or `./script
 
 | # | Step | Unit | When |
 |---|---|---|---|
-| P0 | Read-only check that the Game Lambda role may `dynamodb:UpdateItem` on `memory-game-email-prefs-prod` (DC1 changes `setPrefs` from PutItem to UpdateItem); if not, add inline policy `EmailPrefsUpdate` | DC1 | before DC1 is merged (CI deploys the Game Lambda on merge) |
+| P0 | Read-only check that the Game Lambda role may `dynamodb:UpdateItem` on `memory-game-email-prefs-prod` (DC1 changes `setPrefs` from PutItem to UpdateItem); if not, add inline policy `EmailPrefsUpdate`. If P0 is missed, `setPrefs` falls back to a read-merge PutItem on `AccessDeniedException` (logged once per container), so the Profile toggle keeps working; `saveNotificationSettings` still needs P0 | DC1 | before DC1 is merged (CI deploys the Game Lambda on merge) |
 | P1 | Read-only: `cdk diff MemoryGame-Database-prod --exclusively -c environment=prod` shows exactly two new tables (`memory-game-daily-challenge-prod`, `memory-game-push-devices-prod`) plus outputs | DC2, DC1 | before P2 |
 | P2 | `cdk deploy MemoryGame-Database-prod --exclusively -c environment=prod`; check both tables ACTIVE, keys and GSIs, PITR on | DC2, DC1 | after DC1 merged |
 | P3 | Game Lambda role (`aws lambda get-function-configuration --function-name MemoryGame-GameService-prod --query Role`): inline policy `DailyChallengeAccess`. DC2 part: GetItem, PutItem, BatchWriteItem on `memory-game-daily-challenge-prod`, Query on it and its `index/*` (section P3 below). DC1 adds the push-devices table statements and `sns:DeleteEndpoint` on `arn:aws:sns:us-east-1:342278407349:endpoint/APNS/dashden-ios-prod/*` to the same document | DC2, DC1 | after P2 |
 | P4 | Game Lambda env vars, read-merge-write: add `DAILY_CHALLENGE_TABLE_NAME=memory-game-daily-challenge-prod`, `PUSH_DEVICES_TABLE_NAME=memory-game-push-devices-prod`; check the count rises by 2 and nothing else changes | DC2, DC1 | after P3; the challenge goes live on the web here |
 | P5 | Digest Lambda role (`DashDen-DailyEmail-prod`): inline policy `DailyChallengeNotifications` with `dynamodb:UpdateItem` on `memory-game-email-prefs-prod`, challenge table GetItem, PutItem, Query (table and indexes), device table Scan, UpdateItem, DeleteItem, SNS `CreatePlatformEndpoint` on the platform applications, `GetEndpointAttributes`, `SetEndpointAttributes`, `DeleteEndpoint`, `Publish` on their endpoints, `secretsmanager:GetSecretValue` on `dashden/apns/prod-??????` | DC1 | before P7 |
 | P6 | Digest Lambda env vars, read-merge-write: `DAILY_CHALLENGE_TABLE_NAME`, `PUSH_DEVICES_TABLE_NAME`, `APNS_SECRET_ID=dashden/apns/prod`; timeout to 300 s; runtime check (Node.js 18 or later) | DC1 | before P7 |
-| P7 | `./scripts/deploy-daily-email-lambda.sh --build-only`, then `./scripts/deploy-daily-email-lambda.sh` (backup kept) | DC1 | same session as P8 |
+| P7 | `./scripts/deploy-daily-email-lambda.sh --build-only`, then `./scripts/deploy-daily-email-lambda.sh` (backup kept). Deploy mode first checks, read-only, that the role may UpdateItem on the prefs table (P5), that the three env vars are set and the timeout is 300 s (P6), and stops before any write otherwise; it ends with a reminder to run P8 | DC1 | same session as P8 |
 | P8 | `aws events put-rule --name DashDen-DailyDigest-Schedule --schedule-expression "cron(0/15 * * * ? *)"` (keep state, description and role; targets unchanged); between 00:00 and 11:45 UTC | DC1 | right after P7 |
 | P9 | SNS topic `dashden-ops-alerts` (email to admin@dashden.app) and CloudWatch alarm `DashDen-DailyEmail-prod-Errors` (Errors >= 1 over 1 hour) | DC1 | after P8 |
 | P10 | Apple Developer: enable Push Notifications on `app.dashden.dashdenMobile`; create an APNs key; note Key ID and Team ID | DC5 (steps written by DC1) | owner, any time |
@@ -222,7 +222,9 @@ first unexpected result. Design: `construction/daily-challenge-notifications-bac
 
 DC1 changes `setPrefs` (the Profile toggle) and adds `saveNotificationSettings`, both UpdateItem on the
 email-prefs table. CI deploys the Game Lambda when DC1 is merged, so the role must allow UpdateItem
-first. The check is read-only; the policy is added only when the check says it is missing.
+first. The check is read-only; the policy is added only when the check says it is missing. If this step
+is missed, `setPrefs` falls back to a read-merge PutItem (warning `Email prefs UpdateItem denied, using
+PutItem` in the Game Lambda logs), so the toggle keeps working until P0 is done.
 
 ```zsh
 FN=MemoryGame-GameService-prod

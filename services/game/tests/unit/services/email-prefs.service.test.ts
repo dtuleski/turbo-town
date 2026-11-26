@@ -31,6 +31,33 @@ describe('EmailPrefsService.setPrefs', () => {
     }
     expect(input.UpdateExpression).not.toMatch(/REMOVE/);
   });
+  it('falls back to PutItem merged over the current item when UpdateItem is denied (P0 pending)', async () => {
+    docMock.on(UpdateCommand).rejects(Object.assign(new Error('not authorized'), { name: 'AccessDeniedException' }));
+    docMock.on(GetCommand).resolves({
+      Item: { userId: 'u1', email: 'old@b.c', username: 'alice', dailyDigest: true, updatedAt: 'x', timeZone: 'America/Chicago', language: 'es', lastDigestEmailOn: '2026-11-27' },
+    });
+    docMock.on(PutCommand).resolves({});
+    const prefs = await service().setPrefs('u1', 'a@b.c', 'alice', false);
+    expect(prefs).toMatchObject({ userId: 'u1', email: 'a@b.c', dailyDigest: false });
+    const [put] = docMock.commandCalls(PutCommand);
+    expect(put.args[0].input.TableName).toBe(TABLE);
+    expect(put.args[0].input.Item).toEqual({
+      userId: 'u1', email: 'a@b.c', username: 'alice', dailyDigest: false, updatedAt: prefs.updatedAt,
+      timeZone: 'America/Chicago', language: 'es', lastDigestEmailOn: '2026-11-27',
+    });
+  });
+  it('falls back to a plain PutItem for a user with no item yet', async () => {
+    docMock.on(UpdateCommand).rejects(Object.assign(new Error('not authorized'), { name: 'AccessDeniedException' }));
+    docMock.on(GetCommand).resolves({});
+    docMock.on(PutCommand).resolves({});
+    const prefs = await service().setPrefs('u2', 'n@b.c', 'neo', true);
+    expect(docMock.commandCalls(PutCommand)[0].args[0].input.Item).toEqual(prefs);
+  });
+  it('rethrows other UpdateItem errors without a PutItem', async () => {
+    docMock.on(UpdateCommand).rejects(Object.assign(new Error('boom'), { name: 'ProvisionedThroughputExceededException' }));
+    await expect(service().setPrefs('u1', 'a@b.c', 'alice', true)).rejects.toThrow('boom');
+    expect(docMock.commandCalls(PutCommand)).toHaveLength(0);
+  });
 });
 describe('EmailPrefsService.setLocale', () => {
   it('sets only the given fields and returns the stored settings', async () => {

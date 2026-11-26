@@ -9,6 +9,8 @@ export interface SnsSender {
   send(command: unknown): Promise<any>;
 }
 export const INVALID_PUSH_DEVICE_MESSAGE = 'Invalid push device';
+/** Devices kept per user; registering one more evicts the least recently updated. */
+export const MAX_DEVICES_PER_USER = 5;
 /** APNs device token as hex (32 bytes today; Apple allows longer). */
 const IOS_TOKEN = /^[0-9a-f]{64,200}$/i;
 const ENVIRONMENTS: readonly ApnsEnvironment[] = ['production', 'sandbox'];
@@ -63,6 +65,7 @@ export class PushDeviceService {
     if (existing?.endpointArn && !keepEndpoint) {
       await deleteEndpointQuietly(this.sns, existing.endpointArn, userId);
     }
+    await this.evictOldest(userId, deviceId);
     const device: PushDevice = {
       deviceId,
       userId,
@@ -78,6 +81,21 @@ export class PushDeviceService {
     await this.repo.upsert(device);
     logger.info('Push device registered', { userId, platform, environment, moved: !!existing && existing.userId !== userId });
     return { ok: true };
+  }
+  /**
+   * Keeps room for one more device: while the user has MAX_DEVICES_PER_USER or more other devices,
+   * deletes the one with the oldest `updatedAt` and its SNS endpoint.
+   */
+  private async evictOldest(userId: string, keepDeviceId: string): Promise<void> {
+    const others = (await this.repo.listForUser(userId))
+      .filter((d) => d.deviceId !== keepDeviceId)
+      .sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
+    const excess = others.length - (MAX_DEVICES_PER_USER - 1);
+    for (const device of others.slice(0, Math.max(0, excess))) {
+      const removed = await this.repo.deleteOwned(device.deviceId, userId);
+      if (removed) await deleteEndpointQuietly(this.sns, removed.endpointArn, userId);
+    }
+    if (excess > 0) logger.info('Push devices evicted', { userId, evicted: excess });
   }
   /** Removes the caller's own device and its SNS endpoint; another user's device is never touched. */
   async unregister(userId: string, token: unknown): Promise<{ ok: boolean }> {
