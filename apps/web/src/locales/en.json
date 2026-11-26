@@ -205,9 +205,9 @@
     "accountTier": "Account Tier",
     "memberSince": "Member Since",
     "emailPrefs": "Email Preferences",
-    "dailyDigest": "Daily Digest",
-    "dailyDigestDesc": "Get daily leaderboard highlights and game updates",
-    "dailyDigestOn": "✓ You'll receive daily updates at 8pm EST"
+    "dailyDigest": "Daily emails and notifications",
+    "dailyDigestDesc": "The morning summary with yesterday's challenge results, and the daily challenge reminder at noon in the iPhone app",
+    "dailyDigestOn": "✓ Every morning at 8am your time"
   },
   "auth": {
     "createAccount": "Create Account",
@@ -1323,6 +1323,49 @@
       "title": "Quest Map",
       "body": "Follow a path of games, earn stars and beat the boss.",
       "cta": "Open Quest Map"
+    }
+  },
+  "challenge": {
+    "games": {
+      "memory-match": "Memory Match",
+      "math-challenge": "Math Challenge",
+      "word-puzzle": "Word Puzzle",
+      "sudoku": "Sudoku",
+      "sequence-memory": "Sequence Memory",
+      "code-a-bot": "Code-a-Bot",
+      "geo-quiz": "Geography Quiz",
+      "history-quiz": "History Quiz",
+      "civics-quiz": "Civics Quiz",
+      "hangman": "Hangman",
+      "scratch-coding": "Space Coder",
+      "math-maze": "Math Maze",
+      "pattern-recall": "Pattern Recall",
+      "space-entry": "Space Entry",
+      "bond-and-burn": "Bond & Burn",
+      "mini-golf": "Mini Golf"
+    },
+    "card": {
+      "title": "Daily Challenge",
+      "play": "Play the challenge",
+      "best": "Your best today: {{score}} (rank #{{rank}})",
+      "notPlayed": "You have not played today's challenge yet.",
+      "endsAt": "Ends at midnight Eastern Time. Everyone plays the same puzzle.",
+      "top": "Today's top 5",
+      "noScores": "No scores yet. Be the first!",
+      "allResults": "See all results",
+      "failed": "This challenge is not available right now."
+    },
+    "you": "(you)",
+    "results": {
+      "title": "Daily Challenge results",
+      "loading": "Loading results...",
+      "none": "There are no challenge results for this day.",
+      "live": "The challenge is still running. These are the scores so far.",
+      "winner": "Winner: {{username}} with {{score}} points",
+      "noScores": "Nobody played this challenge.",
+      "me": "You finished #{{rank}} with {{score}} points.",
+      "notPlayed": "You did not play this challenge. Today's challenge is waiting in the game hub.",
+      "toHub": "Go to today's challenge"
     }
   }
 }

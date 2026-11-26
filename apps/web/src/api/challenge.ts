@@ -44,6 +44,14 @@ const GET_CHALLENGE_LEADERBOARD = gql`
   }
 `
 
+const SAVE_NOTIFICATION_SETTINGS = gql`
+  mutation SaveNotificationSettings($input: NotificationSettingsInput!) {
+    saveNotificationSettings(input: $input) {
+      timeZone
+      language
+    }
+  }
+`
 /** Parses the JSON text fields; null when they are not objects or the content is not for the game. */
 export function parseDailyChallenge(raw: unknown): DailyChallengeView | null {
   if (!raw || typeof raw !== 'object') return null
@@ -89,4 +97,15 @@ export const getChallengeLeaderboard = async (day?: string, limit?: number): Pro
     console.error('Challenge leaderboard could not be loaded')
     return null
   }
+}
+/**
+ * Saves the time zone and language used for the 8am digest and the noon challenge reminder (W1, DC1
+ * `saveNotificationSettings`). Only the given fields are written. Throws on any error so the caller
+ * keeps its last saved values and tries again later.
+ */
+export const saveNotificationSettings = async (input: { timeZone?: string; language?: string }): Promise<void> => {
+  await gameClient.mutate({
+    mutation: SAVE_NOTIFICATION_SETTINGS,
+    variables: { input },
+  })
 }

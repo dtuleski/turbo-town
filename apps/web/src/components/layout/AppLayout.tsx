@@ -2,8 +2,11 @@ import { Outlet } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
 import QuestBanner from '../quest/QuestBanner'
+import { useNotificationSettingsSync } from '@/hooks/useNotificationSettingsSync'
 
 const AppLayout = () => {
+  // Signed-in layout (inside ProtectedRoute): keeps the server's time zone and language current.
+  useNotificationSettingsSync()
   return (
     <div className="min-h-screen flex flex-col bg-bg-light">
       <Header />

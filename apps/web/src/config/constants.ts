@@ -57,6 +57,7 @@ export const ROUTES = {
   CIRCUIT_BUILDER_GAME: '/circuit-builder/game',
   CIRCUIT_BUILDER_SANDBOX: '/circuit-builder/sandbox',
   QUEST_MAP: '/quest-map',
+  CHALLENGE_RESULTS: '/challenge/results',
   RATE_LIMIT: '/rate-limit',
   SUBSCRIPTION: '/subscription',
   DASHBOARD: '/dashboard',
