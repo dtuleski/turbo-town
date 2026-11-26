@@ -191,8 +191,8 @@ class _MathBoardState extends ConsumerState<_MathBoard> {
                   enabled: !state.feedbackShown,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 28),
-                  keyboardType: const TextInputType.numberWithOptions(signed: true),
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9]*'))],
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: (_) => setState(() {}),
                   onSubmitted: (_) => _submit(),
                   decoration: InputDecoration(

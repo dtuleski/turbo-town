@@ -80,7 +80,8 @@ class _ContactScreenState extends ConsumerState<ContactScreen> {
         ),
       );
     }
-    final username = ref.watch(authControllerProvider).username;
+    final authState = ref.watch(authControllerProvider);
+    final username = authState.displayName ?? authState.username;
     final labels = {
       ContactType.bug: ('🐛', l10n.setup_contact_bugReport),
       ContactType.feature: ('💡', l10n.setup_contact_featureRequest),

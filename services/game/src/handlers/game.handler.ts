@@ -1,4 +1,5 @@
 import { GameRepository } from '../repositories/game.repository';
+import { otherPaidSource, toTier } from '../services/entitlement';
 import { RateLimitRepository } from '../repositories/rate-limit.repository';
 import { AchievementRepository } from '../repositories/achievement.repository';
 import { ThemeRepository } from '../repositories/theme.repository';
@@ -18,7 +19,8 @@ import { EventPublisherService } from '../services/event-publisher.service';
 import { ReviewService } from '../services/review.service';
 import { EmailPrefsService } from '../services/email-prefs.service';
 import { ContactService } from '../services/contact.service';
-import { SubscriptionTier } from '@memory-game/shared';
+import { AppError, SubscriptionTier } from '@memory-game/shared';
+import { AppleService } from '../services/apple.service';
 import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -205,6 +207,13 @@ export class GameHandler {
 
       case 'canStartGame':
         return this.canStartGame(userId);
+
+      case 'getSubscription':
+        return this.getSubscription(userId);
+
+      case 'verifyAppleTransaction':
+        await this.getAppleService().verifyTransaction(userId, variables.signedTransaction);
+        return this.getSubscription(userId);
 
       case 'listAvailableGames':
         return this.listAvailableGames();
@@ -460,6 +469,32 @@ export class GameHandler {
     };
   }
 
+  private appleService?: AppleService;
+
+  /** Created on first use, so requests that never touch Apple don't pay for it. */
+  private getAppleService(): AppleService {
+    if (!this.appleService) this.appleService = new AppleService(this.subscriptionRepository);
+    return this.appleService;
+  }
+
+  /**
+   * Query: getSubscription. The user's effective plan and where it comes from,
+   * so web and app can show the right "manage subscription" option.
+   */
+  private async getSubscription(userId: string): Promise<any> {
+    const plan = await this.subscriptionRepository.getPlan(userId);
+    return {
+      userId,
+      tier: String(plan.tier),
+      status: plan.entry?.status ?? 'NONE',
+      source: plan.source,
+      expiresAt: plan.entry?.expiresAt ?? null,
+      willRenew: plan.entry?.willRenew ?? null,
+      stripeCustomerId: plan.record?.stripeCustomerId ?? null,
+      currentPeriodEnd: plan.entry?.expiresAt ?? null,
+    };
+  }
+
   /**
    * Query: listAvailableGames
    */
@@ -562,6 +597,19 @@ export class GameHandler {
     recentTimestamps.push(now);
     checkoutRateLimits.set(rateLimitKey, recentTimestamps);
 
+    // Block a second subscription: a user already paying through the App Store
+    // (or Google Play) must manage that plan there.
+    const otherSource = otherPaidSource(await this.subscriptionRepository.getRecord(userId), 'stripe');
+    if (otherSource) {
+      logger.info('Checkout blocked: plan paid through another store', { userId, otherSource });
+      const store = otherSource === 'apple' ? 'the App Store' : 'Google Play';
+      throw new AppError(
+        `ALREADY_SUBSCRIBED_${otherSource.toUpperCase()}`,
+        `You already have a DashDen plan through ${store}. Manage it there.`,
+        409
+      );
+    }
+
     logger.info('Creating checkout session', { userId, tier: input.tier });
 
     const result = await this.stripeService.createCheckoutSession({
@@ -647,30 +695,14 @@ export class GameHandler {
         return { success: false, tier: null, message: 'Payment not completed' };
       }
 
-      const tier = session.metadata?.tier as string;
-      if (!tier) {
-        return { success: false, tier: null, message: 'No tier in session' };
-      }
-
-      // Map tier string to enum
-      const tierMap: Record<string, SubscriptionTier> = {
-        LIGHT: SubscriptionTier.Light,
-        STANDARD: SubscriptionTier.Standard,
-        PREMIUM: SubscriptionTier.Premium,
-      };
-      const subscriptionTier = tierMap[tier] || SubscriptionTier.Free;
-
-      // Update subscription in DynamoDB
-      await this.subscriptionRepository.updateSubscription({
-        userId,
-        tier: subscriptionTier,
-        stripeCustomerId: session.customer as string,
-        stripeSubscriptionId: session.subscription as string,
-        status: 'ACTIVE',
-        currentPeriodStart: new Date(),
-        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        effectiveDate: new Date(),
-      });
+      // Same path as the Stripe event, so both agree. If the event already
+      // arrived, this is ignored as older and the stored plan is returned.
+      await this.stripeService.handleCheckoutCompleted(
+        session,
+        new Date(session.created * 1000),
+        `checkout:${session.id}`
+      );
+      const tier = String((await this.subscriptionRepository.getPlan(userId)).tier);
 
       logger.info('Checkout session verified and subscription updated', { userId, tier });
 
@@ -780,11 +812,18 @@ export class GameHandler {
       throw new Error('Unauthorized: Admin access required');
     }
 
-    // Update subscription in database
-    await this.subscriptionRepository.updateSubscription({
+    // Admin grants are their own source ("manual"), with no expiry. Setting
+    // FREE or a non-ACTIVE status removes the grant; it never cancels a plan
+    // the user pays for through Stripe or a store.
+    const tier = toTier(input.tier);
+    const grants = tier !== SubscriptionTier.Free && (input.status ?? 'ACTIVE') === 'ACTIVE';
+    await this.subscriptionRepository.applyEvent({
       userId: input.userId,
-      tier: input.tier,
-      status: input.status,
+      source: 'manual',
+      tier,
+      status: grants ? 'ACTIVE' : 'EXPIRED',
+      eventAt: new Date(),
+      eventId: `admin:${userId}:${Date.now()}`,
     });
 
     return {

@@ -7,6 +7,7 @@ import 'auth/auth_controller.dart';
 import 'config/env.dart';
 import 'l10n/gen/app_localizations.dart';
 import 'l10n/locale_controller.dart';
+import 'subscription/subscription_controller.dart';
 import 'ui/router.dart';
 import 'ui/theme.dart';
 
@@ -44,6 +45,12 @@ class DashDenApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         home: const _Splash(),
       );
+    }
+
+    // Listen for App Store transactions as soon as the user is signed in, so a
+    // purchase that finished while the app was closed is confirmed right away.
+    if (auth.status == AuthStatus.authenticated && ref.read(storeSubscriptionsEnabledProvider)) {
+      ref.read(subscriptionControllerProvider);
     }
 
     return MaterialApp.router(

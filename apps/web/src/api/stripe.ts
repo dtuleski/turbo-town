@@ -34,3 +34,15 @@ export const CHANGE_PLAN = gql`
     }
   }
 `;
+
+export const GET_SUBSCRIPTION = gql`
+  query GetSubscription {
+    getSubscription {
+      tier
+      status
+      source
+      expiresAt
+      willRenew
+    }
+  }
+`;

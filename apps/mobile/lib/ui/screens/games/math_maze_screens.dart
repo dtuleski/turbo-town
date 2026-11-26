@@ -213,9 +213,9 @@ class _MazeBoardState extends ConsumerState<_MazeBoard> {
               autofocus: true,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 24),
-              keyboardType: const TextInputType.numberWithOptions(signed: true),
+              keyboardType: TextInputType.number,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9]*'))
+                FilteringTextInputFormatter.digitsOnly
               ],
               onSubmitted: (_) => _submit(),
               decoration: InputDecoration(

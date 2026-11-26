@@ -1,5 +1,6 @@
 import { GameHandler } from './handlers/game.handler';
 import { StripeService } from './services/stripe.service';
+import { AppleService } from './services/apple.service';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -84,6 +85,25 @@ async function handleUnsubscribe(event: any): Promise<any> {
   };
 }
 
+/**
+ * App Store Server Notifications V2. Public route; the payload is signed by
+ * Apple and verified before use. Non-200 makes Apple retry.
+ */
+async function handleAppleNotification(event: any): Promise<any> {
+  try {
+    const raw = event.isBase64Encoded ? Buffer.from(event.body || '', 'base64').toString('utf8') : event.body || '';
+    const signedPayload = JSON.parse(raw || '{}').signedPayload;
+    if (!signedPayload) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Missing signedPayload' }) };
+    }
+    const outcome = await new AppleService().handleNotification(signedPayload);
+    return { statusCode: 200, body: JSON.stringify({ received: true, outcome }) };
+  } catch (error) {
+    logger.error('Apple notification failed', error as Error);
+    return { statusCode: 500, body: JSON.stringify({ error: 'Notification failed' }) };
+  }
+}
+
 async function handleStripeWebhook(event: any): Promise<any> {
   try {
     const signature = event.headers?.['stripe-signature'] || event.headers?.['Stripe-Signature'] || '';
@@ -102,7 +122,33 @@ async function handleStripeWebhook(event: any): Promise<any> {
  * Lambda handler for Game Service GraphQL API
  * Handles game lifecycle, rate limiting, achievements, and statistics
  */
+/**
+ * Stripe events delivered through Amazon EventBridge (Stripe event destination
+ * -> partner event bus -> rule -> this Lambda). AWS delivers them, so there is
+ * no signature to check. `detail` is the Stripe event. Throwing makes
+ * EventBridge retry and, after that, send the event to the rule's DLQ.
+ */
+export function isStripeEventBridgeEvent(event: any): boolean {
+  return typeof event?.source === 'string' && event.source.startsWith('aws.partner/stripe.com') && !!event.detail;
+}
+
+async function handleStripeEventBridge(event: any): Promise<void> {
+  const stripeEvent = event.detail;
+  if (!stripeEvent?.id || !stripeEvent?.type || !stripeEvent?.data?.object) {
+    logger.error('Stripe EventBridge event without a Stripe event in detail', new Error('Bad detail'), {
+      detailType: event['detail-type'],
+    });
+    return;
+  }
+  await new StripeService().handleWebhook(stripeEvent);
+}
+
 export async function handler(event: any, context: any): Promise<any> {
+  if (isStripeEventBridgeEvent(event)) {
+    logger.setContext({ correlationId: event.id, functionName: context?.functionName });
+    return handleStripeEventBridge(event);
+  }
+
   // Set correlation ID for request tracing
   const correlationId = event.requestContext.requestId;
   logger.setContext({ correlationId, functionName: context.functionName });
@@ -112,6 +158,9 @@ export async function handler(event: any, context: any): Promise<any> {
     const path = event.rawPath || event.requestContext?.http?.path || '';
     if (path.endsWith('/webhook')) {
       return handleStripeWebhook(event);
+    }
+    if (path.endsWith('/apple/notifications')) {
+      return handleAppleNotification(event);
     }
 
     // Check if this is an unsubscribe request (public, no auth)

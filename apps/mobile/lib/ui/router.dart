@@ -14,6 +14,7 @@ import '../game/quiz/quiz_providers.dart';
 import '../game/quiz/quiz_questions.dart';
 import '../quest/quest_launch.dart';
 import 'main_shell.dart';
+import 'screens/subscription_screen.dart';
 import 'screens/achievements_screen.dart';
 import 'screens/contact_screen.dart';
 import 'screens/dashboard_screen.dart';
@@ -108,6 +109,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const AchievementsScreen(),
       ),
       GoRoute(path: '/contact', builder: (_, __) => const ContactScreen()),
+      GoRoute(path: '/subscription', builder: (_, __) => const SubscriptionScreen()),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
       GoRoute(

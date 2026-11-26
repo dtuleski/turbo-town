@@ -3730,6 +3730,12 @@ abstract class AppLocalizations {
   /// **'Pick elements from the periodic table'**
   String get bondAndBurn_pickElements;
 
+  /// No description provided for @bondAndBurn_swipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe sideways to see all elements'**
+  String get bondAndBurn_swipeHint;
+
   /// No description provided for @bondAndBurn_labComplete.
   ///
   /// In en, this message translates to:
@@ -8433,6 +8439,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Running…'**
   String get mobileSpaceCoder_running;
+
+  /// No description provided for @mobileSub_title.
+  ///
+  /// In en, this message translates to:
+  /// **'DashDen Plans'**
+  String get mobileSub_title;
+
+  /// No description provided for @mobileSub_subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get mobileSub_subscribe;
+
+  /// No description provided for @mobileSub_pricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / month'**
+  String mobileSub_pricePerMonth(String price);
+
+  /// No description provided for @mobileSub_restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get mobileSub_restore;
+
+  /// No description provided for @mobileSub_manage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Subscription'**
+  String get mobileSub_manage;
+
+  /// No description provided for @mobileSub_activeApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {plan} plan is active. It is billed through the App Store.'**
+  String mobileSub_activeApple(String plan);
+
+  /// No description provided for @mobileSub_activeOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {plan} plan is active.'**
+  String mobileSub_activeOutside(String plan);
+
+  /// No description provided for @mobileSub_renewsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on {date}'**
+  String mobileSub_renewsOn(String date);
+
+  /// No description provided for @mobileSub_endsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on {date}'**
+  String mobileSub_endsOn(String date);
+
+  /// No description provided for @mobileSub_disclosure.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is charged to your Apple ID when you confirm the purchase. The subscription renews automatically every month unless you cancel at least 24 hours before the end of the current period. You can manage or cancel it in your App Store account settings.'**
+  String get mobileSub_disclosure;
+
+  /// No description provided for @mobileSub_terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use'**
+  String get mobileSub_terms;
+
+  /// No description provided for @mobileSub_privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get mobileSub_privacy;
+
+  /// No description provided for @mobileSub_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions are not available right now. Please try again later.'**
+  String get mobileSub_unavailable;
+
+  /// No description provided for @mobileSub_thanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Your plan is active.'**
+  String get mobileSub_thanks;
+
+  /// No description provided for @mobileSub_errorPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'The purchase did not complete.'**
+  String get mobileSub_errorPurchase;
+
+  /// No description provided for @mobileSub_errorVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not confirm your purchase yet. We will try again automatically. If this keeps happening, contact us.'**
+  String get mobileSub_errorVerify;
+
+  /// No description provided for @mobileSub_errorOtherAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'This App Store subscription belongs to a different DashDen account. Sign in with that account to use it.'**
+  String get mobileSub_errorOtherAccount;
+
+  /// No description provided for @mobileSub_errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Check your connection and try again.'**
+  String get mobileSub_errorNetwork;
+
+  /// No description provided for @mobileSub_nothingToRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'No App Store subscription was found to restore.'**
+  String get mobileSub_nothingToRestore;
+
+  /// No description provided for @mobileSub_subscribeToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to play'**
+  String get mobileSub_subscribeToPlay;
+
+  /// No description provided for @mobileSub_viewPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get mobileSub_viewPlans;
 }
 
 class _AppLocalizationsDelegate

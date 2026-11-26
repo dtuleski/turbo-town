@@ -18,6 +18,8 @@ type Mutation {
   # Subscription mutations
   createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession!
   createPortalSession: PortalSession!
+  # App Store: the app sends the signed StoreKit transaction after a purchase or restore
+  verifyAppleTransaction(signedTransaction: String!): SubscriptionInfo!
 }
 
 # Queries
@@ -444,9 +446,12 @@ type TopUser {
 type SubscriptionInfo {
   userId: ID!
   tier: String!
-  status: String!
+  status: String! # ACTIVE, CANCELLED, GRACE, or NONE when FREE
+  source: String # stripe, apple, google, manual; null when FREE
+  expiresAt: String # end of the paid period; null for admin grants
+  willRenew: Boolean
   stripeCustomerId: String
-  currentPeriodEnd: String
+  currentPeriodEnd: String # same as expiresAt (kept for older clients)
 }
 
 type CheckoutSession {
