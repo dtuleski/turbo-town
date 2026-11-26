@@ -3038,3 +3038,9 @@ memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, 
 **Context**: Construction, cross-unit review fix. All fixes merged forward with git merge: dc2 -> dc3 (9e61f36) -> dc1 (5d33f8a) -> dc4 (11b43d7) -> dc5 (e9916bc). Nothing pushed, no production write.
 
 ---
+## Daily Challenge and Push - Publish
+**Timestamp**: 2026-11-26T20:44:31Z
+**User Input**: "(workflow instruction, Publish) Push the five unit branches feat/dc2-challenge-core, feat/dc3-repeatable-content, feat/dc1-notifications-backend, feat/dc4-web-challenge, feat/dc5-app-challenge-push to origin (normal push, never force). Fast-forward feat/daily-challenge to the feat/dc5-app-challenge-push tip and push it (fast-forward only). Open ONE pull request per unit against main on repo dtuleski/turbo-town (5 PRs) ... Do NOT merge any PR."
+**AI Response**: "Pushed the five unit branches (new upstreams, no force). Fast-forwarded feat/daily-challenge 0e2cd8e..acda60d and pushed. Opened PRs against main, none merged: DC2 https://github.com/dtuleski/turbo-town/pull/42, DC3 https://github.com/dtuleski/turbo-town/pull/43, DC1 https://github.com/dtuleski/turbo-town/pull/44, DC4 https://github.com/dtuleski/turbo-town/pull/45, DC5 https://github.com/dtuleski/turbo-town/pull/46. Each body names the unit, the earlier units its branch contains, the merge order DC2, DC3, DC1, DC4, DC5, the test evidence, why the merge is safe alone, links aidlc-docs/construction/plans/daily-challenge-production-steps.md, and says 'Do not merge before the owner approves the production steps'. No production write; production steps P0 to P14 not run."
+**Context**: CONSTRUCTION - Publish (plan item 32), Daily Challenge and Push
+---
