@@ -4924,4 +4924,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get challenge_results_toHub => 'Go to today\'s challenge';
+
+  @override
+  String get auth_showPassword => 'Show password';
+
+  @override
+  String get auth_hidePassword => 'Hide password';
 }

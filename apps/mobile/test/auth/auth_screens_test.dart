@@ -303,6 +303,19 @@ void main() {
       expect(auth.calls, isEmpty);
     });
 
+    testWidgets('email field is an email field and passwords can be shown', (tester) async {
+      await pumpAuth(tester, start: '/register');
+      TextField field(String key) => tester.widget<TextField>(
+          find.descendant(of: find.byKey(Key(key)), matching: find.byType(TextField)));
+      expect(field('register-email').keyboardType, TextInputType.emailAddress);
+      expect(field('register-email').autofillHints, contains(AutofillHints.email));
+      expect(field('register-password').obscureText, isTrue);
+      await tester.tap(find.byKey(const Key('register-password-toggle')));
+      await tester.pump();
+      expect(field('register-password').obscureText, isFalse);
+      expect(field('register-confirm-password').obscureText, isTrue);
+    });
+
     testWidgets('requires the 18+ confirmation', (tester) async {
       final auth = await pumpAuth(tester, start: '/register');
       final l10n = l10nOf(tester);

@@ -168,6 +168,19 @@ class AuthController extends StateNotifier<AuthState> {
           msg.contains('not confirmed') ||
           msg.contains('already exists');
       if (isExisting) {
+        // Resend the code: this works for an unconfirmed account, and tells
+        // us when the account is already confirmed, in which case no email
+        // will ever come and the user should sign in instead.
+        try {
+          await _cognito.resendSignUpCode(email);
+        } on AuthException catch (r) {
+          if (r.message.toLowerCase().contains('already confirmed')) {
+            state = state.copyWith(
+                error: r.message, errorCode: 'UsernameExistsException', isBusy: false);
+            return SignUpOutcome.failed;
+          }
+          // Any other resend failure: the confirm screen still offers a resend.
+        }
         state = state.copyWith(isBusy: false, clearError: true);
         return SignUpOutcome.needsConfirmation;
       }

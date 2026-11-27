@@ -2491,5 +2491,7 @@
     }
   },
   "challenge_results_notPlayed": "You did not play this challenge. Today''s challenge is waiting in the game hub.",
-  "challenge_results_toHub": "Go to today''s challenge"
+  "challenge_results_toHub": "Go to today''s challenge",
+  "auth_showPassword": "Show password",
+  "auth_hidePassword": "Hide password"
 }

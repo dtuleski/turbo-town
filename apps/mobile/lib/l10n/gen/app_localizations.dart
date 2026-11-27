@@ -8799,6 +8799,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to today\'\'s challenge'**
   String get challenge_results_toHub;
+
+  /// No description provided for @auth_showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get auth_showPassword;
+
+  /// No description provided for @auth_hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get auth_hidePassword;
 }
 
 class _AppLocalizationsDelegate

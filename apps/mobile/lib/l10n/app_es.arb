@@ -2456,5 +2456,7 @@
     }
   },
   "challenge_results_notPlayed": "No jugaste este desafío. El desafío de hoy te espera en el centro de juegos.",
-  "challenge_results_toHub": "Ir al desafío de hoy"
+  "challenge_results_toHub": "Ir al desafío de hoy",
+  "auth_showPassword": "Mostrar contraseña",
+  "auth_hidePassword": "Ocultar contraseña"
 }

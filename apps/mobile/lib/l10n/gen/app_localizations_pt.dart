@@ -4968,4 +4968,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get challenge_results_toHub => 'Ir para o desafio de hoje';
+
+  @override
+  String get auth_showPassword => 'Mostrar senha';
+
+  @override
+  String get auth_hidePassword => 'Ocultar senha';
 }
