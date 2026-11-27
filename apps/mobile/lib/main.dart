@@ -7,6 +7,7 @@ import 'auth/auth_controller.dart';
 import 'config/env.dart';
 import 'l10n/gen/app_localizations.dart';
 import 'l10n/locale_controller.dart';
+import 'push/push_controller.dart';
 import 'subscription/subscription_controller.dart';
 import 'ui/router.dart';
 import 'ui/theme.dart';
@@ -33,6 +34,8 @@ class DashDenApp extends ConsumerWidget {
     final auth = ref.watch(authControllerProvider);
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeControllerProvider);
+    // Signed in: notification settings, device registration, tap routing.
+    ref.watch(pushSessionProvider);
 
     // Show a splash while the session is being restored from secure storage.
     if (auth.status == AuthStatus.unknown) {

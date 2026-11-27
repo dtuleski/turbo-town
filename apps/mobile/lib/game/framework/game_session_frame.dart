@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../challenge/challenge_card_data.dart';
 import '../../challenge/challenge_launch.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../../push/push_controller.dart';
 import '../../quest/quest_launch.dart';
 import 'blocked_view.dart';
 import 'exit_dialog.dart';
@@ -86,6 +90,13 @@ class _GameSessionFrameState extends ConsumerState<GameSessionFrame> {
     // After a blocked quest start the player returns to the map, and after a
     // blocked challenge start to the hub, as on web.
     ref.listen(gameSessionProvider(widget.args), (prev, next) {
+      if (next.phase == SessionPhase.completed && prev?.phase != SessionPhase.completed) {
+        // The hub card shows the new best; then the push permission
+        // explanation, at most once per device (plan Q10).
+        if (widget.args.challengeDay != null) ref.invalidate(challengeCardProvider);
+        unawaited(ref.read(pushControllerProvider).maybeSoftAsk(context));
+        return;
+      }
       if (next.phase != SessionPhase.blocked) return;
       if (next.blockReason == BlockReason.questFailed) {
         context.go('/quest-map?startFailed=quest');

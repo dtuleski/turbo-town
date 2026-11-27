@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +12,7 @@ import '../../api/game_providers.dart';
 import '../../auth/auth_controller.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../l10n/language_picker.dart';
+import '../../push/push_controller.dart';
 import '../widgets/section_card.dart';
 
 /// Account tier from the rate-limit lookup; null when it fails. It is shown
@@ -26,7 +29,8 @@ final accountTierProvider = FutureProvider.autoDispose<String?>((ref) async {
 String _tierText(String tier) =>
     tier.isEmpty ? tier : tier[0].toUpperCase() + tier.substring(1).toLowerCase();
 
-/// Account details, daily-digest email toggle, language, contact and sign out.
+/// Account details, daily emails and notifications toggle, language, contact
+/// and sign out.
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
@@ -149,6 +153,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       final prefs = await ref.read(profileApiProvider).setEmailPrefs(value);
       if (!mounted) return;
       setState(() => _digest = prefs.dailyDigest);
+      // Turning it on offers the push permission explanation (plan Q10).
+      if (prefs.dailyDigest) {
+        unawaited(ref.read(pushControllerProvider).maybeSoftAsk(context, digestOn: true));
+      }
     } catch (_) {
       if (!mounted) return;
       setState(() => _saveFailed = true);

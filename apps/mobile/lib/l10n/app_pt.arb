@@ -174,9 +174,9 @@
   "profile_accountTier": "Nível da Conta",
   "profile_memberSince": "Membro Desde",
   "profile_emailPrefs": "Preferências de Email",
-  "profile_dailyDigest": "Resumo Diário",
-  "profile_dailyDigestDesc": "Receba atualizações diárias de classificação e jogos",
-  "profile_dailyDigestOn": "✓ Você receberá atualizações diárias às 20h EST",
+  "profile_dailyDigest": "E-mails e notificações diários",
+  "profile_dailyDigestDesc": "O resumo da manhã com os resultados do desafio de ontem, e o lembrete do desafio diário ao meio-dia no app para iPhone",
+  "profile_dailyDigestOn": "✓ Todas as manhãs às 8h no seu horário",
   "auth_createAccount": "Criar Conta",
   "auth_login": "Entrar",
   "auth_email": "Email",
@@ -2404,6 +2404,59 @@
   "auth_adultRequired": "Confirme que você tem 18 anos ou mais e aceita os termos.",
   "auth_socialConsent": "Ao continuar, você confirma que tem 18 anos ou mais e aceita os Termos de Serviço e a Política de Privacidade.",
   "auth_continueWithApple": "Continuar com a Apple",
+  "push_softAsk_title": "Ativar notificações?",
+  "push_softAsk_body": "O DashDen pode enviar um resumo pela manhã com os resultados do desafio de ontem e um lembrete do desafio diário ao meio-dia. Você pode desativá-las quando quiser no Perfil.",
+  "push_softAsk_allow": "Permitir",
+  "push_softAsk_notNow": "Agora não",
+  "challenge_card_title": "Desafio Diário",
+  "challenge_card_play": "Jogar o desafio",
+  "challenge_card_best": "Seu melhor resultado hoje: {score} (posição #{rank})",
+  "@challenge_card_best": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      },
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_card_notPlayed": "Você ainda não jogou o desafio de hoje.",
+  "challenge_card_endsAt": "Termina à meia-noite, horário do Leste dos EUA. Todos jogam o mesmo desafio.",
+  "challenge_card_top": "Os 5 melhores de hoje",
+  "challenge_card_noScores": "Ainda não há pontuações. Seja o primeiro!",
+  "challenge_card_allResults": "Ver todos os resultados",
+  "challenge_card_failed": "Este desafio não está disponível no momento.",
+  "challenge_you": "(você)",
+  "challenge_results_title": "Resultados do Desafio Diário",
+  "challenge_results_loading": "Carregando resultados...",
+  "challenge_results_none": "Não há resultados do desafio para este dia.",
+  "challenge_results_live": "O desafio ainda está em andamento. Estas são as pontuações até agora.",
+  "challenge_results_winner": "Vencedor: {username} com {score} pontos",
+  "@challenge_results_winner": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_results_noScores": "Ninguém jogou este desafio.",
+  "challenge_results_me": "Você ficou em #{rank} com {score} pontos.",
+  "@challenge_results_me": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "challenge_results_notPlayed": "Você não jogou este desafio. O desafio de hoje espera por você no hub de jogos.",
+  "challenge_results_toHub": "Ir para o desafio de hoje",
   "auth_showPassword": "Mostrar senha",
   "auth_hidePassword": "Ocultar senha"
 }

@@ -17,6 +17,7 @@ import '../quest/quest_launch.dart';
 import 'main_shell.dart';
 import 'screens/subscription_screen.dart';
 import 'screens/achievements_screen.dart';
+import 'screens/challenge_results_screen.dart';
 import 'screens/contact_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/forgot_password_screen.dart';
@@ -87,7 +88,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         builder: (_, __, child) => MainShell(child: child),
         routes: [
-          GoRoute(path: '/', builder: (_, __) => const HubScreen()),
+          GoRoute(
+            path: '/',
+            builder: (_, state) => HubScreen(
+              challengeFailed: state.uri.queryParameters['challengeFailed'] == '1',
+            ),
+          ),
           GoRoute(
             path: '/quest-map',
             builder: (_, state) => QuestMapScreen(
@@ -110,6 +116,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const AchievementsScreen(),
       ),
       GoRoute(path: '/contact', builder: (_, __) => const ContactScreen()),
+      // Daily Challenge results (hub card link and the digest push).
+      GoRoute(
+        path: '/challenge/results',
+        builder: (_, state) => ChallengeResultsScreen(
+          day: resultsDayParam(state.uri.queryParameters['day']),
+        ),
+      ),
       GoRoute(path: '/subscription', builder: (_, __) => const SubscriptionScreen()),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),

@@ -1009,19 +1009,19 @@ abstract class AppLocalizations {
   /// No description provided for @profile_dailyDigest.
   ///
   /// In en, this message translates to:
-  /// **'Daily Digest'**
+  /// **'Daily emails and notifications'**
   String get profile_dailyDigest;
 
   /// No description provided for @profile_dailyDigestDesc.
   ///
   /// In en, this message translates to:
-  /// **'Get daily leaderboard highlights and game updates'**
+  /// **'The morning summary with yesterday\'\'s challenge results, and the daily challenge reminder at noon in the iPhone app'**
   String get profile_dailyDigestDesc;
 
   /// No description provided for @profile_dailyDigestOn.
   ///
   /// In en, this message translates to:
-  /// **'✓ You\'\'ll receive daily updates at 8pm EST'**
+  /// **'✓ Every morning at 8am your time'**
   String get profile_dailyDigestOn;
 
   /// No description provided for @auth_createAccount.
@@ -8661,6 +8661,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue with Apple'**
   String get auth_continueWithApple;
+
+  /// No description provided for @push_softAsk_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications?'**
+  String get push_softAsk_title;
+
+  /// No description provided for @push_softAsk_body.
+  ///
+  /// In en, this message translates to:
+  /// **'DashDen can send you a morning summary with yesterday\'\'s challenge results and a reminder of the daily challenge at noon. You can turn them off any time in Profile.'**
+  String get push_softAsk_body;
+
+  /// No description provided for @push_softAsk_allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get push_softAsk_allow;
+
+  /// No description provided for @push_softAsk_notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get push_softAsk_notNow;
+
+  /// No description provided for @challenge_card_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Challenge'**
+  String get challenge_card_title;
+
+  /// No description provided for @challenge_card_play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the challenge'**
+  String get challenge_card_play;
+
+  /// No description provided for @challenge_card_best.
+  ///
+  /// In en, this message translates to:
+  /// **'Your best today: {score} (rank #{rank})'**
+  String challenge_card_best(String score, String rank);
+
+  /// No description provided for @challenge_card_notPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not played today\'\'s challenge yet.'**
+  String get challenge_card_notPlayed;
+
+  /// No description provided for @challenge_card_endsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends at midnight Eastern Time. Everyone plays the same puzzle.'**
+  String get challenge_card_endsAt;
+
+  /// No description provided for @challenge_card_top.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'\'s top 5'**
+  String get challenge_card_top;
+
+  /// No description provided for @challenge_card_noScores.
+  ///
+  /// In en, this message translates to:
+  /// **'No scores yet. Be the first!'**
+  String get challenge_card_noScores;
+
+  /// No description provided for @challenge_card_allResults.
+  ///
+  /// In en, this message translates to:
+  /// **'See all results'**
+  String get challenge_card_allResults;
+
+  /// No description provided for @challenge_card_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'This challenge is not available right now.'**
+  String get challenge_card_failed;
+
+  /// No description provided for @challenge_you.
+  ///
+  /// In en, this message translates to:
+  /// **'(you)'**
+  String get challenge_you;
+
+  /// No description provided for @challenge_results_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Challenge results'**
+  String get challenge_results_title;
+
+  /// No description provided for @challenge_results_loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading results...'**
+  String get challenge_results_loading;
+
+  /// No description provided for @challenge_results_none.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no challenge results for this day.'**
+  String get challenge_results_none;
+
+  /// No description provided for @challenge_results_live.
+  ///
+  /// In en, this message translates to:
+  /// **'The challenge is still running. These are the scores so far.'**
+  String get challenge_results_live;
+
+  /// No description provided for @challenge_results_winner.
+  ///
+  /// In en, this message translates to:
+  /// **'Winner: {username} with {score} points'**
+  String challenge_results_winner(String username, String score);
+
+  /// No description provided for @challenge_results_noScores.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody played this challenge.'**
+  String get challenge_results_noScores;
+
+  /// No description provided for @challenge_results_me.
+  ///
+  /// In en, this message translates to:
+  /// **'You finished #{rank} with {score} points.'**
+  String challenge_results_me(String rank, String score);
+
+  /// No description provided for @challenge_results_notPlayed.
+  ///
+  /// In en, this message translates to:
+  /// **'You did not play this challenge. Today\'\'s challenge is waiting in the game hub.'**
+  String get challenge_results_notPlayed;
+
+  /// No description provided for @challenge_results_toHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to today\'\'s challenge'**
+  String get challenge_results_toHub;
 
   /// No description provided for @auth_showPassword.
   ///

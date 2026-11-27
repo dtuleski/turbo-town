@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../api/game_models.dart';
 import '../../auth/auth_controller.dart';
+import '../../challenge/challenge_card_data.dart';
 import '../../game/game_registry.dart';
 import '../../game/hub_logic.dart';
 import '../../game/hub_providers.dart';
@@ -12,6 +13,7 @@ import '../../l10n/gen/app_localizations.dart';
 import '../../l10n/language_picker.dart';
 import '../../subscription/subscription_controller.dart';
 import '../theme.dart';
+import '../widgets/daily_challenge_card.dart';
 import '../widgets/error_view.dart';
 import '../widgets/loading_view.dart';
 
@@ -34,9 +36,13 @@ String _filterLabel(AppLocalizations l10n, GameCategory? c) {
 
 String _filterKey(GameCategory? c) => 'filter-${c?.name ?? 'all'}';
 
-/// Game hub: quest card, category chips and a tile per playable game.
+/// Game hub: daily challenge card, quest card, category chips and a tile per
+/// playable game.
 class HubScreen extends ConsumerStatefulWidget {
-  const HubScreen({super.key});
+  const HubScreen({super.key, this.challengeFailed = false});
+
+  /// Set by `/?challengeFailed=1` after a failed challenge start.
+  final bool challengeFailed;
 
   @override
   ConsumerState<HubScreen> createState() => _HubScreenState();
@@ -89,6 +95,7 @@ class _HubScreenState extends ConsumerState<HubScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(hubDataProvider);
+        ref.invalidate(challengeCardProvider);
         await ref.read(hubDataProvider.future);
       },
       child: CustomScrollView(
@@ -126,6 +133,7 @@ class _HubScreenState extends ConsumerState<HubScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                DailyChallengeCard(failed: widget.challengeFailed),
                 _QuestCard(onTap: () => context.go('/quest-map')),
                 const SizedBox(height: 12),
                 if (all.isEmpty)

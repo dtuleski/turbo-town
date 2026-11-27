@@ -119,10 +119,14 @@ DailyChallengeView dailyChallengeView(Map<String, dynamic> content, {String day 
 
 /// In-memory [ChallengeApi] answering with [challenge].
 class FakeChallengeApi implements ChallengeApi {
-  FakeChallengeApi([this.challenge]);
+  FakeChallengeApi([this.challenge, this.leaderboard]);
 
   DailyChallengeView? challenge;
   int dailyCalls = 0;
+
+  /// Answer of [getChallengeLeaderboard] (any day).
+  ChallengeLeaderboardView? leaderboard;
+  final List<({String? day, int? limit})> leaderboardCalls = [];
 
   @override
   Future<DailyChallengeView?> getDailyChallenge() async {
@@ -131,5 +135,8 @@ class FakeChallengeApi implements ChallengeApi {
   }
 
   @override
-  Future<ChallengeLeaderboardView?> getChallengeLeaderboard({String? day, int? limit}) async => null;
+  Future<ChallengeLeaderboardView?> getChallengeLeaderboard({String? day, int? limit}) async {
+    leaderboardCalls.add((day: day, limit: limit));
+    return leaderboard;
+  }
 }

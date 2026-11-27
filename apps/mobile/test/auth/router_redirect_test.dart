@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../helpers/challenge_fixtures.dart';
 import '../helpers/fake_auth_controller.dart';
 import '../helpers/fake_game_api.dart';
 
@@ -26,6 +27,8 @@ Future<String> locationAfter(
       authControllerProvider
           .overrideWith((ref) => FakeAuthController(AuthState(status: status))),
       gameApiProvider.overrideWithValue(FakeGameApi()),
+      // The hub's Daily Challenge card reads a fake, not the network.
+      challengeApiProvider.overrideWithValue(FakeChallengeApi()),
     ],
     child: Consumer(builder: (context, ref, _) {
       router = ref.watch(routerProvider);

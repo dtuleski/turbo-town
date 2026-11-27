@@ -1,3 +1,4 @@
+import 'package:dashden_mobile/api/challenge_api.dart';
 import 'package:dashden_mobile/api/game_api.dart';
 import 'package:dashden_mobile/api/game_providers.dart';
 import 'package:dashden_mobile/auth/auth_controller.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'challenge_fixtures.dart';
 import 'fake_auth_controller.dart';
 import 'fake_game_api.dart';
 
@@ -32,13 +34,15 @@ class RouterHarness {
 }
 
 /// Mounts the real app router with a signed-in fake user and [api], then
-/// navigates to [location].
+/// navigates to [location]. [challengeApi] answers the Daily Challenge reads
+/// (no challenge by default), so the hub card never calls the network.
 Future<RouterHarness> pumpRouterApp(
   WidgetTester tester, {
   required String location,
   FakeGameApi? api,
   Locale locale = const Locale('en'),
   List<Override> overrides = const [],
+  ChallengeApi? challengeApi,
 }) async {
   SharedPreferences.setMockInitialValues({kLocalePrefKey: locale.languageCode});
   final fake = api ?? FakeGameApi();
@@ -48,6 +52,7 @@ Future<RouterHarness> pumpRouterApp(
       authControllerProvider.overrideWith((ref) => FakeAuthController()),
       gameApiProvider.overrideWithValue(fake as GameApi),
       gameFeedbackProvider.overrideWithValue(const NoopGameFeedback()),
+      challengeApiProvider.overrideWithValue(challengeApi ?? FakeChallengeApi()),
       ...overrides,
     ],
     child: Consumer(builder: (context, ref, _) {
