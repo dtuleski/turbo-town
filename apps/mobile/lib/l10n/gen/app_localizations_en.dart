@@ -4843,4 +4843,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_continueWithApple => 'Continue with Apple';
+
+  @override
+  String get auth_showPassword => 'Show password';
+
+  @override
+  String get auth_hidePassword => 'Hide password';
 }

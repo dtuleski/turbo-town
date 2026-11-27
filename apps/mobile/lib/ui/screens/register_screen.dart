@@ -88,15 +88,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<bool> _resend() => ref
-      .read(authControllerProvider.notifier)
-      .resendSignUpCode(_email.text.trim())
-      .then((ok) {
-    if (ok && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context).mobileAuth_codeResent)));
-    }
-    return ok;
-  });
+          .read(authControllerProvider.notifier)
+          .resendSignUpCode(_email.text.trim())
+          .then((ok) {
+        if (ok && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content:
+                  Text(AppLocalizations.of(context).mobileAuth_codeResent)));
+        }
+        return ok;
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -126,140 +127,151 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Widget _registerForm(
       BuildContext context, AppLocalizations l10n, AuthState auth) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            key: const Key('register-email'),
-            controller: _email,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              labelText: l10n.auth_email,
-              prefixIcon: const Icon(Icons.email_outlined),
+    return AutofillGroup(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              key: const Key('register-email'),
+              controller: _email,
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+              autocorrect: false,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.auth_email,
+                prefixIcon: const Icon(Icons.email_outlined),
+              ),
+              validator: fieldValidator(l10n, validateEmail),
             ),
-            validator: fieldValidator(l10n, validateEmail),
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            key: const Key('register-first-name'),
-            controller: _givenName,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: l10n.mobileAuth_firstName,
-              prefixIcon: const Icon(Icons.badge_outlined),
+            const SizedBox(height: 12),
+            TextFormField(
+              key: const Key('register-first-name'),
+              controller: _givenName,
+              textCapitalization: TextCapitalization.words,
+              autofillHints: const [AutofillHints.givenName],
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.mobileAuth_firstName,
+                prefixIcon: const Icon(Icons.badge_outlined),
+              ),
+              validator: fieldValidator(l10n, validateRequired),
             ),
-            validator: fieldValidator(l10n, validateRequired),
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            key: const Key('register-last-name'),
-            controller: _familyName,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: l10n.mobileAuth_lastName,
-              prefixIcon: const Icon(Icons.badge_outlined),
+            const SizedBox(height: 12),
+            TextFormField(
+              key: const Key('register-last-name'),
+              controller: _familyName,
+              textCapitalization: TextCapitalization.words,
+              autofillHints: const [AutofillHints.familyName],
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.mobileAuth_lastName,
+                prefixIcon: const Icon(Icons.badge_outlined),
+              ),
+              validator: fieldValidator(l10n, validateRequired),
             ),
-            validator: fieldValidator(l10n, validateRequired),
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            key: const Key('register-username'),
-            controller: _username,
-            decoration: InputDecoration(
-              labelText: l10n.auth_username,
-              prefixIcon: const Icon(Icons.person_outline),
+            const SizedBox(height: 12),
+            TextFormField(
+              key: const Key('register-username'),
+              controller: _username,
+              autocorrect: false,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                labelText: l10n.auth_username,
+                prefixIcon: const Icon(Icons.person_outline),
+              ),
+              validator: fieldValidator(l10n, validateUsername),
             ),
-            validator: fieldValidator(l10n, validateUsername),
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            key: const Key('register-password'),
-            controller: _password,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: l10n.auth_password,
-              prefixIcon: const Icon(Icons.lock_outline),
+            const SizedBox(height: 12),
+            PasswordField(
+              key: const Key('register-password'),
+              controller: _password,
+              label: l10n.auth_password,
+              autofillHints: const [AutofillHints.newPassword],
+              textInputAction: TextInputAction.next,
+              validator: fieldValidator(l10n, validateNewPassword),
             ),
-            validator: fieldValidator(l10n, validateNewPassword),
-          ),
-          const SizedBox(height: 12),
-          TextFormField(
-            key: const Key('register-confirm-password'),
-            controller: _confirmPassword,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: l10n.auth_confirmPassword,
-              prefixIcon: const Icon(Icons.lock_outline),
+            const SizedBox(height: 12),
+            PasswordField(
+              key: const Key('register-confirm-password'),
+              controller: _confirmPassword,
+              label: l10n.auth_confirmPassword,
+              autofillHints: const [AutofillHints.newPassword],
+              validator: fieldValidator(
+                  l10n, (v) => validateConfirmPassword(_password.text, v)),
             ),
-            validator: fieldValidator(
-                l10n, (v) => validateConfirmPassword(_password.text, v)),
-          ),
-          const SizedBox(height: 12),
-          // Accounts are for adults (parents and guardians); see the Terms of Service.
-          FormField<bool>(
-            key: const Key('register-adult'),
-            initialValue: false,
-            validator: (v) => v == true ? null : l10n.auth_adultRequired,
-            builder: (field) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CheckboxListTile(
-                  key: const Key('register-adult-checkbox'),
-                  contentPadding: EdgeInsets.zero,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  value: field.value ?? false,
-                  onChanged: (v) => field.didChange(v ?? false),
-                  title: Text(l10n.auth_adultConfirm, style: const TextStyle(fontSize: 14)),
-                ),
-                Wrap(
-                  spacing: 8,
-                  children: [
-                    TextButton(
-                      onPressed: () => launchUrl(Uri.parse(kServiceTermsUrl), mode: LaunchMode.inAppBrowserView),
-                      child: Text(l10n.profile_terms),
-                    ),
-                    TextButton(
-                      onPressed: () => launchUrl(Uri.parse(kPrivacyPolicyUrl), mode: LaunchMode.inAppBrowserView),
-                      child: Text(l10n.profile_privacy),
-                    ),
-                  ],
-                ),
-                if (field.hasError)
-                  Text(field.errorText!,
-                      key: const Key('register-adult-error'),
-                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12)),
-              ],
+            const SizedBox(height: 12),
+            // Accounts are for adults (parents and guardians); see the Terms of Service.
+            FormField<bool>(
+              key: const Key('register-adult'),
+              initialValue: false,
+              validator: (v) => v == true ? null : l10n.auth_adultRequired,
+              builder: (field) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CheckboxListTile(
+                    key: const Key('register-adult-checkbox'),
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: field.value ?? false,
+                    onChanged: (v) => field.didChange(v ?? false),
+                    title: Text(l10n.auth_adultConfirm,
+                        style: const TextStyle(fontSize: 14)),
+                  ),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      TextButton(
+                        onPressed: () => launchUrl(Uri.parse(kServiceTermsUrl),
+                            mode: LaunchMode.inAppBrowserView),
+                        child: Text(l10n.profile_terms),
+                      ),
+                      TextButton(
+                        onPressed: () => launchUrl(Uri.parse(kPrivacyPolicyUrl),
+                            mode: LaunchMode.inAppBrowserView),
+                        child: Text(l10n.profile_privacy),
+                      ),
+                    ],
+                  ),
+                  if (field.hasError)
+                    Text(field.errorText!,
+                        key: const Key('register-adult-error'),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                            fontSize: 12)),
+                ],
+              ),
             ),
-          ),
-          AuthErrorText(authErrorText(l10n, auth)),
-          const SizedBox(height: 24),
-          FilledButton(
-            onPressed: auth.isBusy ? null : _register,
-            child: AuthButtonLabel(
-                busy: auth.isBusy, label: l10n.auth_createAccount),
-          ),
-          TextButton(
-            onPressed: () {
-              // Escape hatch: if an account was already created (e.g. a prior
-              // attempt), let the user jump straight to entering their code.
-              if (validateEmail(_email.text) == null) {
-                setState(() => _awaitingConfirmation = true);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.mobileAuth_enterEmailFirst)),
-                );
-              }
-            },
-            child: Text(l10n.mobileAuth_haveResetCode),
-          ),
-          TextButton(
-            onPressed: () => context.pop(),
-            child: Text(l10n.mobileAuth_backToLogin),
-          ),
-        ],
+            AuthErrorText(authErrorText(l10n, auth)),
+            const SizedBox(height: 24),
+            FilledButton(
+              onPressed: auth.isBusy ? null : _register,
+              child: AuthButtonLabel(
+                  busy: auth.isBusy, label: l10n.auth_createAccount),
+            ),
+            TextButton(
+              onPressed: () {
+                // Escape hatch: if an account was already created (e.g. a prior
+                // attempt), let the user jump straight to entering their code.
+                if (validateEmail(_email.text) == null) {
+                  setState(() => _awaitingConfirmation = true);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.mobileAuth_enterEmailFirst)),
+                  );
+                }
+              },
+              child: Text(l10n.mobileAuth_haveResetCode),
+            ),
+            TextButton(
+              onPressed: () => context.pop(),
+              child: Text(l10n.mobileAuth_backToLogin),
+            ),
+          ],
+        ),
       ),
     );
   }

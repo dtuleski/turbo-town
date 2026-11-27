@@ -4886,4 +4886,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get auth_continueWithApple => 'Continuar com a Apple';
+
+  @override
+  String get auth_showPassword => 'Mostrar senha';
+
+  @override
+  String get auth_hidePassword => 'Ocultar senha';
 }

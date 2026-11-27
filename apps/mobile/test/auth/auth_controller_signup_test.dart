@@ -4,8 +4,16 @@ import 'package:dashden_mobile/auth/token_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakeCognito implements CognitoService {
-  _FakeCognito(this.signUpError);
+  _FakeCognito(this.signUpError, {this.resendError});
   final AuthException? signUpError;
+  final AuthException? resendError;
+  int resends = 0;
+
+  @override
+  Future<void> resendSignUpCode(String email) async {
+    resends++;
+    if (resendError != null) throw resendError!;
+  }
 
   @override
   Future<String?> getValidIdToken() async => null;
@@ -29,8 +37,8 @@ class _FakeCognito implements CognitoService {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-Future<SignUpOutcome> _signUp(AuthException? error) async {
-  final controller = AuthController(_FakeCognito(error));
+Future<SignUpOutcome> _signUp(AuthException? error, {AuthException? resendError}) async {
+  final controller = AuthController(_FakeCognito(error, resendError: resendError));
   await Future<void>.delayed(Duration.zero);
   return controller.signUp(
     email: 'a@b.co',
@@ -60,6 +68,28 @@ void main() {
       expect(await _signUp(entry.value), SignUpOutcome.needsConfirmation);
     });
   }
+
+  test('an already confirmed email fails with "account exists" instead of waiting for a code', () async {
+    final cognito = _FakeCognito(
+      AuthException('exists', code: 'UsernameExistsException'),
+      resendError: AuthException('User is already confirmed.', code: 'InvalidParameterException'),
+    );
+    final controller = AuthController(cognito);
+    await Future<void>.delayed(Duration.zero);
+    final outcome = await controller.signUp(
+      email: 'a@b.co', password: 'Passw0rd!', username: 'ana_s', givenName: 'Ana', familyName: 'Silva');
+    expect(outcome, SignUpOutcome.failed);
+    expect(controller.state.errorCode, 'UsernameExistsException');
+    expect(cognito.resends, 1);
+  });
+
+  test('an unconfirmed retry still routes to confirmation when the resend fails for another reason', () async {
+    expect(
+      await _signUp(AuthException('exists', code: 'UsernameExistsException'),
+          resendError: AuthException('Too many requests', code: 'LimitExceededException')),
+      SignUpOutcome.needsConfirmation,
+    );
+  });
 
   test('an unrelated sign-up error still fails', () async {
     expect(

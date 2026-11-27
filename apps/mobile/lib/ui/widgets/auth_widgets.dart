@@ -4,6 +4,60 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/gen/app_localizations.dart';
 
+/// Password input with a show/hide toggle (eye icon).
+class PasswordField extends StatefulWidget {
+  const PasswordField({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.validator,
+    this.autofillHints,
+    this.onFieldSubmitted,
+    this.textInputAction,
+  });
+
+  final TextEditingController controller;
+  final String label;
+  final FormFieldValidator<String>? validator;
+  final Iterable<String>? autofillHints;
+  final ValueChanged<String>? onFieldSubmitted;
+  final TextInputAction? textInputAction;
+
+  @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool _visible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final key = widget.key is ValueKey<String> ? (widget.key as ValueKey<String>).value : 'password';
+    return TextFormField(
+      controller: widget.controller,
+      obscureText: !_visible,
+      autocorrect: false,
+      enableSuggestions: false,
+      keyboardType: TextInputType.visiblePassword,
+      autofillHints: widget.autofillHints,
+      textInputAction: widget.textInputAction,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        prefixIcon: const Icon(Icons.lock_outline),
+        suffixIcon: IconButton(
+          key: Key('$key-toggle'),
+          tooltip: _visible ? l10n.auth_hidePassword : l10n.auth_showPassword,
+          icon: Icon(_visible ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+          onPressed: () => setState(() => _visible = !_visible),
+        ),
+      ),
+      validator: widget.validator,
+      onFieldSubmitted: widget.onFieldSubmitted,
+    );
+  }
+}
+
 /// Red error line shown under an auth form.
 class AuthErrorText extends StatelessWidget {
   const AuthErrorText(this.message, {super.key});

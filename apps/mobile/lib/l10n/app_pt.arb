@@ -2403,5 +2403,7 @@
   "auth_adultConfirm": "Tenho 18 anos ou mais (sou pai, mãe ou responsável) e aceito os Termos de Serviço e a Política de Privacidade.",
   "auth_adultRequired": "Confirme que você tem 18 anos ou mais e aceita os termos.",
   "auth_socialConsent": "Ao continuar, você confirma que tem 18 anos ou mais e aceita os Termos de Serviço e a Política de Privacidade.",
-  "auth_continueWithApple": "Continuar com a Apple"
+  "auth_continueWithApple": "Continuar com a Apple",
+  "auth_showPassword": "Mostrar senha",
+  "auth_hidePassword": "Ocultar senha"
 }
