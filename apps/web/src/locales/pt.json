@@ -204,9 +204,9 @@
     "accountTier": "Nível da Conta",
     "memberSince": "Membro Desde",
     "emailPrefs": "Preferências de Email",
-    "dailyDigest": "Resumo Diário",
-    "dailyDigestDesc": "Receba atualizações diárias de classificação e jogos",
-    "dailyDigestOn": "✓ Você receberá atualizações diárias às 20h EST"
+    "dailyDigest": "E-mails e notificações diários",
+    "dailyDigestDesc": "O resumo da manhã com os resultados do desafio de ontem, e o lembrete do desafio diário ao meio-dia no app para iPhone",
+    "dailyDigestOn": "✓ Todas as manhãs às 8h no seu horário"
   },
   "auth": {
     "createAccount": "Criar Conta",
@@ -1321,6 +1321,49 @@
       "title": "Mapa de Aventura",
       "body": "Siga um caminho de jogos, ganhe estrelas e vença o chefe.",
       "cta": "Abrir o Mapa de Aventura"
+    }
+  },
+  "challenge": {
+    "games": {
+      "memory-match": "Jogo da Memória",
+      "math-challenge": "Desafio de Matemática",
+      "word-puzzle": "Caça-Palavras",
+      "sudoku": "Sudoku",
+      "sequence-memory": "Memória Sequencial",
+      "code-a-bot": "Programe o Robô",
+      "geo-quiz": "Quiz de Geografia",
+      "history-quiz": "Quiz de História",
+      "civics-quiz": "Quiz de Civismo",
+      "hangman": "Forca",
+      "scratch-coding": "Space Coder",
+      "math-maze": "Labirinto Matemático",
+      "pattern-recall": "Memória de Padrões",
+      "space-entry": "Entrada Espacial",
+      "bond-and-burn": "Bond & Burn",
+      "mini-golf": "Minigolfe"
+    },
+    "card": {
+      "title": "Desafio Diário",
+      "play": "Jogar o desafio",
+      "best": "Seu melhor resultado hoje: {{score}} (posição #{{rank}})",
+      "notPlayed": "Você ainda não jogou o desafio de hoje.",
+      "endsAt": "Termina à meia-noite, horário do Leste dos EUA. Todos jogam o mesmo desafio.",
+      "top": "Os 5 melhores de hoje",
+      "noScores": "Ainda não há pontuações. Seja o primeiro!",
+      "allResults": "Ver todos os resultados",
+      "failed": "Este desafio não está disponível no momento."
+    },
+    "you": "(você)",
+    "results": {
+      "title": "Resultados do Desafio Diário",
+      "loading": "Carregando resultados...",
+      "none": "Não há resultados do desafio para este dia.",
+      "live": "O desafio ainda está em andamento. Estas são as pontuações até agora.",
+      "winner": "Vencedor: {{username}} com {{score}} pontos",
+      "noScores": "Ninguém jogou este desafio.",
+      "me": "Você ficou em #{{rank}} com {{score}} pontos.",
+      "notPlayed": "Você não jogou este desafio. O desafio de hoje espera por você no hub de jogos.",
+      "toHub": "Ir para o desafio de hoje"
     }
   }
 }

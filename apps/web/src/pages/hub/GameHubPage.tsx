@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { listAvailableGames, GameCatalogItem, getReviewStats, ReviewStats, canStartGame } from '../../api/game'
 import GameTile, { PREMIUM_GAMES } from '../../components/hub/GameTile'
 import QuestHubCard from '../../components/quest/QuestHubCard'
+import DailyChallengeCard from '../../components/challenge/DailyChallengeCard'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 import { ROUTES } from '@/config/constants'
@@ -172,6 +173,7 @@ export default function GameHubPage() {
           ))}
         </div>
 
+        <DailyChallengeCard />
         <QuestHubCard />
 
         {/* Games Grid */}

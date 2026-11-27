@@ -39,6 +39,11 @@ export default function PrivacyPage() {
           (for example the daily summary email).
         </li>
         <li>
+          <strong>Notifications and time zone:</strong> if you allow notifications in the iPhone app, a push token for
+          your device, the device's time zone and language. Your time zone and language, so the daily summary and the
+          challenge reminder arrive at the right local time and in your language.
+        </li>
+        <li>
           <strong>Technical data:</strong> on the website, your IP address is used once to look up your country, so we
           can offer the right language content. The website uses Vercel Web Analytics, which counts page views without
           cookies and without identifying you.
@@ -54,6 +59,9 @@ export default function PrivacyPage() {
         <li>To run your account, save your progress and show your scores.</li>
         <li>To provide the plan you pay for and handle billing questions.</li>
         <li>To send the emails you choose, and to answer your messages.</li>
+        <li>
+          To send the morning summary and the daily challenge reminder when "Daily emails and notifications" is on.
+        </li>
         <li>To keep the service secure and fix problems.</li>
       </ul>
       <p>
@@ -62,6 +70,9 @@ export default function PrivacyPage() {
 
       <h2>What other people can see</h2>
       <p>Your display name and scores appear on leaderboards that other DashDen users can see.</p>
+      <p>
+        Your username and your best score on the daily challenge leaderboard, shown to other signed-in players.
+      </p>
 
       <h2>Who we share it with</h2>
       <p>Only the service providers that run DashDen for us, each for its own part:</p>
@@ -70,6 +81,9 @@ export default function PrivacyPage() {
         <li>Resend: delivery of the daily summary email.</li>
         <li>Stripe: payments on the website.</li>
         <li>Apple: payments in the iPhone app, and Sign in with Apple.</li>
+        <li>
+          Amazon Web Services (Amazon SNS) and Apple (Apple Push Notification service): delivery of push notifications.
+        </li>
         <li>Google: Sign in with Google.</li>
         <li>Vercel: website hosting and page-view analytics.</li>
         <li>ipapi.co: country lookup from your IP address on the website.</li>
@@ -82,18 +96,23 @@ export default function PrivacyPage() {
         game activity, reviews, preferences and subscription record, and remove your scores from leaderboards. Stripe
         and Apple keep their own payment records, as tax and accounting rules require.
       </p>
+      <p>
+        A push token until you sign out on that device, delete your account, or Apple reports it as no longer valid.
+        Daily challenge scores as long as your account exists.
+      </p>
 
       <h2>Deleting your account</h2>
       <p>
         In the iPhone app, open Profile and tap Delete account. You can also write to {mail} from the email address on
-        your account. Deleting your account cancels a subscription bought on dashden.app at once. A subscription bought
+        your account. Deleting your account also removes your devices and your daily challenge scores. It cancels a
+        subscription bought on dashden.app at once. A subscription bought
         in the App Store must be cancelled by you in iPhone Settings, under Apple Account, Subscriptions.
       </p>
 
       <h2>Your choices and rights</h2>
       <p>
-        You can see and change your details in the app, turn emails off at any time, and ask us for a copy of your data
-        or to correct or delete it by writing to {mail}. Residents of California and other US states with privacy laws
+        You can see and change your details in the app, turn emails and notifications off at any time, and ask us for a
+        copy of your data or to correct or delete it by writing to {mail}. Residents of California and other US states with privacy laws
         have these rights by law; we honor them for everyone. We will not treat you differently for using them.
       </p>
 
