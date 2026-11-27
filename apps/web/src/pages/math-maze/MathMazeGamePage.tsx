@@ -12,6 +12,8 @@ import type { GateState } from '@/components/math-maze/MazeGrid'
 import { GatePrompt } from '@/components/math-maze/GatePrompt'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
 import { startGame, completeGame } from '@/api/game'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { difficultyName, mathMazeData } from '@/utils/challengeContent'
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
@@ -49,7 +51,10 @@ export default function MathMazeGamePage() {
   const [searchParams] = useSearchParams()
   const { t } = useTranslation()
 
-  const rawDifficulty = searchParams.get('difficulty') as DifficultyLevel | null
+  const challenge = useChallengeContent('math-maze')
+  const rawDifficulty = (
+    challenge.status === 'ready' ? difficultyName(challenge.difficulty) : searchParams.get('difficulty')
+  ) as DifficultyLevel | null
   const difficulty: DifficultyLevel =
     rawDifficulty && ['easy', 'medium', 'hard'].includes(rawDifficulty)
       ? rawDifficulty
@@ -103,6 +108,7 @@ export default function MathMazeGamePage() {
   // ── Initialize game ──────────────────────────────────────────────────────
 
   useEffect(() => {
+    if (challenge.status === 'loading') return
     const init = async () => {
       try {
         const game = await startGame({
@@ -111,11 +117,17 @@ export default function MathMazeGamePage() {
         })
         setGameId(game.id)
 
-        // Generate maze with real equations
-        const generated = generateMaze(difficulty)
-        // Replace placeholder equations with real ones
-        for (const gate of generated.gates) {
-          gate.equation = generateEquation(difficulty)
+        let generated: MazeData
+        if (challenge.status === 'ready') {
+          // Challenge mode plays the served maze and its gate equations.
+          generated = mathMazeData(challenge.content)
+        } else {
+          // Generate maze with real equations
+          generated = generateMaze(difficulty)
+          // Replace placeholder equations with real ones
+          for (const gate of generated.gates) {
+            gate.equation = generateEquation(difficulty)
+          }
         }
 
         // Initialize gate states
@@ -143,7 +155,7 @@ export default function MathMazeGamePage() {
     }
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [challenge.status])
 
   // ── End game ─────────────────────────────────────────────────────────────
 

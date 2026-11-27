@@ -14,6 +14,7 @@ GameSessionArgs bubbleSessionArgs(BubbleArgs a) => (
       themeId: 'BUBBLE_POP',
       difficulty: bubbleDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 enum BubblePhase { playing, roundComplete, gameOver }

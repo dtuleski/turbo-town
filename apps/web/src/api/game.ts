@@ -1,7 +1,9 @@
 import { gql } from '@apollo/client'
 import { gameClient } from './client'
 import { ROUTES } from '@/config/constants'
+import type { ChallengeCompletionResult } from '@/types/challenge'
 import type { QuestResultPayload } from '@/types/quest'
+import { CHALLENGE_FAILED_URL, parseChallengeParam } from '@/utils/challengeLaunch'
 import { parseQuestParam } from '@/utils/questLaunch'
 import { questResultStore } from '@/utils/questResultStore'
 
@@ -78,6 +80,13 @@ const COMPLETE_GAME = gql`
           }
         }
       }
+      challenge {
+        day
+        recorded
+        bestScore
+        rank
+        isNewBest
+      }
     }
   }
 `
@@ -150,6 +159,8 @@ export interface StartGameInput {
   difficulty: number // 1-5
   // Set by startGame itself from the page URL (Quest Map launch); callers never pass it.
   questContext?: { worldId: string; nodeId: string; legIndex: number }
+  // Set by startGame itself from `?challenge=<day>` (Daily Challenge launch); callers never pass it.
+  challengeContext?: { day: string }
 }
 
 export interface CompleteGameInput {
@@ -231,6 +242,7 @@ export interface CompleteGameResult {
   leaderboardRank: number | null
   achievements: { type: string; unlocked: boolean; progress: number; completedAt: string | null }[]
   quest: QuestResultPayload | null
+  challenge: ChallengeCompletionResult | null
 }
 
 export interface GameHistoryInput {
@@ -260,6 +272,9 @@ export const startGame = async (input: StartGameInput) => {
   questResultStore.clear()
 
   if (!ctx) {
+    // The quest param wins when both are present.
+    const challengeCtx = parseChallengeParam(search)
+    if (challengeCtx) return startChallengeGame(input, challengeCtx)
     const { data } = await gameClient.mutate({
       mutation: START_GAME,
       variables: { input },
@@ -283,6 +298,30 @@ export const startGame = async (input: StartGameInput) => {
     const reason = isRateLimitError(error) ? 'rate' : 'quest'
     console.error('Quest start failed:', reason)
     window.location.replace(`${ROUTES.QUEST_MAP}?startFailed=${reason}`)
+    return new Promise<never>(() => {})
+  }
+}
+
+/**
+ * A Daily Challenge start (`?challenge=<day>`). Like R1: a start the server accepted is playable; a
+ * rate-limit error reaches the page, which shows the rate-limit screen as for any play (a challenge is
+ * a normal play); any other failure goes back to the hub with `challengeFailed=1` and never settles.
+ */
+async function startChallengeGame(input: StartGameInput, challengeContext: { day: string }) {
+  try {
+    const { data } = await gameClient.mutate({
+      mutation: START_GAME,
+      variables: { input: { ...input, challengeContext } },
+    })
+    const result = data.startGame
+    if (result && typeof result.id === 'string' && result.id !== '') {
+      return { ...result, canPlay: true }
+    }
+    return result
+  } catch (error) {
+    if (isRateLimitError(error)) throw error
+    console.error('Challenge start failed')
+    window.location.replace(CHALLENGE_FAILED_URL)
     return new Promise<never>(() => {})
   }
 }

@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../api/challenge_models.dart';
 import '../../api/quest_models.dart';
+import '../../challenge/challenge_content.dart';
 import '../framework/game_feedback.dart';
 import '../framework/game_session.dart';
 import '../framework/session_timers.dart';
@@ -10,10 +12,14 @@ import 'logic.dart';
 
 typedef MazeArgs = ({String difficulty, QuestContext? quest});
 
-GameSessionArgs mazeSessionArgs(MazeArgs a) => (
+/// A Daily Challenge round: [args] carries the challenge difficulty.
+typedef MazeChallengeArgs = ({MazeArgs args, GivenChallenge<MathMazeContent> challenge});
+
+GameSessionArgs mazeSessionArgs(MazeArgs a, {String? challengeDay}) => (
       themeId: 'MATH_MAZE',
       difficulty: mazeDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: challengeDay,
     );
 
 enum GateState { locked, open, blocked }
@@ -80,8 +86,9 @@ class MazeState {
       );
 }
 
-MazeState newMazeState(String difficulty, Random rng) {
-  final maze = generateMaze(difficulty, rng);
+MazeState newMazeState(String difficulty, Random rng) => _mazeState(generateMaze(difficulty, rng));
+
+MazeState _mazeState(MazeData maze) {
   return MazeState(
     maze: maze,
     player: maze.start,
@@ -92,12 +99,16 @@ MazeState newMazeState(String difficulty, Random rng) {
 /// Math Maze board. The player walks (swipe or d-pad); stepping into a locked
 /// gate asks its equation. A right answer opens it, a wrong one blocks it for
 /// good. The round ends at the exit, when time runs out, or when blocked
-/// gates leave no route to the exit.
+/// gates leave no route to the exit. [given] (a Daily Challenge) is played
+/// instead of a generated maze.
 class MazeController extends StateNotifier<MazeState> {
-  MazeController(this._session, this._feedback, this.args, {Random? random})
+  MazeController(this._session, this._feedback, this.args, {Random? random, MathMazeContent? given})
       : _rng = random ?? Random(),
+        _given = given,
         _timers = SessionTimers(_session),
-        super(newMazeState(args.difficulty, random ?? Random())) {
+        super(given != null
+            ? _mazeState(mazeFromChallenge(given))
+            : newMazeState(args.difficulty, random ?? Random())) {
     _removeListener = _session.addListener(_onSession, fireImmediately: false);
   }
 
@@ -105,6 +116,7 @@ class MazeController extends StateNotifier<MazeState> {
   final GameFeedback _feedback;
   final MazeArgs args;
   final Random _rng;
+  final MathMazeContent? _given;
   final SessionTimers _timers;
   late final void Function() _removeListener;
 
@@ -217,7 +229,8 @@ class MazeController extends StateNotifier<MazeState> {
 
   void restart() {
     _timers.cancelAll();
-    state = newMazeState(args.difficulty, _rng);
+    final given = _given;
+    state = given != null ? _mazeState(mazeFromChallenge(given)) : newMazeState(args.difficulty, _rng);
   }
 
   @override
@@ -232,4 +245,14 @@ final mazeControllerProvider =
     StateNotifierProvider.family.autoDispose<MazeController, MazeState, MazeArgs>((ref, args) {
   final session = ref.watch(gameSessionProvider(mazeSessionArgs(args)).notifier);
   return MazeController(session, ref.watch(gameFeedbackProvider), args);
+});
+
+/// The board of a Daily Challenge round: the served maze.
+final mazeChallengeControllerProvider = StateNotifierProvider.family
+    .autoDispose<MazeController, MazeState, MazeChallengeArgs>((ref, key) {
+  final session = ref.watch(
+    gameSessionProvider(mazeSessionArgs(key.args, challengeDay: key.challenge.day)).notifier,
+  );
+  return MazeController(session, ref.watch(gameFeedbackProvider), key.args,
+      given: key.challenge.content);
 });

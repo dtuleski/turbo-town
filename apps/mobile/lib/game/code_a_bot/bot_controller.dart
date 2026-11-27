@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../api/challenge_models.dart';
 import '../../api/quest_models.dart';
 import '../framework/game_feedback.dart';
 import '../framework/game_session.dart';
@@ -8,10 +9,14 @@ import 'logic.dart';
 
 typedef BotArgs = ({String difficulty, QuestContext? quest});
 
-GameSessionArgs botSessionArgs(BotArgs a) => (
+/// A Daily Challenge round: [args] carries the challenge difficulty.
+typedef BotChallengeArgs = ({BotArgs args, GivenChallenge<CodeABotContent> challenge});
+
+GameSessionArgs botSessionArgs(BotArgs a, {String? challengeDay}) => (
       themeId: 'CODE_A_BOT',
       difficulty: botDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: challengeDay,
     );
 
 enum BotPhase { building, running, success, fail }
@@ -34,6 +39,7 @@ class BotState {
     this.totalAttempts = 0,
     this.showHint = false,
     this.failKind,
+    this.levelIndex = 0,
   });
 
   final BotLevel level;
@@ -47,6 +53,9 @@ class BotState {
   final int totalAttempts;
   final bool showHint;
   final FailKind? failKind;
+
+  /// 0-based position of [level] in the round's level list.
+  final int levelIndex;
 
   BotState copyWith({
     BotLevel? level,
@@ -73,34 +82,49 @@ class BotState {
         totalAttempts: totalAttempts ?? this.totalAttempts,
         showHint: showHint ?? this.showHint,
         failKind: failKind != null ? failKind() : this.failKind,
+        levelIndex: levelIndex,
       );
 }
 
-BotState _levelState(String difficulty, int levelNumber, {int completed = 0, int attempts = 0}) {
-  final level = getLevel(difficulty, levelNumber);
+BotState _levelState(
+  String difficulty,
+  List<int> levels,
+  int index, {
+  int completed = 0,
+  int attempts = 0,
+}) {
+  final level = getLevel(difficulty, levels[index]);
   return BotState(
     level: level,
     botPos: level.start,
     botDir: level.startDir,
     levelsCompleted: completed,
     totalAttempts: attempts,
+    levelIndex: index,
   );
 }
 
 /// Code-a-Bot board: build a program of blocks, run it, and move to the next
 /// level when the bot reaches the power cell. Five levels per difficulty; the
-/// server scores from levels completed and the number of runs.
+/// server scores from levels completed and the number of runs. [levelNumbers]
+/// (a Daily Challenge) replaces the difficulty's levels 1..N.
 class BotController extends StateNotifier<BotState> {
-  BotController(this._session, this._feedback, this.args)
+  BotController(GameSessionController session, GameFeedback feedback, BotArgs args,
+      {List<int>? levelNumbers})
+      : this._(session, feedback, args,
+            levelNumbers ?? [for (var n = 1; n <= getTotalLevels(args.difficulty); n++) n]);
+
+  BotController._(this._session, this._feedback, this.args, this._levels)
       : _timers = SessionTimers(_session),
-        super(_levelState(args.difficulty, 1));
+        super(_levelState(args.difficulty, _levels, 0));
 
   final GameSessionController _session;
   final GameFeedback _feedback;
   final BotArgs args;
   final SessionTimers _timers;
+  final List<int> _levels;
 
-  int get totalLevels => getTotalLevels(args.difficulty);
+  int get totalLevels => _levels.length;
 
   void add(Instruction inst) {
     if (state.phase != BotPhase.building ||
@@ -177,7 +201,7 @@ class BotController extends StateNotifier<BotState> {
   void nextLevel() {
     if (state.phase != BotPhase.success) return;
     final completed = state.levelsCompleted + 1;
-    if (state.level.levelNumber >= totalLevels) {
+    if (state.levelIndex + 1 >= totalLevels) {
       _feedback.play(SoundCue.celebration);
       _session.complete(
         extra: {'correctAnswers': completed, 'totalQuestions': totalLevels},
@@ -187,7 +211,8 @@ class BotController extends StateNotifier<BotState> {
     }
     state = _levelState(
       args.difficulty,
-      state.level.levelNumber + 1,
+      _levels,
+      state.levelIndex + 1,
       completed: completed,
       attempts: state.totalAttempts,
     );
@@ -209,7 +234,7 @@ class BotController extends StateNotifier<BotState> {
 
   void restart() {
     _timers.cancelAll();
-    state = _levelState(args.difficulty, 1);
+    state = _levelState(args.difficulty, _levels, 0);
   }
 
   @override
@@ -223,4 +248,18 @@ final botControllerProvider =
     StateNotifierProvider.family.autoDispose<BotController, BotState, BotArgs>((ref, args) {
   final session = ref.watch(gameSessionProvider(botSessionArgs(args)).notifier);
   return BotController(session, ref.watch(gameFeedbackProvider), args);
+});
+
+/// The board of a Daily Challenge round: the served level list.
+final botChallengeControllerProvider = StateNotifierProvider.family
+    .autoDispose<BotController, BotState, BotChallengeArgs>((ref, key) {
+  final session = ref.watch(
+    gameSessionProvider(botSessionArgs(key.args, challengeDay: key.challenge.day)).notifier,
+  );
+  return BotController(
+    session,
+    ref.watch(gameFeedbackProvider),
+    key.args,
+    levelNumbers: key.challenge.content.levelNumbers,
+  );
 });

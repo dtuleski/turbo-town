@@ -21,6 +21,7 @@ GameSessionArgs memorySessionArgs(MemoryArgs args) => (
       themeId: args.themeId,
       difficulty: args.difficulty.apiValue,
       questContext: args.questContext,
+      challengeDay: null,
     );
 
 /// Time a mismatched pair stays face up. Same as web `useGame` (1000 ms).

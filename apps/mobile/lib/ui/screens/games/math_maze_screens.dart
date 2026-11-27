@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/game_registry.dart';
@@ -48,34 +50,67 @@ class MathMazeSetupScreen extends StatelessWidget {
   }
 }
 
-class MathMazeGameScreen extends ConsumerWidget {
+/// [challengeDay] plays that day's Daily Challenge maze.
+class MathMazeGameScreen extends StatelessWidget {
   const MathMazeGameScreen(
-      {super.key, required this.difficulty, this.questContext});
+      {super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, quest: questContext);
+      return _MazeGame(args: args, sessionArgs: mazeSessionArgs(args), provider: mazeControllerProvider(args));
+    }
+    final l10n = AppLocalizations.of(context);
+    return ChallengeGate<MathMazeContent>(
+      day: day,
+      title: gameTitle(l10n, 'math-maze') ?? l10n.mathMaze_title,
+      builder: (context, challenge, difficulty) {
+        final args = (difficulty: difficulty, quest: null);
+        return _MazeGame(
+          args: args,
+          sessionArgs: mazeSessionArgs(args, challengeDay: challenge.day),
+          provider: mazeChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _MazeProvider = AutoDisposeStateNotifierProvider<MazeController, MazeState>;
+
+class _MazeGame extends ConsumerWidget {
+  const _MazeGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final MazeArgs args;
+  final GameSessionArgs sessionArgs;
+  final _MazeProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (difficulty: difficulty, quest: questContext);
-    final provider = mazeControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: mazeSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'math-maze') ?? l10n.mathMaze_title,
       reviewType: gameById('math-maze')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
       boardBuilder: (context, session) =>
-          _MazeBoard(args: args, session: session),
+          _MazeBoard(args: args, provider: provider, session: session),
     );
   }
 }
 
 class _MazeBoard extends ConsumerStatefulWidget {
-  const _MazeBoard({required this.args, required this.session});
+  const _MazeBoard({required this.args, required this.provider, required this.session});
 
   final MazeArgs args;
+  final _MazeProvider provider;
   final GameSessionState session;
 
   @override
@@ -93,7 +128,7 @@ class _MazeBoardState extends ConsumerState<_MazeBoard> {
   }
 
   MazeController get _ctrl =>
-      ref.read(mazeControllerProvider(widget.args).notifier);
+      ref.read(widget.provider.notifier);
 
   void _onPanUpdate(DragUpdateDetails d) {
     _drag += d.delta;
@@ -120,7 +155,7 @@ class _MazeBoardState extends ConsumerState<_MazeBoard> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(mazeControllerProvider(widget.args));
+    final state = ref.watch(widget.provider);
     final maze = state.maze;
     final remaining = _ctrl.timeRemaining(widget.session);
     return LayoutBuilder(builder: (context, outer) {

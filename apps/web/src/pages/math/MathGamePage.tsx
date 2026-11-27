@@ -5,6 +5,8 @@ import { ROUTES } from '@/config/constants'
 import { generateQuestion, checkAnswer, type MathQuestion } from '@/utils/mathUtils'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { difficultyName, mathQuestions } from '@/utils/challengeContent'
 
 const DIFFICULTY_CONFIG = {
   easy: {
@@ -34,7 +36,12 @@ export default function MathGamePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { t } = useTranslation()
-  const difficulty = searchParams.get('difficulty') as keyof typeof DIFFICULTY_CONFIG
+  const challenge = useChallengeContent('math-challenge')
+  const difficulty = (
+    challenge.status === 'ready' ? difficultyName(challenge.difficulty) : searchParams.get('difficulty')
+  ) as keyof typeof DIFFICULTY_CONFIG
+  // Challenge mode plays the served question list in order; otherwise questions are generated per step.
+  const challengeQuestions = challenge.status === 'ready' ? mathQuestions(challenge.content) : null
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [gameId, setGameId] = useState<string>('')
@@ -53,6 +60,7 @@ export default function MathGamePage() {
   const [leaderboardRank, setLeaderboardRank] = useState<number | null>(null)
 
   const config = DIFFICULTY_CONFIG[difficulty] || DIFFICULTY_CONFIG.easy
+  const totalQuestions = challengeQuestions ? challengeQuestions.length : config.questions
 
   // Auto-focus input when new question appears
   useEffect(() => {
@@ -63,6 +71,7 @@ export default function MathGamePage() {
 
   // Initialize game
   useEffect(() => {
+    if (challenge.status === 'loading') return
     const initGame = async () => {
       try {
         // Start game with backend
@@ -72,7 +81,7 @@ export default function MathGamePage() {
         })
         setGameId(game.id)
         setTimeRemaining(config.timeLimit)
-        setCurrentQuestion(generateQuestion(config.operations, difficulty))
+        setCurrentQuestion(challengeQuestions ? challengeQuestions[0] : generateQuestion(config.operations, difficulty))
         setGameStatus('playing')
       } catch (error: any) {
         console.error('Failed to start game:', error)
@@ -85,7 +94,7 @@ export default function MathGamePage() {
       }
     }
     initGame()
-  }, [difficulty, config.timeLimit, config.operations, navigate])
+  }, [difficulty, config.timeLimit, config.operations, navigate, challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer
   useEffect(() => {
@@ -116,7 +125,7 @@ export default function MathGamePage() {
         completionTime,
         attempts: questionNumber,
         correctAnswers: score,
-        totalQuestions: config.questions,
+        totalQuestions,
       })
       
       if (result.scoreBreakdown) {
@@ -130,7 +139,7 @@ export default function MathGamePage() {
     } finally {
       setGameStatus('completed')
     }
-  }, [gameStatus, gameId, config.timeLimit, config.questions, timeRemaining, questionNumber, score])
+  }, [gameStatus, gameId, config.timeLimit, totalQuestions, timeRemaining, questionNumber, score])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -159,11 +168,15 @@ export default function MathGamePage() {
       if (inputRef.current) inputRef.current.focus()
       setUserAnswer('')
       
-      if (questionNumber >= config.questions) {
+      if (questionNumber >= totalQuestions) {
         endGame()
       } else {
         setQuestionNumber((prev) => prev + 1)
-        setCurrentQuestion(generateQuestion(config.operations, difficulty, currentQuestion?.question))
+        setCurrentQuestion(
+          challengeQuestions
+            ? challengeQuestions[questionNumber]
+            : generateQuestion(config.operations, difficulty, currentQuestion?.question)
+        )
       }
     }, 1500)
   }
@@ -211,7 +224,7 @@ export default function MathGamePage() {
     }
     
     // Fallback simple completion screen
-    const percentage = Math.round((score / config.questions) * 100)
+    const percentage = Math.round((score / totalQuestions) * 100)
     const completionTime = config.timeLimit - timeRemaining
     
     return (
@@ -227,7 +240,7 @@ export default function MathGamePage() {
             
             <div className="space-y-4 mb-8">
               <div className="text-2xl font-bold text-gray-700">
-                {t('setup.mathChallenge.score')}: {score} / {config.questions} ({percentage}%)
+                {t('setup.mathChallenge.score')}: {score} / {totalQuestions} ({percentage}%)
               </div>
               <div className="text-xl text-gray-600">
                 {t('setup.mathChallenge.time')}: {formatTime(completionTime)}
@@ -262,7 +275,7 @@ export default function MathGamePage() {
           <div className="bg-white rounded-2xl px-6 py-3 shadow-lg">
             <div className="text-sm text-gray-600">{t('setup.mathChallenge.question')}</div>
             <div className="text-2xl font-bold text-gray-800">
-              {questionNumber} / {config.questions}
+              {questionNumber} / {totalQuestions}
             </div>
           </div>
           

@@ -39,9 +39,11 @@ class FakeGameApi implements GameApi {
     required String themeId,
     required int difficulty,
     QuestContext? questContext,
+    String? challengeDay,
   }) async {
     calls.add('startGame:$themeId:$difficulty'
-        '${questContext == null ? '' : ':${questContext.encode()}'}');
+        '${questContext == null ? '' : ':${questContext.encode()}'}'
+        '${challengeDay == null ? '' : ':challenge=$challengeDay'}');
     final handler = onStartGame;
     if (handler != null) return handler(themeId, difficulty, questContext);
     return StartGameResult(

@@ -1,0 +1,341 @@
+{
+  "source": "apps/web/src/utils/codeABotUtils.ts",
+  "difficulty": "medium",
+  "levels": [
+    {
+      "levelNumber": 1,
+      "rows": 6,
+      "cols": 6,
+      "start": {
+        "row": 5,
+        "col": 0
+      },
+      "startDir": "up",
+      "goal": {
+        "row": 0,
+        "col": 0
+      },
+      "maxInstructions": 8,
+      "optimalSteps": 5,
+      "hint": "Jump over the crack!",
+      "grid": [
+        [
+          "goal",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "crack",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "start",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ]
+      ]
+    },
+    {
+      "levelNumber": 2,
+      "rows": 6,
+      "cols": 6,
+      "start": {
+        "row": 5,
+        "col": 0
+      },
+      "startDir": "up",
+      "goal": {
+        "row": 0,
+        "col": 5
+      },
+      "maxInstructions": 14,
+      "optimalSteps": 11,
+      "hint": "Jump over cracks, navigate around walls",
+      "grid": [
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "goal"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "crack",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "wall",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "crack",
+          "empty",
+          "wall",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "start",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ]
+      ]
+    },
+    {
+      "levelNumber": 3,
+      "rows": 6,
+      "cols": 6,
+      "start": {
+        "row": 5,
+        "col": 0
+      },
+      "startDir": "right",
+      "goal": {
+        "row": 5,
+        "col": 5
+      },
+      "maxInstructions": 10,
+      "optimalSteps": 5,
+      "hint": "Jump the crack and keep going",
+      "grid": [
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "wall",
+          "wall",
+          "empty",
+          "wall",
+          "wall",
+          "wall"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "start",
+          "empty",
+          "crack",
+          "empty",
+          "empty",
+          "goal"
+        ]
+      ]
+    },
+    {
+      "levelNumber": 4,
+      "rows": 6,
+      "cols": 6,
+      "start": {
+        "row": 5,
+        "col": 0
+      },
+      "startDir": "up",
+      "goal": {
+        "row": 0,
+        "col": 5
+      },
+      "maxInstructions": 16,
+      "optimalSteps": 13,
+      "hint": "Weave through walls and jump cracks",
+      "grid": [
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "goal"
+        ],
+        [
+          "empty",
+          "empty",
+          "crack",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "wall",
+          "empty",
+          "wall",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "wall",
+          "empty",
+          "wall",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "wall",
+          "empty",
+          "wall",
+          "crack",
+          "empty"
+        ],
+        [
+          "start",
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ]
+      ]
+    },
+    {
+      "levelNumber": 5,
+      "rows": 6,
+      "cols": 6,
+      "start": {
+        "row": 5,
+        "col": 2
+      },
+      "startDir": "up",
+      "goal": {
+        "row": 0,
+        "col": 3
+      },
+      "maxInstructions": 14,
+      "optimalSteps": 9,
+      "hint": "Two jumps and a turn",
+      "grid": [
+        [
+          "empty",
+          "empty",
+          "empty",
+          "goal",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "crack",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "wall",
+          "wall",
+          "empty",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "crack",
+          "empty",
+          "empty",
+          "empty"
+        ],
+        [
+          "empty",
+          "empty",
+          "empty",
+          "empty",
+          "wall",
+          "wall"
+        ],
+        [
+          "empty",
+          "empty",
+          "start",
+          "empty",
+          "empty",
+          "empty"
+        ]
+      ]
+    }
+  ]
+}

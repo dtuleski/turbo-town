@@ -1,6 +1,7 @@
 /// Dart models mirroring the game service GraphQL types.
 library;
 
+import 'challenge_models.dart';
 import 'quest_models.dart';
 
 class RateLimitInfo {
@@ -128,6 +129,7 @@ class CompleteGameResult {
     this.leaderboardRank,
     this.achievements = const [],
     this.quest,
+    this.challenge,
   });
 
   final String id;
@@ -141,6 +143,9 @@ class CompleteGameResult {
 
   /// Quest Map result; null for games not started from the map.
   final QuestResult? quest;
+
+  /// Daily Challenge result; null for games not started as the challenge.
+  final ChallengeCompletionResult? challenge;
 
   factory CompleteGameResult.fromJson(Map<String, dynamic> json) {
     return CompleteGameResult(
@@ -164,6 +169,9 @@ class CompleteGameResult {
       quest: json['quest'] == null
           ? null
           : QuestResult.fromJson(json['quest'] as Map<String, dynamic>),
+      challenge: json['challenge'] is Map<String, dynamic>
+          ? ChallengeCompletionResult.fromJson(json['challenge'] as Map<String, dynamic>)
+          : null,
     );
   }
 }

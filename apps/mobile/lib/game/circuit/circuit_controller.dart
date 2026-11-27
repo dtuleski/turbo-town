@@ -18,6 +18,7 @@ GameSessionArgs circuitSessionArgs(CircuitArgs a) => (
       themeId: 'CIRCUIT_BUILDER',
       difficulty: getLevel(a.levelId)?.difficulty ?? 1,
       questContext: a.quest,
+      challengeDay: null,
     );
 
 class CircuitBoardState {

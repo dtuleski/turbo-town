@@ -34,8 +34,94 @@ export interface CodeABotContent {
   levelNumbers: number[];
 }
 
-/** Union of every game's content. DC3 adds the other first-batch games. */
-export type ChallengeContent = CodeABotContent;
+/** Sudoku: one 9x9 puzzle (`null` = blank) and its unique solution. */
+export interface SudokuContent {
+  kind: 'sudoku';
+  puzzle: (number | null)[][];
+  solution: number[][];
+}
+
+/** Operations of the medium Math Challenge (same names as the web's `MathOperation`). */
+export type MathChallengeOperation = 'addition' | 'subtraction' | 'multiplication' | 'division';
+
+export interface MathChallengeQuestion {
+  /** Display text, e.g. `12 × 4 = ?` (same format as the web generator). */
+  question: string;
+  answer: number;
+  operation: MathChallengeOperation;
+}
+
+/** Math Challenge: the fixed question list, played in order. */
+export interface MathChallengeContent {
+  kind: 'math-challenge';
+  questions: MathChallengeQuestion[];
+}
+
+/** Same cell names as the web's `CellType` in `mazeGenerator.ts`. */
+export type MazeCell = 'wall' | 'path' | 'gate' | 'collectible' | 'start' | 'exit';
+
+export interface MazePosition {
+  row: number;
+  col: number;
+}
+
+export interface MazeGate {
+  position: MazePosition;
+  equation: { display: string; answer: number; operation: MathChallengeOperation };
+}
+
+/** Same shape as the web's `MazeData`, so the page plays it without conversion. */
+export interface MazeContent {
+  grid: MazeCell[][];
+  start: MazePosition;
+  exit: MazePosition;
+  gates: MazeGate[];
+  collectibles: MazePosition[];
+  rows: number;
+  cols: number;
+}
+
+/** Math Maze: one maze with its gate equations. */
+export interface MathMazeContent {
+  kind: 'math-maze';
+  maze: MazeContent;
+}
+
+export interface WordPuzzleVariant {
+  grid: string[][];
+  /** Every word is placed in the grid; the same count in every language. */
+  words: string[];
+  gridSize: number;
+}
+
+/** Word Puzzle: one grid and word list per language. */
+export interface WordPuzzleContent {
+  kind: 'word-puzzle';
+  byLanguage: Record<ChallengeLanguage, WordPuzzleVariant>;
+}
+
+export interface HangmanWordContent {
+  word: string;
+  hint: string;
+  category: string;
+}
+
+/** Hangman: the rounds' words per language, the same count in every language. */
+export interface HangmanContent {
+  kind: 'hangman';
+  byLanguage: Record<ChallengeLanguage, HangmanWordContent[]>;
+}
+
+/** Union of every game's content (`kind` equals the rotation `gameId`). */
+export type ChallengeContent =
+  | CodeABotContent
+  | SudokuContent
+  | MathChallengeContent
+  | MathMazeContent
+  | WordPuzzleContent
+  | HangmanContent;
+
+export type ChallengeContentKind = ChallengeContent['kind'];
 
 /** The metric totals a completion must report for a content (FR-DC-19). */
 export interface ChallengeTotals {

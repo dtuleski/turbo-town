@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../api/challenge_models.dart';
 import '../../../api/quest_models.dart';
 import '../../../game/code_a_bot/bot_controller.dart';
 import '../../../game/code_a_bot/logic.dart';
+import '../../../game/framework/challenge_gate.dart';
 import '../../../game/framework/game_session.dart';
 import '../../../game/framework/game_session_frame.dart';
 import '../../../game/game_registry.dart';
@@ -64,43 +66,76 @@ class CodeABotSetupScreen extends StatelessWidget {
   }
 }
 
-class CodeABotGameScreen extends ConsumerWidget {
-  const CodeABotGameScreen({super.key, required this.difficulty, this.questContext});
+/// [challengeDay] plays that day's Daily Challenge levels instead of the
+/// difficulty's own.
+class CodeABotGameScreen extends StatelessWidget {
+  const CodeABotGameScreen({super.key, required this.difficulty, this.questContext, this.challengeDay});
 
   final String difficulty;
   final QuestContext? questContext;
+  final String? challengeDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final day = challengeDay;
+    if (day == null) {
+      final args = (difficulty: difficulty, quest: questContext);
+      return _BotGame(args: args, sessionArgs: botSessionArgs(args), provider: botControllerProvider(args));
+    }
+    return ChallengeGate<CodeABotContent>(
+      day: day,
+      title: gameTitle(AppLocalizations.of(context), 'code-a-bot') ?? 'Code-a-Bot',
+      builder: (context, challenge, _) {
+        final args = (difficulty: challenge.content.difficulty, quest: null);
+        return _BotGame(
+          args: args,
+          sessionArgs: botSessionArgs(args, challengeDay: challenge.day),
+          provider: botChallengeControllerProvider((args: args, challenge: challenge)),
+        );
+      },
+    );
+  }
+}
+
+typedef _BotProvider = AutoDisposeStateNotifierProvider<BotController, BotState>;
+
+class _BotGame extends ConsumerWidget {
+  const _BotGame({required this.args, required this.sessionArgs, required this.provider});
+
+  final BotArgs args;
+  final GameSessionArgs sessionArgs;
+  final _BotProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final args = (difficulty: difficulty, quest: questContext);
-    final provider = botControllerProvider(args);
     ref.listen(provider, (_, __) {});
     return GameSessionFrame(
-      args: botSessionArgs(args),
+      args: sessionArgs,
       title: gameTitle(l10n, 'code-a-bot') ?? 'Code-a-Bot',
       reviewType: gameById('code-a-bot')!.reviewType,
       onPlayAgain: () => ref.read(provider.notifier).restart(),
-      boardBuilder: (context, session) => _BotBoard(args: args, session: session),
+      boardBuilder: (context, session) => _BotBoard(args: args, provider: provider, session: session),
     );
   }
 }
 
 class _BotBoard extends ConsumerWidget {
-  const _BotBoard({required this.args, required this.session});
+  const _BotBoard({required this.args, required this.provider, required this.session});
 
   final BotArgs args;
+  final _BotProvider provider;
   final GameSessionState session;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final state = ref.watch(botControllerProvider(args));
-    final ctrl = ref.read(botControllerProvider(args).notifier);
+    final state = ref.watch(provider);
+    final ctrl = ref.read(provider.notifier);
     final level = state.level;
     final building = state.phase == BotPhase.building;
     final total = ctrl.totalLevels;
-    final lastLevel = level.levelNumber >= total;
+    final lastLevel = state.levelIndex + 1 >= total;
     final failText = switch (state.failKind) {
       FailKind.crack => l10n.mobileBoard_botFellCrack,
       FailKind.crash => l10n.mobileBoard_botCrashed,
@@ -120,7 +155,7 @@ class _BotBoard extends ConsumerWidget {
               children: [
                 Text('⏱ ${clockText(session.elapsedSeconds)}',
                     style: const TextStyle(fontWeight: FontWeight.w700)),
-                Text(l10n.mobileBoard_levelOf('${level.levelNumber}', '$total'),
+                Text(l10n.mobileBoard_levelOf('${state.levelIndex + 1}', '$total'),
                     key: const Key('bot-level'),
                     style: const TextStyle(fontWeight: FontWeight.w700)),
                 Text(quizDifficultyLabel(l10n, args.difficulty),

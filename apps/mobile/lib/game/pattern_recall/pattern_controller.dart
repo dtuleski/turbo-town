@@ -14,6 +14,7 @@ GameSessionArgs patternSessionArgs(PatternArgs a) => (
       themeId: 'PATTERN_RECALL',
       difficulty: patternDifficultyById(a.difficulty)?.apiValue ?? 1,
       questContext: a.quest,
+      challengeDay: null,
     );
 
 enum PatternPhase { playback, input, correct, wrong, gameOver }

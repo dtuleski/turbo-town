@@ -5,12 +5,17 @@ import { ROUTES } from '@/config/constants'
 import { generateSudoku, isGridComplete, hasConflict, type SudokuGrid, type SudokuDifficulty } from '@/utils/sudokuUtils'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { difficultyName, sudokuState } from '@/utils/challengeContent'
 
 export default function SudokuGamePage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const difficulty = (searchParams.get('difficulty') || 'easy') as SudokuDifficulty
+  const challenge = useChallengeContent('sudoku')
+  const difficulty = (
+    challenge.status === 'ready' ? difficultyName(challenge.difficulty) : searchParams.get('difficulty') || 'easy'
+  ) as SudokuDifficulty
 
   const [gameId, setGameId] = useState('')
   const [solution, setSolution] = useState<number[][] | null>(null)
@@ -30,12 +35,14 @@ export default function SudokuGamePage() {
 
   // Initialize game
   useEffect(() => {
+    if (challenge.status === 'loading') return
     const init = async () => {
       try {
         const game = await startGame({ themeId: 'SUDOKU', difficulty: difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3 })
         setGameId(game.id)
 
-        const { puzzle: p, solution: s } = generateSudoku(difficulty)
+        // Challenge mode plays the served puzzle; otherwise a new one as before.
+        const { puzzle: p, solution: s } = challenge.status === 'ready' ? sudokuState(challenge.content) : generateSudoku(difficulty)
         setSolution(s)
         setGrid(p.map(row => [...row]))
         setInitial(p.map(row => row.map(cell => cell !== null)))
@@ -49,7 +56,7 @@ export default function SudokuGamePage() {
       }
     }
     init()
-  }, [difficulty, navigate])
+  }, [difficulty, navigate, challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer
   useEffect(() => {

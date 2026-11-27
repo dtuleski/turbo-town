@@ -2,9 +2,13 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ROUTES } from '@/config/constants'
-import { generateWordPuzzle, checkWord, isValidSelection } from '@/utils/wordPuzzleUtils'
+import { generateWordPuzzle, checkWord, isValidSelection, type WordPuzzle } from '@/utils/wordPuzzleUtils'
 import { startGame, completeGame } from '@/api/game'
 import ScoreBreakdownModal from '@/components/game/ScoreBreakdownModal'
+import { useChallengeContent } from '@/hooks/useChallengeContent'
+import { difficultyName, wordPuzzleFor } from '@/utils/challengeContent'
+
+const EMPTY_PUZZLE: WordPuzzle = { grid: [], words: [], foundWords: new Set(), gridSize: 0 }
 
 const DIFFICULTY_CONFIG = {
   easy: {
@@ -33,10 +37,16 @@ export default function WordPuzzleGamePage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const difficulty = (searchParams.get('difficulty') || 'easy') as keyof typeof DIFFICULTY_CONFIG
+  const challenge = useChallengeContent('word-puzzle')
+  const difficulty = (
+    challenge.status === 'ready' ? difficultyName(challenge.difficulty) : searchParams.get('difficulty') || 'easy'
+  ) as keyof typeof DIFFICULTY_CONFIG
 
   const [gameId, setGameId] = useState<string>('')
-  const [puzzle] = useState(generateWordPuzzle(difficulty, i18n.language))
+  // Challenge mode plays the served grid (set once the challenge is loaded); otherwise a new one as before.
+  const [puzzle, setPuzzle] = useState<WordPuzzle>(() =>
+    challenge.status === 'off' ? generateWordPuzzle(difficulty, i18n.language) : EMPTY_PUZZLE
+  )
   const [selectedCells, setSelectedCells] = useState<Cell[]>([])
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set())
   const [isSelecting, setIsSelecting] = useState(false)
@@ -56,6 +66,8 @@ export default function WordPuzzleGamePage() {
 
   // Initialize game
   useEffect(() => {
+    if (challenge.status === 'loading') return
+    if (challenge.status === 'ready') setPuzzle(wordPuzzleFor(challenge.content, i18n.language))
     const initGame = async () => {
       try {
         const game = await startGame({
@@ -78,7 +90,7 @@ export default function WordPuzzleGamePage() {
       }
     }
     initGame()
-  }, [difficulty, config.timeLimit, navigate])
+  }, [difficulty, config.timeLimit, navigate, challenge.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer
   useEffect(() => {

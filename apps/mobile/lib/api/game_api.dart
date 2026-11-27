@@ -61,6 +61,7 @@ class GameApi {
             nextLeg { themeId difficulty params { levelId pageTheme } }
           }
         }
+        challenge { day recorded bestScore rank isNewBest }
       }
     }
   ''';
@@ -133,11 +134,14 @@ class GameApi {
   ''';
 
   /// Starts a game. [questContext] is sent only when the game was opened from
-  /// a Quest Map node; the server validates it.
+  /// a Quest Map node, and `challengeContext: {day}` only when it was opened as
+  /// the Daily Challenge of [challengeDay] (the quest context wins when both are
+  /// set). The server validates both.
   Future<StartGameResult> startGame({
     required String themeId,
     required int difficulty,
     QuestContext? questContext,
+    String? challengeDay,
   }) async {
     final result = await _client.mutate(
       MutationOptions(
@@ -146,7 +150,10 @@ class GameApi {
           'input': {
             'themeId': themeId,
             'difficulty': difficulty,
-            if (questContext != null) 'questContext': questContext.toJson(),
+            if (questContext != null)
+              'questContext': questContext.toJson()
+            else if (challengeDay != null)
+              'challengeContext': {'day': challengeDay},
           },
         },
       ),

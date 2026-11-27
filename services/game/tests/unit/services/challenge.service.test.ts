@@ -3,6 +3,15 @@
  */
 jest.unmock('@aws-sdk/lib-dynamodb');
 jest.unmock('@aws-sdk/client-dynamodb');
+// These fixtures play Code-a-Bot, so the draw is pinned to it. The real first-batch rotation (six
+// games) runs in challenge.service.rotation.test.ts.
+jest.mock('@memory-game/shared', () => {
+  const actual = jest.requireActual('@memory-game/shared');
+  return {
+    ...actual,
+    eligibleRotation: () => actual.CHALLENGE_ROTATION.filter((e: { gameId: string }) => e.gameId === 'code-a-bot'),
+  };
+});
 
 import { GameStatus, ValidationError } from '@memory-game/shared';
 import type { Game } from '@memory-game/shared';

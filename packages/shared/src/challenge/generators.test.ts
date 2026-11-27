@@ -5,9 +5,11 @@ import type { RotationEntry } from './types';
 const codeABot = CHALLENGE_ROTATION.find((e) => e.gameId === 'code-a-bot') as RotationEntry;
 
 describe('generator registry', () => {
-  it('knows code-a-bot only', () => {
-    expect(hasGenerator('code-a-bot')).toBe(true);
-    expect(hasGenerator('sudoku')).toBe(false);
+  it('knows the first batch only', () => {
+    for (const id of ['code-a-bot', 'sudoku', 'math-challenge', 'math-maze', 'word-puzzle', 'hangman']) {
+      expect(hasGenerator(id)).toBe(true);
+    }
+    expect(hasGenerator('memory-match')).toBe(false);
     expect(hasGenerator('toString')).toBe(false);
   });
 
@@ -24,7 +26,7 @@ describe('generator registry', () => {
   });
 
   it('throws for a game without a generator', () => {
-    const sudoku = CHALLENGE_ROTATION.find((e) => e.gameId === 'sudoku') as RotationEntry;
-    expect(() => generateContent(sudoku, '2026-11-26')).toThrow('No challenge generator for sudoku');
+    const memory = CHALLENGE_ROTATION.find((e) => e.gameId === 'memory-match') as RotationEntry;
+    expect(() => generateContent(memory, '2026-11-26')).toThrow('No challenge generator for memory-match');
   });
 });

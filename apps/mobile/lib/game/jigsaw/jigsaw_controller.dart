@@ -15,6 +15,7 @@ GameSessionArgs jigsawSessionArgs(JigsawArgs a) => (
       themeId: 'JIGSAW_PUZZLE',
       difficulty: quizDifficultyNumber(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 class JigsawState {

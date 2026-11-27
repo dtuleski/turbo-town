@@ -14,6 +14,7 @@ GameSessionArgs tttSessionArgs(TttArgs a) => (
       themeId: 'TIC_TAC_TOE',
       difficulty: tttDifficultyValue(a.difficulty),
       questContext: a.quest,
+      challengeDay: null,
     );
 
 enum RoundResult { win, lose, draw }

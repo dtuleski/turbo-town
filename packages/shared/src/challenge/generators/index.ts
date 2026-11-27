@@ -5,11 +5,21 @@
 import { mulberry32, seedFrom } from '../rng';
 import type { ChallengeContent, ChallengeDay, ChallengeLanguage, ChallengeTotals, RotationEntry } from '../types';
 import { codeABotTotals, generateCodeABot } from './code-a-bot';
+import { generateHangman, hangmanTotals } from './hangman';
+import { generateMathChallenge, mathChallengeTotals } from './math-challenge';
+import { generateMathMaze, mathMazeTotals } from './math-maze';
+import { generateSudoku, sudokuTotals } from './sudoku';
+import { generateWordPuzzle, wordPuzzleTotals } from './word-puzzle';
 
 type Generator = (entry: RotationEntry, rng: () => number) => ChallengeContent;
 
 const GENERATORS: Readonly<Record<string, Generator>> = Object.freeze({
   'code-a-bot': (entry: RotationEntry) => generateCodeABot(entry),
+  sudoku: generateSudoku,
+  'math-challenge': generateMathChallenge,
+  'math-maze': generateMathMaze,
+  'word-puzzle': generateWordPuzzle,
+  hangman: generateHangman,
 });
 
 export function hasGenerator(gameId: string): boolean {
@@ -25,15 +35,25 @@ export function generateContent(entry: RotationEntry, day: ChallengeDay): Challe
 
 /**
  * The totals a completion must report for the content. Language-dependent games have the same totals
- * in every language, so `language` only picks the variant.
+ * in every language, so `language` only picks the variant (default en).
  */
-export function expectedTotals(content: ChallengeContent, _language?: ChallengeLanguage): ChallengeTotals {
+export function expectedTotals(content: ChallengeContent, language?: ChallengeLanguage): ChallengeTotals {
   switch (content.kind) {
     case 'code-a-bot':
       return codeABotTotals(content);
+    case 'sudoku':
+      return sudokuTotals(content);
+    case 'math-challenge':
+      return mathChallengeTotals(content);
+    case 'math-maze':
+      return mathMazeTotals(content);
+    case 'word-puzzle':
+      return wordPuzzleTotals(content, language);
+    case 'hangman':
+      return hangmanTotals(content, language);
     default: {
-      const unknown: never = content.kind;
-      throw new Error(`No challenge totals for ${String(unknown)}`);
+      const unknown: never = content;
+      throw new Error(`No challenge totals for ${String((unknown as { kind?: unknown }).kind)}`);
     }
   }
 }
