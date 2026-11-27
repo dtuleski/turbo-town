@@ -4,6 +4,10 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/unsubscribe",
+      "destination": "https://7pwns5lkof.execute-api.us-east-1.amazonaws.com/unsubscribe"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
