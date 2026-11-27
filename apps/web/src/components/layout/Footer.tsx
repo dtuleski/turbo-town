@@ -10,6 +10,7 @@ const Footer = () => {
           <p className="mt-2 space-x-4">
             <Link to={ROUTES.PRIVACY}>Privacy Policy</Link>
             <Link to={ROUTES.TERMS}>Terms of Service</Link>
+            <Link to={ROUTES.SUPPORT}>Support</Link>
           </p>
         </div>
       </div>

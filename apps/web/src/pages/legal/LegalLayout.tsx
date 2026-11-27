@@ -21,6 +21,7 @@ export default function LegalLayout({ title, children }: { title: string; childr
         <footer className="mt-12 text-sm text-gray-600 space-x-4">
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/terms">Terms of Service</Link>
+          <Link to="/support">Support</Link>
           <a href={`mailto:${LEGAL_CONTACT_EMAIL}`}>{LEGAL_CONTACT_EMAIL}</a>
         </footer>
       </main>
