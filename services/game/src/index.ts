@@ -4,7 +4,7 @@ import { AppleService } from './services/apple.service';
 import { logger } from './utils/logger';
 import { sanitizeError } from './utils/error-mapper';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { handlePostConfirmation, isPostConfirmationEvent } from './post-confirmation';
 
 // Allowed origins for CORS
@@ -37,7 +37,7 @@ const EMAIL_PREFS_TABLE = process.env.EMAIL_PREFS_TABLE_NAME || 'memory-game-ema
  * GET /unsubscribe?userId=xxx&type=activation
  * Writes activationEmailOptOut: true to the email-prefs table and returns an HTML confirmation page.
  */
-async function handleUnsubscribe(event: any): Promise<any> {
+export async function handleUnsubscribe(event: any): Promise<any> {
   const queryParams = event.queryStringParameters || {};
   const userId = queryParams.userId;
   const type = queryParams.type;
@@ -51,13 +51,13 @@ async function handleUnsubscribe(event: any): Promise<any> {
   }
 
   if (type === 'activation') {
-    await ddbClient.send(new PutCommand({
+    // Update only this flag: a Put would replace the whole row and wipe the user's other
+    // settings (dailyDigest, email, time zone).
+    await ddbClient.send(new UpdateCommand({
       TableName: EMAIL_PREFS_TABLE,
-      Item: {
-        userId,
-        activationEmailOptOut: true,
-        updatedAt: new Date().toISOString(),
-      },
+      Key: { userId },
+      UpdateExpression: 'SET activationEmailOptOut = :t, updatedAt = :now',
+      ExpressionAttributeValues: { ':t': true, ':now': new Date().toISOString() },
     }));
   }
 
