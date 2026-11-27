@@ -4930,4 +4930,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auth_hidePassword => 'Hide password';
+
+  @override
+  String get quest_paidWorld => 'This world is included with a paid plan.';
+
+  @override
+  String get quest_seePlans => 'See plans';
 }

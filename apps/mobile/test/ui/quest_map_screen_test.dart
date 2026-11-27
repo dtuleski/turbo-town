@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/fake_game_api.dart';
 import '../helpers/pump_router.dart';
+import 'package:dashden_mobile/subscription/subscription_controller.dart';
+import 'package:dashden_mobile/ui/screens/subscription_screen.dart';
 
 QuestNodeView _node(
   String id, {
@@ -97,6 +99,34 @@ void main() {
     expect(find.byKey(const Key('world-locked-science-island')), findsOneWidget);
     expect(find.textContaining(RegExp(r'\$|Stripe|Subscribe', caseSensitive: false)),
         findsNothing);
+  });
+
+  testWidgets('where App Store plans are offered, a paid world links to the plans screen',
+      (tester) async {
+    useTallSurface(tester);
+    final h = await pumpRouterApp(tester,
+        location: '/quest-map',
+        api: FakeGameApi(questProgress: _progress()),
+        overrides: [storeSubscriptionsEnabledProvider.overrideWithValue(true)]);
+    await tester.pumpAndSettle();
+    expect(find.text('🔒 This world is included with a paid plan.'), findsOneWidget);
+    expect(find.textContaining('not available in the app'), findsNothing);
+    await tester.ensureVisible(find.byKey(const Key('paid-world-plans')));
+    await tester.tap(find.byKey(const Key('paid-world-plans')));
+    await tester.pumpAndSettle();
+    // push() adds the plans screen on top of the map.
+    expect(find.byType(SubscriptionScreen), findsOneWidget);
+    expect(h.router.canPop(), isTrue);
+  });
+
+  testWidgets('without App Store plans, a paid world keeps the neutral note', (tester) async {
+    useTallSurface(tester);
+    await pumpRouterApp(tester,
+        location: '/quest-map',
+        api: FakeGameApi(questProgress: _progress()),
+        overrides: [storeSubscriptionsEnabledProvider.overrideWithValue(false)]);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('paid-world-plans')), findsNothing);
   });
 
   testWidgets('a Memory Match node opens a panel whose play button launches the quest',

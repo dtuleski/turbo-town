@@ -4974,4 +4974,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get auth_hidePassword => 'Ocultar senha';
+
+  @override
+  String get quest_paidWorld => 'Este mundo está incluído nos planos pagos.';
+
+  @override
+  String get quest_seePlans => 'Ver planos';
 }

@@ -2458,5 +2458,7 @@
   "challenge_results_notPlayed": "Você não jogou este desafio. O desafio de hoje espera por você no hub de jogos.",
   "challenge_results_toHub": "Ir para o desafio de hoje",
   "auth_showPassword": "Mostrar senha",
-  "auth_hidePassword": "Ocultar senha"
+  "auth_hidePassword": "Ocultar senha",
+  "quest_paidWorld": "Este mundo está incluído nos planos pagos.",
+  "quest_seePlans": "Ver planos"
 }

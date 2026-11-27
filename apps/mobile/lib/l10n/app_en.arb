@@ -2493,5 +2493,7 @@
   "challenge_results_notPlayed": "You did not play this challenge. Today''s challenge is waiting in the game hub.",
   "challenge_results_toHub": "Go to today''s challenge",
   "auth_showPassword": "Show password",
-  "auth_hidePassword": "Hide password"
+  "auth_hidePassword": "Hide password",
+  "quest_paidWorld": "This world is included with a paid plan.",
+  "quest_seePlans": "See plans"
 }
