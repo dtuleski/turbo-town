@@ -4992,4 +4992,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get auth_hidePassword => 'Ocultar contraseña';
+
+  @override
+  String get quest_paidWorld =>
+      'Este mundo está incluido en los planes de pago.';
+
+  @override
+  String get quest_seePlans => 'Ver planes';
 }

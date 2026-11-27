@@ -8811,6 +8811,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide password'**
   String get auth_hidePassword;
+
+  /// No description provided for @quest_paidWorld.
+  ///
+  /// In en, this message translates to:
+  /// **'This world is included with a paid plan.'**
+  String get quest_paidWorld;
+
+  /// No description provided for @quest_seePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'See plans'**
+  String get quest_seePlans;
 }
 
 class _AppLocalizationsDelegate

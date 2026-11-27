@@ -9,6 +9,7 @@ import '../../l10n/game_text.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../quest/quest_launch.dart';
 import '../../quest/quest_map_logic.dart';
+import '../../subscription/subscription_controller.dart';
 import '../widgets/error_view.dart';
 import '../widgets/loading_view.dart';
 
@@ -242,7 +243,7 @@ class _WorldSection extends StatelessWidget {
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text('🔒 ${l10n.mobileGame_worldLockedApp}'),
+              child: const PaidWorldNotice(prefix: '🔒 '),
             ),
           ),
         const SizedBox(height: 8),
@@ -602,11 +603,46 @@ class _NodePanel extends StatelessWidget {
                   ? l10n.quest_panel_bonusLocked
                   : l10n.quest_panel_locked),
               PanelForm.unavailable => Text(l10n.quest_panel_unavailable),
-              PanelForm.paywall => Text(l10n.mobileGame_worldLockedApp),
+              PanelForm.paywall => const PaidWorldNotice(closesSheet: true),
             },
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A world that needs a paid plan. Where App Store plans are offered (iOS), it says so and links
+/// to the plans screen; elsewhere it keeps the neutral text (no upsell without in-app billing).
+class PaidWorldNotice extends ConsumerWidget {
+  const PaidWorldNotice({super.key, this.prefix = '', this.closesSheet = false});
+
+  final String prefix;
+  final bool closesSheet;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    if (!ref.watch(storeSubscriptionsEnabledProvider)) {
+      return Text('$prefix${l10n.mobileGame_worldLockedApp}');
+    }
+    return Column(
+      key: const Key('paid-world-notice'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('$prefix${l10n.quest_paidWorld}'),
+        TextButton(
+          key: const Key('paid-world-plans'),
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: () {
+            final router = GoRouter.of(context);
+            if (closesSheet) Navigator.of(context).pop();
+            router.push('/subscription');
+          },
+          child: Text(l10n.quest_seePlans),
+        ),
+      ],
     );
   }
 }
