@@ -184,6 +184,52 @@ describe('AccountDeletionService.deleteAccount', () => {
     expect(cognito.calls.some((c) => c instanceof AdminDeleteUserCommand)).toBe(false);
   });
 
+  it('does not touch the daily-challenge table when DAILY_CHALLENGE_TABLE_NAME is unset', async () => {
+    const { service, ddb } = setup();
+    await service.deleteAccount('u1');
+    const tables = ddb.calls.map((c) => c.input?.TableName ?? Object.keys(c.input?.RequestItems ?? {})[0]);
+    expect(tables.some((t) => String(t).includes('daily-challenge'))).toBe(false);
+  });
+
+  it('deletes the user\'s challenge scores through user-index when the table is set', async () => {
+    const ddb = fakeClient((c) => {
+      if (c instanceof QueryCommand && c.input.TableName === 'memory-game-daily-challenge-prod') {
+        return {
+          Items: [
+            { pk: '2026-11-25', sk: 'SCORE#u1', userId: 'u1', bestScore: 900 },
+            { pk: '2026-11-26', sk: 'SCORE#u1', userId: 'u1', bestScore: 1000 },
+          ],
+        };
+      }
+      if (c instanceof QueryCommand) return { Items: [] };
+      if (c instanceof BatchWriteCommand) return { UnprocessedItems: {} };
+      return {};
+    });
+    const cognito = fakeClient((c) => (c instanceof ListUsersCommand ? { Users: [{ Username: 'u1' }] } : {}));
+    const service = new AccountDeletionService({
+      ddb: ddb as any,
+      cognito: cognito as any,
+      stripe: async () => ({}) as any,
+      userPoolId: 'us-east-1_pool',
+      env: { ...ENV, DAILY_CHALLENGE_TABLE_NAME: 'memory-game-daily-challenge-prod' },
+      now: () => NOW,
+    });
+    await service.deleteAccount('u1');
+    const query = ddb.calls.find((c) => c instanceof QueryCommand && c.input.TableName === 'memory-game-daily-challenge-prod');
+    expect(query.input).toMatchObject({
+      IndexName: 'user-index',
+      KeyConditionExpression: 'userId = :u',
+      ExpressionAttributeValues: { ':u': 'u1' },
+    });
+    const batches = ddb.calls.filter((c) => c instanceof BatchWriteCommand).map((c) => c.input.RequestItems);
+    expect(batches).toContainEqual({
+      'memory-game-daily-challenge-prod': [
+        { DeleteRequest: { Key: { pk: '2026-11-25', sk: 'SCORE#u1' } } },
+        { DeleteRequest: { Key: { pk: '2026-11-26', sk: 'SCORE#u1' } } },
+      ],
+    });
+  });
+
   it('requires a user id', async () => {
     const { service } = setup();
     await expect(service.deleteAccount('')).rejects.toThrow('userId is required');

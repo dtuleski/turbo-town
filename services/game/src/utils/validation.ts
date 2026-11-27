@@ -12,6 +12,9 @@ export const startGameInputSchema = z.object({
   // emits its own error text for it; QuestService parses it with the shared schema and
   // returns the single generic quest error on any failure.
   questContext: z.unknown().optional(),
+  // Daily Challenge context (`{ day }`), passed through as `unknown` for the same reason;
+  // ChallengeService returns the single generic challenge error on any failure.
+  challengeContext: z.unknown().optional(),
 });
 
 export const completeGameInputSchema = z.object({

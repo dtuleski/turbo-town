@@ -2674,3 +2674,129 @@ THREE MINOR FINDINGS, one of which is a product decision:
 **AI Response**: "Code-generation plan written and self-approved under owner delegation (aidlc-docs/construction/plans/quest-map-shared-core-code-generation-plan.md). Implemented packages/shared/src/quest (types, themes, config, schema, evaluator, gauntlet, validate, index), constants/paid-games.ts, optional Game.questContext. packages/shared: jest 23 suites / 532 tests pass (baseline 18 / 363), tsc --noEmit exit 0, npm run build exit 0; 39/39 hand mutants killed. Summary in aidlc-docs/construction/quest-map-shared-core/code/implementation-summary.md."
 **Context**: CONSTRUCTION - Code Generation, unit QM1 Shared Quest Core
 ---
+
+## Daily Challenge and Push - Initial Request
+**Timestamp**: 2026-11-26T17:03:29Z
+**User Input**: "We have a daily digest email. Can we have that as a push notification as well for users that have the app?
+
+ 
+
+Also, I would like a feature where a daily challenge is proposed and a push notification is sent at 12pm local time. Help me with a suggested scope. Maybe a random challenge is defined and a speciifc challenge leaderboard is setup? Next morning, as part of the daily digest you get a specific section with the results of yesterday's challenge? Also, the toggle for daily diget must apply for all push notifications.
+
+ 
+
+Last thing. When a new user is setup, daily diggest toggle must be on by default
+
+ 
+
+Yes, I did buy light"
+**AI Response**: "Verified the TestFlight Light purchase (account 94c834a8, Apple source ACTIVE, Sandbox). Proposed three phases: (1) digest on by default for new accounts; (2) push foundation (APNs via Amazon SNS, permission soft-ask, device registry, one toggle for email and all pushes) and the digest as a push; (3) daily challenge (same game and settings for everyone, US Eastern challenge day, 12pm local push, challenge leaderboard, results in the next digest). Asked: existing users without a choice, email send time, first vs best attempt, free plays, game rotation list."
+**Context**: Pre-inception scoping in chat (owner asked for a suggested scope)
+
+---
+
+## Daily Challenge and Push - Owner Decisions
+**Timestamp**: 2026-11-26T17:03:29Z
+**User Input**: "let's start sending the daily email at 8am local time always
+
+ 
+
+best attempt
+
+ 
+
+free users are still limited to 3 plays
+
+ 
+
+memory match, math challenge, word puzzle, sudoku, sequence memory, code-a-bot, Geo Quiz, History Quiz, Civics Quiz, Hangman, Space Coder, Math Maze, PAttern, Recall, Space Entry, Bond & Burn, Mini Golf"
+**AI Response**: "Phase 1 implemented outside the AI-DLC feature flow as a small change (PR #41: Cognito Post Confirmation trigger sets the digest on for new accounts; existing users unchanged; Resend added to the privacy policy). Phases 2 and 3 started as the AI-DLC feature 'Daily Challenge and Push': workspace detection (brownfield, reverse-engineering artifacts present, reused), requirements analysis with the owner's decisions recorded and the remaining open points in daily-challenge-requirement-verification-questions.md."
+**Context**: INCEPTION - Workspace Detection and Requirements Analysis (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - Requirement Answers and Phase 1 Deploy Approval
+**Timestamp**: 2026-11-26T17:23:21Z
+**User Input**: "I want to defer to all your recommendations. Just go!!"
+**AI Response**: "Recorded A (the recommendation) for all 13 requirement questions. Existing users without a saved digest choice stay off (recommendation). Phase 1 deployed: PR #41 merged (47400b9), CI deploy run 45866696159 succeeded; Lambda permission cognito-post-confirmation added; user pool LambdaConfig PostConfirmation set (only LambdaConfig changed, verified against a full backup); end-to-end test sign-up got dailyDigest true, test account removed. Proceeding with the requirements document; later inception gates are self-approved under the owner's delegation and logged."
+**Context**: INCEPTION - Requirements Analysis (Daily Challenge and Push); Phase 1 production rollout
+
+---
+
+## Daily Challenge and Push - Requirements and Workflow Planning
+**Timestamp**: 2026-11-26T17:25:19Z
+**AI Response**: "Requirements written (24 FR, 7 NFR). User Stories skipped. Workflow planning self-approved under owner delegation. Finding: none of the 16 rotation games repeats a puzzle today except Code-a-Bot (fixed levels); web uses Math.random, app uses Random(), separate generators. Direction: seeded generators in packages/shared, content generated once and served to web and app. Units: DC1 notifications backend, DC2 challenge core, DC3 repeatable content (first batch of 6 games), DC4 web, DC5 app. Owner actions: enable Push Notifications on the app id, create an APNs key."
+**Context**: INCEPTION - Requirements Analysis complete; Workflow Planning complete (Daily Challenge and Push)
+
+---
+## Daily Challenge and Push - Application Design
+**Timestamp**: 2026-11-26T17:49:31Z
+**User Input**: "(workflow instruction) carry out the AI-DLC Application Design and Units Generation stages (and decide the open points), self-approving each gate." (owner delegation 2026-11-26: "I want to defer to all your recommendations. Just go!!")
+**AI Response**: "Merged origin/main (47400b9, PR #41) into feat/daily-challenge: the branch was cut from 161f157 and lacked post-confirmation.ts. Application design written: plans/daily-challenge-application-design-plan.md (Q1 to Q11 self-answered), application-design/daily-challenge-{components,component-methods,services,component-dependency}.md. Decisions: scheduler reuses DashDen-DailyEmail-prod on a 15-minute schedule; once-per-day claims on the email-prefs item (no log table); APNs through SNS, secret dashden/apns/prod read at runtime, push off when absent; two new tables (memory-game-daily-challenge, memory-game-push-devices); content generated server-side by seeded shared generators and served to web and app; per-language variants for Word Puzzle and Hangman. Open points decided: fixed settings medium (difficulty 2) for every game (code-a-bot 5 levels, sudoku 1 medium puzzle, math-challenge 15 questions, math-maze 10x10, word-puzzle medium per language, hangman 5 words per language); DC3 this run = first batch of 6 only; privacy text drafted (plan Q9, implemented in DC4); soft-ask shown only when the toggle is on (Q10). Security Baseline: compliant or N/A on all 15 rules at design stage; SECURITY-11 limit stated (scores still from client metrics, same as normal leaderboards). Approval prompt: 'Application Design complete. Approve and continue to Units Generation?'"
+**Context**: INCEPTION - Application Design (Daily Challenge and Push)
+---
+## Daily Challenge and Push - Application Design Approval
+**Timestamp**: 2026-11-26T17:49:31Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "Application Design APPROVED (self-approved, flagged for owner review: settings table, privacy text, soft-ask rule, single APNs secret trade-off)."
+**Context**: INCEPTION - Application Design gate
+---
+## Daily Challenge and Push - Units Generation
+**Timestamp**: 2026-11-26T17:49:31Z
+**AI Response**: "Units generated: plans/daily-challenge-unit-of-work-plan.md, application-design/daily-challenge-unit-of-work{,-dependency,-story-map}.md. Units and order: DC2 challenge core (feat/dc2-challenge-core), DC3 repeatable content first batch (feat/dc3-repeatable-content), DC1 notifications backend (feat/dc1-notifications-backend), DC4 web (feat/dc4-web-challenge), DC5 app (feat/dc5-app-challenge-push); linear branch chain, one PR per unit against main, merge in order, each merge safe alone (features off until table env vars are set). Production steps drafted in construction/plans/daily-challenge-production-steps.md (P1 to P14), none run. Approval prompt: 'Units Generation complete. Approve and continue to CONSTRUCTION?'"
+**Context**: INCEPTION - Units Generation (Daily Challenge and Push)
+---
+## Daily Challenge and Push - Units Generation Approval
+**Timestamp**: 2026-11-26T17:49:31Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "Units Generation APPROVED (self-approved). Next: CONSTRUCTION, DC2 Functional Design."
+**Context**: INCEPTION - Units Generation gate
+---
+
+## Daily Challenge and Push - DC2 Functional Design and Infrastructure Design
+**Timestamp**: 2026-11-26T18:03:24Z
+**User Input**: "(workflow instruction) Your part: FEAT-001 (unit DC2, challenge core). ... Implement only FEAT-001's steps, including its AI-DLC docs, its self-approved gates ..." (owner delegation 2026-11-26: "I want to defer to all your recommendations. Just go!!")
+**AI Response**: "Branch feat/dc2-challenge-core cut from feat/daily-challenge (0e2cd8e). Written: construction/plans/daily-challenge-challenge-core-functional-design-plan.md (F1 to F7 self-answered), construction/daily-challenge-challenge-core/functional-design/{domain-entities,business-rules,business-logic-model}.md, construction/daily-challenge-challenge-core/infrastructure-design/infrastructure-design.md; P1 to P4 of construction/plans/daily-challenge-production-steps.md filled with exact zsh commands (cdk diff and deploy MemoryGame-Database-prod --exclusively, put-role-policy DailyChallengeAccess JSON, read-merge-write of DAILY_CHALLENGE_TABLE_NAME). Decisions: DC2 defines only the Code-a-Bot content type (DC3 extends the union); Memory Match rotation theme ANIMALS (disabled); not-recorded completions return recorded false with null best and rank; Game Lambda IAM is GetItem, PutItem, Query, BatchWriteItem only. Nothing run against AWS. Approval prompt: 'DC2 Functional Design and Infrastructure Design complete. Continue to Code Generation?'"
+**Context**: CONSTRUCTION - DC2 Functional Design and Infrastructure Design (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - DC2 Functional Design and Infrastructure Design Approval
+**Timestamp**: 2026-11-26T18:03:24Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC2 Functional Design and Infrastructure Design APPROVED (self-approved, flagged for owner review: rotation settings table, Memory Match theme, IAM action list). Next: DC2 Code Generation."
+**Context**: CONSTRUCTION - DC2 Functional Design and Infrastructure Design gate
+
+---
+
+## Daily Challenge and Push - DC2 Code Generation
+**Timestamp**: 2026-11-26T18:13:22Z
+**User Input**: "(workflow instruction, FEAT-001) implement plan.md items 2 to 8" (owner delegation 2026-11-26: "I want to defer to all your recommendations. Just go!!")
+**AI Response**: "Generated: packages/shared/src/challenge/{types,day,rng,rotation,draw,index}.ts and generators/{index,code-a-bot}.ts (exported from src/index.ts) with tests day, rng, draw, generators; Game.challengeDay persisted by GameRepository.create; services/game/src/repositories/challenge.repository.ts, services/game/src/services/challenge.service.ts (createChallengeService off without DAILY_CHALLENGE_TABLE_NAME, CHALLENGE_UNAVAILABLE_MESSAGE), services/game/src/types/challenge.ts; GameService optional trailing challengeService, challenge start validated before the paid-game gate and the rate limit, paid gate skipped only for a validated challenge start, fail-soft finalizeChallenge after finalizeQuest; GameHandler routes getDailyChallenge and getChallengeLeaderboard, completeGame.challenge; schema.graphql documented; account deletion of challenge scores via user-index when the env var is set; CDK dailyChallengeTable (rank-index, user-index) with output, Lambda env var and grants. Approval prompt: 'DC2 Code Generation complete. Continue to Build and Test?'"
+**Context**: CONSTRUCTION - DC2 Code Generation (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - DC2 Code Generation Approval
+**Timestamp**: 2026-11-26T18:13:22Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC2 Code Generation APPROVED (self-approved). Next: DC2 Build and Test."
+**Context**: CONSTRUCTION - DC2 Code Generation gate
+
+---
+
+## Daily Challenge and Push - DC2 Build and Test
+**Timestamp**: 2026-11-26T18:13:22Z
+**User Input**: "(workflow instruction, FEAT-001) run the verification commands and record the results"
+**AI Response**: "packages/shared: npx jest 28 suites / 591 tests pass (baseline 24 / 539), npm run build pass. services/game: npx tsc --noEmit pass; npx jest 21 suites pass, 351 tests pass, only the known failures event-publisher.service.test.ts and tests/integration/event-flow.test.ts (baseline 17 suites / 291 tests). infrastructure: npx tsc --noEmit pass. Summary: construction/build-and-test/daily-challenge-challenge-core-build-and-test-summary.md (Security Baseline SECURITY-01 to 15 compliant or N/A). Nothing deployed. Approval prompt: 'DC2 Build and Test complete. Continue to DC3?'"
+**Context**: CONSTRUCTION - DC2 Build and Test (Daily Challenge and Push)
+
+---
+
+## Daily Challenge and Push - DC2 Build and Test Approval
+**Timestamp**: 2026-11-26T18:13:22Z
+**User Input**: "(self-approved under owner delegation: 'I want to defer to all your recommendations. Just go!!')"
+**AI Response**: "DC2 Build and Test APPROVED (self-approved). DC2 committed on feat/dc2-challenge-core, not pushed. Next: DC3 Repeatable content."
+**Context**: CONSTRUCTION - DC2 Build and Test gate
+
+---

@@ -24,6 +24,7 @@ export class DatabaseStack extends cdk.Stack {
   public readonly userAggregatesTable: dynamodb.Table;
   public readonly rateLimitBucketsTable: dynamodb.Table;
   public readonly questProgressTable: dynamodb.Table;
+  public readonly dailyChallengeTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -319,6 +320,33 @@ export class DatabaseStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
+    // DailyChallenge Table - one CHALLENGE item per day and one SCORE#<userId> item per player per day
+    this.dailyChallengeTable = new dynamodb.Table(this, 'DailyChallengeTable', {
+      tableName: `memory-game-daily-challenge-${environment}`,
+      partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+
+    // Ordered leaderboard and rank counts (rankKey ascending = higher score, then earlier time)
+    this.dailyChallengeTable.addGlobalSecondaryIndex({
+      indexName: 'rank-index',
+      partitionKey: { name: 'rankPk', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'rankKey', type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // Account deletion: a user's scores across days
+    this.dailyChallengeTable.addGlobalSecondaryIndex({
+      indexName: 'user-index',
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
     // Outputs
     new cdk.CfnOutput(this, 'UsersTableName', {
       value: this.usersTable.tableName,
@@ -363,6 +391,11 @@ export class DatabaseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'QuestProgressTableName', {
       value: this.questProgressTable.tableName,
       exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-QuestProgressTableName`,
+    });
+
+    new cdk.CfnOutput(this, 'DailyChallengeTableName', {
+      value: this.dailyChallengeTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-DailyChallengeTableName`,
     });
   }
 }

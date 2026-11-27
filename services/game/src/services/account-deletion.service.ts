@@ -114,6 +114,15 @@ export class AccountDeletionService {
       KeyConditionExpression: 'userId = :u',
       ExpressionAttributeValues: { ':u': userId },
     }, ['themeIdDifficultyPeriod', 'scoreUserId']);
+    // Daily Challenge scores. Only when configured: there is no default name, because a table that
+    // does not exist yet would make every deletion fail.
+    if (env.DAILY_CHALLENGE_TABLE_NAME) {
+      await this.deleteByQuery(env.DAILY_CHALLENGE_TABLE_NAME, {
+        IndexName: 'user-index',
+        KeyConditionExpression: 'userId = :u',
+        ExpressionAttributeValues: { ':u': userId },
+      }, ['pk', 'sk']);
+    }
     // The App Store binding goes too, so a later account can restore the same purchase.
     if (apple?.externalId) {
       await this.deps.ddb.send(

@@ -36,6 +36,11 @@ type Query {
   canStartGame: CanStartGameResponse!
   # Quest Map: progress, tier, daily limit and remaining plays. No input; user from the JWT.
   getQuestProgress: QuestProgressView!
+  # Daily Challenge: today's challenge (US Eastern day). Null when the feature is off.
+  getDailyChallenge: DailyChallenge
+  # Daily Challenge leaderboard. day defaults to today (future or malformed days are rejected);
+  # limit 1..50, default 10. Null when the feature is off or the day has no challenge.
+  getChallengeLeaderboard(day: String, limit: Int): ChallengeLeaderboard
   listAvailableGames: [GameCatalogItem!]!
   
   # Language learning queries
@@ -68,6 +73,14 @@ input StartGameInput {
   # Optional Quest Map launch context. Validated server-side (zod) before rate limiting; any
   # failure returns one generic error and consumes no play. Without it a start behaves as always.
   questContext: QuestContextInput
+  # Optional Daily Challenge context. Validated server-side before rate limiting; a wrong day, game or
+  # difficulty returns one generic error and consumes no play. A valid one counts as a normal play and
+  # lets free users start a paid game that is today's challenge.
+  challengeContext: ChallengeContextInput
+}
+
+input ChallengeContextInput {
+  day: String! # YYYY-MM-DD, today's challenge day only
 }
 
 input QuestContextInput {
@@ -135,6 +148,50 @@ type CompleteGameResponse {
   leaderboardRank: Int # NEW - User's rank after this game
   # Quest Map result. Null for non-quest games or when the progress write failed (fail-soft).
   quest: QuestResult
+  # Daily Challenge result. Null for non-challenge games or when the hook failed (fail-soft).
+  challenge: ChallengeCompletion
+}
+
+type ChallengeCompletion {
+  day: String!
+  recorded: Boolean! # false: finished after Eastern midnight or totals differ from the challenge
+  bestScore: Int # null when not recorded
+  rank: Int # null when not recorded
+  isNewBest: Boolean!
+}
+
+type DailyChallenge {
+  day: String!
+  gameId: String!
+  themeId: String!
+  difficulty: Int!
+  settings: String! # JSON text
+  content: String! # JSON text
+  endsAt: String! # ISO 8601, next Eastern midnight
+  me: ChallengeMyEntry # null when not played today
+}
+
+type ChallengeMyEntry {
+  bestScore: Int!
+  rank: Int!
+  achievedAt: String!
+}
+
+type ChallengeLeaderboard {
+  day: String!
+  gameId: String!
+  themeId: String!
+  final: Boolean! # true when the day has ended
+  entries: [ChallengeEntry!]!
+  me: ChallengeMyEntry
+}
+
+type ChallengeEntry {
+  rank: Int!
+  username: String! # never a user id
+  score: Int!
+  achievedAt: String!
+  isMe: Boolean!
 }
 
 type QuestResult {

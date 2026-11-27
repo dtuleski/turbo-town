@@ -10,6 +10,8 @@ import {
 import type { QuestContext } from '@memory-game/shared';
 import { QuestService, QUEST_UNAVAILABLE_MESSAGE } from './quest.service';
 import type { QuestResultPayload } from '../types/quest';
+import { ChallengeService, CHALLENGE_UNAVAILABLE_MESSAGE } from './challenge.service';
+import type { ChallengeCompletion } from '../types/challenge';
 import { GameRepository } from '../repositories/game.repository';
 import { ThemeRepository } from '../repositories/theme.repository';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
@@ -54,7 +56,9 @@ export class GameService {
     private achievementTracker: AchievementTrackerService,
     private eventPublisher: EventPublisherService,
     // Optional trailing dependency: existing callers keep working without Quest Map.
-    private questService?: QuestService
+    private questService?: QuestService,
+    // Optional trailing dependency: undefined when DAILY_CHALLENGE_TABLE_NAME is unset.
+    private challengeService?: ChallengeService
   ) {}
 
   /**
@@ -73,6 +77,27 @@ export class GameService {
       return await this.questService.applyCompletion(userId, game, score, extras);
     } catch (error) {
       logger.error('Quest completion hook failed', error as Error, { userId, gameId: game.id });
+      return undefined;
+    }
+  }
+
+  /**
+   * Daily Challenge completion hook. Runs after the Quest Map hook, so the score is already stored;
+   * any failure yields no challenge result and never fails the completion. Games without a
+   * challengeDay take no extra I/O.
+   */
+  private async finalizeChallenge(
+    userId: string,
+    username: string,
+    game: Game,
+    score: number,
+    input: CompleteGameInput
+  ): Promise<ChallengeCompletion | undefined> {
+    if (!game.challengeDay || !this.challengeService) return undefined;
+    try {
+      return await this.challengeService.applyCompletion(userId, username, game, score, input);
+    } catch (error) {
+      logger.error('Challenge completion hook failed', error as Error, { userId, gameId: game.id });
       return undefined;
     }
   }
@@ -106,8 +131,24 @@ export class GameService {
       questContext = validated.context;
     }
 
+    // Daily Challenge: same placement and rule as the quest check (fails closed, costs no play).
+    // A validated challenge start skips only the paid-game gate below (FR-DC-16).
+    let challengeDay: string | undefined;
+    if (input.challengeContext !== undefined && input.challengeContext !== null) {
+      if (!this.challengeService) {
+        logger.warn('Challenge start rejected', { userId, reason: 'NOT_CONFIGURED' });
+        throw new ValidationError(CHALLENGE_UNAVAILABLE_MESSAGE);
+      }
+      const validated = await this.challengeService.validateStart(
+        input.challengeContext,
+        input.themeId,
+        input.difficulty
+      );
+      challengeDay = validated.day;
+    }
+
     // Check if game requires a paid subscription (any tier above FREE)
-    if (PAID_GAME_THEME_IDS.includes(input.themeId) && tier === SubscriptionTier.Free) {
+    if (!challengeDay && PAID_GAME_THEME_IDS.includes(input.themeId) && tier === SubscriptionTier.Free) {
       throw new AuthorizationError('This game requires a paid subscription. Upgrade to play!');
     }
 
@@ -132,6 +173,7 @@ export class GameService {
       attempts: 0,
       score: 0,
       ...(questContext ? { questContext } : {}),
+      ...(challengeDay ? { challengeDay } : {}),
     });
 
     // Increment rate limit usage
@@ -486,12 +528,15 @@ export class GameService {
 
     // Quest Map hook (exit 1 of 2). Stars come from the server score computed above.
     const quest = await this.finalizeQuest(userId, game, score);
+    // Daily Challenge hook (generic path only; Circuit Builder is not in the rotation).
+    const challenge = await this.finalizeChallenge(userId, username, game, score, input);
 
     return {
       game: completedGame,
       achievements,
       scoreBreakdown,
       ...(quest ? { quest } : {}),
+      ...(challenge ? { challenge } : {}),
     };
   }
 
