@@ -230,6 +230,63 @@ describe('AccountDeletionService.deleteAccount', () => {
     });
   });
 
+  it('does not touch the push-devices table or SNS when PUSH_DEVICES_TABLE_NAME is unset', async () => {
+    const sns = { send: jest.fn() };
+    const { ddb } = setup();
+    const service = new AccountDeletionService({
+      ddb: ddb as any,
+      cognito: fakeClient((c) => (c instanceof ListUsersCommand ? { Users: [{ Username: 'u1' }] } : {})) as any,
+      sns,
+      stripe: async () => ({}) as any,
+      userPoolId: 'us-east-1_pool',
+      env: ENV,
+      now: () => NOW,
+    });
+    await service.deleteAccount('u1');
+    const tables = ddb.calls.map((c) => c.input?.TableName ?? Object.keys(c.input?.RequestItems ?? {})[0]);
+    expect(tables.some((t) => String(t).includes('push-devices'))).toBe(false);
+    expect(sns.send).not.toHaveBeenCalled();
+  });
+
+  it('deletes the user\'s devices through user-index and their SNS endpoints when the table is set', async () => {
+    const table = 'memory-game-push-devices-prod';
+    const ddb = fakeClient((c) => {
+      if (c instanceof QueryCommand && c.input.TableName === table) {
+        return {
+          Items: [
+            { deviceId: 'd1', userId: 'u1', endpointArn: 'arn:aws:sns:us-east-1:1:endpoint/APNS/dashden-ios-prod/a' },
+            { deviceId: 'd2', userId: 'u1' },
+          ],
+        };
+      }
+      if (c instanceof QueryCommand) return { Items: [] };
+      if (c instanceof BatchWriteCommand) return { UnprocessedItems: {} };
+      return {};
+    });
+    const sns = { send: jest.fn().mockRejectedValue(Object.assign(new Error('gone'), { name: 'NotFoundException' })) };
+    const cognito = fakeClient((c) => (c instanceof ListUsersCommand ? { Users: [{ Username: 'u1' }] } : {}));
+    const service = new AccountDeletionService({
+      ddb: ddb as any,
+      cognito: cognito as any,
+      sns,
+      stripe: async () => ({}) as any,
+      userPoolId: 'us-east-1_pool',
+      env: { ...ENV, PUSH_DEVICES_TABLE_NAME: table },
+      now: () => NOW,
+    });
+    await expect(service.deleteAccount('u1')).resolves.toMatchObject({ deleted: true });
+    const query = ddb.calls.find((c) => c instanceof QueryCommand && c.input.TableName === table);
+    expect(query.input).toMatchObject({ IndexName: 'user-index', KeyConditionExpression: 'userId = :u', ExpressionAttributeValues: { ':u': 'u1' } });
+    expect(sns.send).toHaveBeenCalledTimes(1);
+    expect(sns.send.mock.calls[0][0].input).toEqual({ EndpointArn: 'arn:aws:sns:us-east-1:1:endpoint/APNS/dashden-ios-prod/a' });
+    const batches = ddb.calls.filter((c) => c instanceof BatchWriteCommand).map((c) => c.input.RequestItems);
+    expect(batches).toContainEqual({
+      [table]: [{ DeleteRequest: { Key: { deviceId: 'd1' } } }, { DeleteRequest: { Key: { deviceId: 'd2' } } }],
+    });
+    // The login is still removed last.
+    expect(cognito.calls.at(-1)).toBeInstanceOf(AdminDeleteUserCommand);
+  });
+
   it('requires a user id', async () => {
     const { service } = setup();
     await expect(service.deleteAccount('')).rejects.toThrow('userId is required');

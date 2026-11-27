@@ -5,9 +5,12 @@ import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
+import { SNSClient } from '@aws-sdk/client-sns';
 import type Stripe from 'stripe';
 import { appleBindingKey } from '../repositories/subscription.repository';
 import type { PlanRecord, SourceEntry } from './entitlement';
+import { deleteEndpointQuietly } from './push-device.service';
+import type { SnsSender } from './push-device.service';
 import { logger } from '../utils/logger';
 
 /**
@@ -53,6 +56,8 @@ export interface AccountDeletionResult {
 export interface AccountDeletionDeps {
   ddb: DynamoDBDocumentClient;
   cognito: CognitoIdentityProviderClient;
+  /** Deletes the SNS endpoints of the user's push devices (best effort). */
+  sns?: SnsSender;
   stripe: () => Promise<Stripe>;
   userPoolId: string;
   env: Record<string, string | undefined>;
@@ -123,6 +128,10 @@ export class AccountDeletionService {
         ExpressionAttributeValues: { ':u': userId },
       }, ['pk', 'sk']);
     }
+    // Push devices and their SNS endpoints, under the same rule (no default table name).
+    if (env.PUSH_DEVICES_TABLE_NAME) {
+      await this.deletePushDevices(env.PUSH_DEVICES_TABLE_NAME, userId);
+    }
     // The App Store binding goes too, so a later account can restore the same purchase.
     if (apple?.externalId) {
       await this.deps.ddb.send(
@@ -164,6 +173,34 @@ export class AccountDeletionService {
     return cancelled;
   }
 
+  /** Endpoints first (best effort, an endpoint left behind holds no user data), then the items. */
+  private async deletePushDevices(table: string, userId: string): Promise<void> {
+    let start: Record<string, unknown> | undefined;
+    do {
+      const page = await this.deps.ddb.send(
+        new QueryCommand({
+          TableName: table,
+          IndexName: 'user-index',
+          KeyConditionExpression: 'userId = :u',
+          ExpressionAttributeValues: { ':u': userId },
+          ExclusiveStartKey: start,
+        })
+      );
+      const items = (page.Items ?? []) as Record<string, unknown>[];
+      if (this.deps.sns) {
+        for (const item of items) {
+          if (typeof item.endpointArn === 'string') {
+            await deleteEndpointQuietly(this.deps.sns, item.endpointArn, userId);
+          }
+        }
+      }
+      const keys = items.map((item) => ({ deviceId: item.deviceId }));
+      for (let i = 0; i < keys.length; i += 25) {
+        await this.batchDelete(table, keys.slice(i, i + 25));
+      }
+      start = page.LastEvaluatedKey;
+    } while (start);
+  }
   private async deletePartition(table: string, userId: string, sortKey: string): Promise<void> {
     await this.deleteByQuery(table, {
       KeyConditionExpression: 'userId = :u',
@@ -217,6 +254,7 @@ export function createAccountDeletionService(stripe: () => Promise<Stripe>): Acc
   return new AccountDeletionService({
     ddb: DynamoDBDocumentClient.from(new DynamoDBClient({})),
     cognito: new CognitoIdentityProviderClient({}),
+    sns: new SNSClient({}),
     stripe,
     userPoolId: process.env.COGNITO_USER_POOL_ID ?? '',
     env: process.env,

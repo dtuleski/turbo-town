@@ -9,6 +9,7 @@ import { GameService } from '../services/game.service';
 import { QuestService } from '../services/quest.service';
 import { QuestProgressRepository } from '../repositories/quest-progress.repository';
 import { ChallengeService, createChallengeService } from '../services/challenge.service';
+import { PushDeviceService, createPushDeviceService } from '../services/push-device.service';
 import { AdminService } from '../services/admin.service';
 import { StripeService } from '../services/stripe.service';
 import { LanguageHandler } from './language.handler';
@@ -64,6 +65,8 @@ export class GameHandler {
   private questService: QuestService;
   /** Undefined when DAILY_CHALLENGE_TABLE_NAME is unset: the challenge operations return null. */
   private challengeService?: ChallengeService;
+  /** Undefined when PUSH_DEVICES_TABLE_NAME is unset: device operations answer { ok: false }. */
+  private pushDeviceService?: PushDeviceService;
   private accountDeletion?: AccountDeletionService;
 
   constructor() {
@@ -93,6 +96,8 @@ export class GameHandler {
 
     // Daily Challenge (optional; off without its table env var)
     this.challengeService = createChallengeService(process.env);
+    // Push devices (optional; off without its table env var)
+    this.pushDeviceService = createPushDeviceService(process.env);
 
     // Initialize game service
     this.gameService = new GameService(
@@ -316,8 +321,11 @@ export class GameHandler {
         return this.reviewService.getReviewStats();
 
       // Email Preferences
-      case 'getEmailPrefs':
-        return (await this.emailPrefsService.getPrefs(userId)) || { userId, dailyDigest: false };
+      case 'getEmailPrefs': {
+        // An item created by saveNotificationSettings has no toggle yet: it reads as off.
+        const prefs = await this.emailPrefsService.getPrefs(userId);
+        return prefs ? { ...prefs, dailyDigest: prefs.dailyDigest === true } : { userId, dailyDigest: false };
+      }
 
       case 'setEmailPrefs':
         return this.emailPrefsService.setPrefs(userId, email || '', username || '', variables.input.dailyDigest);
@@ -331,6 +339,15 @@ export class GameHandler {
           variables.input.dailyDigest
         );
 
+      // Notifications (DC1): settings always available; devices off without their table
+      case 'saveNotificationSettings':
+        return this.emailPrefsService.setLocale(userId, variables.input?.timeZone, variables.input?.language);
+      case 'registerPushDevice':
+        if (!this.pushDeviceService) return { ok: false };
+        return this.pushDeviceService.register(userId, variables.input);
+      case 'unregisterPushDevice':
+        if (!this.pushDeviceService) return { ok: false };
+        return this.pushDeviceService.unregister(userId, variables.token);
       case 'adminGetAllEmailPrefs':
         if (!isAdminUser(username, email)) throw new Error('Unauthorized: Admin only');
         return { users: await this.emailPrefsService.getOptedInUsers() };

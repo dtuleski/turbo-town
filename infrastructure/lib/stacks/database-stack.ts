@@ -25,6 +25,7 @@ export class DatabaseStack extends cdk.Stack {
   public readonly rateLimitBucketsTable: dynamodb.Table;
   public readonly questProgressTable: dynamodb.Table;
   public readonly dailyChallengeTable: dynamodb.Table;
+  public readonly pushDevicesTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props: DatabaseStackProps) {
     super(scope, id, props);
@@ -347,6 +348,21 @@ export class DatabaseStack extends cdk.Stack {
       projectionType: dynamodb.ProjectionType.ALL,
     });
 
+    // PushDevices Table - one item per device; deviceId = sha256 of platform and push token
+    this.pushDevicesTable = new dynamodb.Table(this, 'PushDevicesTable', {
+      tableName: `memory-game-push-devices-${environment}`,
+      partitionKey: { name: 'deviceId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+      pointInTimeRecovery: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+    // A user's devices (sign-out, account deletion)
+    this.pushDevicesTable.addGlobalSecondaryIndex({
+      indexName: 'user-index',
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
     // Outputs
     new cdk.CfnOutput(this, 'UsersTableName', {
       value: this.usersTable.tableName,
@@ -396,6 +412,10 @@ export class DatabaseStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'DailyChallengeTableName', {
       value: this.dailyChallengeTable.tableName,
       exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-DailyChallengeTableName`,
+    });
+    new cdk.CfnOutput(this, 'PushDevicesTableName', {
+      value: this.pushDevicesTable.tableName,
+      exportName: `MemoryGame${environment.charAt(0).toUpperCase() + environment.slice(1)}-PushDevicesTableName`,
     });
   }
 }

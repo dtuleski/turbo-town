@@ -22,6 +22,14 @@ type Mutation {
   verifyAppleTransaction(signedTransaction: String!): SubscriptionInfo!
   # Deletes the caller's account, data and login; cancels Stripe billing.
   deleteMyAccount: AccountDeletionResult!
+  # Push devices (DC1). Answer { ok: false } while PUSH_DEVICES_TABLE_NAME is unset (feature off).
+  # register: the caller's device; a token registered by another user moves to the caller.
+  registerPushDevice(input: RegisterPushDeviceInput!): PushDeviceResult!
+  # unregister: deletes the device only when the caller owns it (sign-out), and its SNS endpoint.
+  unregisterPushDevice(token: String!): PushDeviceResult!
+  # Time zone and language for local-time sends (8am digest, 12pm challenge push). Always available.
+  # Only the given fields are saved; the daily digest toggle is not changed.
+  saveNotificationSettings(input: NotificationSettingsInput!): NotificationSettings!
 }
 
 # Queries
@@ -192,6 +200,31 @@ type ChallengeEntry {
   score: Int!
   achievedAt: String!
   isMe: Boolean!
+}
+input RegisterPushDeviceInput {
+  token: String! # APNs device token, hex, 64 to 200 characters
+  platform: PushPlatform!
+  environment: ApnsEnvironment!
+  timeZone: String # IANA zone, e.g. America/Chicago
+  language: String # en | es | pt
+}
+enum PushPlatform {
+  IOS # the data model also allows ANDROID later
+}
+enum ApnsEnvironment {
+  production
+  sandbox
+}
+type PushDeviceResult {
+  ok: Boolean!
+}
+input NotificationSettingsInput {
+  timeZone: String # IANA zone, at most 64 characters
+  language: String # en | es | pt
+}
+type NotificationSettings {
+  timeZone: String
+  language: String
 }
 
 type QuestResult {
