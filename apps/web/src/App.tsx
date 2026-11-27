@@ -78,6 +78,7 @@ import ProfilePage from './pages/profile/ProfilePage'
 import ContactPage from './pages/contact/ContactPage'
 import PrivacyPage from './pages/legal/PrivacyPage'
 import TermsPage from './pages/legal/TermsPage'
+import SupportPage from './pages/legal/SupportPage'
 import ShirtPage from './pages/shirt/ShirtPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -94,6 +95,7 @@ function App() {
         {/* Public legal pages (linked from the App Store listing and the app) */}
         <Route path={ROUTES.PRIVACY} element={<PrivacyPage />} />
         <Route path={ROUTES.TERMS} element={<TermsPage />} />
+        <Route path={ROUTES.SUPPORT} element={<SupportPage />} />
 
         {/* Public routes with auth layout */}
         <Route element={<AuthLayout />}>
